@@ -20,6 +20,12 @@ function retrieve_feature_master(): array
         'organization',
         'role_master',
         'user_master',
+        // APPS
+        'finance',
+        'journey',
+        'health',
+        'migrate',
+        'profile'
     ];
 }
 

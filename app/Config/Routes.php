@@ -62,4 +62,75 @@ $routes->group('{locale}/office', ['filter' => 'auth'], static function ($routes
     $routes->post('log/email', 'Log::emailList');
     $routes->get('log/log-file', 'Log::fileList');
     $routes->get('log/log-file/(:any)', 'Log::fileView/$1');
+    /////////////////////////////////////////////////////////////////////////////
+    // ALL OTHER CUSTOM ROUTES
+    /////////////////////////////////////////////////////////////////////////////
+    // FINANCE - EMPLOYMENT
+    // company_master table - company with filter by year, country, currency, etc
+    $routes->get('employment', 'Employment::index');
+    $routes->post('employment/company', 'Employment::companyList');
+    $routes->get('employment/company/view/(:any)', 'Employment::companyView/$1');
+    $routes->get('employment/company/create', 'Employment::companyEdit/new');
+    $routes->get('employment/company/edit/(:any)', 'Employment::companyEdit/$1');
+    $routes->post('employment/company/edit', 'Employment::companySave');
+    // company_salary table - with filter by year, company, currency, etc
+    $routes->get('employment/salary', 'Employment::salary');
+    $routes->post('employment/salary', 'Employment::salaryList');
+    $routes->get('employment/salary/create', 'Employment::salaryEdit/new');
+    $routes->get('employment/salary/edit/(:any)', 'Employment::salaryEdit/$1');
+    $routes->post('employment/salary/edit', 'Employment::salarySave');
+    // company_cpf table - with filter by year, company (contribution), transaction code, etc
+    $routes->get('employment/cpf', 'Employment::cpf');
+    $routes->post('employment/cpf', 'Employment::cpfList');
+    $routes->get('employment/cpf/create', 'Employment::cpfEdit/new');
+    $routes->get('employment/cpf/edit/(:any)', 'Employment::cpfEdit/$1');
+    $routes->post('employment/cpf/edit', 'Employment::cpfSave');
+    // company_freelance_project/income
+    $routes->get('employment/freelance', 'Employment::freelance');
+    $routes->post('employment/freelance', 'Employment::freelanceList');
+    $routes->get('employment/freelance/view/(:any)', 'Employment::freelanceView/$1');
+    $routes->get('employment/freelance/create', 'Employment::freelanceEdit/new');
+    $routes->get('employment/freelance/edit/(:any)', 'Employment::freelanceEdit/$1');
+    $routes->post('employment/freelance/edit', 'Employment::freelanceSave');
+    $routes->get('employment/freelance-income/create', 'Employment::freelanceIncomeEdit/new');
+    $routes->get('employment/freelance-income/edit/(:any)', 'Employment::freelanceIncomeEdit/$1');
+    $routes->post('employment/freelance-income/edit', 'Employment::freelanceIncomeSave');
+    /////////////////////////////////////////////////////////////////////////////
+    // JOURNEY
+    // journey_port table
+    $routes->get('journey/port', 'Journey::port');
+    $routes->post('journey/port', 'Journey::portList');
+    $routes->get('journey/port/create', 'Journey::portEdit/new');
+    $routes->get('journey/port/edit/(:any)', 'Journey::portEdit/$1');
+    $routes->post('journey/port/edit', 'Journey::portSave');
+    // journey_operator table
+    $routes->get('journey/operator', 'Journey::operator');
+    $routes->post('journey/operator', 'Journey::operatorList');
+    $routes->get('journey/operator/create', 'Journey::operatorEdit/new');
+    $routes->get('journey/operator/edit/(:any)', 'Journey::operatorEdit/$1');
+    $routes->post('journey/operator/edit', 'Journey::operatorSave');
+    // journey_master table
+    $routes->get('journey/trip', 'Journey::trip');
+    $routes->post('journey/trip', 'Journey::tripList');
+    $routes->get('journey/trip/create', 'Journey::tripEdit/new');
+    $routes->get('journey/trip/edit/(:any)', 'Journey::tripEdit/$1');
+    $routes->post('journey/trip/edit', 'Journey::tripSave');
+    // journey_transport table
+    $routes->get('journey/transport', 'Journey::transport');
+    $routes->post('journey/transport', 'Journey::transportList');
+    $routes->get('journey/transport/create', 'Journey::transportEdit/new');
+    $routes->get('journey/transport/edit/(:any)', 'Journey::transportEdit/$1');
+    $routes->post('journey/transport/edit', 'Journey::transportSave');
+    // journey_accommodation table
+    $routes->get('journey/accommodation', 'Journey::accommodation');
+    $routes->post('journey/accommodation', 'Journey::accommodationList');
+    $routes->get('journey/accommodation/create', 'Journey::accommodationEdit/new');
+    $routes->get('journey/accommodation/edit/(:any)', 'Journey::accommodationEdit/$1');
+    $routes->post('journey/accommodation/edit', 'Journey::accommodationSave');
+    // journey_attraction table
+    $routes->get('journey/attraction', 'Journey::attraction');
+    $routes->post('journey/attraction', 'Journey::attractionList');
+    $routes->get('journey/attraction/create', 'Journey::attractionEdit/new');
+    $routes->get('journey/attraction/edit/(:any)', 'Journey::attractionEdit/$1');
+    $routes->post('journey/attraction/edit', 'Journey::attractionSave');
 });
