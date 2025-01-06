@@ -6,20 +6,16 @@ use CodeIgniter\Model;
 
 class JourneyOperatorModel extends Model
 {
-    protected $table = 'journey_master';
+    protected $table = 'journey_operator';
     protected $primaryKey = 'id';
     protected $allowedFields = [
         'id',
-        'trip_code',
-        'country_code',
-        'date_entry',
-        'date_exit',
-        'day_count',
-        'entry_port_id',
-        'exit_port_id',
-        'visa_info',
-        'journey_details',
-        'journey_status',
+        'operator_code_1',
+        'operator_code_2',
+        'operator_callsign',
+        'operator_name',
+        'operator_logo_file_name',
+        'mode_of_transport',
         'created_by',
         'created_at',
         'updated_at',
@@ -28,59 +24,95 @@ class JourneyOperatorModel extends Model
     protected $useTimestamps = true;
     protected $createdField = 'created_at';
     protected $updatedField = 'updated_at';
-    const ID_NONCE = 17;
+    const ID_NONCE = 503;
+
+    /**
+     * Get mode of transport
+     * @param string $mode (optional)
+     * @return string|array
+     */
+    public function getModeOfTransport(string $mode = ''): string|array
+    {
+        $modes = [
+            'airplane'        => '<i class="fa-solid fa-plane-departure"></i> Airline',
+            'ferry'           => '<i class="fa-solid fa-ferry"></i> Ferry',
+            'train'           => '<i class="fa-solid fa-train"></i> Train',
+            'high_speed_rail' => '<i class="fa-solid fa-train"></i> High Speed Rail',
+            'bus'             => '<i class="fa-solid fa-bus"></i> Bus',
+        ];
+        if (empty($mode)) {
+            return $modes;
+        }
+        return $modes[$mode] ?? '[ERROR]';
+    }
+
+    /**
+     * Print operator code(s))
+     * @param string $mode_of_transport
+     * @param string $code_1
+     * @param string $code_2
+     * @param string $callsign
+     * @return string
+     */
+    private function printOperatorCode(string $mode_of_transport, string $code_1, string $code_2, string $callsign): string
+    {
+        $return = $code_1;
+        if ('airplane' == $mode_of_transport) {
+            $return = "<span class='badge bg-success-subtle'>IATA</span> <b>{$code_1}</b> | <span class='badge bg-success-subtle'>ICAO</span> <b>{$code_2}</b> | <span class='badge bg-success-subtle'>Callsign</span> <b>{$callsign}</b>";
+        }
+        return '<b>' . $return . '</b>';
+    }
 
     /**
      * @param string $search_value
+     * @param string $mode_of_transport
      * @return void
      */
-    private function applyFilter(string $search_value): void
+    private function applyFilter(string $search_value, string $mode_of_transport): void
     {
         if (!empty($search_value)) {
             $this->groupStart()
-                ->like('trip_code', $search_value)
-                ->orLike('visa_info', $search_value)
-                ->orLike('journey_details', $search_value)
+                ->like('operator_code_1', $search_value)
+                ->orLike('operator_code_2', $search_value)
+                ->orLike('operator_callsign', $search_value)
+                ->orLike('operator_name', $search_value)
                 ->groupEnd();
         }
+        if (!empty($mode_of_transport)) {
+            $this->where('mode_of_transport', $mode_of_transport);
+        }
     }
+
     /**
      * @param int $start
      * @param int $length
      * @param string $order_column
      * @param string $order_direction
      * @param string $search_value
+     * @param string $mode_of_transport
      * @return array
      */
-    public function getDataTables(int $start, int $length, string $order_column, string $order_direction, string $search_value): array
+    public function getDataTables(int $start, int $length, string $order_column, string $order_direction, string $search_value, string $mode_of_transport): array
     {
         $record_total    = $this->countAllResults();
         $record_filtered = $record_total;
-        if (!empty($search_value)) {
-            $this->applyFilter($search_value);
+        if (!empty($search_value) || !empty($mode_of_transport)) {
+            $this->applyFilter($search_value, $mode_of_transport);
             $record_filtered = $this->countAllResults();
-            $this->applyFilter($search_value);
+            $this->applyFilter($search_value, $mode_of_transport);
         }
         $session    = session();
         $locale     = $session->locale;
-        $raw_result = $this->select('journey_master.*, entry_port.port_name AS entry_port_name, exit_port.port_name AS exit_port_name')
-            ->join('journey_port AS entry_port', 'journey_master.entry_port_id = entry_port.id')
-            ->join('journey_port AS exit_port',  'journey_master.exit_port_id = exit_port.id')
-            ->orderBy($order_column, $order_direction)->limit($length, $start)->findAll();
+        $raw_result = $this->orderBy($order_column, $order_direction)->limit($length, $start)->findAll();
         $result     = [];
-        $countries  = lang('ListCountries.countries');
         foreach ($raw_result as $row) {
             $new_id       = $row['id'] * self::ID_NONCE;
             $result[]     = [
-                '<a class="btn btn-outline-primary btn-sm" href="' . base_url($locale . '/office/journey/trip/edit/' . $new_id) . '"><i class="fa-solid fa-edit"></i></a>',
+                '<a class="btn btn-outline-primary btn-sm" href="' . base_url($locale . '/office/journey/operator/edit/' . $new_id) . '"><i class="fa-solid fa-edit"></i></a>',
                 $row['id'],
-                $countries[$row['country_code']]['common_name'],
-                '<span class="date-to-readable">' . $row['date_entry'] . '</span> - <span class="date-to-readable">' . $row['date_exit'] . '</span>',
-                $row['day_count'],
-                $row['entry_port_name'],
-                $row['exit_port_name'],
-                $row['journey_details'],
-                $row['journey_status']
+                $this->getModeOfTransport($row['mode_of_transport']),
+                $this->printOperatorCode($row['mode_of_transport'], $row['operator_code_1'], $row['operator_code_2'], $row['operator_callsign']),
+                '<img style="height:2rem" class="me-3" src="' . base_url('file/journey_operator_' . $row['operator_logo_file_name'] . '.png') . '" />' . $row['operator_name'],
             ];
         }
         return [

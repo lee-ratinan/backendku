@@ -43,7 +43,8 @@ $this->extend($layout);
                         </div>
                         <div class="row mb-3">
                             <div class="col text-end">
-                                <button id="btn-filter" class="btn btn-sm btn-outline-primary">Filter</button>
+                                <button id="btn-reset" class="btn btn-sm btn-outline-primary">Reset</button>
+                                <button id="btn-filter" class="btn btn-sm btn-primary">Filter</button>
                             </div>
                         </div>
                         <div class="table-responsive">
@@ -98,6 +99,11 @@ $this->extend($layout);
                 },
             });
             $('#btn-filter').on('click', function () {
+                table.ajax.reload();
+            });
+            $('#btn-reset').on('click', function () {
+                $('#country_code').val('');
+                $('#mode_of_transport').val('');
                 table.ajax.reload();
             });
         });
