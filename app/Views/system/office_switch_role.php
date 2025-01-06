@@ -62,7 +62,7 @@ $this->extend($layout);
                     success: function (response) {
                         toastr.success('<?= lang('System.switch_role.switched') ?>');
                         setTimeout(function () {
-                            location.reload();
+                            window.location.href = '<?= base_url($session->locale . '/office/dashboard') ?>';
                         }, 3000);
                     },
                     error: function () {
