@@ -58,7 +58,7 @@ class JourneyOperatorModel extends Model
     {
         $return = $code_1;
         if ('airplane' == $mode_of_transport) {
-            $return = "<span class='badge bg-success-subtle'>IATA</span> <b>{$code_1}</b> | <span class='badge bg-success-subtle'>ICAO</span> <b>{$code_2}</b> | <span class='badge bg-success-subtle'>Callsign</span> <b>{$callsign}</b>";
+            $return = "<span class='badge bg-success-subtle'>IATA</span> <b>{$code_1}</b> | <span class='badge bg-success-subtle'>ICAO</span> <b>{$code_2}</b><br><span class='badge bg-success-subtle'>Callsign</span> <b>{$callsign}</b>";
         }
         return '<b>' . $return . '</b>';
     }
@@ -112,7 +112,7 @@ class JourneyOperatorModel extends Model
                 $row['id'],
                 $this->getModeOfTransport($row['mode_of_transport']),
                 $this->printOperatorCode($row['mode_of_transport'], $row['operator_code_1'], $row['operator_code_2'], $row['operator_callsign']),
-                '<img style="height:2rem" class="me-3" src="' . base_url('file/journey_operator_' . $row['operator_logo_file_name'] . '.png') . '" />' . $row['operator_name'],
+                '<img style="height:2.5rem" class="img-thumbnail me-3" src="' . base_url('file/journey_operator_' . $row['operator_logo_file_name'] . '.png') . '" />' . $row['operator_name'],
             ];
         }
         return [

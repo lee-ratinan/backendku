@@ -169,3 +169,27 @@ function format_phone_number(string $country_code, string $phone_number): string
     }
     return $country_code . $phone_number;
 }
+
+/**
+ * Status of the journey
+ * @param string $status
+ * @param string $start
+ * @param string $end
+ * @param string $today (optional)
+ * @return string
+ */
+function translate_journey_status(string $status, string $start, string $end, string $today = ''): string
+{
+    if ('canceled' == $status) {
+        return '<span class="badge bg-danger">Canceled</span>';
+    }
+    if (empty($today)) {
+        $today = date('Y-m-d');
+    }
+    if ($today < $start) {
+        return '<span class="badge bg-info">Upcoming</span>';
+    } elseif (!empty($end) && $today > $end) {
+        return '<span class="badge bg-success">Completed</span>';
+    }
+    return '<span class="badge bg-warning">Ongoing</span>';
+}

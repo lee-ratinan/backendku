@@ -31,7 +31,8 @@ class Journey extends BaseController
             'slug'         => 'trip',
             'user_session' => $session->user,
             'roles'        => $session->roles,
-            'current_role' => $session->current_role
+            'current_role' => $session->current_role,
+            'countries'    => lang('ListCountries.countries'),
         ];
         return view('journey_trip', $data);
     }
@@ -66,7 +67,10 @@ class Journey extends BaseController
         $order_column       = $columns[$order_column_index];
         $order_direction    = $order[0]['dir'] ?? 'desc';
         $search_value       = $search['value'];
-        $result             = $model->getDataTables($start, $length, $order_column, $order_direction, $search_value);
+        $country_code       = $this->request->getPost('country_code');
+        $year               = $this->request->getPost('year');
+        $journey_status     = $this->request->getPost('journey_status');
+        $result             = $model->getDataTables($start, $length, $order_column, $order_direction, $search_value, $country_code, $year, $journey_status);
         return $this->response->setJSON([
             'draw'            => $this->request->getPost('draw'),
             'recordsTotal'    => $result['recordsTotal'],
