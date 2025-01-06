@@ -25,6 +25,15 @@ $this->extend($layout);
                             <table class="table table-sm table-striped table-hover">
                                 <thead>
                                 <tr>
+                                    <th></th>
+                                    <th>ID</th>
+                                    <th>Country</th>
+                                    <th>Date</th>
+                                    <th>Duration</th>
+                                    <th>Entry</th>
+                                    <th>Exit</th>
+                                    <th>Details</th>
+                                    <th>Status</th>
                                 </tr>
                                 </thead>
                                 <tbody></tbody>
@@ -54,6 +63,14 @@ $this->extend($layout);
                         const utc = $(this).text();
                         if ('' !== utc) {
                             $(this).text(DateTime.fromISO(utc).toLocaleString(DateTime.DATETIME_MED));
+                        } else {
+                            $(this).text('-');
+                        }
+                    });
+                    $('.date-to-readable').each(function () {
+                        const str = $(this).text();
+                        if ('' !== str) {
+                            $(this).text(DateTime.fromISO(utc).toLocaleString(DateTime.DATE_MED));
                         } else {
                             $(this).text('-');
                         }
