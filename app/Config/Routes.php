@@ -133,4 +133,6 @@ $routes->group('{locale}/office', ['filter' => 'auth'], static function ($routes
     $routes->get('journey/attraction/create', 'Journey::attractionEdit/new');
     $routes->get('journey/attraction/edit/(:any)', 'Journey::attractionEdit/$1');
     $routes->post('journey/attraction/edit', 'Journey::attractionSave');
+    // Summary, export, statistics, etc
+    $routes->get('journey/export', 'Journey::export');
 });

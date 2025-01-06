@@ -21,10 +21,68 @@ $this->extend($layout);
                     <div class="card-body pt-3">
                         <a class="btn btn-outline-primary btn-sm float-end ms-3" href="<?= base_url($session->locale . '/office/journey/transport/create') ?>"><i class="fa-solid fa-plus-circle"></i> New Transport</a>
                         <h5 class="card-title"><?= $page_title ?></h5>
+                        <div class="row mb-3 g-3">
+                            <div class="col-6 col-md-4">
+                                <label for="country_code" class="form-label">Country</label><br>
+                                <select class="form-select form-select-sm" id="country_code">
+                                    <option value="">All</option>
+                                    <?php foreach ($countries as $code => $name): ?>
+                                        <option value="<?= $code ?>"><?= $name['common_name'] ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                            <div class="col-6 col-md-4">
+                                <label for="year" class="form-label">Year</label><br>
+                                <select class="form-select form-select-sm" id="year">
+                                    <option value="">All</option>
+                                    <?php for ($year = date('Y'); $year >= 1989; $year--): ?>
+                                        <option value="<?= $year ?>"><?= $year ?></option>
+                                    <?php endfor; ?>
+                                </select>
+                            </div>
+                            <div class="col-6 col-md-4">
+                                <label for="journey_status" class="form-label">Status</label><br>
+                                <select class="form-select form-select-sm" id="journey_status">
+                                    <option value="">All</option>
+                                    <option value="as_planned">Confirmed</option>
+                                    <option value="canceled">Canceled</option>
+                                </select>
+                            </div>
+                            <div class="col-6 col-md-4">
+                                <label for="mode_of_transport" class="form-label">Mode of Transport</label><br>
+                                <select class="form-select form-select-sm" id="mode_of_transport">
+                                    <option value="">All</option>
+                                    <?php foreach ($modes as $key => $value): ?>
+                                        <option value="<?= $key ?>"><?= $value ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col text-end">
+                                <button id="btn-reset" class="btn btn-sm btn-outline-primary">Reset</button>
+                                <button id="btn-filter" class="btn btn-sm btn-primary">Filter</button>
+                            </div>
+                        </div>
                         <div class="table-responsive">
                             <table class="table table-sm table-striped table-hover">
                                 <thead>
                                 <tr>
+                                    <th></th>
+                                    <th>ID</th>
+                                    <th>Flight No./PNR</th>
+                                    <th>Operator</th>
+                                    <th>Mode</th>
+                                    <th>Departure</th>
+                                    <th>Arrival</th>
+                                    <th>Origin</th>
+                                    <th>Destination</th>
+                                    <th>Duration</th>
+                                    <th>Distance</th>
+                                    <th>Price</th>
+                                    <th>Remarks</th>
+                                    <th>Link</th>
+                                    <th>Status</th>
                                 </tr>
                                 </thead>
                                 <tbody></tbody>
@@ -44,9 +102,15 @@ $this->extend($layout);
                 searching: true,
                 ajax: {
                     url: '<?= base_url($session->locale . '/office/journey/transport') ?>',
-                    type: 'POST'
+                    type: 'POST',
+                    data: function (d) {
+                        d.country_code = $('#country_code').val();
+                        d.year = $('#year').val();
+                        d.journey_status = $('#journey_status').val();
+                        d.mode_of_transport = $('#mode_of_transport').val();
+                    }
                 },
-                order: [[2, 'asc']],
+                order: [[1, 'desc']],
                 columnDefs: [{orderable: false, targets: 0}],
                 drawCallback: function () {
                     let DateTime = luxon.DateTime;
@@ -59,6 +123,16 @@ $this->extend($layout);
                         }
                     });
                 },
+            });
+            $('#btn-filter').on('click', function () {
+                table.ajax.reload();
+            });
+            $('#btn-reset').on('click', function () {
+                $('#country_code').val('');
+                $('#year').val('');
+                $('#journey_status').val('');
+                $('#mode_of_transport').val('');
+                table.ajax.reload();
             });
         });
     </script>

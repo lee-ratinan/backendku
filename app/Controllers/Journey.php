@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Models\JourneyMasterModel;
 use App\Models\JourneyOperatorModel;
 use App\Models\JourneyPortModel;
+use App\Models\JourneyTransportModel;
 use CodeIgniter\HTTP\ResponseInterface;
 
 class Journey extends BaseController
@@ -99,12 +100,15 @@ class Journey extends BaseController
     public function transport(): string
     {
         $session = session();
+        $model   = new JourneyTransportModel();
         $data    = [
             'page_title'   => 'Transport',
             'slug'         => 'transport',
             'user_session' => $session->user,
             'roles'        => $session->roles,
-            'current_role' => $session->current_role
+            'current_role' => $session->current_role,
+            'countries'    => lang('ListCountries.countries'),
+            'modes'        => $model->getModeOfTransport()
         ];
         return view('journey_transport', $data);
     }
@@ -114,11 +118,45 @@ class Journey extends BaseController
      */
     public function transportList(): ResponseInterface
     {
+        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
+            return permission_denied('datatables');
+        }
+        $model              = new JourneyTransportModel();
+        $columns            = [
+            '',
+            'journey_transport.id',
+            'journey_transport.flight_number',
+            'journey_operator.operator_name',
+            'journey_transport.mode_of_transport',
+            'journey_transport.departure_date_time',
+            'journey_transport.arrival_date_time',
+            'port_origin.port_name',
+            'port_destination.port_name',
+            'journey_transport.trip_duration',
+            'journey_transport.distance_traveled',
+            'journey_transport.price_amount',
+            'journey_transport.journey_details',
+            'journey_transport.google_drive_link',
+            'journey_transport.journey_status',
+        ];
+        $order              = $this->request->getPost('order');
+        $search             = $this->request->getPost('search');
+        $start              = $this->request->getPost('start');
+        $length             = $this->request->getPost('length');
+        $order_column_index = $order[0]['column'] ?? 0;
+        $order_column       = $columns[$order_column_index];
+        $order_direction    = $order[0]['dir'] ?? 'desc';
+        $search_value       = $search['value'];
+        $country_code       = $this->request->getPost('country_code');
+        $year               = $this->request->getPost('year');
+        $journey_status     = $this->request->getPost('journey_status');
+        $mode_of_transport  = $this->request->getPost('mode_of_transport');
+        $result             = $model->getDataTables($start, $length, $order_column, $order_direction, $search_value, $country_code, $year, $journey_status, $mode_of_transport);
         return $this->response->setJSON([
             'draw'            => $this->request->getPost('draw'),
-            'recordsTotal'    => 0,
-            'recordsFiltered' => 0,
-            'data'            => []
+            'recordsTotal'    => $result['recordsTotal'],
+            'recordsFiltered' => $result['recordsFiltered'],
+            'data'            => $result['data']
         ]);
     }
 
@@ -353,5 +391,39 @@ class Journey extends BaseController
     public function operatorSave()
     {
 
+    }
+
+    /************************************************************************
+     * EXPORT
+     ************************************************************************/
+
+    public function export(): string
+    {
+        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
+            return permission_denied();
+        }
+        $journey_master    = new JourneyMasterModel();
+        $journey_transport = new JourneyTransportModel();
+        $journey_data      = [];
+        $journey_raw       = $journey_master->select('journey_master.*, entry_port.port_name AS entry_port_name, exit_port.port_name AS exit_port_name')
+            ->join('journey_port AS entry_port', 'journey_master.entry_port_id = entry_port.id', 'left outer')
+            ->join('journey_port AS exit_port',  'journey_master.exit_port_id = exit_port.id', 'left outer')
+            ->orderBy('id', 'asc')->findAll();
+        $transport_raw     = $journey_transport->select('journey_transport.*, journey_operator.operator_name, port_departure.port_name AS departure_port_name, port_arrival.port_name AS arrival_port_name')
+            ->join('journey_operator', 'journey_transport.operator_id = journey_operator.id', 'left outer')
+            ->join('journey_port AS port_departure', 'journey_transport.departure_port_id = port_departure.id', 'left outer')
+            ->join('journey_port AS port_arrival',   'journey_transport.arrival_port_id = port_arrival.id', 'left outer')
+            ->orderBy('id', 'asc')->findAll();
+        foreach ($journey_raw as $row) {
+            $journey_data[$row['id']]['master'] = $row;
+        }
+        foreach ($transport_raw as $row) {
+            $journey_data[$row['journey_id']]['transport'][] = $row;
+        }
+        $data = [
+            'journey'   => $journey_data,
+            'countries' => lang('ListCountries.countries')
+        ];
+        return view('journey_export', $data);
     }
 }
