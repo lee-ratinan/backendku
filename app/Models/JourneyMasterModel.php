@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use CodeIgniter\Model;
-use DateMalformedStringException;
 use Exception;
 
 class JourneyMasterModel extends Model
@@ -51,7 +50,7 @@ class JourneyMasterModel extends Model
                 ->groupEnd();
         }
         if (!empty($country_code)) {
-            $this->where('country_code', $country_code);
+            $this->where('journey_master.country_code', $country_code);
         }
         if (!empty($year)) {
             $this->groupStart()
