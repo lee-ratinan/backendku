@@ -82,7 +82,7 @@ class JourneyPortModel extends Model
     {
         $return = $code_1;
         if ('airplane' == $mode_of_transport) {
-            $return = "<span class='badge bg-success-subtle'>IATA</span> {$code_1}<br><span class='badge bg-success-subtle'>ICAO</span> {$code_2}";
+            $return = "<span class='badge bg-success'>IATA</span> {$code_1}<br><span class='badge bg-success'>ICAO</span> {$code_2}";
         }
         return $return;
     }
@@ -145,7 +145,7 @@ class JourneyPortModel extends Model
                 '<span class="flag-icon flag-icon-' . strtolower($row['country_code']) . '"></span> ' . $countries[$row['country_code']]['common_name'],
                 $row['city_name'],
                 $this->getModeOfTransport($row['mode_of_transport']),
-                $this->printPortCode($row['mode_of_transport'], $row['port_code_1'], $row['port_code_2'] ?? ''),
+                $this->printPortCode($row['mode_of_transport'], $row['port_code_1'] ?? '', $row['port_code_2'] ?? ''),
                 '<b>' . $row['port_name'] . '</b>' . ($row['port_full_name'] == $row['port_name'] ? '' : '<br>' . $row['port_full_name']) . (!empty($row['port_local_name']) ? '<br>' . $row['port_local_name'] : ''),
                 $this->printCoordinate($row['location_latitude'], $row['location_longitude'])
             ];

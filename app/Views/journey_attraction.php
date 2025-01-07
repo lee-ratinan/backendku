@@ -20,7 +20,7 @@ $this->extend($layout);
                 <div class="card">
                     <div class="card-body pt-3">
                         <a class="btn btn-outline-primary btn-sm float-end ms-3" href="<?= base_url($session->locale . '/office/journey/attraction/create') ?>"><i class="fa-solid fa-plus-circle"></i> New Attraction</a>
-                        <h5 class="card-title"><?= $page_title ?></h5>
+                        <h5 class="card-title"><i class="fa-solid fa-ticket fa-fw me-3"></i> <?= $page_title ?></h5>
                         <div class="table-responsive">
                             <table class="table table-sm table-striped table-hover">
                                 <thead>

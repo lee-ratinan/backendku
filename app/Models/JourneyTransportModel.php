@@ -63,6 +63,20 @@ class JourneyTransportModel extends Model
     }
 
     /**
+     * @param int $minutes
+     * @return string
+     */
+    private function printMinutes(int $minutes): string
+    {
+        $hour   = floor($minutes/60);
+        $minute = $minutes%60;
+        if (0 == $hour) {
+            return "{$minute}m";
+        }
+        return "{$hour}h {$minute}m";
+    }
+
+    /**
      * @param string $search_value
      * @param string $country_code
      * @param string $year
@@ -74,18 +88,18 @@ class JourneyTransportModel extends Model
     {
         if (!empty($search_value)) {
             $this->groupStart()
-                ->like('flight_number', $search_value)
-                ->orLike('pnr_number', $search_value)
-                ->orLike('port_origin.port_name', $search_value)
-                ->orLike('port_destination.port_name', $search_value)
+                ->like('journey_transport.flight_number', $search_value)
+                ->orLike('journey_transport.pnr_number', $search_value)
+                ->orLike('port_departure.port_name', $search_value)
+                ->orLike('port_arrival.port_name', $search_value)
                 ->orLike('journey_operator.operator_name', $search_value)
-                ->orLike('journey_details', $search_value)
+                ->orLike('journey_transport.journey_details', $search_value)
                 ->groupEnd();
         }
         if (!empty($country_code)) {
             $this->groupStart()
-                ->where('port_origin.country_code', $country_code)
-                ->orwhere('port_destination.country_code', $country_code)
+                ->where('port_departure.country_code', $country_code)
+                ->orwhere('port_arrival.country_code', $country_code)
                 ->groupEnd();
         }
         if (!empty($year)) {
@@ -95,10 +109,10 @@ class JourneyTransportModel extends Model
                 ->groupEnd();
         }
         if (!empty($journey_status)) {
-            $this->where('journey_status', $journey_status);
+            $this->where('journey_transport.journey_status', $journey_status);
         }
         if (!empty($mode_of_transport)) {
-            $this->where('mode_of_transport', $mode_of_transport);
+            $this->where('journey_transport.mode_of_transport', $mode_of_transport);
         }
     }
 
@@ -120,7 +134,11 @@ class JourneyTransportModel extends Model
         $record_filtered = $record_total;
         if (!empty($search_value) || !empty($country_code) || !empty($year) || !empty($journey_status) || !empty($mode_of_transport)) {
             $this->applyFilter($search_value, $country_code, $year, $journey_status, $mode_of_transport);
-            $record_filtered = $this->countAllResults();
+            $record_filtered = $this
+                ->join('journey_operator', 'journey_transport.operator_id = journey_operator.id', 'left outer')
+                ->join('journey_port AS port_departure', 'journey_transport.departure_port_id = port_departure.id', 'left outer')
+                ->join('journey_port AS port_arrival',   'journey_transport.arrival_port_id = port_arrival.id', 'left outer')
+                ->countAllResults();
             $this->applyFilter($search_value, $country_code, $year, $journey_status, $mode_of_transport);
         }
         $session    = session();
@@ -133,18 +151,16 @@ class JourneyTransportModel extends Model
             ->join('journey_port AS port_arrival',   'journey_transport.arrival_port_id = port_arrival.id', 'left outer')
             ->orderBy($order_column, $order_direction)->limit($length, $start)->findAll();
         $result     = [];
-        $countries  = lang('ListCountries.countries');
         foreach ($raw_result as $row) {
             $new_id         = $row['id'] * self::ID_NONCE;
             $flight_numbers = [];
             if (!empty($row['flight_number'])) {
-                $flight_numbers[] = '<b>' . $row['flight_number'] . '</b>';
+                $flight_numbers[] = '<span class="badge bg-success"><i class="fa-solid fa-plane"></i></span> <b>' . $row['flight_number'] . '</b>';
             }
             if (!empty($row['pnr_number'])) {
-                $flight_numbers[] = '<span class="badge bg-success-subtle">PNR</span> <b>' . $row['pnr_number'] . '</b>';
+                $flight_numbers[] = '<span class="badge bg-success"><i class="fa-solid fa-ticket"></i></span> <b>' . $row['pnr_number'] . '</b>';
             }
-            $departure_time = '';
-            $arrival_time   = '';
+            $journey_details = str_replace('[R]', '<span class="badge bg-success">RETURN</span>', $row['journey_details']);
             if ('Y' == $row['is_time_known']) {
                 $departure_time  = date(DATETIME_FORMAT_UI, strtotime($row['departure_date_time']));
                 $departure_time .= '<br><small>' . lang('ListTimeZones.' . $row['departure_timezone'] . '.label') . '</small>';
@@ -154,23 +170,22 @@ class JourneyTransportModel extends Model
                 $departure_time = date(DATE_FORMAT_UI, strtotime($row['departure_date_time']));
                 $arrival_time   = date(DATE_FORMAT_UI, strtotime($row['arrival_date_time']));
             }
-
-
             $result[]      = [
                 '<a class="btn btn-outline-primary btn-sm" href="' . base_url($locale . '/office/journey/transport/edit/' . $new_id) . '"><i class="fa-solid fa-edit"></i></a>',
                 $row['id'],
                 (empty($flight_numbers) ? '-' : implode('<br>', $flight_numbers)),
-                '<img style="height:2.5rem" class="img-thumbnail me-3" src="' . base_url('file/journey_operator_' . $row['operator_logo_file_name'] . '.png') . '" />' . $row['operator_name'],
-                $this->getModeOfTransport($row['mode_of_transport']),
+                '<img style="height:2.5rem" class="img-thumbnail" src="' . base_url('file/journey_operator_' . $row['operator_logo_file_name'] . '.png') . '" /><br>' . $row['operator_name'],
+                $this->getModeOfTransport($row['mode_of_transport']) . (empty($row['craft_type']) ? '' : '<br><small><i class="fa-solid fa-caret-right"></i> ' . $row['craft_type'] . '</small>'),
                 $departure_time,
                 $arrival_time,
                 '<span class="flag-icon flag-icon-' . strtolower($row['departure_country_code']) . '"></span> ' . $row['departure_port_name'],
                 '<span class="flag-icon flag-icon-' . strtolower($row['arrival_country_code']) . '"></span> ' . $row['arrival_port_name'],
-                $row['trip_duration'],
-                $row['distance_traveled'],
-                $row['price_amount'] . ' ' . $row['price_currency_code'],
-                $row['journey_details'],
-                (empty($row['google_drive_link']) ? '' : '<a href="' . $row['google_drive_link'] . '" target="_blank"><i class="fa-solid fa-file-pdf"></i></a>'),
+                empty($row['trip_duration']) ? '-' : $this->printMinutes($row['trip_duration']),
+                empty($row['distance_traveled']) ? '-' : number_format($row['distance_traveled']) . ' km',
+                (empty($row['price_amount']) ? '-' : currency_format($row['price_currency_code'], $row['price_amount'])) .
+                (empty($row['charged_amount']) ? '' : '<br><small>charged:</small>' . currency_format($row['charged_currency_code'], $row['charged_amount'])),
+                $journey_details,
+                (empty($row['google_drive_link']) ? '' : '<a class="btn btn-sm btn-outline-primary" href="' . $row['google_drive_link'] . '" target="_blank"><i class="fa-solid fa-file-pdf"></i></a>'),
                 translate_journey_status($row['journey_status'], $row['departure_date_time'], $row['arrival_date_time'], date('Y-m-d')),
             ];
         }

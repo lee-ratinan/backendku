@@ -20,9 +20,9 @@ $this->extend($layout);
                 <div class="card">
                     <div class="card-body pt-3">
                         <a class="btn btn-outline-primary btn-sm float-end ms-3" href="<?= base_url($session->locale . '/office/journey/transport/create') ?>"><i class="fa-solid fa-plus-circle"></i> New Transport</a>
-                        <h5 class="card-title"><?= $page_title ?></h5>
+                        <h5 class="card-title"><i class="fa-solid fa-person-walking-luggage fa-fw me-3"></i> <?= $page_title ?></h5>
                         <div class="row mb-3 g-3">
-                            <div class="col-6 col-md-4">
+                            <div class="col-6 col-md-3">
                                 <label for="country_code" class="form-label">Country</label><br>
                                 <select class="form-select form-select-sm" id="country_code">
                                     <option value="">All</option>
@@ -31,7 +31,7 @@ $this->extend($layout);
                                     <?php endforeach; ?>
                                 </select>
                             </div>
-                            <div class="col-6 col-md-4">
+                            <div class="col-6 col-md-3">
                                 <label for="year" class="form-label">Year</label><br>
                                 <select class="form-select form-select-sm" id="year">
                                     <option value="">All</option>
@@ -40,7 +40,7 @@ $this->extend($layout);
                                     <?php endfor; ?>
                                 </select>
                             </div>
-                            <div class="col-6 col-md-4">
+                            <div class="col-6 col-md-3">
                                 <label for="journey_status" class="form-label">Status</label><br>
                                 <select class="form-select form-select-sm" id="journey_status">
                                     <option value="">All</option>
@@ -48,7 +48,7 @@ $this->extend($layout);
                                     <option value="canceled">Canceled</option>
                                 </select>
                             </div>
-                            <div class="col-6 col-md-4">
+                            <div class="col-6 col-md-3">
                                 <label for="mode_of_transport" class="form-label">Mode of Transport</label><br>
                                 <select class="form-select form-select-sm" id="mode_of_transport">
                                     <option value="">All</option>
@@ -70,18 +70,18 @@ $this->extend($layout);
                                 <tr>
                                     <th></th>
                                     <th>ID</th>
-                                    <th>Flight No./PNR</th>
-                                    <th>Operator</th>
-                                    <th>Mode</th>
-                                    <th>Departure</th>
-                                    <th>Arrival</th>
-                                    <th>Origin</th>
-                                    <th>Destination</th>
-                                    <th>Duration</th>
-                                    <th>Distance</th>
-                                    <th>Price</th>
-                                    <th>Remarks</th>
-                                    <th>Link</th>
+                                    <th style="min-width: 80px;">Fl. No.</th>
+                                    <th style="min-width: 120px;">Operator</th>
+                                    <th style="min-width: 120px;">Mode</th>
+                                    <th style="min-width: 150px;">Departure</th>
+                                    <th style="min-width: 150px;">Arrival</th>
+                                    <th style="min-width: 150px;">Origin</th>
+                                    <th style="min-width: 150px;">Destination</th>
+                                    <th style="min-width: 100px;">Duration</th>
+                                    <th style="min-width: 100px;">Distance</th>
+                                    <th style="min-width: 120px;">Price</th>
+                                    <th style="min-width: 120px;">Remarks</th>
+                                    <th style="min-width: 50px;">Link</th>
                                     <th>Status</th>
                                 </tr>
                                 </thead>

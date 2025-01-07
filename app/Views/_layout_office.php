@@ -71,7 +71,7 @@
                     <li class="sidebar-item <?= ('transport' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/journey/transport') ?>"><i class="fa-solid fa-person-walking-luggage fa-fw me-3"></i><span>Transportation</span></a></li>
                     <li class="sidebar-item <?= ('accommodation' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/journey/accommodation') ?>"><i class="fa-solid fa-bed fa-fw me-3"></i><span>Accommodation</span></a></li>
                     <li class="sidebar-item <?= ('attraction' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/journey/attraction') ?>"><i class="fa-solid fa-ticket fa-fw me-3"></i><span>Attraction</span></a></li>
-                    <li class="sidebar-item <?= ('port' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/journey/port') ?>"><i class="fa-regular fa-star fa-fw me-3"></i><span>Port</span></a></li>
+                    <li class="sidebar-item <?= ('port' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/journey/port') ?>"><i class="fa-solid fa-location-dot fa-fw me-3"></i><span>Port</span></a></li>
                     <li class="sidebar-item <?= ('operator' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/journey/operator') ?>"><i class="fa-solid fa-user-tie fa-fw me-3"></i><span>Operator</span></a></li>
                 <?php endif; ?>
             </ul>
@@ -165,7 +165,7 @@
                             </div>
                         </div>
                     </li>
-                    <li class="nav-item nav-theme-toggle dropdown <?= ('dashboard' == $slug ? '' : 'd-none') ?>">
+                    <li class="nav-item nav-theme-toggle dropdown">
                         <a class="nav-icon js-theme-toggle" href="#">
                             <div class="position-relative">
                                 <i class="align-middle text-body nav-theme-toggle-light" data-lucide="sun"></i>

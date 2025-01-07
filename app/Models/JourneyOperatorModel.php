@@ -58,7 +58,7 @@ class JourneyOperatorModel extends Model
     {
         $return = $code_1;
         if ('airplane' == $mode_of_transport) {
-            $return = "<span class='badge bg-success-subtle'>IATA</span> <b>{$code_1}</b> | <span class='badge bg-success-subtle'>ICAO</span> <b>{$code_2}</b><br><span class='badge bg-success-subtle'>Callsign</span> <b>{$callsign}</b>";
+            $return = "<span class='badge bg-success'>IATA</span> <b>{$code_1}</b> | <span class='badge bg-success'>ICAO</span> <b>{$code_2}</b><br><span class='badge bg-success'>Callsign</span> <b>{$callsign}</b>";
         }
         return '<b>' . $return . '</b>';
     }

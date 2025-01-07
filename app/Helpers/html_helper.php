@@ -193,3 +193,152 @@ function translate_journey_status(string $status, string $start, string $end, st
     }
     return '<span class="badge bg-warning">Ongoing</span>';
 }
+
+/**
+ * @param float $number
+ * @return string
+ */
+function number_format_india(float $number): string
+{
+// Check negative
+    $negative = FALSE;
+    if (0 > $number)
+    {
+        $negative = TRUE;
+    }
+    $number = abs($number);
+    // Check decimal point in $number
+    $number_in_cents = $number * 100;
+    $cents           = $number_in_cents % 100;
+    // Make $number an integer then convert it to string
+    $number     = round($number);
+    $number     = (string) $number;
+    // Get the last group of 3
+    $last_group = substr($number, -3);
+    // For the rest of the number, split them into the group of 2. If the length is odd, the first group will have 1 digit
+    $rest       = substr($number, 0, -3);
+    // Check $rest's length
+    $rest_len   = strlen($rest);
+    $str_amt    = $last_group . '.' . $cents;
+    if (1 == $rest_len)
+    {
+        $str_amt = $rest . ',' . $str_amt;
+    } else if (1 < $rest_len)
+    {
+        if (0 == $rest_len % 2)
+        {
+            $rest_len_split = str_split($rest, 2);
+            $str_amt        = implode(',', $rest_len_split) . ',' . $str_amt;
+        } else
+        {
+            $first_group    = substr($rest, 0, 1);
+            $middle_group   = substr($rest, 1);
+            $middle_group   = str_split($middle_group, 2);
+            $str_amt        = $first_group . ',' . implode(',', $middle_group) . ',' . $str_amt;
+        }
+    }
+    if ($negative)
+    {
+        return '-' . $str_amt;
+    }
+    return $str_amt;
+}
+
+/**
+ * @param string $currency
+ * @param float $amount
+ * @return string
+ */
+function currency_format(string $currency_code, float $amount): string
+{
+    $currency_format = [
+        // Americas
+        'CAD' => 'C$ ###',
+        'MXN' => 'Mex$ ###',
+        'USD' => '$ ###',
+        // East Asia
+        'JPY' => '### 円',
+        'KRW' => '### 원',
+        'TWD' => '### 元',
+        // SEA
+        'BND' => 'B$ ###',
+        'IDR' => 'Rp ###',
+        'KHR' => '៛ ###',
+        'LAK' => '₭ ###',
+        'MMK' => 'K ###',
+        'MYR' => '<small>RM</small> ###',
+        'PHP' => '₱ ###',
+        'SGD' => 'S$ ###',
+        'THB' => '### ฿',
+        'VND' => '### ₫',
+        // Europe
+        'CHF' => 'fr. ###',
+        'EUR' => '€ ###',
+        'GBP' => '£ ###',
+        // Oceania
+        'AUD' => 'A$ ###',
+        'FJD' => 'FJ$ ###',
+        'NZD' => 'NZ$ ###',
+        'WST' => 'ST ###',
+        // South Asia
+        'BDT' => '৳ ###',
+        'BTN' => 'Nu. ###',
+        'INR' => '₹ ###',
+        'LKR' => 'රු. ###',
+        'MVR' => 'Rf ###',
+        'NPR' => 'रू ###',
+        'PKR' => 'Rs ###',
+    ];
+    // Check negative
+    $negative = FALSE;
+    if (0 > $amount)
+    {
+        $negative = TRUE;
+    }
+    $amount = abs($amount);
+    // Check for support
+    if ( ! isset($currency_format[$currency_code]))
+    {
+        // Not supported: $currency_code . ' ' . number_format($amount, 2)
+        if ($negative)
+        {
+            return '<span class="text-danger">-' . $currency_code . ' ' . number_format($amount, 2) . '</span>';
+        }
+        return $currency_code . ' ' . number_format($amount, 2);
+    }
+    // Use another function for India
+    if ('INR' == $currency_code)
+    {
+        $str_amount = number_format_india($amount);
+        if ($negative)
+        {
+            return '<span class="text-danger">-' . str_replace('###', $str_amount, $currency_format[$currency_code]) . '</span>';
+        }
+        return str_replace('###', $str_amount, $currency_format[$currency_code]);
+    }
+    // Separators
+    $currency_with_swap_dots = ['IDR', 'VND', 'EUR', 'CHF'];
+    $thousand_separator = ',';
+    $decimal_separator  = '.';
+    if (in_array($currency_code, $currency_with_swap_dots))
+    {
+        $thousand_separator = '.';
+        $decimal_separator  = ',';
+    }
+    // Decimals
+    $decimals = 2;
+    if (in_array($currency_code, ['IDR', 'JPY', 'KRW', 'VND']))
+    {
+        $decimals = 0;
+    }
+    $formatted_amount = '-';
+    if (0 != $amount)
+    {
+        $formatted_amount = number_format($amount, $decimals, $decimal_separator, $thousand_separator);
+    }
+    if ($negative)
+    {
+        return '<span class="text-danger">-' . str_replace('###', $formatted_amount, $currency_format[$currency_code]) . '</span>';
+    }
+    return str_replace('###', $formatted_amount, $currency_format[$currency_code]);
+}
