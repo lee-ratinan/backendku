@@ -135,4 +135,5 @@ $routes->group('{locale}/office', ['filter' => 'auth'], static function ($routes
     $routes->post('journey/attraction/edit', 'Journey::attractionSave');
     // Summary, export, statistics, etc
     $routes->get('journey/export', 'Journey::export');
+    $routes->get('journey/fix', 'Journey::fix');
 });

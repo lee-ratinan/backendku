@@ -426,4 +426,57 @@ class Journey extends BaseController
         ];
         return view('journey_export', $data);
     }
+
+    public function fix(): void
+    {
+        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
+            return;
+        }
+        helper('math');
+        $journey_transport = new JourneyTransportModel();
+        $transport_raw     = $journey_transport->select('journey_transport.*, 
+            port_departure.port_name AS departure_port_name, port_departure.location_latitude AS lat1, port_departure.location_longitude AS lon1,
+            port_arrival.port_name AS arrival_port_name, port_arrival.location_latitude AS lat2, port_arrival.location_longitude AS lon2')
+            ->join('journey_port AS port_departure', 'journey_transport.departure_port_id = port_departure.id', 'left outer')
+            ->join('journey_port AS port_arrival',   'journey_transport.arrival_port_id = port_arrival.id', 'left outer')
+            ->orderBy('id', 'asc')->findAll();
+        echo '<pre>';
+        foreach ($transport_raw as $row) {
+//            echo '-- ROW DATA --<br>';
+            $set = [];
+            if (empty($row['distance_traveled'])) {
+                echo '-- FR ' . $row['departure_port_name'] . ' TO ' . $row['arrival_port_name'] . '<br>';
+                $distance = round(calculateDistance($row['lat1'], $row['lon1'], $row['lat2'], $row['lon2']));
+                $set[]    = " distance_traveled = {$distance} ";
+            }
+            if (is_null($row['trip_duration'])) {
+                if ('N' == $row['is_time_known']) {
+                    $set[] = " trip_duration = 0 ";
+                } else {
+                    // DEPARTURE DATETIME
+                    $departure = new \DateTime($row['departure_date_time'], new \DateTimeZone($row['departure_timezone']));
+                    $arrival   = new \DateTime($row['arrival_date_time'], new \DateTimeZone($row['arrival_timezone']));
+//                    echo "-- DEP {$row['departure_date_time']} - {$row['departure_timezone']}<br>";
+//                    echo "-- ARR {$row['arrival_date_time']} - {$row['arrival_timezone']}<br>";
+                    // calculate minutes of the difference between $different and $arrival
+                    $diff = $arrival->diff($departure);
+                    $min  = $diff->days * 24 * 60;
+                    $min += $diff->h * 60;
+                    $min += $diff->i;
+//                    echo "-- MIN {$min}<br>";
+                    $set[] = " trip_duration = {$min} ";
+                }
+            }
+            if (!empty($set)) {
+                $id = $row['id'];
+                $update = implode(',', $set);
+                echo "UPDATE journey_transport SET {$update} WHERE id = {$id} LIMIT 1;<br><br>";
+            }
+            unset($set);
+            unset($id);
+            unset($min);
+            unset($distance);
+        }
+        echo '</pre>';
+    }
 }
