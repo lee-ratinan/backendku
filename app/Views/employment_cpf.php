@@ -28,7 +28,7 @@ $this->extend($layout);
                 <div class="card">
                     <div class="card-body pt-3">
                         <a class="btn btn-outline-primary btn-sm float-end ms-3" href="<?= base_url($session->locale . '/office/employment/cpf/create') ?>"><i class="fa-solid fa-plus-circle"></i> New CPF</a>
-                        <h5 class="card-title"><?= $page_title ?></h5>
+                        <h5 class="card-title"><i class="fa-solid fa-piggy-bank fa-fw me-3"></i> <?= $page_title ?></h5>
                         <div class="row mb-3">
                             <div class="col-6 col-md-4">
                                 <label for="transaction_code" class="form-label">Transaction Code</label><br>

@@ -54,7 +54,7 @@
                     }
                     ?>
                 </li>
-                <li class="sidebar-header">
+                <li class="sidebar-header my-3">
                     <div class="float-start me-3"><?= $session->avatar ?></div>
                     <h6><?= $session->display_name ?></h6>
                     <span><?= $session->user['employee_title'] ?></span>

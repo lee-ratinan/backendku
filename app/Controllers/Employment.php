@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\CompanyCPFModel;
+use App\Models\CompanyFreelanceProjectModel;
 use App\Models\CompanyMasterModel;
 use App\Models\CompanySalaryModel;
 use CodeIgniter\HTTP\ResponseInterface;
@@ -278,8 +279,7 @@ class Employment extends BaseController
             'draw'            => $this->request->getPost('draw'),
             'recordsTotal'    => $result['recordsTotal'],
             'recordsFiltered' => $result['recordsFiltered'],
-            'data'            => $result['data'],
-//            'footer'          => $result['footer']
+            'data'            => $result['data']
         ]);
     }
 
@@ -309,13 +309,23 @@ class Employment extends BaseController
         if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
             return permission_denied();
         }
-        $session = session();
-        $data    = [
+        $session       = session();
+        $company      = new CompanyMasterModel();
+        $company_raw  = $company->orderBy('company_legal_name', 'asc')->findAll();
+        $company_list = [];
+        foreach ($company_raw as $row) {
+            $company_list[$row['company_country_code']][] = [
+                'id'   => $row['id'],
+                'name' => $row['company_legal_name']
+            ];
+        }
+        $data          = [
             'page_title'   => 'Freelance',
             'slug'         => 'freelance',
             'user_session' => $session->user,
             'roles'        => $session->roles,
-            'current_role' => $session->current_role
+            'current_role' => $session->current_role,
+            'companies'    => $company_list
         ];
         return view('employment_freelance', $data);
     }
@@ -328,11 +338,33 @@ class Employment extends BaseController
         if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
             return permission_denied('datatables');
         }
+        $model              = new CompanyFreelanceProjectModel();
+        $columns            = [
+            '',
+            'id',
+            'company_legal_name',
+            'project_title',
+            'client_name',
+            'client_organization_name',
+            'project_start_date',
+            'project_end_date'
+        ];
+        $order              = $this->request->getPost('order');
+        $search             = $this->request->getPost('search');
+        $start              = $this->request->getPost('start');
+        $length             = $this->request->getPost('length');
+        $order_column_index = $order[0]['column'] ?? 0;
+        $order_column       = $columns[$order_column_index];
+        $order_direction    = $order[0]['dir'] ?? 'desc';
+        $search_value       = $search['value'];
+        $company_id         = intval($this->request->getPost('company_id'));
+        $year               = $this->request->getPost('year');
+        $result             = $model->getDataTables($start, $length, $order_column, $order_direction, $search_value, $company_id, $year);
         return $this->response->setJSON([
             'draw'            => $this->request->getPost('draw'),
-            'recordsTotal'    => 0,
-            'recordsFiltered' => 0,
-            'data'            => []
+            'recordsTotal'    => $result['recordsTotal'],
+            'recordsFiltered' => $result['recordsFiltered'],
+            'data'            => $result['data']
         ]);
     }
 
