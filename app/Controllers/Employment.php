@@ -3,12 +3,19 @@
 namespace App\Controllers;
 
 use App\Models\CompanyMasterModel;
+use App\Models\CompanySalaryModel;
 use CodeIgniter\HTTP\ResponseInterface;
 
 class Employment extends BaseController
 {
 
     const PERMISSION_REQUIRED = 'finance';
+    private array $currencies = [
+        'AUD',
+        'SGD',
+        'THB',
+        'USD',
+    ];
 
     /************************************************************************
      * COMPANY
@@ -100,12 +107,15 @@ class Employment extends BaseController
             return permission_denied();
         }
         $session = session();
+        $company = new CompanyMasterModel();
         $data    = [
             'page_title'   => 'Salary',
             'slug'         => 'salary',
             'user_session' => $session->user,
             'roles'        => $session->roles,
-            'current_role' => $session->current_role
+            'current_role' => $session->current_role,
+            'currencies'   => $this->currencies,
+            'companies'    => $company->findAll(),
         ];
         return view('employment_salary', $data);
     }
@@ -118,11 +128,55 @@ class Employment extends BaseController
         if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
             return permission_denied('datatables');
         }
+        $model              = new CompanySalaryModel();
+        $columns            = [
+            '',
+            'id',
+            'pay_date',
+            'company_legal_name',
+            'tax_year',
+            'tax_country_code',
+            'payment_method',
+            'payment_currency',
+            'pay_type',
+            'base_amount',
+            'allowance_amount',
+            'training_amount',
+            'overtime_amount',
+            'adjustment_amount',
+            'bonus_amount',
+            'subtotal_amount',
+            'social_security_amount',
+            'us_tax_fed_amount',
+            'us_tax_state_amount',
+            'us_tax_city_amount',
+            'us_tax_med_ee_amount',
+            'us_tax_oasdi_ee_amount',
+            'th_tax_amount',
+            'sg_tax_amount',
+            'au_tax_amount',
+            'claim_amount',
+            'provident_fund_amount',
+            'total_amount',
+            'payment_details',
+            'google_drive_link'
+        ];
+        $order              = $this->request->getPost('order');
+        $start              = $this->request->getPost('start');
+        $length             = $this->request->getPost('length');
+        $order_column_index = $order[0]['column'] ?? 0;
+        $order_column       = $columns[$order_column_index];
+        $order_direction    = $order[0]['dir'] ?? 'desc';
+        $currency_code      = $this->request->getPost('currency_code');
+        $company_id         = intval($this->request->getPost('company_id'));
+        $year               = $this->request->getPost('year');
+        $result             = $model->getDataTables($start, $length, $order_column, $order_direction, $currency_code, $company_id, $year);
         return $this->response->setJSON([
             'draw'            => $this->request->getPost('draw'),
-            'recordsTotal'    => 0,
-            'recordsFiltered' => 0,
-            'data'            => []
+            'recordsTotal'    => $result['recordsTotal'],
+            'recordsFiltered' => $result['recordsFiltered'],
+            'data'            => $result['data'],
+            'footer'          => $result['footer']
         ]);
     }
 
