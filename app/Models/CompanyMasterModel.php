@@ -107,7 +107,7 @@ class CompanyMasterModel extends Model
             $result[]     = [
                 '<a class="btn btn-outline-primary btn-sm" href="' . base_url($locale . '/office/employment/company/edit/' . $new_id) . '"><i class="fa-solid fa-edit"></i></a>',
                 $row['id'],
-                '<img style="height:4rem" class="img-thumbnail" src="' . base_url('file/company-' . $row['company_slug'] . '.png') . '" alt="' . $row['company_legal_name'] . '" />',
+                '<img class="img-thumbnail" src="' . base_url('file/company-' . $row['company_slug'] . '.png') . '" alt="' . $row['company_legal_name'] . '" />',
                 '<b>' . $row['company_legal_name'] . '</b>' . ($row['company_trade_name'] == $row['company_legal_name'] ? '' : '<br>' . $row['company_trade_name']),
                 '<span class="flag-icon flag-icon-' . strtolower($row['company_country_code']) . '"></span> ' . $countries[$row['company_country_code']]['common_name'],
                 '<span class="flag-icon flag-icon-' . strtolower($row['company_hq_country_code']) . '"></span> ' . $countries[$row['company_hq_country_code']]['common_name'],

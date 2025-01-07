@@ -5,6 +5,14 @@ $this->extend($layout);
 ?>
 <?= $this->section('content') ?>
 <?php $session = session(); ?>
+<style>
+    .text-oa{color:#437271!important;}
+    .bg-oa{background-color:#437271!important;color:#222!important;}
+    .text-sa{color:#DFB670!important;}
+    .bg-sa{background-color:#DFB670!important;color:#222!important;}
+    .text-ma{color:#7D9ADE!important;}
+    .bg-ma{background-color:#7D9ADE!important;color:#222!important;}
+</style>
     <div class="pagetitle">
         <h1><?= $page_title ?></h1>
         <nav>
@@ -26,7 +34,13 @@ $this->extend($layout);
                                 <label for="transaction_code" class="form-label">Transaction Code</label><br>
                                 <select class="form-select form-select-sm" id="transaction_code">
                                     <option value="">All</option>
-
+                                    <option value="CON">Contribution (CON)</option>
+                                    <option value="CSL">CareShield Life (CSL)</option>
+                                    <option value="DPS">Dependants’ Protection Scheme (DPS)</option>
+                                    <option value="INT">Interest (INT)</option>
+                                    <option value="INV">Investment (INV)</option>
+                                    <option value="MSL">MediShield Life (MSL)</option>
+                                    <option value="SUP">ElderShield Supplement / CareShield Life Supplement (SUP)</option>
                                 </select>
                             </div>
                             <div class="col-6 col-md-4">
@@ -49,7 +63,10 @@ $this->extend($layout);
                             </div>
                         </div>
                         <div class="row mb-3">
-                            <div class="col text-end">
+                            <div class="col-8">
+                                <small>When filtered by contribution (CON) and year, it will filter by the month the contribution was made for, otherwise, the year will be applied to the transaction date.</small>
+                            </div>
+                            <div class="col-4 text-end">
                                 <button id="btn-reset" class="btn btn-sm btn-outline-primary">Reset</button>
                                 <button id="btn-filter" class="btn btn-sm btn-primary">Filter</button>
                             </div>
@@ -58,17 +75,25 @@ $this->extend($layout);
                             <table class="table table-sm table-striped table-hover">
                                 <thead>
                                 <tr>
-                                    <th></th>
-                                    <th>ID</th>
-                                    <th style="min-width:100px">Date</th>
-                                    <th style="min-width:80px">Code</th>
-                                    <th style="min-width:150px">OA Amount</th>
-                                    <th style="min-width:150px">OA Balance</th>
-                                    <th style="min-width:150px">SA Amount</th>
-                                    <th style="min-width:150px">SA Balance</th>
-                                    <th style="min-width:150px">MA Amount</th>
-                                    <th style="min-width:150px">MA Balance</th>
-                                    <th style="min-width:150px">Trx Total</th>
+                                    <th rowspan="2"></th>
+                                    <th rowspan="2">ID</th>
+                                    <th rowspan="2" style="min-width:100px">Date</th>
+                                    <th rowspan="2" style="min-width:80px">Code</th>
+                                    <th colspan="2" class="bg-oa">ORDINARY ACCOUNT</th>
+                                    <th colspan="2" class="bg-sa">SPACIAL ACCOUNT</th>
+                                    <th colspan="2" class="bg-ma">MEDISAVE ACCOUNT</th>
+                                    <th colspan="2">TOTAL</th>
+                                    <th colspan="2">For</th>
+                                    <th colspan="4">CONTRIBUTION</th>
+                                </tr>
+                                <tr>
+                                    <th style="min-width:150px">Amount</th>
+                                    <th style="min-width:150px">Balance</th>
+                                    <th style="min-width:150px">Amount</th>
+                                    <th style="min-width:150px">Balance</th>
+                                    <th style="min-width:150px">Amount</th>
+                                    <th style="min-width:150px">Balance</th>
+                                    <th style="min-width:150px">Transaction Total</th>
                                     <th style="min-width:150px">CPF Balance</th>
                                     <th style="min-width:100px">Month</th>
                                     <th style="min-width:180px">Company</th>
@@ -93,6 +118,8 @@ $this->extend($layout);
                 serverSide: true,
                 fixedHeader: true,
                 searching: false,
+                ordering: false,
+                pageLength: 50,
                 ajax: {
                     url: '<?= base_url($session->locale . '/office/employment/cpf') ?>',
                     type: 'POST',
@@ -104,8 +131,10 @@ $this->extend($layout);
                 },
                 order: [[2, 'asc']],
                 columnDefs: [
-                    {orderable: false, targets: 0},
-                    {className: 'text-end', targets: [4,5,6,7,8,9,10,11,14,15,16,17] }
+                    {className: 'text-end', targets: [4,5,6,7,8,9,10,11,14,15,16,17] },
+                    {className: 'text-oa', targets: [4,5] },
+                    {className: 'text-sa', targets: [6,7] },
+                    {className: 'text-ma', targets: [8,9] }
                 ],
                 fixedColumns: {start:4},
                 scrollX: true,
