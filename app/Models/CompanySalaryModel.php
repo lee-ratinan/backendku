@@ -150,7 +150,7 @@ class CompanySalaryModel extends Model
                 (empty($row['google_drive_link']) ? '' : '<a class="btn btn-sm btn-outline-primary" href="' . $row['google_drive_link'] . '" target="_blank"><i class="fa-solid fa-file-pdf"></i></a>'),
             ];
             foreach ($columns_to_calc as $key => $column) {
-                if (isset($row[$column]) && 0 < $row[$column]) {
+                if (isset($row[$column]) && 0 != $row[$column]) {
                     $footer[$key][$row['payment_currency']] = (isset($footer[$key][$row['payment_currency']]) ? $footer[$key][$row['payment_currency']] + $row[$column] : $row[$column]);
                 }
             }

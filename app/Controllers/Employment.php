@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Models\CompanyCPFModel;
 use App\Models\CompanyMasterModel;
 use App\Models\CompanySalaryModel;
 use CodeIgniter\HTTP\ResponseInterface;
@@ -106,16 +107,24 @@ class Employment extends BaseController
         if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
             return permission_denied();
         }
-        $session = session();
-        $company = new CompanyMasterModel();
-        $data    = [
+        $session      = session();
+        $company      = new CompanyMasterModel();
+        $company_raw  = $company->orderBy('company_legal_name', 'asc')->findAll();
+        $company_list = [];
+        foreach ($company_raw as $row) {
+            $company_list[$row['company_country_code']][] = [
+                'id'   => $row['id'],
+                'name' => $row['company_legal_name']
+            ];
+        }
+        $data         = [
             'page_title'   => 'Salary',
             'slug'         => 'salary',
             'user_session' => $session->user,
             'roles'        => $session->roles,
             'current_role' => $session->current_role,
             'currencies'   => $this->currencies,
-            'companies'    => $company->findAll(),
+            'companies'    => $company_list,
         ];
         return view('employment_salary', $data);
     }
@@ -207,12 +216,20 @@ class Employment extends BaseController
             return permission_denied();
         }
         $session = session();
+        $model   = new CompanyMasterModel();
         $data    = [
             'page_title'   => 'CPF',
             'slug'         => 'cpf',
             'user_session' => $session->user,
             'roles'        => $session->roles,
-            'current_role' => $session->current_role
+            'current_role' => $session->current_role,
+            'companies'    => $model
+                ->where('company_country_code', 'SG')
+                ->groupStart()
+                ->where('employment_end_date >=', '2020-01-02')
+                ->orWhere('employment_end_date', null)
+                ->groupEnd()
+                ->orderBy('company_legal_name', 'asc')->findAll()
         ];
         return view('employment_cpf', $data);
     }
@@ -225,11 +242,44 @@ class Employment extends BaseController
         if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
             return permission_denied('datatables');
         }
+        $model              = new CompanyCPFModel();
+        $columns            = [
+            '',
+            'id',
+            'user_id',
+            'transaction_date',
+            'transaction_code',
+            'ordinary_amount',
+            'ordinary_balance',
+            'special_amount',
+            'special_balance',
+            'medisave_amount',
+            'medisave_balance',
+            'transaction_amount',
+            'account_balance',
+            'contribution_month',
+            'company_id',
+            'staff_contribution',
+            'staff_ytd',
+            'company_match',
+            'company_ytd',
+        ];
+        $order              = $this->request->getPost('order');
+        $start              = $this->request->getPost('start');
+        $length             = $this->request->getPost('length');
+        $order_column_index = $order[0]['column'] ?? 0;
+        $order_column       = $columns[$order_column_index];
+        $order_direction    = $order[0]['dir'] ?? 'desc';
+        $transaction_code   = $this->request->getPost('transaction_code');
+        $company_id         = intval($this->request->getPost('company_id'));
+        $year               = $this->request->getPost('year');
+        $result             = $model->getDataTables($start, $length, $order_column, $order_direction, $transaction_code, $company_id, $year);
         return $this->response->setJSON([
             'draw'            => $this->request->getPost('draw'),
-            'recordsTotal'    => 0,
-            'recordsFiltered' => 0,
-            'data'            => []
+            'recordsTotal'    => $result['recordsTotal'],
+            'recordsFiltered' => $result['recordsFiltered'],
+            'data'            => $result['data'],
+//            'footer'          => $result['footer']
         ]);
     }
 

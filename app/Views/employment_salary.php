@@ -35,8 +35,12 @@ $this->extend($layout);
                                 <label for="company_id" class="form-label">Company</label><br>
                                 <select class="form-select form-select-sm" id="company_id">
                                     <option value="">All</option>
-                                    <?php foreach ($companies as $company): ?>
-                                        <option value="<?= $company['id'] ?>"><?= $company['company_legal_name'] ?></option>
+                                    <?php foreach ($companies as $country_code => $group): ?>
+                                        <optgroup label="<?= lang('ListCountries.countries.' . $country_code . '.common_name') ?>">
+                                        <?php foreach ($group as $company) : ?>
+                                        <option value="<?= $company['id'] ?>"><?= $company['name'] ?></option>
+                                        <?php endforeach; ?>
+                                        </optgroup>
                                     <?php endforeach; ?>
                                 </select>
                             </div>
