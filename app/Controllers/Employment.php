@@ -2,11 +2,13 @@
 
 namespace App\Controllers;
 
-use App\Controllers\BaseController;
+use App\Models\CompanyMasterModel;
 use CodeIgniter\HTTP\ResponseInterface;
 
 class Employment extends BaseController
 {
+
+    const PERMISSION_REQUIRED = 'finance';
 
     /************************************************************************
      * COMPANY
@@ -17,13 +19,17 @@ class Employment extends BaseController
      */
     public function index(): string
     {
+        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
+            return permission_denied();
+        }
         $session = session();
         $data    = [
             'page_title'   => 'Employment',
             'slug'         => 'company',
             'user_session' => $session->user,
             'roles'        => $session->roles,
-            'current_role' => $session->current_role
+            'current_role' => $session->current_role,
+            'countries'    => lang('ListCountries.countries'),
         ];
         return view('employment_company', $data);
     }
@@ -33,22 +39,52 @@ class Employment extends BaseController
      */
     public function companyList(): ResponseInterface
     {
+        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
+            return permission_denied('datatables');
+        }
+        $model              = new CompanyMasterModel();
+        $columns            = [
+            '',
+            'id',
+            '',
+            'company_legal_name',
+            'company_country_code',
+            'company_hq_country_code',
+            'employment_start_date',
+            'employment_end_date',
+            'position_titles'
+        ];
+        $order              = $this->request->getPost('order');
+        $search             = $this->request->getPost('search');
+        $start              = $this->request->getPost('start');
+        $length             = $this->request->getPost('length');
+        $order_column_index = $order[0]['column'] ?? 0;
+        $order_column       = $columns[$order_column_index];
+        $order_direction    = $order[0]['dir'] ?? 'desc';
+        $search_value       = $search['value'];
+        $country_code       = $this->request->getPost('country_code');
+        $year               = $this->request->getPost('year');
+        $result             = $model->getDataTables($start, $length, $order_column, $order_direction, $search_value, $country_code, $year);
         return $this->response->setJSON([
             'draw'            => $this->request->getPost('draw'),
-            'recordsTotal'    => 0,
-            'recordsFiltered' => 0,
-            'data'            => []
+            'recordsTotal'    => $result['recordsTotal'],
+            'recordsFiltered' => $result['recordsFiltered'],
+            'data'            => $result['data']
         ]);
     }
 
     public function companyEdit(string $port_code = 'new')
     {
-
+        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
+            return permission_denied();
+        }
     }
 
     public function companySave()
     {
-
+        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
+            return permission_denied('json');
+        }
     }
 
     /************************************************************************
@@ -60,6 +96,9 @@ class Employment extends BaseController
      */
     public function salary(): string
     {
+        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
+            return permission_denied();
+        }
         $session = session();
         $data    = [
             'page_title'   => 'Salary',
@@ -76,6 +115,9 @@ class Employment extends BaseController
      */
     public function salaryList(): ResponseInterface
     {
+        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
+            return permission_denied('datatables');
+        }
         return $this->response->setJSON([
             'draw'            => $this->request->getPost('draw'),
             'recordsTotal'    => 0,
@@ -86,12 +128,16 @@ class Employment extends BaseController
 
     public function salaryEdit(string $port_code = 'new')
     {
-
+        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
+            return permission_denied();
+        }
     }
 
     public function salarySave()
     {
-
+        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
+            return permission_denied('json');
+        }
     }
 
     /************************************************************************
@@ -103,6 +149,9 @@ class Employment extends BaseController
      */
     public function cpf(): string
     {
+        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
+            return permission_denied();
+        }
         $session = session();
         $data    = [
             'page_title'   => 'CPF',
@@ -119,6 +168,9 @@ class Employment extends BaseController
      */
     public function cpfList(): ResponseInterface
     {
+        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
+            return permission_denied('datatables');
+        }
         return $this->response->setJSON([
             'draw'            => $this->request->getPost('draw'),
             'recordsTotal'    => 0,
@@ -129,12 +181,16 @@ class Employment extends BaseController
 
     public function cpfEdit(string $port_code = 'new')
     {
-
+        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
+            return permission_denied();
+        }
     }
 
     public function cpfSave()
     {
-
+        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
+            return permission_denied('json');
+        }
     }
 
     /************************************************************************
@@ -146,6 +202,9 @@ class Employment extends BaseController
      */
     public function freelance(): string
     {
+        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
+            return permission_denied();
+        }
         $session = session();
         $data    = [
             'page_title'   => 'Freelance',
@@ -162,6 +221,9 @@ class Employment extends BaseController
      */
     public function freelanceList(): ResponseInterface
     {
+        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
+            return permission_denied('datatables');
+        }
         return $this->response->setJSON([
             'draw'            => $this->request->getPost('draw'),
             'recordsTotal'    => 0,
@@ -172,12 +234,16 @@ class Employment extends BaseController
 
     public function freelanceEdit(string $port_code = 'new')
     {
-
+        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
+            return permission_denied();
+        }
     }
 
     public function freelanceSave()
     {
-
+        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
+            return permission_denied('json');
+        }
     }
 
 }

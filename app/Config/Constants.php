@@ -101,6 +101,7 @@ const ORGANIZATION_ID = 1;
 const DATE_FORMAT_DB = 'Y-m-d';
 const DATETIME_FORMAT_DB = 'Y-m-d H:i:s';
 const DATE_FORMAT_UI = 'j M Y';
+const MONTH_FORMAT_UI = 'M Y';
 const TIME_FORMAT_UI = 'h:i a';
 const DATETIME_FORMAT_UI = 'j M Y h:i a';
 

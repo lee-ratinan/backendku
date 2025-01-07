@@ -21,10 +21,45 @@ $this->extend($layout);
                     <div class="card-body pt-3">
                         <a class="btn btn-outline-primary btn-sm float-end ms-3" href="<?= base_url($session->locale . '/office/employment/company/create') ?>"><i class="fa-solid fa-plus-circle"></i> New Company</a>
                         <h5 class="card-title"><?= $page_title ?></h5>
+                        <div class="row mb-3">
+                            <div class="col">
+                                <label for="country_code" class="form-label">Country</label><br>
+                                <select class="form-select form-select-sm" id="country_code">
+                                    <option value="">All</option>
+                                    <?php foreach ($countries as $code => $name): ?>
+                                        <option value="<?= $code ?>"><?= $name['common_name'] ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                            <div class="col">
+                                <label for="year" class="form-label">Year</label><br>
+                                <select class="form-select form-select-sm" id="year">
+                                    <option value="">All</option>
+                                    <?php for ($year = date('Y'); $year > 2009; $year--): ?>
+                                        <option value="<?= $year ?>"><?= $year ?></option>
+                                    <?php endfor; ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col text-end">
+                                <button id="btn-reset" class="btn btn-sm btn-outline-primary">Reset</button>
+                                <button id="btn-filter" class="btn btn-sm btn-primary">Filter</button>
+                            </div>
+                        </div>
                         <div class="table-responsive">
                             <table class="table table-sm table-striped table-hover">
                                 <thead>
                                 <tr>
+                                    <th></th>
+                                    <th>ID</th>
+                                    <td style="min-width:75px"></td>
+                                    <th style="min-width:250px">Company</th>
+                                    <th style="min-width:120px">Country</th>
+                                    <th style="min-width:120px">HQ</th>
+                                    <th style="min-width:120px">Start</th>
+                                    <th style="min-width:120px">Termination</th>
+                                    <th style="min-width:200px">Positions</th>
                                 </tr>
                                 </thead>
                                 <tbody></tbody>
@@ -44,21 +79,24 @@ $this->extend($layout);
                 searching: true,
                 ajax: {
                     url: '<?= base_url($session->locale . '/office/employment/company') ?>',
-                    type: 'POST'
+                    type: 'POST',
+                    data: function (d) {
+                        d.country_code = $('#country_code').val();
+                        d.year = $('#year').val();
+                    }
                 },
-                order: [[2, 'asc']],
-                columnDefs: [{orderable: false, targets: 0}],
-                drawCallback: function () {
-                    let DateTime = luxon.DateTime;
-                    $('.utc-to-local-time').each(function () {
-                        const utc = $(this).text();
-                        if ('' !== utc) {
-                            $(this).text(DateTime.fromISO(utc).toLocaleString(DateTime.DATETIME_MED));
-                        } else {
-                            $(this).text('-');
-                        }
-                    });
-                },
+                order: [[1, 'desc']],
+                columnDefs: [{orderable: false, targets: [0,2]}],
+            });
+            $('#btn-filter').on('click', function () {
+                table.ajax.reload();
+            });
+            $('#btn-reset').on('click', function () {
+                $('#country_code').val('');
+                $('#year').val('');
+                $('#journey_status').val('');
+                $('#mode_of_transport').val('');
+                table.ajax.reload();
             });
         });
     </script>

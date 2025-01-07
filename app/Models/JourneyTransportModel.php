@@ -174,7 +174,7 @@ class JourneyTransportModel extends Model
                 '<a class="btn btn-outline-primary btn-sm" href="' . base_url($locale . '/office/journey/transport/edit/' . $new_id) . '"><i class="fa-solid fa-edit"></i></a>',
                 $row['id'],
                 (empty($flight_numbers) ? '-' : implode('<br>', $flight_numbers)),
-                '<img style="height:2.5rem" class="img-thumbnail" src="' . base_url('file/journey_operator_' . $row['operator_logo_file_name'] . '.png') . '" /><br>' . $row['operator_name'],
+                '<img style="height:2.5rem" class="img-thumbnail" src="' . base_url('file/operator-' . $row['operator_logo_file_name'] . '.png') . '" alt="' . $row['flight_number'] . '" /><br>' . $row['operator_name'],
                 $this->getModeOfTransport($row['mode_of_transport']) . (empty($row['craft_type']) ? '' : '<br><small><i class="fa-solid fa-caret-right"></i> ' . $row['craft_type'] . '</small>'),
                 $departure_time,
                 $arrival_time,

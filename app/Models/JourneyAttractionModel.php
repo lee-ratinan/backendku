@@ -28,7 +28,7 @@ class JourneyAttractionModel extends Model
     protected $useTimestamps = true;
     protected $createdField = 'created_at';
     protected $updatedField = 'updated_at';
-    const ID_NONCE = 17;
+    const ID_NONCE = 709;
 
     /**
      * @param string $search_value

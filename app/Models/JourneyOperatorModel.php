@@ -112,7 +112,7 @@ class JourneyOperatorModel extends Model
                 $row['id'],
                 $this->getModeOfTransport($row['mode_of_transport']),
                 $this->printOperatorCode($row['mode_of_transport'], $row['operator_code_1'], $row['operator_code_2'], $row['operator_callsign']),
-                '<img style="height:2.5rem" class="img-thumbnail me-3" src="' . base_url('file/journey_operator_' . $row['operator_logo_file_name'] . '.png') . '" />' . $row['operator_name'],
+                '<img style="height:2.5rem" class="img-thumbnail me-3" src="' . base_url('file/operator-' . $row['operator_logo_file_name'] . '.png') . '" alt="' . $row['operator_name'] . '" />' . $row['operator_name'],
             ];
         }
         return [
