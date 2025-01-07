@@ -183,7 +183,7 @@ class JourneyTransportModel extends Model
                 empty($row['trip_duration']) ? '-' : $this->printMinutes($row['trip_duration']),
                 empty($row['distance_traveled']) ? '-' : number_format($row['distance_traveled']) . ' km',
                 (empty($row['price_amount']) ? '-' : currency_format($row['price_currency_code'], $row['price_amount'])) .
-                (empty($row['charged_amount']) ? '' : '<br><small>charged:</small>' . currency_format($row['charged_currency_code'], $row['charged_amount'])),
+                (empty($row['charged_amount']) ? '' : '<br><span class="badge badge-success"><i class="fa-regular fa-credit-card"></i></span>' . currency_format($row['charged_currency_code'], $row['charged_amount'])),
                 $journey_details,
                 (empty($row['google_drive_link']) ? '' : '<a class="btn btn-sm btn-outline-primary" href="' . $row['google_drive_link'] . '" target="_blank"><i class="fa-solid fa-file-pdf"></i></a>'),
                 translate_journey_status($row['journey_status'], $row['departure_date_time'], $row['arrival_date_time'], date('Y-m-d')),

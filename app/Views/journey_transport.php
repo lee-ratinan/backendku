@@ -70,7 +70,7 @@ $this->extend($layout);
                                 <tr>
                                     <th></th>
                                     <th>ID</th>
-                                    <th style="min-width: 80px;">Fl. No.</th>
+                                    <th style="min-width: 100px;">Fl. No.</th>
                                     <th style="min-width: 120px;">Operator</th>
                                     <th style="min-width: 120px;">Mode</th>
                                     <th style="min-width: 150px;">Departure</th>
@@ -79,8 +79,8 @@ $this->extend($layout);
                                     <th style="min-width: 150px;">Destination</th>
                                     <th style="min-width: 100px;">Duration</th>
                                     <th style="min-width: 100px;">Distance</th>
-                                    <th style="min-width: 120px;">Price</th>
-                                    <th style="min-width: 120px;">Remarks</th>
+                                    <th style="min-width: 150px;">Price</th>
+                                    <th style="min-width: 150px;">Remarks</th>
                                     <th style="min-width: 50px;">Link</th>
                                     <th>Status</th>
                                 </tr>
