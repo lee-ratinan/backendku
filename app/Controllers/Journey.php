@@ -82,12 +82,16 @@ class Journey extends BaseController
 
     public function tripEdit(string $port_code = 'new')
     {
-
+        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
+            return permission_denied();
+        }
     }
 
     public function tripSave()
     {
-
+        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
+            return permission_denied('json');
+        }
     }
 
     /************************************************************************
@@ -99,6 +103,9 @@ class Journey extends BaseController
      */
     public function transport(): string
     {
+        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
+            return permission_denied();
+        }
         $session = session();
         $model   = new JourneyTransportModel();
         $data    = [
@@ -162,12 +169,16 @@ class Journey extends BaseController
 
     public function transportEdit(string $port_code = 'new')
     {
-
+        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
+            return permission_denied();
+        }
     }
 
     public function transportSave()
     {
-
+        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
+            return permission_denied('json');
+        }
     }
 
     /************************************************************************
@@ -179,6 +190,9 @@ class Journey extends BaseController
      */
     public function accommodation(): string
     {
+        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
+            return permission_denied();
+        }
         $session = session();
         $data    = [
             'page_title'   => 'Accommodation',
@@ -195,6 +209,9 @@ class Journey extends BaseController
      */
     public function accommodationList(): ResponseInterface
     {
+        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
+            return permission_denied('datatables');
+        }
         return $this->response->setJSON([
             'draw'            => $this->request->getPost('draw'),
             'recordsTotal'    => 0,
@@ -205,12 +222,16 @@ class Journey extends BaseController
 
     public function accommodationEdit(string $port_code = 'new')
     {
-
+        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
+            return permission_denied();
+        }
     }
 
     public function accommodationSave()
     {
-
+        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
+            return permission_denied('json');
+        }
     }
 
     /************************************************************************
@@ -222,6 +243,9 @@ class Journey extends BaseController
      */
     public function attraction(): string
     {
+        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
+            return permission_denied();
+        }
         $session = session();
         $data    = [
             'page_title'   => 'Attraction',
@@ -238,6 +262,9 @@ class Journey extends BaseController
      */
     public function attractionList(): ResponseInterface
     {
+        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
+            return permission_denied('datatables');
+        }
         return $this->response->setJSON([
             'draw'            => $this->request->getPost('draw'),
             'recordsTotal'    => 0,
@@ -248,12 +275,16 @@ class Journey extends BaseController
 
     public function attractionEdit(string $port_code = 'new')
     {
-
+        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
+            return permission_denied();
+        }
     }
 
     public function attractionSave()
     {
-
+        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
+            return permission_denied('json');
+        }
     }
 
     /************************************************************************
@@ -265,6 +296,9 @@ class Journey extends BaseController
      */
     public function port(): string
     {
+        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
+            return permission_denied();
+        }
         $session   = session();
         $model     = new JourneyPortModel();
         $data      = [
@@ -319,12 +353,16 @@ class Journey extends BaseController
 
     public function portEdit(string $port_code = 'new')
     {
-
+        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
+            return permission_denied();
+        }
     }
 
     public function portSave()
     {
-
+        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
+            return permission_denied('json');
+        }
     }
 
     /************************************************************************
@@ -336,6 +374,9 @@ class Journey extends BaseController
      */
     public function operator(): string
     {
+        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
+            return permission_denied();
+        }
         $session = session();
         $model   = new JourneyOperatorModel();
         $data    = [
@@ -385,12 +426,16 @@ class Journey extends BaseController
 
     public function operatorEdit(string $port_code = 'new')
     {
-
+        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
+            return permission_denied();
+        }
     }
 
     public function operatorSave()
     {
-
+        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
+            return permission_denied('json');
+        }
     }
 
     /************************************************************************

@@ -20,24 +20,41 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Thai&family=Oxanium:wght@700&family=Poppins:ital@0;1&display=swap" rel="stylesheet">
     <link href="<?= base_url('assets/vendor/bootstrap/css/bootstrap.min.css') ?>" rel="stylesheet">
-    <link href="<?= base_url('assets/vendor/toastrjs/toastr.min.css') ?>" rel="stylesheet">
     <link href="<?= base_url('assets/vendor/bootstrap/css/bootstrap.min.css') ?>" rel="stylesheet">
     <link href="<?= base_url('assets/vendor/DataTables/datatables.min.css') ?>" rel="stylesheet">
     <link href="<?= base_url('assets/vendor/flag-icon/css/flag-icon.min.css') ?>" rel="stylesheet">
+    <link href="<?= base_url('assets/vendor/toastrjs/toastr.min.css') ?>" rel="stylesheet">
     <link href="<?= base_url('appstack/css/app.css') ?>" rel="stylesheet" />
-    <style>h1,h2,h3,h4,h5,h6{font-family:"Oxanium",sans-serif;} .alert{padding:1rem;}  svg:not(:host).svg-inline--fa, svg:not(:root).svg-inline--fa {overflow: visible;box-sizing: content-box;margin: auto 0.25rem;}</style>
+    <style>
+        h1,h2,h3,h4,h5,h6{font-family:"Oxanium",sans-serif;} .alert{padding:1rem;}  svg:not(:host).svg-inline--fa, svg:not(:root).svg-inline--fa {overflow: visible;box-sizing: content-box;margin: auto 0.25rem;}
+        .sidebar-header .avatar-img, .sidebar-header .avatar-txt {width: 3rem !important;height: 3rem !important;}
+    </style>
 </head>
 <body>
 <div class="wrapper">
     <nav id="sidebar" class="sidebar">
         <div class="sidebar-content js-simplebar">
-            <a class="sidebar-brand" href="<?= base_url($session->locale . '/office/dashboard') ?>">
-                <?= $session->app_logo ?>
-            </a>
             <!-- SIDEBAR NAVIGATION -->
             <ul class="sidebar-nav">
+                <li class="sidebar-header p-0">
+                    <?php
+                    switch ($session->current_role) {
+                        case 'journey':
+                            echo '<img class="img-fluid" src="' . base_url('appstack/sidebar_journey.jpg') . '" class="rounded" alt="Journey">';
+                            break;
+                        case 'finance':
+                            echo '<img class="img-fluid" src="' . base_url('appstack/sidebar_finance.jpg') . '" class="rounded" alt="Finance">';
+                            break;
+                        default:
+                            echo '<img class="img-fluid" src="' . base_url('appstack/sidebar_main.jpg') . '" class="rounded" alt="Header">';
+                            break;
+                    }
+                    ?>
+                </li>
                 <li class="sidebar-header">
-                    Navigation
+                    <div class="float-start me-3"><?= $session->avatar ?></div>
+                    <h6><?= $session->display_name ?></h6>
+                    <span><?= $session->user['employee_title'] ?></span>
                 </li>
                 <li class="sidebar-item <?= ('dashboard' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/dashboard') ?>"><i class="fa-solid fa-house-chimney fa-fw me-3"></i><span><?= lang('System.dashboard.page_title') ?></span></a></li>
                 <!-- USER -->
@@ -165,7 +182,7 @@
                             </div>
                         </div>
                     </li>
-                    <li class="nav-item nav-theme-toggle dropdown">
+                    <li class="nav-item nav-theme-toggle dropdown d-none">
                         <a class="nav-icon js-theme-toggle" href="#">
                             <div class="position-relative">
                                 <i class="align-middle text-body nav-theme-toggle-light" data-lucide="sun"></i>
