@@ -73,10 +73,10 @@ $this->extend($layout);
                                     <th style="min-width: 100px;">Fl. No.</th>
                                     <th style="min-width: 120px;">Operator</th>
                                     <th style="min-width: 120px;">Mode</th>
-                                    <th style="min-width: 150px;">Departure</th>
-                                    <th style="min-width: 150px;">Arrival</th>
-                                    <th style="min-width: 150px;">Origin</th>
-                                    <th style="min-width: 150px;">Destination</th>
+                                    <th style="min-width: 180px;">Departure</th>
+                                    <th style="min-width: 180px;">Arrival</th>
+                                    <th style="min-width: 180px;">Origin</th>
+                                    <th style="min-width: 180px;">Destination</th>
                                     <th style="min-width: 100px;">Duration</th>
                                     <th style="min-width: 100px;">Distance</th>
                                     <th style="min-width: 150px;">Price</th>
@@ -112,6 +112,9 @@ $this->extend($layout);
                 },
                 order: [[1, 'desc']],
                 columnDefs: [{orderable: false, targets: 0}],
+                fixedColumns: {start:3},
+                scrollX: true,
+                scrollY: 500,
                 drawCallback: function () {
                     let DateTime = luxon.DateTime;
                     $('.utc-to-local-time').each(function () {

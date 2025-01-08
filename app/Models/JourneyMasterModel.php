@@ -53,9 +53,10 @@ class JourneyMasterModel extends Model
             $this->where('journey_master.country_code', $country_code);
         }
         if (!empty($year)) {
-            $this->groupStart()
+            $this->where('date_entry <=', $year . '-12-31')
+                ->groupStart()
                 ->where('date_exit >=', $year . '-01-01')
-                ->where('date_entry <=', $year . '-12-31')
+                ->orWhere('date_exit', null)
                 ->groupEnd();
         }
         if (!empty($journey_status)) {
@@ -107,10 +108,14 @@ class JourneyMasterModel extends Model
             } else {
                 $row['day_count'] = number_format($row['day_count']);
             }
+            $class        = '';
+            if ('canceled' == $row['journey_status']) {
+                $class    = 'text-danger';
+            }
             $result[]     = [
                 '<a class="btn btn-outline-primary btn-sm" href="' . base_url($locale . '/office/journey/trip/edit/' . $new_id) . '"><i class="fa-solid fa-edit"></i></a>',
                 $row['id'],
-                '<span class="flag-icon flag-icon-' . strtolower($row['country_code']) . '"></span> ' . $countries[$row['country_code']]['common_name'],
+                '<span class="flag-icon flag-icon-' . strtolower($row['country_code']) . '"></span><h5 class="' . $class . '">' . $countries[$row['country_code']]['common_name'] . '</h5>',
                 '<span class="date-to-readable">' . $row['date_entry'] . '</span>',
                 '<span class="date-to-readable">' . $row['date_exit'] . '</span>',
                 $row['day_count'],

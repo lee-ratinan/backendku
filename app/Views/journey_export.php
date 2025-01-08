@@ -68,6 +68,7 @@
                         <?php foreach ($data['transport'] as $transport) : ?>
                         <tr>
                             <td>
+                                [TRA]<br>
                                 <?= $transport['operator_name'] ?><br>
                                 <?= $transport['flight_number'] ?><br>
                                 <?= $transport['pnr_number'] ?><br>
@@ -105,7 +106,37 @@
             <tr>
                 <td>
                     <h2>Accommodation</h2>
-                    <pre><?php print_r(@$data['accommodation']); ?></pre>
+                    <?php if (empty($data['accommodation'])) : ?>
+                        NO DATA
+                    <?php else: ?>
+                    <table class="table table-borderless mb-0">
+                        <?php foreach ($data['accommodation'] as $row) : ?>
+                        <tr>
+                            <td>
+                                [ACC]<br>
+                                FR: <?= $row['check_in_date'] ?><br>
+                                TO: <?= $row['check_out_date'] ?><br>
+                                (<?= $row['night_count'] ?> nights)
+                            </td>
+                            <td>
+                                <?= lang('ListCountries.countries.'. $row['country_code'] . '.common_name') ?>
+                                HOTEL: <?= $row['hotel_name'] ?><br>
+                                <?= $row['hotel_address'] ?><br>
+                                CHANNEL: <?= $row['booking_channel'] ?><br>
+                                ROOM: <?= $row['room_type'] ?><br>
+                                BF INCL: <?= $row['breakfast_included'] ?><br>
+                            </td>
+                            <td>
+                                PRICE: <?= $row['price_amount'] ?> <?= $row['price_currency_code'] ?><br>
+                                CHARGED: <?= $row['charged_amount'] ?> <?= $row['charged_currency_code'] ?><br>
+                                STATUS: <?= $row['journey_status'] ?><br>
+                                DETAILS: <?= $row['journey_details'] ?><br>
+                                <?= (empty($row['google_drive_link']) ? '' : '<a href="' . $row['google_drive_link'] . '" target="_blank">Google Drive</a>') ?>
+                            </td>
+                        </tr>
+                        <?php endforeach; ?>
+                    </table>
+                    <?php endif; ?>
                 </td>
             </tr>
             <tr>

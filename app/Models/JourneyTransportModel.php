@@ -144,8 +144,8 @@ class JourneyTransportModel extends Model
         $session    = session();
         $locale     = $session->locale;
         $raw_result = $this->select('journey_transport.*, journey_operator.operator_name, journey_operator.operator_logo_file_name,
-            port_departure.port_name AS departure_port_name, port_departure.country_code AS departure_country_code,
-            port_arrival.port_name AS arrival_port_name,     port_arrival.country_code AS arrival_country_code')
+            port_departure.port_name AS departure_port_name, port_departure.country_code AS departure_country_code, port_departure.port_code_1 AS departure_port_code,
+            port_arrival.port_name AS arrival_port_name,     port_arrival.country_code AS arrival_country_code,     port_arrival.port_code_1 AS arrival_port_code')
             ->join('journey_operator', 'journey_transport.operator_id = journey_operator.id', 'left outer')
             ->join('journey_port AS port_departure', 'journey_transport.departure_port_id = port_departure.id', 'left outer')
             ->join('journey_port AS port_arrival',   'journey_transport.arrival_port_id = port_arrival.id', 'left outer')
@@ -154,13 +154,22 @@ class JourneyTransportModel extends Model
         foreach ($raw_result as $row) {
             $new_id         = $row['id'] * self::ID_NONCE;
             $flight_numbers = [];
+            $canceled_class = '';
+            if ('canceled' == $row['journey_status']) {
+                $canceled_class = 'text-danger';
+            }
             if (!empty($row['flight_number'])) {
-                $flight_numbers[] = '<span class="badge bg-success"><i class="fa-solid fa-plane"></i></span> <b>' . $row['flight_number'] . '</b>';
+                $flight_numbers[] = "<h4 class='mb-0 {$canceled_class}'>" . $row['flight_number'] . '</h4>';
             }
             if (!empty($row['pnr_number'])) {
-                $flight_numbers[] = '<span class="badge bg-success"><i class="fa-solid fa-ticket"></i></span> <b>' . $row['pnr_number'] . '</b>';
+                $flight_numbers[] = '<i class="fa-solid fa-ticket text-success"></i> <b>' . $row['pnr_number'] . '</b>';
             }
-            $journey_details = str_replace('[R]', '<span class="badge bg-success">RETURN</span>', $row['journey_details']);
+            if (empty($flight_numbers) && 'canceled' == $row['journey_status']) {
+                $flight_numbers[] = '<i class="fa-solid fa-times-circle text-danger"></i> <b>CANCELED</b>';
+            }
+            $journey_details = str_replace('[R]', '<span class="badge bg-success"><i class="fa-solid fa-rotate-left"></i> RETURN</span>', $row['journey_details']);
+            $journey_details = str_replace('[C]', '<span class="badge bg-success"><i class="fa-solid fa-right-left"></i> CONNECTING</span>', $journey_details);
+            $journey_details = str_replace('[RI]', '<span class="badge bg-success"><i class="fa-solid fa-hand-holding-dollar"></i> REIMBURSED</span>', $journey_details);
             if ('Y' == $row['is_time_known']) {
                 $departure_time  = date(DATETIME_FORMAT_UI, strtotime($row['departure_date_time']));
                 $departure_time .= '<br><small>' . lang('ListTimeZones.' . $row['departure_timezone'] . '.label') . '</small>';
@@ -173,12 +182,14 @@ class JourneyTransportModel extends Model
             $result[]      = [
                 '<a class="btn btn-outline-primary btn-sm" href="' . base_url($locale . '/office/journey/transport/edit/' . $new_id) . '"><i class="fa-solid fa-edit"></i></a>',
                 $row['id'],
-                (empty($flight_numbers) ? '-' : implode('<br>', $flight_numbers)),
+                (empty($flight_numbers) ? '-' : implode('', $flight_numbers)),
                 '<img style="height:2.5rem" class="img-thumbnail" src="' . base_url('file/operator-' . $row['operator_logo_file_name'] . '.png') . '" alt="' . $row['flight_number'] . '" /><br>' . $row['operator_name'],
                 $this->getModeOfTransport($row['mode_of_transport']) . (empty($row['craft_type']) ? '' : '<br><small><i class="fa-solid fa-caret-right"></i> ' . $row['craft_type'] . '</small>'),
                 $departure_time,
                 $arrival_time,
+                (empty($row['departure_port_code']) ? '' : '<h4 class="mb-0">' . $row['departure_port_code'] . '</h4>') .
                 '<span class="flag-icon flag-icon-' . strtolower($row['departure_country_code']) . '"></span> ' . $row['departure_port_name'],
+                (empty($row['arrival_port_code']) ? '' : '<h4 class="mb-0">' . $row['arrival_port_code'] . '</h4>') .
                 '<span class="flag-icon flag-icon-' . strtolower($row['arrival_country_code']) . '"></span> ' . $row['arrival_port_name'],
                 empty($row['trip_duration']) ? '-' : $this->printMinutes($row['trip_duration']),
                 empty($row['distance_traveled']) ? '-' : number_format($row['distance_traveled']) . ' km',
