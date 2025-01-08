@@ -80,10 +80,14 @@
                 <?php endif; ?>
                 <!-- FINANCE -->
                 <?php if (isset($session->permitted_features['finance'])): ?>
+                    <li class="sidebar-header">Employment</li>
                     <li class="sidebar-item <?= ('company' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/employment') ?>"><i class="fa-solid fa-suitcase fa-fw me-3"></i><span>Company</span></a></li>
-                    <li class="sidebar-item <?= ('salary' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/employment/salary') ?>"><i class="fa-solid fa-building-columns fa-fw me-3"></i><span>Salary</span></a></li>
+                    <li class="sidebar-item <?= ('salary' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/employment/salary') ?>"><i class="fa-solid fa-dollar-sign fa-fw me-3"></i><span>Salary</span></a></li>
                     <li class="sidebar-item <?= ('cpf' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/employment/cpf') ?>"><i class="fa-solid fa-piggy-bank fa-fw me-3"></i><span>CPF</span></a></li>
                     <li class="sidebar-item <?= ('freelance' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/employment/freelance') ?>"><i class="fa-solid fa-laptop-code fa-fw me-3"></i><span>Freelance</span></a></li>
+                    <li class="sidebar-header">Tax</li>
+                    <li class="sidebar-item <?= ('tax' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/tax') ?>"><i class="fa-solid fa-building-columns fa-fw me-3"></i><span>Tax</span></a></li>
+                    <li class="sidebar-item <?= ('tax-calculator' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/tax/calculator') ?>"><i class="fa-solid fa-calculator fa-fw me-3"></i><span>Tax Calculator</span></a></li>
                 <?php endif; ?>
                 <!-- JOURNEY -->
                 <?php if (isset($session->permitted_features['journey'])): ?>

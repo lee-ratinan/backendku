@@ -82,11 +82,12 @@ class Employment extends BaseController
         ]);
     }
 
-    public function companyEdit(string $port_code = 'new')
+    public function companyEdit(string $port_code = 'new'): string
     {
         if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
             return permission_denied();
         }
+        return '';
     }
 
     public function companySave()
@@ -94,6 +95,7 @@ class Employment extends BaseController
         if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
             return permission_denied('json');
         }
+        return $this->response->setJSON([]);
     }
 
     /************************************************************************

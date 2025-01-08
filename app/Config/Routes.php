@@ -85,7 +85,7 @@ $routes->group('{locale}/office', ['filter' => 'auth'], static function ($routes
     $routes->get('employment/cpf/create', 'Employment::cpfEdit/new');
     $routes->get('employment/cpf/edit/(:any)', 'Employment::cpfEdit/$1');
     $routes->post('employment/cpf/edit', 'Employment::cpfSave');
-    // company_freelance_project/income
+    // company_freelance_project and company_freelance_income
     $routes->get('employment/freelance', 'Employment::freelance');
     $routes->post('employment/freelance', 'Employment::freelanceList');
     $routes->get('employment/freelance/view/(:any)', 'Employment::freelanceView/$1');
@@ -95,6 +95,16 @@ $routes->group('{locale}/office', ['filter' => 'auth'], static function ($routes
     $routes->get('employment/freelance-income/create', 'Employment::freelanceIncomeEdit/new');
     $routes->get('employment/freelance-income/edit/(:any)', 'Employment::freelanceIncomeEdit/$1');
     $routes->post('employment/freelance-income/edit', 'Employment::freelanceIncomeSave');
+    // FINANCE - TAX
+    // tax_master and tax_breakdown tables
+    $routes->get('tax', 'Tax::index');
+    $routes->post('tax', 'Tax::masterList');
+    $routes->get('tax/create', 'Tax::masterEdit/new');
+    $routes->get('tax/edit/(:num)', 'Tax::masterEdit/$1');
+    $routes->post('tax/edit', 'Tax::masterSave'); // both master and breakdown
+    // tax calculator app
+    $routes->get('tax/calculator', 'Tax::calculator/sg'); // just simple tax calculator
+    $routes->get('tax/calculator/(:any)', 'Tax::calculator/$1'); // just simple tax calculator
     /////////////////////////////////////////////////////////////////////////////
     // JOURNEY
     // journey_port table
