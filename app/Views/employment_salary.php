@@ -146,9 +146,9 @@ $this->extend($layout);
                 serverSide: true,
                 fixedHeader: true,
                 searching: false, // don't allow the search for this one
+                pageLength: 50,
                 fixedColumns: {start: 3},
                 scrollX: true,
-                scrollY: 400,
                 ajax: {
                     url: '<?= base_url($session->locale . '/office/employment/salary') ?>',
                     type: 'POST',
@@ -167,13 +167,6 @@ $this->extend($layout);
                     {orderable: false, targets: 0},
                     {className: 'text-end', targets: [9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27] }
                 ],
-                footerCallback: function (row, data, start, end, display) {
-                    let api = this.api();
-                    serverFooter.forEach((value, index) => {
-                        index = parseInt(index);
-                        api.column(index).footer().innerHTML = value;
-                    });
-                }
             });
             $('#btn-filter').on('click', function () {
                 table.ajax.reload();

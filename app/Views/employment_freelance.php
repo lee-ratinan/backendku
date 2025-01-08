@@ -57,12 +57,12 @@ $this->extend($layout);
                                 <tr>
                                     <th></th>
                                     <th>ID</th>
-                                    <th>Company</th>
-                                    <th>Project Title</th>
-                                    <th>Client Name</th>
-                                    <th>Client’s Organization</th>
-                                    <th>Start Date</th>
-                                    <th>End Date</th>
+                                    <th style="min-width:180px;">Company</th>
+                                    <th style="min-width:180px;">Project Title</th>
+                                    <th style="min-width:150px;">Client Name</th>
+                                    <th style="min-width:150px;">Client’s Organization</th>
+                                    <th style="min-width:100px;">Start Date</th>
+                                    <th style="min-width:100px;">End Date</th>
                                 </tr>
                                 </thead>
                                 <tbody></tbody>
@@ -80,6 +80,7 @@ $this->extend($layout);
                 serverSide: true,
                 fixedHeader: true,
                 searching: true,
+                pageLength: 25,
                 ajax: {
                     url: '<?= base_url($session->locale . '/office/employment/freelance') ?>',
                     type: 'POST',
@@ -90,17 +91,8 @@ $this->extend($layout);
                 },
                 order: [[2, 'asc']],
                 columnDefs: [{orderable: false, targets: 0}],
-                drawCallback: function () {
-                    let DateTime = luxon.DateTime;
-                    $('.utc-to-local-time').each(function () {
-                        const utc = $(this).text();
-                        if ('' !== utc) {
-                            $(this).text(DateTime.fromISO(utc).toLocaleString(DateTime.DATETIME_MED));
-                        } else {
-                            $(this).text('-');
-                        }
-                    });
-                },
+                fixedColumns: {start:2},
+                scrollX: true,
             });
             $('#btn-filter').on('click', function () {
                 table.ajax.reload();

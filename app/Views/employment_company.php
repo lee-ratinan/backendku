@@ -77,6 +77,7 @@ $this->extend($layout);
                 serverSide: true,
                 fixedHeader: true,
                 searching: true,
+                pageLength:25,
                 ajax: {
                     url: '<?= base_url($session->locale . '/office/employment/company') ?>',
                     type: 'POST',
@@ -87,6 +88,8 @@ $this->extend($layout);
                 },
                 order: [[1, 'desc']],
                 columnDefs: [{orderable: false, targets: [0,2]}],
+                fixedColumns: {start:3},
+                scrollX: true,
             });
             $('#btn-filter').on('click', function () {
                 table.ajax.reload();

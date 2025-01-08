@@ -136,9 +136,8 @@ $this->extend($layout);
                     {className: 'text-sa', targets: [6,7] },
                     {className: 'text-ma', targets: [8,9] }
                 ],
-                fixedColumns: {start:4},
+                fixedColumns: {start:3},
                 scrollX: true,
-                scrollY: 400,
             });
             $('#btn-filter').on('click', function () {
                 table.ajax.reload();
