@@ -97,6 +97,41 @@ class Journey extends BaseController
         }
     }
 
+    public function tripStatistics(): string
+    {
+        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
+            return permission_denied();
+        }
+        $session  = session();
+        $model    = new JourneyMasterModel();
+        $raw_data = $model->where('journey_status', 'as_planned')->where('date_entry <=', date(DATE_FORMAT_DB))->findAll();
+        $visited_countries_by_year    = [];
+        $countries_frequently_visited = [];
+        foreach ($raw_data as $row) {
+            $year_1 = intval(substr($row['date_entry'], 0, 4));
+            $year_2 = intval(substr($row['date_exit'], 0, 4));
+            // produce the array of years from $year_1 to $year_2
+            $years  = range($year_1, $year_2);
+            foreach ($years as $year) {
+                $visited_countries_by_year[$year][$row['country_code']] = 1;
+            }
+            $countries_frequently_visited[$row['country_code']] = (isset($countries_frequently_visited[$row['country_code']]) ? $countries_frequently_visited[$row['country_code']] + 1 : 1);
+        }
+        ksort($countries_frequently_visited);
+        $data = [
+            'page_title'                   => 'Statistics',
+            'slug'                         => 'trip',
+            'user_session'                 => $session->user,
+            'roles'                        => $session->roles,
+            'current_role'                 => $session->current_role,
+            'visited_countries_by_year'    => $visited_countries_by_year,
+            'countries_frequently_visited' => $countries_frequently_visited,
+            'countries'                    => lang('ListCountries.countries'),
+            'countries_considered_home'    => ['SG', 'TH']
+        ];
+        return view('journey_trip_statistics', $data);
+    }
+
     /************************************************************************
      * TRANSPORT
      ************************************************************************/
@@ -170,7 +205,7 @@ class Journey extends BaseController
         ]);
     }
 
-    public function transportEdit(string $port_code = 'new')
+    public function transportEdit(string $port_code = 'new', int $journey_id = 0)
     {
         if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
             return permission_denied();
@@ -253,7 +288,7 @@ class Journey extends BaseController
         ]);
     }
 
-    public function accommodationEdit(string $port_code = 'new')
+    public function accommodationEdit(string $port_code = 'new', int $journey_id = 0)
     {
         if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
             return permission_denied();
@@ -331,7 +366,7 @@ class Journey extends BaseController
         ]);
     }
 
-    public function attractionEdit(string $port_code = 'new')
+    public function attractionEdit(string $port_code = 'new', int $journey_id = 0)
     {
         if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
             return permission_denied();

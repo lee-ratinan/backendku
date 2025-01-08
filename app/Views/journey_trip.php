@@ -19,6 +19,7 @@ $this->extend($layout);
             <div class="col">
                 <div class="card">
                     <div class="card-body pt-3">
+                        <a class="btn btn-outline-primary btn-sm float-end ms-3" href="<?= base_url($session->locale . '/office/journey/trip/statistics') ?>"><i class="fa-solid fa-chart-line"></i> Statistics</a>
                         <a class="btn btn-outline-primary btn-sm float-end ms-3" href="<?= base_url($session->locale . '/office/journey/export') ?>" target="_blank"><i class="fa-solid fa-cloud-download"></i> Export</a>
                         <a class="btn btn-outline-primary btn-sm float-end ms-3" href="<?= base_url($session->locale . '/office/journey/trip/create') ?>"><i class="fa-solid fa-plus-circle"></i> New Trip</a>
                         <h5 class="card-title"><i class="fa-solid fa-passport fa-fw me-3"></i> <?= $page_title ?></h5>
