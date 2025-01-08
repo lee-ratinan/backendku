@@ -109,7 +109,7 @@ class JourneyAccommodationModel extends Model
                 (empty($row['check_out_date']) ? '' : date(DATE_FORMAT_UI, strtotime($row['check_out_date']))),
                 $row['night_count'],
                 $row['hotel_name'] . '<br><small>' . $row['hotel_address'] . '</small>',
-                $row['night_count'],
+                $row['booking_channel'],
                 $row['room_type'],
                 ('Y' == $row['breakfast_included'] ? '<i class="fa-solid fa-check text-success"></i>' : '-'),
                 (empty($row['price_amount']) ? '-' : currency_format($row['price_currency_code'], $row['price_amount'])) .
