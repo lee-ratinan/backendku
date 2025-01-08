@@ -68,6 +68,8 @@ function permission_denied(string $type = 'page'): string|ResponseInterface
             'data'            => [],
             'error'           => lang('System.permission_denied.message')
         ]);
+    } else if ('html_piece' == $type) {
+        return '<div class="alert alert-danger" role="alert">' . lang('System.permission_denied.message') . '</div>';
     }
     $response->setStatusCode(403);
     return view('system/permission_denied', [

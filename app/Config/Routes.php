@@ -103,8 +103,8 @@ $routes->group('{locale}/office', ['filter' => 'auth'], static function ($routes
     $routes->get('tax/edit/(:num)', 'Tax::masterEdit/$1');
     $routes->post('tax/edit', 'Tax::masterSave'); // both master and breakdown
     // tax calculator app
-    $routes->get('tax/calculator', 'Tax::calculator/sg'); // just simple tax calculator
-    $routes->get('tax/calculator/(:any)', 'Tax::calculator/$1'); // just simple tax calculator
+    $routes->get('tax/calculator', 'Tax::calculator'); // just simple tax calculator
+    $routes->post('tax/calculator', 'Tax::calculatorAjax'); // just simple tax calculator
     /////////////////////////////////////////////////////////////////////////////
     // JOURNEY
     // journey_port table
@@ -128,20 +128,20 @@ $routes->group('{locale}/office', ['filter' => 'auth'], static function ($routes
     // journey_transport table
     $routes->get('journey/transport', 'Journey::transport');
     $routes->post('journey/transport', 'Journey::transportList');
-    $routes->get('journey/transport/create', 'Journey::transportEdit/new');
-    $routes->get('journey/transport/edit/(:any)', 'Journey::transportEdit/$1');
+    $routes->get('journey/transport/create/(:num)', 'Journey::transportEdit/new/$1');
+    $routes->get('journey/transport/edit/(:num)', 'Journey::transportEdit/$1');
     $routes->post('journey/transport/edit', 'Journey::transportSave');
     // journey_accommodation table
     $routes->get('journey/accommodation', 'Journey::accommodation');
     $routes->post('journey/accommodation', 'Journey::accommodationList');
-    $routes->get('journey/accommodation/create', 'Journey::accommodationEdit/new');
-    $routes->get('journey/accommodation/edit/(:any)', 'Journey::accommodationEdit/$1');
+    $routes->get('journey/accommodation/create/(:num)', 'Journey::accommodationEdit/new/$1');
+    $routes->get('journey/accommodation/edit/(:num)', 'Journey::accommodationEdit/$1');
     $routes->post('journey/accommodation/edit', 'Journey::accommodationSave');
     // journey_attraction table
     $routes->get('journey/attraction', 'Journey::attraction');
     $routes->post('journey/attraction', 'Journey::attractionList');
-    $routes->get('journey/attraction/create', 'Journey::attractionEdit/new');
-    $routes->get('journey/attraction/edit/(:any)', 'Journey::attractionEdit/$1');
+    $routes->get('journey/attraction/create/(:num)', 'Journey::attractionEdit/new/$1');
+    $routes->get('journey/attraction/edit/(:num)', 'Journey::attractionEdit/$1');
     $routes->post('journey/attraction/edit', 'Journey::attractionSave');
     // journey_holiday table
     $routes->get('journey/holiday', 'Journey::holiday');
