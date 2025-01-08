@@ -133,6 +133,12 @@ $routes->group('{locale}/office', ['filter' => 'auth'], static function ($routes
     $routes->get('journey/attraction/create', 'Journey::attractionEdit/new');
     $routes->get('journey/attraction/edit/(:any)', 'Journey::attractionEdit/$1');
     $routes->post('journey/attraction/edit', 'Journey::attractionSave');
+    // journey_holiday table
+    $routes->get('journey/holiday', 'Journey::holiday');
+    $routes->post('journey/holiday', 'Journey::holidayList');
+    $routes->get('journey/holiday/create', 'Journey::holidayEdit/new');
+    $routes->get('journey/holiday/edit/(:any)', 'Journey::holidayEdit/$1');
+    $routes->post('journey/holiday/edit', 'Journey::holidaySave');
     // Summary, export, statistics, etc
     $routes->get('journey/export', 'Journey::export');
     $routes->get('journey/fix', 'Journey::fix');

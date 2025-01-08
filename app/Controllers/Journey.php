@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Models\JourneyAccommodationModel;
 use App\Models\JourneyAttractionModel;
+use App\Models\JourneyHolidayModel;
 use App\Models\JourneyMasterModel;
 use App\Models\JourneyOperatorModel;
 use App\Models\JourneyPortModel;
@@ -489,6 +490,85 @@ class Journey extends BaseController
     }
 
     public function operatorSave()
+    {
+        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
+            return permission_denied('json');
+        }
+    }
+
+    /************************************************************************
+     * OPERATOR
+     ************************************************************************/
+
+    /**
+     * @return string
+     */
+    public function holiday(): string
+    {
+        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
+            return permission_denied();
+        }
+        $session   = session();
+        $countries = ['AU', 'SG', 'TH', 'US'];
+        $dropdown  = [];
+        foreach ($countries as $country_code) {
+            $dropdown[$country_code] = lang('ListCountries.countries.' . $country_code . '.common_name');
+        }
+        $dropdown['XV'] = 'Vacation';
+        $data           = [
+            'page_title'   => 'Holiday',
+            'slug'         => 'holiday',
+            'user_session' => $session->user,
+            'roles'        => $session->roles,
+            'current_role' => $session->current_role,
+            'countries'    => $dropdown,
+        ];
+        return view('journey_holiday', $data);
+    }
+
+    /**
+     * @return ResponseInterface
+     */
+    public function holidayList(): ResponseInterface
+    {
+        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
+            return permission_denied('datatables');
+        }
+        $model              = new JourneyHolidayModel();
+        $columns            = [
+            '',
+            'id',
+            'country_code',
+            'holiday_date',
+            'holiday_name'
+        ];
+        $order              = $this->request->getPost('order');
+        $search             = $this->request->getPost('search');
+        $start              = $this->request->getPost('start');
+        $length             = $this->request->getPost('length');
+        $order_column_index = $order[0]['column'] ?? 0;
+        $order_column       = $columns[$order_column_index];
+        $order_direction    = $order[0]['dir'] ?? 'desc';
+        $search_value       = $search['value'];
+        $country_code       = $this->request->getPost('country_code');
+        $year               = $this->request->getPost('year');
+        $result             = $model->getDataTables($start, $length, $order_column, $order_direction, $search_value, $country_code, $year);
+        return $this->response->setJSON([
+            'draw'            => $this->request->getPost('draw'),
+            'recordsTotal'    => $result['recordsTotal'],
+            'recordsFiltered' => $result['recordsFiltered'],
+            'data'            => $result['data']
+        ]);
+    }
+
+    public function holidayEdit(string $port_code = 'new')
+    {
+        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
+            return permission_denied();
+        }
+    }
+
+    public function holidaySave()
     {
         if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
             return permission_denied('json');
