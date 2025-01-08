@@ -65,13 +65,13 @@ $this->extend($layout);
                                     <th style="min-width:120px;">Check-in</th>
                                     <th style="min-width:120px;">Check-out</th>
                                     <th style="min-width:80px;">Nights</th>
-                                    <th style="min-width: 200px;">Hotel</th>
-                                    <th style="min-width: 120px;">Channel</th>
-                                    <th style="min-width: 100px;">Room Type</th>
-                                    <th style="min-width: 100px;">Breakfast</th>
-                                    <th style="min-width: 150px;">Price</th>
-                                    <th style="min-width: 150px;">Remarks</th>
-                                    <th style="min-width: 50px;">Link</th>
+                                    <th style="min-width:200px;">Hotel</th>
+                                    <th style="min-width:120px;">Channel</th>
+                                    <th style="min-width:100px;">Room Type</th>
+                                    <th style="min-width:100px;">Breakfast</th>
+                                    <th style="min-width:150px;">Price</th>
+                                    <th style="min-width:150px;">Remarks</th>
+                                    <th style="min-width:50px;">Link</th>
                                     <th>Status</th>
                                 </tr>
                                 </thead>
@@ -90,6 +90,7 @@ $this->extend($layout);
                 serverSide: true,
                 fixedHeader: true,
                 searching: true,
+                pageLength: 50,
                 ajax: {
                     url: '<?= base_url($session->locale . '/office/journey/accommodation') ?>',
                     type: 'POST',
@@ -103,18 +104,6 @@ $this->extend($layout);
                 columnDefs: [{orderable: false, targets: 0}],
                 fixedColumns: {start:3},
                 scrollX: true,
-                scrollY: 500,
-                drawCallback: function () {
-                    let DateTime = luxon.DateTime;
-                    $('.utc-to-local-time').each(function () {
-                        const utc = $(this).text();
-                        if ('' !== utc) {
-                            $(this).text(DateTime.fromISO(utc).toLocaleString(DateTime.DATETIME_MED));
-                        } else {
-                            $(this).text('-');
-                        }
-                    });
-                },
             });
             $('#btn-filter').on('click', function () {
                 table.ajax.reload();

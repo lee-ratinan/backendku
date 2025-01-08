@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\JourneyAccommodationModel;
+use App\Models\JourneyAttractionModel;
 use App\Models\JourneyMasterModel;
 use App\Models\JourneyOperatorModel;
 use App\Models\JourneyPortModel;
@@ -283,7 +284,8 @@ class Journey extends BaseController
             'slug'         => 'attraction',
             'user_session' => $session->user,
             'roles'        => $session->roles,
-            'current_role' => $session->current_role
+            'current_role' => $session->current_role,
+            'countries'    => lang('ListCountries.countries'),
         ];
         return view('journey_attraction', $data);
     }
@@ -296,11 +298,35 @@ class Journey extends BaseController
         if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
             return permission_denied('datatables');
         }
+        $model              = new JourneyAttractionModel();
+        $columns            = [
+            '',
+            'id',
+            'country_code',
+            'attraction_date',
+            'attraction_title',
+            'price_amount',
+            'journey_details',
+            'google_drive_link',
+            'journey_status',
+        ];
+        $order              = $this->request->getPost('order');
+        $search             = $this->request->getPost('search');
+        $start              = $this->request->getPost('start');
+        $length             = $this->request->getPost('length');
+        $order_column_index = $order[0]['column'] ?? 0;
+        $order_column       = $columns[$order_column_index];
+        $order_direction    = $order[0]['dir'] ?? 'desc';
+        $search_value       = $search['value'];
+        $country_code       = $this->request->getPost('country_code');
+        $year               = $this->request->getPost('year');
+        $journey_status     = $this->request->getPost('journey_status');
+        $result             = $model->getDataTables($start, $length, $order_column, $order_direction, $search_value, $country_code, $year, $journey_status);
         return $this->response->setJSON([
             'draw'            => $this->request->getPost('draw'),
-            'recordsTotal'    => 0,
-            'recordsFiltered' => 0,
-            'data'            => []
+            'recordsTotal'    => $result['recordsTotal'],
+            'recordsFiltered' => $result['recordsFiltered'],
+            'data'            => $result['data']
         ]);
     }
 

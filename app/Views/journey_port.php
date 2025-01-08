@@ -76,6 +76,7 @@ $this->extend($layout);
                 serverSide: true,
                 fixedHeader: true,
                 searching: true,
+                pageLength: 50,
                 ajax: {
                     url: '<?= base_url($session->locale . '/office/journey/port') ?>',
                     type: 'POST',
@@ -86,17 +87,6 @@ $this->extend($layout);
                 },
                 order: [[2, 'asc']],
                 columnDefs: [{orderable: false, targets: 0}],
-                drawCallback: function () {
-                    let DateTime = luxon.DateTime;
-                    $('.utc-to-local-time').each(function () {
-                        const utc = $(this).text();
-                        if ('' !== utc) {
-                            $(this).text(DateTime.fromISO(utc).toLocaleString(DateTime.DATETIME_MED));
-                        } else {
-                            $(this).text('-');
-                        }
-                    });
-                },
             });
             $('#btn-filter').on('click', function () {
                 table.ajax.reload();

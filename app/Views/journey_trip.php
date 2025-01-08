@@ -87,6 +87,7 @@ $this->extend($layout);
                 serverSide: true,
                 fixedHeader: true,
                 searching: true,
+                pageLength: 50,
                 ajax: {
                     url: '<?= base_url($session->locale . '/office/journey/trip') ?>',
                     type: 'POST',
@@ -100,26 +101,6 @@ $this->extend($layout);
                 columnDefs: [{orderable: false, targets: 0}],
                 fixedColumns: {start:3},
                 scrollX: true,
-                scrollY: 500,
-                drawCallback: function () {
-                    let DateTime = luxon.DateTime;
-                    $('.utc-to-local-time').each(function () {
-                        const utc = $(this).text();
-                        if ('' !== utc) {
-                            $(this).text(DateTime.fromISO(utc).toLocaleString(DateTime.DATETIME_MED));
-                        } else {
-                            $(this).text('-');
-                        }
-                    });
-                    $('.date-to-readable').each(function () {
-                        const str = $(this).text();
-                        if ('' !== str) {
-                            $(this).text(DateTime.fromISO(str).toLocaleString(DateTime.DATE_MED));
-                        } else {
-                            $(this).text('-');
-                        }
-                    });
-                },
             });
             $('#btn-filter').on('click', function () {
                 table.ajax.reload();
