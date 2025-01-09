@@ -23,3 +23,12 @@ function calculateDistance($lat1, $lon1, $lat2, $lon2, $earthRadius = 6371) {
     // Distance in the specified unit (default is kilometers)
     return $earthRadius * $c;
 }
+
+/**
+ * @param float $km
+ * @return float
+ */
+function kmToMiles(float $km): float
+{
+    return $km / 1.609344;
+}

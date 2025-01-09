@@ -132,6 +132,7 @@ $routes->group('{locale}/office', ['filter' => 'auth'], static function ($routes
     $routes->get('journey/transport/create/(:num)', 'Journey::transportEdit/new/$1');
     $routes->get('journey/transport/edit/(:num)', 'Journey::transportEdit/$1');
     $routes->post('journey/transport/edit', 'Journey::transportSave');
+    $routes->get('journey/transport/statistics', 'Journey::transportStatistics');
     // journey_accommodation table
     $routes->get('journey/accommodation', 'Journey::accommodation');
     $routes->post('journey/accommodation', 'Journey::accommodationList');

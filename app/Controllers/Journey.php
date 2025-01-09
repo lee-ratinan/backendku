@@ -15,6 +15,12 @@ class Journey extends BaseController
 {
 
     const PERMISSION_REQUIRED = 'journey';
+    private array $color_classes = [
+        ['red', 'gold'],
+        ['yellow', 'black'],
+        ['blue', 'bronze'],
+        ['green', 'silver']
+    ];
 
     /************************************************************************
      * TRIP
@@ -97,6 +103,9 @@ class Journey extends BaseController
         }
     }
 
+    /**
+     * @return string
+     */
     public function tripStatistics(): string
     {
         if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
@@ -217,6 +226,51 @@ class Journey extends BaseController
         if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
             return permission_denied('json');
         }
+    }
+
+    /**
+     * @return string
+     */
+    public function transportStatistics(): string
+    {
+        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
+            return permission_denied();
+        }
+        $session    = session();
+        $model      = new JourneyTransportModel();
+        // Count everything that departs before end of today
+        $end_today  = date(DATE_FORMAT_DB) . ' 23:59:59';
+        $raw_data   = $model->where('journey_status', 'as_planned')->where('departure_date_time <=', $end_today)->orderBy('departure_date_time', 'asc')->findAll();
+        // Prepare the data
+        $generic_stats       = [];
+        $distant_by_year     = []; // only flights
+        $distant_by_year_sum = []; // only flights
+        foreach ($raw_data as $row) {
+            $year = substr($row['departure_date_time'], 0, 4);
+            // Generic
+            $generic_stats['count_by_mode'][$row['mode_of_transport']] = (isset($generic_stats['count_by_mode'][$row['mode_of_transport']]) ? $generic_stats['count_by_mode'][$row['mode_of_transport']] + 1 : 1);
+            $generic_stats['distant_by_mode'][$row['mode_of_transport']] = (isset($generic_stats['distant_by_mode'][$row['mode_of_transport']]) ? $generic_stats['distant_by_mode'][$row['mode_of_transport']] + $row['distance_traveled'] : $row['distance_traveled']);
+            // Distant
+            if ('airplane' == $row['mode_of_transport']) {
+                $distant_by_year[$year][] = $row['distance_traveled'];
+                $distant_by_year_sum[$year] = (isset($distant_by_year_sum[$year]) ? $distant_by_year_sum[$year] + $row['distance_traveled'] : $row['distance_traveled']);
+            }
+        }
+        $data = [
+            'page_title'          => 'Statistics',
+            'slug'                => 'transport',
+            'user_session'        => $session->user,
+            'roles'               => $session->roles,
+            'current_role'        => $session->current_role,
+            'color_classes'       => $this->color_classes,
+            'countries'           => lang('ListCountries.countries'),
+            'modes_of_transport'  => $model->getModeOfTransport(),
+            'generic_stats'       => $generic_stats,
+            'distant_by_year'     => $distant_by_year,
+            'distant_by_year_sum' => $distant_by_year_sum,
+            'distant_by_year_max' => max($distant_by_year_sum),
+        ];
+        return view('journey_transport_statistics', $data);
     }
 
     /************************************************************************

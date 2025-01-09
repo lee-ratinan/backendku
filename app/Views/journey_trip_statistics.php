@@ -101,8 +101,4 @@ $this->extend($layout);
             </div>
         </div>
     </section>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-        });
-    </script>
 <?php $this->endSection() ?>
