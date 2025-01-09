@@ -115,18 +115,17 @@ class Journey extends BaseController
         $model    = new JourneyMasterModel();
         $raw_data = $model->where('journey_status', 'as_planned')->where('date_entry <=', date(DATE_FORMAT_DB))->findAll();
         $visited_countries_by_year    = [];
-        $countries_frequently_visited = [];
+        $countries_by_visits          = [];
         foreach ($raw_data as $row) {
             $year_1 = intval(substr($row['date_entry'], 0, 4));
             $year_2 = intval(substr($row['date_exit'], 0, 4));
-            // produce the array of years from $year_1 to $year_2
             $years  = range($year_1, $year_2);
             foreach ($years as $year) {
                 $visited_countries_by_year[$year][$row['country_code']] = 1;
             }
-            $countries_frequently_visited[$row['country_code']] = (isset($countries_frequently_visited[$row['country_code']]) ? $countries_frequently_visited[$row['country_code']] + 1 : 1);
+            $countries_by_visits[$row['country_code']] = (isset($countries_by_visits[$row['country_code']]) ? $countries_by_visits[$row['country_code']] + 1 : 1);
         }
-        ksort($countries_frequently_visited);
+        ksort($countries_by_visits);
         $data = [
             'page_title'                   => 'Statistics',
             'slug'                         => 'trip',
@@ -134,7 +133,7 @@ class Journey extends BaseController
             'roles'                        => $session->roles,
             'current_role'                 => $session->current_role,
             'visited_countries_by_year'    => $visited_countries_by_year,
-            'countries_frequently_visited' => $countries_frequently_visited,
+            'countries_by_visits'          => $countries_by_visits,
             'countries'                    => lang('ListCountries.countries'),
             'countries_considered_home'    => ['SG', 'TH']
         ];
@@ -354,6 +353,40 @@ class Journey extends BaseController
         if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
             return permission_denied('json');
         }
+    }
+
+    /**
+     * @return string
+     */
+    public function accommodationStatistics(): string
+    {
+        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
+            return permission_denied();
+        }
+        $session    = session();
+        $model      = new JourneyAccommodationModel();
+        $by_country = [];
+        $by_year    = [];
+        $raw_data   = $model->where('journey_status', 'as_planned')->where('check_in_date <=', date(DATE_FORMAT_DB))->orderBy('check_in_date', 'asc')->findAll();
+        foreach ($raw_data as $row) {
+            // count it based on check-in date, although check-out is not in the same year...
+            $year = substr($row['check_in_date'], 0, 4);
+            $by_year[$year][$row['country_code']][] = $row['night_count'];
+            $by_country[$row['country_code']][]     = $row['night_count'];
+        }
+        ksort($by_country);
+        $data = [
+            'page_title'    => 'Statistics',
+            'slug'          => 'accommodation',
+            'user_session'  => $session->user,
+            'roles'         => $session->roles,
+            'current_role'  => $session->current_role,
+            'color_classes' => $this->color_classes,
+            'countries'     => lang('ListCountries.countries'),
+            'by_year'       => $by_year,
+            'by_country'    => $by_country,
+        ];
+        return view('journey_accommodation_statistics', $data);
     }
 
     /************************************************************************

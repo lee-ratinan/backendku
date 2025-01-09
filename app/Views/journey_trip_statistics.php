@@ -53,10 +53,10 @@ $this->extend($layout);
             <div class="col-12 col-md-6">
                 <div class="card">
                     <div class="card-body text-center p-5">
-                        <h2><i class="fa-solid fa-globe-asia"></i> <?= count($countries_frequently_visited) ?></h2>
+                        <h2><i class="fa-solid fa-globe-asia"></i> <?= count($countries_by_visits) ?></h2>
                         <h3>Visited Countries</h3>
                         <h4>
-                            <?php foreach ($countries_frequently_visited as $country_code => $count) : ?>
+                            <?php foreach ($countries_by_visits as $country_code => $count) : ?>
                             <span class="badge text-bg-<?= in_array($country_code, $countries_considered_home) ? 'warning' : 'primary' ?> rounded-pill m-1"><span class="flag-icon flag-icon-<?= strtolower($country_code) ?>"></span> <?= $countries[$country_code]['common_name'] ?></span>
                             <?php endforeach; ?>
                         </h4>
@@ -64,7 +64,7 @@ $this->extend($layout);
                 </div>
                 <div class="card">
                     <div class="card-body p-3">
-                        <h2>Countries Frequently Visited</h2>
+                        <h2>Countries by Visits</h2>
                         <table class="table table-sm table-striped table-hover">
                             <thead>
                             <tr>
@@ -77,12 +77,12 @@ $this->extend($layout);
                             <?php foreach ($countries_considered_home as $country_code) : ?>
                                 <tr>
                                     <td><h5><span class="flag-icon flag-icon-<?= strtolower($country_code) ?>"></span> <?= $countries[$country_code]['common_name'] ?></h5></td>
-                                    <td colspan="2"><h5><span class="badge text-bg-warning rounded-pill"><?= $countries_frequently_visited[$country_code] ?></span></h5></td>
+                                    <td colspan="2"><h5><span class="badge text-bg-warning rounded-pill"><?= $countries_by_visits[$country_code] ?></span></h5></td>
                                 </tr>
-                                <?php unset($countries_frequently_visited[$country_code]); ?>
+                                <?php unset($countries_by_visits[$country_code]); ?>
                             <?php endforeach; ?>
-                            <?php $frequent_max = max($countries_frequently_visited); ?>
-                            <?php foreach ($countries_frequently_visited as $country_code => $count) : ?>
+                            <?php $frequent_max = max($countries_by_visits); ?>
+                            <?php foreach ($countries_by_visits as $country_code => $count) : ?>
                                 <tr>
                                     <td><span class="flag-icon flag-icon-<?= strtolower($country_code) ?>"></span> <?= $countries[$country_code]['common_name'] ?></td>
                                     <td><?= $count ?></td>
