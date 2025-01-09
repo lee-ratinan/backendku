@@ -26,19 +26,35 @@ $this->extend($layout);
                                 <label for="country_code" class="form-label">Country</label><br>
                                 <select class="form-select form-select-sm" id="country_code">
                                     <option value="">All</option>
-                                    <?php foreach ($countries as $code => $name): ?>
-                                        <option value="<?= $code ?>"><?= $name ?></option>
-                                    <?php endforeach; ?>
+                                    <option value="XV">Vacation</option>
+                                    <optgroup label="Australia">
+                                        <option value="AU-ALL">Australia’s Holidays</option>
+                                        <option value="AU-NAT">Australia National</option>
+                                        <option value="AU-NSW">New South Wales</option>
+                                        <option value="AU-QLD">Queensland</option>
+                                        <option value="AU-VIC">Victoria</option>
+                                        <option value="AU-WA">Western Australia</option>
+                                    </optgroup>
+                                    <optgroup label="Southeast Asia">
+                                        <option value="SG">Singapore</option>
+                                        <option value="TH">Thailand</option>
+                                    </optgroup>
+                                    <optgroup label="United States">
+                                        <option value="US-ALL">All US Holidays</option>
+                                        <option value="US-FED">US Federal</option>
+                                        <option value="US-CA">California</option>
+                                        <option value="US-IL">Illinois</option>
+                                        <option value="US-NY">New York</option>
+                                    </optgroup>
                                 </select>
                             </div>
                             <div class="col">
-                                <label for="year" class="form-label">Year</label><br>
-                                <select class="form-select form-select-sm" id="year">
-                                    <option value="">All</option>
-                                    <?php for ($year = date('Y'); $year > 2019; $year--): ?>
-                                        <option value="<?= $year ?>"><?= $year ?></option>
-                                    <?php endfor; ?>
-                                </select>
+                                <label for="start" class="form-label">Start</label><br>
+                                <input type="date" class="form-control form-control-sm" id="start" value="<?= date('Y') ?>-01-01" min="2025-01-01" />
+                            </div>
+                            <div class="col">
+                                <label for="end" class="form-label">End</label><br>
+                                <input type="date" class="form-control form-control-sm" id="end" value="<?= date('Y') ?>-12-31" min="2025-01-01" />
                             </div>
                         </div>
                         <div class="row mb-3">
@@ -51,11 +67,8 @@ $this->extend($layout);
                             <table class="table table-sm table-striped table-hover">
                                 <thead>
                                 <tr>
-                                    <th></th>
-                                    <th>ID</th>
-                                    <th style="min-width:120px;">Country</th>
-                                    <th style="min-width:200px;">Date(s)</th>
-                                    <th style="min-width:200px;">Name</th>
+                                    <th style="min-width:120px;">Date</th>
+                                    <th style="min-width:200px;">Detail</th>
                                 </tr>
                                 </thead>
                                 <tbody></tbody>
@@ -73,17 +86,18 @@ $this->extend($layout);
                 serverSide: true,
                 fixedHeader: true,
                 searching: true,
-                pageLength: 50,
+                pageLength: -1,
                 ajax: {
                     url: '<?= base_url($session->locale . '/office/journey/holiday') ?>',
                     type: 'POST',
                     data: function (d) {
                         d.country_code = $('#country_code').val();
-                        d.year = $('#year').val();
+                        d.start = $('#start').val();
+                        d.end = $('#end').val();
                     },
                 },
-                order: [[3, 'desc']],
-                columnDefs: [{orderable: false, targets: 0}],
+                ordering: false,
+                paging: false
             });
             $('#btn-filter').on('click', function () {
                 table.ajax.reload();

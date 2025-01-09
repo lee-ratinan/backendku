@@ -544,19 +544,12 @@ class Journey extends BaseController
             return permission_denied();
         }
         $session   = session();
-        $countries = ['AU', 'SG', 'TH', 'US'];
-        $dropdown  = [];
-        foreach ($countries as $country_code) {
-            $dropdown[$country_code] = lang('ListCountries.countries.' . $country_code . '.common_name');
-        }
-        $dropdown['XV'] = 'Vacation';
         $data           = [
             'page_title'   => 'Holiday',
             'slug'         => 'holiday',
             'user_session' => $session->user,
             'roles'        => $session->roles,
             'current_role' => $session->current_role,
-            'countries'    => $dropdown,
         ];
         return view('journey_holiday', $data);
     }
@@ -570,24 +563,12 @@ class Journey extends BaseController
             return permission_denied('datatables');
         }
         $model              = new JourneyHolidayModel();
-        $columns            = [
-            '',
-            'id',
-            'country_code',
-            'holiday_date',
-            'holiday_name'
-        ];
-        $order              = $this->request->getPost('order');
         $search             = $this->request->getPost('search');
-        $start              = $this->request->getPost('start');
-        $length             = $this->request->getPost('length');
-        $order_column_index = $order[0]['column'] ?? 0;
-        $order_column       = $columns[$order_column_index];
-        $order_direction    = $order[0]['dir'] ?? 'desc';
         $search_value       = $search['value'];
         $country_code       = $this->request->getPost('country_code');
-        $year               = $this->request->getPost('year');
-        $result             = $model->getDataTables($start, $length, $order_column, $order_direction, $search_value, $country_code, $year);
+        $start              = $this->request->getPost('start');
+        $end                = $this->request->getPost('end');
+        $result             = $model->getDataTables($search_value, $country_code, $start, $end);
         return $this->response->setJSON([
             'draw'            => $this->request->getPost('draw'),
             'recordsTotal'    => $result['recordsTotal'],
