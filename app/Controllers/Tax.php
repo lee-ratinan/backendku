@@ -56,7 +56,7 @@ class Tax extends BaseController
     private array $deductions = [
         'AU' => 0,
         'SG' => 1000,
-        'TH' => 50000,
+        'TH' => 60000,
     ];
 
     private function taxCalculation(float $annual_income, string $country_code): array
@@ -65,7 +65,11 @@ class Tax extends BaseController
             return [];
         }
         $tax_brackets   = $this->tax_brackets[$country_code];
-        $taxable_income = $annual_income - $this->deductions[$country_code];
+        $deduction      = $this->deductions[$country_code];
+        if ('SG' == $country_code) {
+            $deduction += min(102000, $annual_income * 0.2); // CPF
+        }
+        $taxable_income = $annual_income - $deduction;
         $total_tax      = 0.00;
         $prev_limit     = 0;
         $line_details   = [];
@@ -86,7 +90,7 @@ class Tax extends BaseController
             $prev_limit = $limit;
         }
         return [
-            'deduction'      => $this->deductions[$country_code],
+            'deduction'      => $deduction,
             'taxable_income' => $taxable_income,
             'lines'          => $line_details,
             'total'          => $total_tax,
