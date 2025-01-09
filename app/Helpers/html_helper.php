@@ -342,3 +342,25 @@ function currency_format(string $currency_code, float $amount): string
     }
     return str_replace('###', $formatted_amount, $currency_format[$currency_code]);
 }
+
+/**
+ * Get role icons
+ * @param string $role
+ * @return string|array
+ */
+function get_role_icons(string $role = ''): string|array
+{
+    $roles = [
+        'super-admin'  => '<i class="fa-solid fa-screwdriver-wrench fa-2x"></i>',
+        'master-admin' => '<i class="fa-brands fa-black-tie fa-2x"></i>',
+        'finance'      => '<i class="fa-solid fa-hand-holding-dollar fa-2x"></i>',
+        'health'       => '<i class="fa-solid fa-heart-pulse fa-2x"></i>',
+        'journey'      => '<i class="fa-solid fa-person-walking-luggage fa-2x"></i>',
+        'migrate'      => '<i class="fa-solid fa-plane fa-2x fa-rotate-by" style="--fa-rotate-angle: -45deg;"></i>',
+        'profile'      => '<i class="fa-regular fa-id-badge fa-2x"></i>',
+    ];
+    if (empty($role)) {
+        return $roles;
+    }
+    return $roles[$role] ?? $role;
+}
