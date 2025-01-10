@@ -126,6 +126,7 @@ $routes->group('{locale}/office', ['filter' => 'auth'], static function ($routes
     $routes->get('journey/trip/edit/(:any)', 'Journey::tripEdit/$1');
     $routes->post('journey/trip/edit', 'Journey::tripSave');
     $routes->get('journey/trip/statistics', 'Journey::tripStatistics');
+    $routes->get('journey/trip/finance', 'Journey::tripFinance');
     // journey_transport table
     $routes->get('journey/transport', 'Journey::transport');
     $routes->post('journey/transport', 'Journey::transportList');

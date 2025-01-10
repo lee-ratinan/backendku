@@ -140,6 +140,77 @@ class Journey extends BaseController
         return view('journey_trip_statistics', $data);
     }
 
+    /**
+     * @return string
+     */
+    public function tripFinance(): string
+    {
+        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
+            return permission_denied();
+        }
+        $session                = session();
+        $transport_model        = new JourneyTransportModel();
+        $accommodation_model    = new JourneyAccommodationModel();
+        $attraction_model       = new JourneyAttractionModel();
+        $financial_data         = [];
+        $all_currencies         = [];
+        $end_today              = date(DATE_FORMAT_DB) . ' 23:59:59';
+        $raw_transport_data     = $transport_model->where('journey_status', 'as_planned')->where('departure_date_time <=', $end_today)
+            ->groupStart()->where('price_amount >', 0)->orWhere('charged_amount >', 0)->groupEnd()
+            ->orderBy('departure_date_time', 'asc')->findAll();
+        $raw_accommodation_data = $accommodation_model->where('journey_status', 'as_planned')->where('check_in_date <=', date(DATE_FORMAT_DB))
+            ->groupStart()->where('price_amount >', 0)->orWhere('charged_amount >', 0)->groupEnd()
+            ->orderBy('check_in_date', 'asc')->findAll();
+        $raw_attraction_data    = $attraction_model->where('journey_status', 'as_planned')->where('attraction_date <=', date(DATE_FORMAT_DB))
+            ->groupStart()->where('price_amount >', 0)->orWhere('charged_amount >', 0)->groupEnd()
+            ->orderBy('attraction_date', 'asc')->findAll();
+        foreach ($raw_transport_data as $row) {
+            $year     = substr($row['departure_date_time'], 0, 4);
+            $price    = $row['price_amount'];
+            $currency = $row['price_currency_code'];
+            if (0 < $row['charged_amount']) {
+                $price    = $row['charged_amount'];
+                $currency = $row['charged_currency_code'];
+            }
+            $financial_data[$year]['transport'][$currency][] = $price;
+            $all_currencies[$currency] = 1;
+        }
+        foreach ($raw_accommodation_data as $row) {
+            $year     = substr($row['check_in_date'], 0, 4);
+            $price    = $row['price_amount'];
+            $currency = $row['price_currency_code'];
+            if (0 < $row['charged_amount']) {
+                $price    = $row['charged_amount'];
+                $currency = $row['charged_currency_code'];
+            }
+            $financial_data[$year]['accommodation'][$currency][] = $price;
+            $all_currencies[$currency] = 1;
+        }
+        foreach ($raw_attraction_data as $row) {
+            $year     = substr($row['attraction_date'], 0, 4);
+            $price    = $row['price_amount'];
+            $currency = $row['price_currency_code'];
+            if (0 < $row['charged_amount']) {
+                $price    = $row['charged_amount'];
+                $currency = $row['charged_currency_code'];
+            }
+            $financial_data[$year]['attraction'][$currency][] = $price;
+            $all_currencies[$currency] = 1;
+        }
+        ksort($all_currencies);
+        $data = [
+            'page_title'     => 'Finance',
+            'slug'           => 'trip',
+            'user_session'   => $session->user,
+            'roles'          => $session->roles,
+            'current_role'   => $session->current_role,
+            'color_classes'  => $this->color_classes,
+            'financial_data' => $financial_data,
+            'all_currencies' => array_keys($all_currencies),
+        ];
+        return view('journey_trip_finance', $data);
+    }
+
     /************************************************************************
      * TRANSPORT
      ************************************************************************/

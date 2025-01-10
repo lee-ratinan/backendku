@@ -7,6 +7,12 @@ helper('math');
 <?= $this->section('content') ?>
 <?php $session = session(); ?>
     <div class="pagetitle">
+        <div class="float-end">
+            <a class="btn btn-outline-primary btn-sm me-3" href="<?= base_url($session->locale . '/office/journey/trip/statistics') ?>"><i class="fa-solid fa-passport"></i> Trip</a>
+            <a class="btn btn-outline-primary btn-sm me-3 disabled" href="<?= base_url($session->locale . '/office/journey/transport/statistics') ?>" disabled><i class="fa-solid fa-person-walking-luggage"></i> Transport</a>
+            <a class="btn btn-outline-primary btn-sm me-3" href="<?= base_url($session->locale . '/office/journey/accommodation/statistics') ?>"><i class="fa-solid fa-bed"></i> Accommodation</a>
+            <a class="btn btn-outline-primary btn-sm" href="<?= base_url($session->locale . '/office/journey/trip/finance') ?>"><i class="fa-regular fa-credit-card"></i> Finance</a>
+        </div>
         <h1><?= $page_title ?></h1>
         <nav>
             <ol class="breadcrumb">
