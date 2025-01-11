@@ -172,9 +172,9 @@ class JourneyTransportModel extends Model
             $journey_details = str_replace('[RI]', '<span class="badge bg-success"><i class="fa-solid fa-hand-holding-dollar"></i> REIMBURSED</span>', $journey_details);
             if ('Y' == $row['is_time_known']) {
                 $departure_time  = date(DATETIME_FORMAT_UI, strtotime($row['departure_date_time']));
-                $departure_time .= '<br><small>' . lang('ListTimeZones.' . $row['departure_timezone'] . '.label') . '</small>';
+                $departure_time .= '<br><small>' . lang('ListTimeZones.timezones.' . $row['departure_timezone'] . '.label') . '</small>';
                 $arrival_time    = date(DATETIME_FORMAT_UI, strtotime($row['arrival_date_time']));
-                $arrival_time   .= '<br><small>' . lang('ListTimeZones.' . $row['arrival_timezone'] . '.label') . '</small>';
+                $arrival_time   .= '<br><small>' . lang('ListTimeZones.timezones.' . $row['arrival_timezone'] . '.label') . '</small>';
             } else {
                 $departure_time = date(DATE_FORMAT_UI, strtotime($row['departure_date_time']));
                 $arrival_time   = date(DATE_FORMAT_UI, strtotime($row['arrival_date_time']));

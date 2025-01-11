@@ -19,6 +19,7 @@ class JourneyMasterModel extends Model
         'entry_port_id',
         'exit_port_id',
         'visa_info',
+        'trip_tags',
         'journey_details',
         'journey_status',
         'created_by',
@@ -45,6 +46,7 @@ class JourneyMasterModel extends Model
                 ->like('trip_code', $search_value)
                 ->orLike('visa_info', $search_value)
                 ->orLike('journey_details', $search_value)
+                ->orLike('trip_tags', $search_value)
                 ->orLike('entry_port.port_name', $search_value)
                 ->orLike('exit_port.port_name', $search_value)
                 ->groupEnd();
@@ -112,6 +114,8 @@ class JourneyMasterModel extends Model
             if ('canceled' == $row['journey_status']) {
                 $class    = 'text-danger';
             }
+            $split_tags   = explode(',', $row['trip_tags']);
+            $tags         = '<span class="badge bg-primary rounded-pill">' . implode('</span><span class="badge bg-primary rounded-pill">', $split_tags) . '</span>';
             $result[]     = [
                 '<a class="btn btn-outline-primary btn-sm" href="' . base_url($locale . '/office/journey/trip/edit/' . $new_id) . '"><i class="fa-solid fa-edit"></i></a>',
                 $row['id'],
@@ -122,6 +126,7 @@ class JourneyMasterModel extends Model
                 $row['entry_port_name'],
                 $row['exit_port_name'],
                 $row['journey_details'],
+                $tags,
                 translate_journey_status($row['journey_status'], $row['date_entry'], $row['date_exit'] ?? '', $today)
             ];
         }

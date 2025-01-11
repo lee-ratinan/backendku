@@ -14,6 +14,7 @@ class JourneyAccommodationModel extends Model
         'country_code',
         'check_in_date',
         'check_out_date',
+        'accommodation_timezone',
         'night_count',
         'hotel_name',
         'hotel_address',
@@ -101,12 +102,18 @@ class JourneyAccommodationModel extends Model
             if ('canceled' == $row['journey_status']) {
                 $class    = 'text-danger';
             }
+            $check_in  = date(DATE_FORMAT_UI, strtotime($row['check_in_date']));
+            $check_out = date(DATE_FORMAT_UI, strtotime($row['check_out_date']));
+            if (!is_null($row['accommodation_timezone'])) {
+                $check_in  = date(DATETIME_FORMAT_UI, strtotime($row['check_in_date'])) . '<br><small>' . lang('ListTimeZones.timezones.' . $row['accommodation_timezone'] . '.label') . '</small>';
+                $check_out = date(DATETIME_FORMAT_UI, strtotime($row['check_out_date'])) . '<br><small>' . lang('ListTimeZones.timezones.' . $row['accommodation_timezone'] . '.label') . '</small>';
+            }
             $result[]     = [
                 '<a class="btn btn-outline-primary btn-sm" href="' . base_url($locale . '/office/journey/accommodation/edit/' . $new_id) . '"><i class="fa-solid fa-edit"></i></a>',
                 $row['id'],
                 '<span class="flag-icon flag-icon-' . strtolower($row['country_code']) . '"></span><h5 class="' . $class . '">' . $countries[$row['country_code']]['common_name'] . '</h5>',
-                (empty($row['check_in_date']) ? '' : date(DATE_FORMAT_UI, strtotime($row['check_in_date']))),
-                (empty($row['check_out_date']) ? '' : date(DATE_FORMAT_UI, strtotime($row['check_out_date']))),
+                $check_in,
+                $check_out,
                 $row['night_count'],
                 $row['hotel_name'] . '<br><small>' . $row['hotel_address'] . '</small>',
                 $row['booking_channel'],

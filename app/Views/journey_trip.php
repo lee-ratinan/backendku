@@ -71,6 +71,7 @@ $this->extend($layout);
                                     <th style="min-width:150px;">Entry</th>
                                     <th style="min-width:150px;">Exit</th>
                                     <th style="min-width:180px;">Details</th>
+                                    <th style="min-width:120px;">Tags</th>
                                     <th style="min-width:120px;">Status</th>
                                 </tr>
                                 </thead>
