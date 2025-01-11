@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\CompanyCPFModel;
+use App\Models\CompanyCPFStatementModel;
 use App\Models\CompanyFreelanceProjectModel;
 use App\Models\CompanyMasterModel;
 use App\Models\CompanySalaryModel;
@@ -297,6 +298,28 @@ class Employment extends BaseController
         if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
             return permission_denied('json');
         }
+    }
+
+    /**
+     * CPF Annual Statement
+     * @return string
+     */
+    public function cpfStatement(): string
+    {
+        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
+            return permission_denied();
+        }
+        $session = session();
+        $model   = new CompanyCPFStatementModel();
+        $data    = [
+            'page_title'   => 'CPF Statement',
+            'slug'         => 'cpf',
+            'user_session' => $session->user,
+            'roles'        => $session->roles,
+            'current_role' => $session->current_role,
+            'statements'   => $model->findAll()
+        ];
+        return view('employment_cpf_statement', $data);
     }
 
     /************************************************************************

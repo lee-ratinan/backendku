@@ -24,9 +24,8 @@ $this->extend($layout);
                         <h3>Switch Role</h3>
                         <div class="row g-3">
                             <?php foreach ($session->roles as $role): ?>
-                                <?php if ($role == $session->current_role) continue; ?>
                                 <div class="col-6 col-lg-4">
-                                    <button class="btn btn-outline-primary w-100 p-3 btn-switch-role" data-role="<?= $role ?>"><?= get_role_icons($role) ?><br><?= $role ?></button>
+                                    <button class="btn btn-outline-primary w-100 p-3 btn-switch-role <?= ($role == $session->current_role ? 'disabled' : '') ?>" data-role="<?= $role ?>" <?= ($role == $session->current_role ? 'disabled' : '') ?>><?= get_role_icons($role, TRUE) ?></button>
                                 </div>
                             <?php endforeach; ?>
                         </div>

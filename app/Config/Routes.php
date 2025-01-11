@@ -85,6 +85,7 @@ $routes->group('{locale}/office', ['filter' => 'auth'], static function ($routes
     $routes->get('employment/cpf/create', 'Employment::cpfEdit/new');
     $routes->get('employment/cpf/edit/(:any)', 'Employment::cpfEdit/$1');
     $routes->post('employment/cpf/edit', 'Employment::cpfSave');
+    $routes->get('employment/cpf/statement', 'Employment::cpfStatement');
     // company_freelance_project and company_freelance_income
     $routes->get('employment/freelance', 'Employment::freelance');
     $routes->post('employment/freelance', 'Employment::freelanceList');

@@ -346,21 +346,25 @@ function currency_format(string $currency_code, float $amount): string
 /**
  * Get role icons
  * @param string $role
+ * @param bool $show_role_name
  * @return string|array
  */
-function get_role_icons(string $role = ''): string|array
+function get_role_icons(string $role = '', bool $show_role_name = FALSE): string|array
 {
     $roles = [
-        'super-admin'  => '<i class="fa-solid fa-screwdriver-wrench fa-2x"></i>',
-        'master-admin' => '<i class="fa-brands fa-black-tie fa-2x"></i>',
-        'finance'      => '<i class="fa-solid fa-hand-holding-dollar fa-2x"></i>',
-        'health'       => '<i class="fa-solid fa-heart-pulse fa-2x"></i>',
-        'journey'      => '<i class="fa-solid fa-person-walking-luggage fa-2x"></i>',
-        'migrate'      => '<i class="fa-solid fa-plane fa-2x fa-rotate-by" style="--fa-rotate-angle: -45deg;"></i>',
-        'profile'      => '<i class="fa-regular fa-id-badge fa-2x"></i>',
+        'super-admin'  => ['<i class="fa-solid fa-screwdriver-wrench fa-2x"></i>', 'Super Admin'],
+        'master-admin' => ['<i class="fa-brands fa-black-tie fa-2x"></i>', 'Master Admin'],
+        'finance'      => ['<i class="fa-solid fa-hand-holding-dollar fa-2x"></i>', 'Finance'],
+        'health'       => ['<i class="fa-solid fa-heart-pulse fa-2x"></i>', 'Health'],
+        'journey'      => ['<i class="fa-solid fa-person-walking-luggage fa-2x"></i>', 'Journey'],
+        'migrate'      => ['<i class="fa-solid fa-plane fa-2x fa-rotate-by" style="--fa-rotate-angle: -45deg;"></i>', 'Migrate'],
+        'profile'      => ['<i class="fa-regular fa-id-badge fa-2x"></i>', 'Profile'],
     ];
     if (empty($role)) {
         return $roles;
     }
-    return $roles[$role] ?? $role;
+    if ($show_role_name) {
+        return ($roles[$role] ? $roles[$role][0] . '<br>' . $roles[$role][1] : $role);
+    }
+    return $roles[$role][0] ?? $role;
 }
