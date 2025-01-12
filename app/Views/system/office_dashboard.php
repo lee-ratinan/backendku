@@ -18,9 +18,11 @@ $this->extend($layout);
             <div class="col-12 col-md-6">
                 <div class="card">
                     <div class="card-body">
-                        <div class="float-end"><?= get_role_icons($session->current_role) ?></div>
                         <h2>Your Roles</h2>
-                        <p>You are logged in as <b><?= $session->current_role ?>.</b></p>
+                        <p>You are logged in as</p>
+                        <div class="badge text-bg-secondary w-100 p-3 mb-3">
+                            <h4><?= get_role_icons($session->current_role, TRUE) ?></h4>
+                        </div>
                         <h3>Switch Role</h3>
                         <div class="row g-3">
                             <?php foreach ($session->roles as $role): ?>

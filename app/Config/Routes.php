@@ -160,4 +160,12 @@ $routes->group('{locale}/office', ['filter' => 'auth'], static function ($routes
     // Summary, export, statistics, etc
     $routes->get('journey/export', 'Journey::export');
     $routes->get('journey/fix', 'Journey::fix');
+    /////////////////////////////////////////////////////////////////////////////
+    // PROFILE
+    // Profile
+    $routes->get('profile/data', 'Profile::index');
+    // Resume
+    $routes->get('profile/resume', 'Profile::resume');
+    $routes->get('profile/resume/builder', 'Profile::resumeBuilder');
+    $routes->get('profile/resume/cover-letter', 'Profile::resumeCoverLetter');
 });
