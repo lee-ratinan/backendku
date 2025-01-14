@@ -32,6 +32,114 @@ class JourneyMasterModel extends Model
     protected $updatedField = 'updated_at';
     const ID_NONCE = 827;
 
+    private array $configurations = [
+        'id'            => [
+            'type'      => 'hidden',
+            'label_key' => 'TablesOrganization.OrganizationMaster.id'
+        ],
+        'trip_code'     => [
+            'type'        => 'text',
+            'label'       => 'Trip Code',
+            'required'    => false,
+            'maxlength'   => 8,
+            'placeholder' => 'NRT2025'
+        ],
+        'country_code'  => [
+            'type'        => 'select',
+            'label'       => 'Country',
+            'required'    => true,
+            'placeholder' => 'US',
+            'options'     => []
+        ],
+        'date_entry'    => [
+            'type'        => 'date',
+            'label'       => 'Entry',
+            'required'    => true,
+            'placeholder' => '2025-01-01'
+        ],
+        'date_exit'     => [
+            'type'        => 'date',
+            'label'       => 'Exit',
+            'required'    => true,
+            'placeholder' => '2025-01-01'
+        ],
+        'day_count'     => [
+            'type'        => 'number',
+            'label'       => 'Day Count',
+            'required'    => true,
+            'placeholder' => '5'
+        ],
+        'entry_port_id' => [
+            'type'        => 'select',
+            'label'       => 'Port of Entry',
+            'required'    => true,
+            'options'     => []
+        ],
+        'exit_port_id'  => [
+            'type'        => 'select',
+            'label'       => 'Port of Exit',
+            'required'    => true,
+            'options'     => []
+        ],
+        'visa_info'     => [
+            'type'        => 'text',
+            'label'       => 'Visa Information',
+            'required'    => false,
+            'maxlength'   => 128,
+            'placeholder' => 'Visitor Visa'
+        ],
+        'trip_tags'     => [
+            'type'        => 'text',
+            'label'       => 'Trip Tags',
+            'required'    => false,
+            'maxlength'   => 256,
+            'placeholder' => 'vacation, family'
+        ],
+        'journey_details'     => [
+            'type'        => 'text',
+            'label'       => 'Journey Details',
+            'required'    => false,
+            'maxlength'   => 8,
+            'placeholder' => 'NRT2025'
+        ],
+        'journey_status'     => [
+            'type'        => 'select',
+            'label'       => 'Status',
+            'required'    => true,
+            'options' => [
+                'as_planned' => 'As Planned',
+                'canceled'   => 'Canceled',
+            ]
+        ]
+    ];
+
+    /**
+     * Get configurations for generating forms
+     * @param array $columns
+     * @return array
+     */
+    public function getConfigurations(array $columns = []): array
+    {
+        $configurations  = $this->configurations;
+        // Countries
+        $countries       = lang('ListCountries.countries');
+        $final_countries = array_map(function ($value) {
+            return $value['common_name'];
+        }, $countries);
+        $configurations['country_code']['options'] = $final_countries;
+        // Ports
+        $port_model      = new JourneyPortModel();
+        $ports           = $port_model->orderBy('mode_of_transport', 'asc')->orderBy('port_name', 'asc')->findAll();
+        $modes           = $port_model->getModeOfTransport();
+        $all_ports       = [];
+        foreach ($ports as $port) {
+            $all_ports[$port['id']] = (!empty($port['port_code_1']) ? '[' . $port['port_code_1'] . '] ' : '') . $port['port_name'] . ', ' . $modes[$port['mode_of_transport']];
+        }
+        $configurations['entry_port_id']['options'] = $all_ports;
+        $configurations['exit_port_id']['options']  = $all_ports;
+        return $columns ? array_intersect_key($configurations, array_flip($columns)) : $configurations;
+    }
+
     /**
      * @param string $search_value
      * @param string $country_code
@@ -137,4 +245,29 @@ class JourneyMasterModel extends Model
         ];
     }
 
+    /**
+     * Get everything under this trip_id
+     * @param int $trip_id
+     * @return array
+     */
+    public function getTripData(int $trip_id): array
+    {
+        $real_id             = $trip_id / self::ID_NONCE;
+        $master_data         = $this->find($real_id);
+        if (empty($master_data)) {
+            return [];
+        }
+        $transport_model     = new JourneyTransportModel();
+        $accommodation_model = new JourneyAccommodationModel();
+        $attraction_model    = new JourneyAttractionModel();
+        $transport_data      = $transport_model->findById($real_id, 'journey_id');
+        $accommodation_data  = $accommodation_model->where('journey_id', $real_id)->orderBy('check_in_date', 'asc')->findAll();
+        $attraction_data     = $attraction_model->where('journey_id', $real_id)->orderBy('attraction_date', 'asc')->findAll();
+        return [
+            'master_data'         => $master_data,
+            'transport_data'      => $transport_data,
+            'accommodation_data'  => $accommodation_data,
+            'attraction_data'     => $attraction_data
+        ];
+    }
 }

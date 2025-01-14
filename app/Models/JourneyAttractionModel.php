@@ -14,6 +14,7 @@ class JourneyAttractionModel extends Model
         'country_code',
         'attraction_date',
         'attraction_title',
+        'attraction_type',
         'price_amount',
         'price_currency_code',
         'charged_amount',
@@ -43,6 +44,7 @@ class JourneyAttractionModel extends Model
         if (!empty($search_value)) {
             $this->groupStart()
                 ->like('attraction_title', $search_value)
+                ->orLike('attraction_type', $search_value)
                 ->orLike('journey_details', $search_value)
                 ->groupEnd();
         }
@@ -50,8 +52,8 @@ class JourneyAttractionModel extends Model
             $this->where('country_code', $country_code);
         }
         if (!empty($year)) {
-            $this->where('attraction_date <=', $year . '-12-31')
-                ->where('attraction_date >=', $year . '-01-01');
+            $this->where('attraction_date <=', $year . '-12-31 23:59:59')
+                ->where('attraction_date >=', $year . '-01-01 00:00:00');
         }
         if (!empty($journey_status)) {
             $this->where('journey_status', $journey_status);
@@ -96,6 +98,7 @@ class JourneyAttractionModel extends Model
                 '<span class="flag-icon flag-icon-' . strtolower($row['country_code']) . '"></span><h5 class="' . $class . '">' . $countries[$row['country_code']]['common_name'] . '</h5>',
                 (empty($row['attraction_date']) ? '' : date(DATE_FORMAT_UI, strtotime($row['attraction_date']))),
                 $row['attraction_title'],
+                $row['attraction_type'],
                 (empty($row['price_amount']) ? '-' : currency_format($row['price_currency_code'], $row['price_amount'])) .
                 (empty($row['charged_amount']) ? '' : '<br><span class="badge badge-success"><i class="fa-regular fa-credit-card"></i></span>' . currency_format($row['charged_currency_code'], $row['charged_amount'])),
                 $journey_details,

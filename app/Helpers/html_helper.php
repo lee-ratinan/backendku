@@ -24,10 +24,11 @@ function generate_form_field(string $id, array $configuration, int|string|array 
     $max        = (is_numeric(@$configuration['max']) ? "max='{$configuration['max']}'" : '');
     $minlength  = (@$configuration['minlength'] ? "minlength='{$configuration['minlength']}'" : '');
     $maxlength  = (@$configuration['maxlength'] ? "maxlength='{$configuration['maxlength']}'" : '');
+    $label      = (isset($configuration['label_key']) ? lang($configuration['label_key']) : $configuration['label']);
     if (in_array($input_type, ['text', 'email', 'password', 'number', 'date', 'time', 'datetime-local', 'month', 'week', 'url', 'search', 'color'])) {
         $placeholder = @$configuration['placeholder'] ?? '';
         $value = ($current_value !== null && !empty($current_value) && '0000-00-00' != $current_value ? "value='{$current_value}'" : (!empty($configuration['default']) ? "value='{$configuration['default']}'" : ''));
-        echo "<div class='form-floating mb-3'><input type='{$input_type}' class='form-control' id='{$id}' name='{$id}' placeholder='{$placeholder}' $value $required $readonly $disabled $min $minlength $max $maxlength><label for='{$id}'>" . lang($configuration['label_key']) . "</label>";
+        echo "<div class='form-floating mb-3'><input type='{$input_type}' class='form-control' id='{$id}' name='{$id}' placeholder='{$placeholder}' $value $required $readonly $disabled $min $minlength $max $maxlength><label for='{$id}'>" . $label . "</label>";
         if (!empty($configuration['details'])) {
             echo "<small class='form-text text-muted small'>" . lang($configuration['details']) . "</small>";
         }
@@ -59,7 +60,7 @@ function generate_form_field(string $id, array $configuration, int|string|array 
             }
             echo "<option value='{$key}' $selected>" . $str_value . "</option>";
         }
-        echo "</select><label for='{$id}'>" . lang($configuration['label_key']) . "</label></div>";
+        echo "</select><label for='{$id}'>" . $label . "</label></div>";
 //    } else if ('textarea' == $input_type) {
 //        $placeholder = @$configuration['placeholder'] ?? '';
 //        echo "<div class='form-floating mb-3'><textarea class='form-control' id='{$id}' name='{$id}' placeholder='{$placeholder}' $required $readonly $disabled $min $minlength $max $maxlength>" . @$current_value . "</textarea><label for='{$id}'>" . lang($configuration['label_key']) . "</label></div>";

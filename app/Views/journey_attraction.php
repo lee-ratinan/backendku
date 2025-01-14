@@ -63,6 +63,7 @@ $this->extend($layout);
                                     <th style="min-width:120px;">Country</th>
                                     <th style="min-width:120px;">Date</th>
                                     <th style="min-width:200px;">Name</th>
+                                    <th style="min-width:100px;">Type</th>
                                     <th style="min-width:150px;">Price</th>
                                     <th style="min-width:150px;">Remarks</th>
                                     <th style="min-width:50px;">Link</th>

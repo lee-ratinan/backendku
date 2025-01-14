@@ -9,6 +9,7 @@ use App\Models\JourneyMasterModel;
 use App\Models\JourneyOperatorModel;
 use App\Models\JourneyPortModel;
 use App\Models\JourneyTransportModel;
+use CodeIgniter\Exceptions\PageNotFoundException;
 use CodeIgniter\HTTP\ResponseInterface;
 
 class Journey extends BaseController
@@ -89,11 +90,49 @@ class Journey extends BaseController
         ]);
     }
 
-    public function tripEdit(string $port_code = 'new')
+    /**
+     * @param string $trip_id
+     * @return string
+     */
+    public function tripEdit(string $trip_id = 'new'): string
     {
         if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
             return permission_denied();
         }
+        $master_model = new JourneyMasterModel();
+        $trip_data    = [];
+        $mode         = 'new';
+        $page_title   = 'New Trip';
+        $nonces       = [];
+        $modes_of_transport = [];
+        if (is_numeric($trip_id)) {
+            $trip_data    = $master_model->getTripData($trip_id);
+            if (empty($trip_data)) {
+                throw PageNotFoundException::forPageNotFound();
+            }
+            $mode       = 'edit';
+            $page_title = 'Edit Trip: ' . lang('ListCountries.countries.' . $trip_data['master_data']['country_code'] . '.common_name') . ' ' . date(DATE_FORMAT_UI, strtotime($trip_data['master_data']['date_entry']));
+            $nonces     = [
+                'transport'     => JourneyTransportModel::ID_NONCE,
+                'accommodation' => JourneyAccommodationModel::ID_NONCE,
+                'attraction'    => JourneyAttractionModel::ID_NONCE
+            ];
+            $modes_of_transport = (new JourneyTransportModel())->getModeOfTransport();
+        }
+        $session = session();
+        $data    = [
+            'page_title'         => $page_title,
+            'slug'               => 'trip',
+            'user_session'       => $session->user,
+            'roles'              => $session->roles,
+            'current_role'       => $session->current_role,
+            'trip_data'          => $trip_data,
+            'mode'               => $mode,
+            'master_config'      => $master_model->getConfigurations(),
+            'nonces'             => $nonces,
+            'modes_of_transport' => $modes_of_transport
+        ];
+        return view('journey_trip_edit', $data);
     }
 
     public function tripSave()
@@ -499,6 +538,7 @@ class Journey extends BaseController
             'country_code',
             'attraction_date',
             'attraction_title',
+            'attraction_type',
             'price_amount',
             'journey_details',
             'google_drive_link',

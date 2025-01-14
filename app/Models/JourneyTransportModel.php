@@ -207,4 +207,25 @@ class JourneyTransportModel extends Model
         ];
     }
 
+    /**
+     * @param int $id This can be either the primary key or journey_id
+     * @param string $field (optional), it should be either 'id' or 'journey_id'
+     * @return array
+     */
+    public function findById(int $id, string $field = 'id'): array
+    {
+        if (!in_array($field, ['id', 'journey_id'])) {
+            return [];
+        }
+        return $this->select('journey_transport.*, journey_operator.operator_name, journey_operator.operator_logo_file_name,
+            port_departure.port_name AS departure_port_name, port_departure.country_code AS departure_country_code, port_departure.port_code_1 AS departure_port_code,
+            port_arrival.port_name AS arrival_port_name,     port_arrival.country_code AS arrival_country_code,     port_arrival.port_code_1 AS arrival_port_code')
+            ->join('journey_operator', 'journey_transport.operator_id = journey_operator.id', 'left outer')
+            ->join('journey_port AS port_departure', 'journey_transport.departure_port_id = port_departure.id', 'left outer')
+            ->join('journey_port AS port_arrival',   'journey_transport.arrival_port_id = port_arrival.id', 'left outer')
+            ->where('journey_id', $id)
+            ->orderBy('departure_date_time', 'asc')
+            ->findAll();
+    }
+
 }
