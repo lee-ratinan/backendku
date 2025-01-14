@@ -102,8 +102,8 @@ $this->extend($layout);
                             ?>
                             <div class="form-floating mb-3">
                                 <select class="form-select" id="return" name="return">
-                                    <option value="html">HTML</option>
                                     <option value="pdf">PDF</option>
+                                    <option value="html">HTML</option>
                                 </select>
                                 <label for="return">Return Format</label>
                             </div>
@@ -113,12 +113,84 @@ $this->extend($layout);
                         </form>
                         <hr />
                         <h5 class="card-title">Cover Letter</h5>
-                        <div class="text-end">
-                            <a class="btn btn-outline-primary btn-sm" href="<?= base_url($session->locale . '/office/profile/resume/cover-letter') ?>" target="_blank">Generate Cover Letter</a>
-                        </div>
+                        <form method="POST" action="<?= base_url($session->locale . '/office/profile/resume/cover-letter') ?>" target="_blank">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="company_name" name="company_name" placeholder="Company Name" required>
+                                <label for="company_name">Company Name</label>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="hiring_manager" name="hiring_manager" value="Hiring Manager" required>
+                                <label for="hiring_manager">Hiring Manager</label>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="position" name="position" placeholder="Position" required>
+                                <label for="position">Position</label>
+                            </div>
+                            <?php
+                            $fields = [
+                                [
+                                    'Paragraph 1',
+                                    'paragraph-1',
+                                    'I am writing to express my keen interest in the [POSITION] position at [COMPANY], which was advertised on [LINKEDIN]. With a proven track record in [PREV_EXPERTISE] and a passion for driving innovative solutions, I am confident that I can contribute significantly to your team.',
+                                    100
+                                ],
+                                [
+                                    'Paragraph 2',
+                                    'paragraph-2',
+                                    '[COMPANY]’s commitment to innovations and [COMPANY_INDUSTRY] aligns perfectly with my professional goals. My previous experience at [PRIVIOUS_COMPANY] has equipped me with a deep understanding of the unique challenges and opportunities within the consumer product development sector.',
+                                    100
+                                ],
+                                [
+                                    'Paragraph 3',
+                                    'paragraph-3',
+                                    'As a [POSITION], I am adept at bridging the gap between business requirements, available products, and technology with a high satisfaction rate.',
+                                    100
+                                ],
+                                [
+                                    'Paragraph 4',
+                                    'paragraph-4',
+                                    'I am excited about the prospect of joining a dynamic team and contributing to [COMPANY]’s continued growth. I have attached my resume for your review, detailing my qualifications and experience. Thank you for your time and consideration.',
+                                    100
+                                ],
+                            ];
+                            foreach ($fields as $field) {
+                                echo '<div class="form-floating mb-3">';
+                                echo '<textarea id="' . $field[1] . '" name="' . $field[1] . '" class="form-control" style="height:' . ($field[3] ?? 100) . 'px;">' . $field[2] . '</textarea>';
+                                echo '<label for="' . $field[1] . '">' . $field[0] . '</label>';
+                                echo '</div>';
+                            }
+                            ?>
+                            <div class="form-floating mb-3">
+                                <select class="form-select" id="return" name="return">
+                                    <option value="pdf">PDF</option>
+                                    <option value="html">HTML</option>
+                                </select>
+                                <label for="return">Return Format</label>
+                            </div>
+                            <div class="text-end">
+                                <input class="btn btn-outline-primary btn-sm" type="submit" value="Generate Cover Letter" />
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
     </section>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            let replace_text = function (target, value) {
+                let ids = ['#paragraph-1', '#paragraph-2', '#paragraph-3', '#paragraph-4'];
+                $.each(ids, function (i, id) {
+                    let text = $(id).val();
+                    $(id).val(text.replace(target, value));
+                });
+            };
+            $('#company_name').change(function () {
+                replace_text('[COMPANY]', $(this).val());
+            });
+            $('#position').change(function () {
+                replace_text('[POSITION]', $(this).val());
+            });
+        });
+    </script>
 <?php $this->endSection() ?>
