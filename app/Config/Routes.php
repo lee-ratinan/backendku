@@ -166,6 +166,6 @@ $routes->group('{locale}/office', ['filter' => 'auth'], static function ($routes
     $routes->get('profile/data', 'Profile::index');
     // Resume
     $routes->get('profile/resume', 'Profile::resume');
-    $routes->get('profile/resume/builder', 'Profile::resumeBuilder');
+    $routes->post('profile/resume/builder', 'Profile::resumeBuilder');
     $routes->get('profile/resume/cover-letter', 'Profile::resumeCoverLetter');
 });

@@ -102,7 +102,7 @@
                 <?php endif; ?>
                 <!-- PROFILE -->
                 <?php if (isset($session->permitted_features['profile'])): ?>
-                    <li class="sidebar-item <?= ('profile' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/profile/data') ?>"><i class="fa-regular fa-address-card fa-fw me-3"></i><span>Profile</span></a></li>
+                    <li class="sidebar-item <?= ('profile-data' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/profile/data') ?>"><i class="fa-regular fa-address-card fa-fw me-3"></i><span>Profile</span></a></li>
                     <li class="sidebar-item <?= ('resume' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/profile/resume') ?>"><i class="fa-regular fa-file-lines fa-fw me-3"></i><span>Resume</span></a></li>
                 <?php endif; ?>
             </ul>

@@ -69,7 +69,7 @@ EOD;
      */
     public function sendEmail(string $to, string $subject, string $text, string $cc = '', string $bcc = ''): bool
     {
-        log_message('debug', 'Emailing: ' . $to . ', Subject: ' . $subject . ', Content: ' . $text);
+        log_message('notice', 'Emailing: ' . $to . ', Subject: ' . $subject . ', Content: ' . $text);
         if ('development' == getenv('CI_ENVIRONMENT')) {
             $result = ['message' => 'Email not really sent in development environment'];
         } else {
@@ -119,7 +119,7 @@ EOD;
             // Send the message
             $result = $mg->messages()->sendMime($domain, $recipients, $message_body, $params);
         }
-        log_message('debug', 'Emailed: ' . json_encode($result));
+        log_message('notice', 'Emailed: ' . json_encode($result));
         // LOG RESULT
         return $this->insert([
             'email_subject' => $subject,

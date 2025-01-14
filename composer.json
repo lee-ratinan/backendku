@@ -19,6 +19,7 @@
         "mailgun/mailgun-php": "^4.3",
         "nyholm/psr7": "^1.8",
         "psr/log": "^3.0",
+        "spipu/html2pdf": "^5.3",
         "symfony/http-client": "^7.2",
         "symfony/mailer": "^6.2"
     },
