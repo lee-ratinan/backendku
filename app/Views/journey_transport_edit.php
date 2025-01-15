@@ -75,6 +75,7 @@ $this->extend($layout);
                     data: {
                         id: '<?= $transport['id'] ?? 0 ?>',
                         mode: '<?= $mode ?>',
+                        journey_id: '<?= $journey_id ?>',
                         operator_id: $('#operator_id').val(),
                         departure_port_id: $('#departure_port_id').val(),
                         arrival_port_id: $('#arrival_port_id').val(),

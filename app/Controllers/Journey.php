@@ -423,10 +423,10 @@ class Journey extends BaseController
         } else {
             // edit
             $mode         = 'edit';
-            $journey_id   = 0;
             $transport_id = intval($transport_id / JourneyTransportModel::ID_NONCE);
             $transport    = $model->find($transport_id);
             $page_title   = 'Edit Transport ' . (empty($transport['flight_number']) ? '' : ' [' . $transport['flight_number'] . ']');
+            $journey_id   = $transport['journey_id'];
         }
         $data    = [
             'page_title'   => $page_title,
@@ -443,10 +443,144 @@ class Journey extends BaseController
         return view('journey_transport_edit', $data);
     }
 
-    public function transportSave()
+    /**
+     * @return ResponseInterface
+     */
+    public function transportSave(): ResponseInterface
     {
         if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
             return permission_denied('json');
+        }
+        helper('math');
+        $session       = session();
+        $model         = new JourneyTransportModel();
+        $mode          = $this->request->getPost('mode');
+        $data          = [
+            'created_by' => $session->user_id,
+        ];
+        $operator_id       = $this->request->getPost('operator_id');
+        $departure_port_id = $this->request->getPost('departure_port_id');
+        $arrival_port_id   = $this->request->getPost('arrival_port_id');
+        if (!empty($operator_id)) {
+            $data['operator_id'] = $operator_id;
+        }
+        if (!empty($departure_port_id)) {
+            $data['departure_port_id'] = $departure_port_id;
+        }
+        if (!empty($arrival_port_id)) {
+            $data['arrival_port_id'] = $arrival_port_id;
+        }
+        if (!empty($departure_port_id) && !empty($arrival_port_id)) {
+            $port_model = new JourneyPortModel();
+            $departure  = $port_model->find($departure_port_id);
+            $arrival    = $port_model->find($arrival_port_id);
+            $data['distance_traveled'] = calculateDistance($departure['location_latitude'], $departure['location_longitude'], $arrival['location_latitude'], $arrival['location_longitude']);
+            $data['is_domestic'] = ($departure['country_code'] == $arrival['country_code'] ? 'D' : 'I');
+        }
+        $flight_number = $this->request->getPost('flight_number');
+        $pnr_number    = $this->request->getPost('pnr_number');
+        $departure_dt  = $this->request->getPost('departure_date_time');
+        $departure_tz  = $this->request->getPost('departure_timezone');
+        $arrival_dt    = $this->request->getPost('arrival_date_time');
+        $arrival_tz    = $this->request->getPost('arrival_timezone');
+        $is_time_known = $this->request->getPost('is_time_known');
+        if (!empty($flight_number)) {
+            $data['flight_number'] = $flight_number;
+        }
+        if (!empty($pnr_number)) {
+            $data['pnr_number'] = $pnr_number;
+        }
+        if (!empty($departure_dt)) {
+            $data['departure_date_time'] = $departure_dt;
+        }
+        if (!empty($departure_tz)) {
+            $data['departure_timezone'] = $departure_tz;
+        }
+        if (!empty($arrival_dt)) {
+            $data['arrival_date_time'] = $arrival_dt;
+        }
+        if (!empty($arrival_tz)) {
+            $data['arrival_timezone'] = $arrival_tz;
+        }
+        if (!empty($is_time_known)) {
+            $data['is_time_known'] = $is_time_known;
+            if ('Y' == $is_time_known && !empty($departure_dt) && !empty($arrival_dt) && !empty($departure_tz) && !empty($arrival_tz)) {
+                // DEPARTURE DATETIME
+                $departure = new \DateTime($departure_dt, new \DateTimeZone($departure_tz));
+                $arrival   = new \DateTime($arrival_dt, new \DateTimeZone($arrival_tz));
+                $diff = $arrival->diff($departure);
+                $min  = $diff->days * 24 * 60;
+                $min += $diff->h * 60;
+                $min += $diff->i;
+                $data['trip_duration'] = $min;
+            }
+        }
+        $mode_of_transport     = $this->request->getPost('mode_of_transport');
+        $craft_type            = $this->request->getPost('craft_type');
+        $price_amount          = $this->request->getPost('price_amount');
+        $price_currency_code   = $this->request->getPost('price_currency_code');
+        $charged_amount        = $this->request->getPost('charged_amount');
+        $charged_currency_code = $this->request->getPost('charged_currency_code');
+        $journey_details       = $this->request->getPost('journey_details');
+        $journey_status        = $this->request->getPost('journey_status');
+        $google_drive_link     = $this->request->getPost('google_drive_link');
+        if (!empty($mode_of_transport)) {
+            $data['mode_of_transport'] = $mode_of_transport;
+        }
+        if (!empty($craft_type)) {
+            $data['craft_type'] = $craft_type;
+        }
+        if (!empty($price_amount)) {
+            $data['price_amount'] = $price_amount;
+        }
+        if (!empty($price_currency_code)) {
+            $data['price_currency_code'] = $price_currency_code;
+        }
+        if (!empty($charged_amount)) {
+            $data['charged_amount'] = $charged_amount;
+        }
+        if (!empty($charged_currency_code)) {
+            $data['charged_currency_code'] = $charged_currency_code;
+        }
+        if (!empty($journey_details)) {
+            $data['journey_details'] = $journey_details;
+        }
+        if (!empty($journey_status)) {
+            $data['journey_status'] = $journey_status;
+        }
+        if (!empty($google_drive_link)) {
+            $data['google_drive_link'] = $google_drive_link;
+        }
+        try {
+            if ('new' == $mode) {
+                $data['journey_id'] = $this->request->getPost('journey_id');
+                $inserted_id        = $model->insert($data);
+                if ($inserted_id) {
+                    return $this->response->setJSON([
+                        'status' => 'success',
+                        'toast'  => 'Transport has been added',
+                        'url'    => base_url($session->locale . '/office/journey/transport/edit/' . ($inserted_id * $model::ID_NONCE))
+                    ]);
+                }
+            } else {
+                $id = $this->request->getPost('id');
+                if ($model->update($id, $data)) {
+                    return $this->response->setJSON([
+                        'status' => 'success',
+                        'toast'  => 'Transport has been updated',
+                        'url'    => base_url($session->locale . '/office/journey/transport/edit/' . ($id * $model::ID_NONCE))
+                    ]);
+                }
+            }
+            return $this->response->setJSON([
+                'status' => 'error',
+                'toast'  => 'There was some unknown error, please try again later.'
+            ]);
+        } catch (DatabaseException|ReflectionException $e) {
+            return $this->response->setJSON([
+                'status' => 'error',
+                'toast'  => 'ERROR: ' . $e->getMessage()
+            ]);
         }
     }
 
