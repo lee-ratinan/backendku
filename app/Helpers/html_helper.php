@@ -27,7 +27,7 @@ function generate_form_field(string $id, array $configuration, int|string|array 
     $label      = (isset($configuration['label_key']) ? lang($configuration['label_key']) : (empty($configuration['label']) ? '' : $configuration['label']));
     if (in_array($input_type, ['text', 'email', 'password', 'number', 'date', 'time', 'datetime-local', 'month', 'week', 'url', 'search', 'color'])) {
         $placeholder = @$configuration['placeholder'] ?? '';
-        $value = ($current_value !== null && !empty($current_value) && '0000-00-00' != $current_value ? "value='{$current_value}'" : (!empty($configuration['default']) ? "value='{$configuration['default']}'" : ''));
+        $value = (!is_null($current_value) && '0000-00-00' != $current_value ? "value='{$current_value}'" : (!empty($configuration['default']) ? "value='{$configuration['default']}'" : ''));
         echo "<div class='form-floating mb-3'><input type='{$input_type}' class='form-control' id='{$id}' name='{$id}' placeholder='{$placeholder}' $value $required $readonly $disabled $min $minlength $max $maxlength><label for='{$id}'>" . $label . "</label>";
         if (!empty($configuration['details'])) {
             echo "<small class='form-text text-muted small'>" . lang($configuration['details']) . "</small>";

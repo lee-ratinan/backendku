@@ -99,8 +99,8 @@ class JourneyMasterModel extends Model
             'type'        => 'text',
             'label'       => 'Journey Details',
             'required'    => false,
-            'maxlength'   => 8,
-            'placeholder' => 'NRT2025'
+            'maxlength'   => 256,
+            'placeholder' => 'My Vacation'
         ],
         'journey_status'     => [
             'type'        => 'select',
@@ -116,9 +116,10 @@ class JourneyMasterModel extends Model
     /**
      * Get configurations for generating forms
      * @param array $columns
+     * @param string $country_code
      * @return array
      */
-    public function getConfigurations(array $columns = []): array
+    public function getConfigurations(array $columns = [], $country_code = ''): array
     {
         $configurations  = $this->configurations;
         // Countries
@@ -129,7 +130,11 @@ class JourneyMasterModel extends Model
         $configurations['country_code']['options'] = $final_countries;
         // Ports
         $port_model      = new JourneyPortModel();
-        $ports           = $port_model->orderBy('mode_of_transport', 'asc')->orderBy('port_name', 'asc')->findAll();
+        if (empty($country_code)) {
+            $ports           = $port_model->orderBy('mode_of_transport', 'asc')->orderBy('port_code_1', 'asc')->orderBy('port_name', 'asc')->findAll();
+        } else {
+            $ports           = $port_model->where('country_code', $country_code)->orderBy('mode_of_transport', 'asc')->orderBy('port_code_1', 'asc')->orderBy('port_name', 'asc')->findAll();
+        }
         $modes           = $port_model->getModeOfTransport();
         $all_ports       = [];
         foreach ($ports as $port) {
@@ -236,7 +241,7 @@ class JourneyMasterModel extends Model
                 $row['day_count'],
                 $row['entry_port_name'],
                 $row['exit_port_name'],
-                $row['journey_details'],
+                (empty($row['journey_details']) ? '' : $row['journey_details'] . '<br>') . '<small>Visa: ' . $row['visa_info'] . '</small>',
                 $tags,
                 translate_journey_status($row['journey_status'], $row['date_entry'], $row['date_exit'] ?? '', $today)
             ];

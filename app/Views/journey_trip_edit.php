@@ -32,7 +32,7 @@ $this->extend($layout);
                                 generate_form_field('country_code', $master_config['country_code'], @$trip_data['master_data']['country_code']);
                                 generate_form_field('date_entry', $master_config['date_entry'], @$trip_data['master_data']['date_entry']);
                                 generate_form_field('date_exit', $master_config['date_exit'], @$trip_data['master_data']['date_exit']);
-                                generate_form_field('day_count', $master_config['day_count'], @$trip_data['master_data']['day_count']);
+                                generate_form_field('day_count', $master_config['day_count'], $trip_data['master_data']['day_count'] ?? '0');
                                 generate_form_field('entry_port_id', $master_config['entry_port_id'], @$trip_data['master_data']['entry_port_id']);
                                 generate_form_field('exit_port_id', $master_config['exit_port_id'], @$trip_data['master_data']['exit_port_id']);
                                 ?>
@@ -69,8 +69,11 @@ $this->extend($layout);
                                             <td style="min-width:50px">
                                                 <a class="btn btn-sm btn-outline-primary" href="<?= base_url($session->locale . '/office/journey/transport/edit/' . $new_id) ?>" title="Edit"><i class="fa-solid fa-edit"></i></a>
                                             </td>
+                                            <td style="min-width:60px">
+                                                <img style="height:2.5rem" class="img-thumbnail" src="<?= base_url('file/operator-' . $row['operator_logo_file_name'] . '.png') ?>" alt="<?= $row['flight_number'] ?>"><br>
+                                                <b><?= $row['flight_number'] ?></b>
+                                            </td>
                                             <td style="min-width:150px;">
-                                                <h6><?= $row['flight_number'] ?> <?= $row['pnr_number'] ?></h6>
                                                 <?= $modes_of_transport[$row['mode_of_transport']] ?><br>
                                                 <?= $row['craft_type'] ?>
                                             </td>
@@ -137,7 +140,6 @@ $this->extend($layout);
                                                     <?= date(DATETIME_FORMAT_UI, strtotime($row['check_out_date'])) ?>
                                                 <?php endif; ?>
                                             </td>
-                                            <td style="min-width:150px;"><?= $row['journey_details'] ?></td>
                                             <td style="min-width:150px;"><span class="badge bg-<?= ('as_planned' == $row['journey_status'] ? 'success' : 'danger') ?>"><?= ucwords(strtolower(str_replace('_', ' ', $row['journey_status']))) ?></span></td>
                                         </tr>
                                     <?php endforeach; ?>
@@ -178,7 +180,6 @@ $this->extend($layout);
                                                     echo date($format, strtotime($date));
                                                     ?>
                                                 </td>
-                                                <td style="min-width:150px;"><?= $row['journey_details'] ?></td>
                                                 <td style="min-width:150px;"><span class="badge bg-<?= ('as_planned' == $row['journey_status'] ? 'success' : 'danger') ?>"><?= ucwords(strtolower(str_replace('_', ' ', $row['journey_status']))) ?></span></td>
                                             </tr>
                                         <?php endforeach; ?>
@@ -235,11 +236,10 @@ $this->extend($layout);
                                                     }
                                                     ?>
                                                 </td>
-                                                <td style="min-width:225px;"><?= $row['event_notes'] ?></td>
                                                 <td style="min-width:225px;">
                                                     <?php
                                                     if (!empty($row['spa_name']) || !empty($row['spa_type'])) {
-                                                        echo '<b>' . $row['spa_name'] . '</b><br><small>' . $row['spa_type'] . '<br>' . currency_format($row['currency_code'], $row['price_amount']) . ' ' . (0 < $row['price_tip'] ? currency_format($row['currency_code'], $row['price_tip']) : '') . '</small>';
+                                                        echo '<b>' . $row['spa_name'] . '</b><br><small>' . $row['spa_type'] . '</small>';
                                                     }
                                                     ?>
                                                 </td>
@@ -256,4 +256,86 @@ $this->extend($layout);
             <?php endif; ?>
         </div>
     </section>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            $('#date_entry, #date_exit').change(function () {
+                let date_entry = $('#date_entry').val(),
+                    date_exit = $('#date_exit').val();
+                if ('' !== date_entry && '' !== date_exit) {
+                    let date_entry_obj = new Date(date_entry),
+                        date_exit_obj = new Date(date_exit),
+                        day_count = Math.ceil((date_exit_obj - date_entry_obj) / (1000 * 60 * 60 * 24))+1;
+                    $('#day_count').val(day_count);
+                } else if ('' === date_exit) {
+                    $('#day_count').val('0');
+                }
+            });
+            $('#btn-save-journey-master').click(function (e) {
+                e.preventDefault();
+                let id = '<?= $trip_data['master_data']['id'] ?? 0 ?>',
+                    mode = '<?= $mode ?>',
+                    country_code = $('#country_code').val(),
+                    date_entry = $('#date_entry').val(),
+                    date_exit = $('#date_exit').val(),
+                    day_count = $('#day_count').val(),
+                    entry_port_id = $('#entry_port_id').val(),
+                    exit_port_id = $('#exit_port_id').val(),
+                    trip_code = $('#trip_code').val(),
+                    visa_info = $('#visa_info').val(),
+                    trip_tags = $('#trip_tags').val(),
+                    journey_details = $('#journey_details').val(),
+                    journey_status = $('#journey_status').val();
+                if ('' === country_code) {
+                    toastr.info('Please select a country.');
+                    return false;
+                } else if ('' === date_entry) {
+                    toastr.info('Please select the entry date.');
+                    return false;
+                } else if ('' === day_count) {
+                    toastr.info('Please select the day count.');
+                    return false;
+                } else if ('' === visa_info) {
+                    toastr.info('Please enter the visa information.');
+                    return false;
+                } else if ('' === journey_status) {
+                    toastr.info('Please select the journey status.');
+                    return false;
+                }
+                $.ajax({
+                    url: '<?= base_url($session->locale . '/office/journey/trip/edit') ?>',
+                    type: 'post',
+                    data: {
+                        id: id,
+                        mode: mode,
+                        country_code: country_code,
+                        date_entry: date_entry,
+                        date_exit: date_exit,
+                        day_count: day_count,
+                        entry_port_id: entry_port_id,
+                        exit_port_id: exit_port_id,
+                        trip_code: trip_code,
+                        visa_info: visa_info,
+                        trip_tags: trip_tags,
+                        journey_details: journey_details,
+                        journey_status: journey_status
+                    },
+                    success: function (response) {
+                        if ('success' === response.status) {
+                            toastr.success(response.toast);
+                            setTimeout(function () {
+                                window.location.href = response.url;
+                            }, 1000);
+                        } else {
+                            toastr.error(response.toast ?? 'Failed to save trip.');
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        let response = JSON.parse(xhr.responseText);
+                        let error_message = (response.toast ?? '<?= lang('System.status_message.generic_error') ?>');
+                        toastr.error(error_message);
+                    }
+                });
+            });
+        });
+    </script>
 <?php $this->endSection() ?>
