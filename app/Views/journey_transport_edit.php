@@ -60,12 +60,12 @@ $this->extend($layout);
                     charged_amount = $('#charged_amount').val(),
                     charged_currency_code = $('#charged_currency_code').val();
                 if (('' !== price_amount && '' === price_currency_code)
-                    || ('' === price_amount && '' !== price_currency_code) {
+                    || ('' === price_amount && '' !== price_currency_code)) {
                     toastr.info('Price amount and its associated currency must be filled together.');
                     return false;
                 }
                 if (('' !== charged_amount && '' === charged_currency_code)
-                    || ('' === charged_amount && '' !== charged_currency_code) {
+                    || ('' === charged_amount && '' !== charged_currency_code)) {
                     toastr.info('Charged amount and its associated currency must be filled together.');
                     return false;
                 }
