@@ -43,6 +43,194 @@ class JourneyTransportModel extends Model
     protected $updatedField = 'updated_at';
     const ID_NONCE = 587;
 
+    private array $configurations = [
+        'id'            => [
+            'type'      => 'hidden',
+            'label'     => 'ID'
+        ],
+        'journey_id'     => [
+            'type'        => 'select',
+            'label'       => 'Journey',
+            'required'    => true,
+        ],
+        'operator_id'  => [
+            'type'        => 'select',
+            'label'       => 'Operator',
+            'required'    => true,
+            'options'     => []
+        ],
+        'departure_port_id' => [
+            'type'        => 'select',
+            'label'       => 'Departure Port',
+            'required'    => true,
+            'options'     => []
+        ],
+        'arrival_port_id' => [
+            'type'        => 'select',
+            'label'       => 'Arrival Port',
+            'required'    => true,
+            'options'     => []
+        ],
+        'flight_number'   => [
+            'type'        => 'text',
+            'label'       => 'Flight Number',
+            'required'    => false,
+            'maxlength'   => 16,
+            'placeholder' => 'SQ123'
+        ],
+        'pnr_number'      => [
+            'type'        => 'text',
+            'label'       => 'PNR Number',
+            'required'    => false,
+            'minlength'   => 6,
+            'maxlength'   => 6,
+            'placeholder' => 'ABC123'
+        ],
+        'departure_date_time' => [
+            'type'        => 'datetime-local',
+            'label'       => 'Departure Date & Time',
+            'required'    => true,
+        ],
+        'departure_timezone' => [
+            'type'        => 'select',
+            'label'       => 'Departure Timezone',
+            'required'    => true,
+            'options'     => []
+        ],
+        'arrival_date_time' => [
+            'type'        => 'datetime-local',
+            'label'       => 'Arrival Date & Time',
+            'required'    => true,
+        ],
+        'arrival_timezone' => [
+            'type'        => 'select',
+            'label'       => 'Arrival Timezone',
+            'required'    => true,
+            'options'     => []
+        ],
+        'is_time_known' => [
+            'type'        => 'select',
+            'label'       => 'Is Time Known',
+            'required'    => true,
+            'options'     => [
+                'Y' => 'Yes',
+                'N' => 'No'
+            ]
+        ],
+        'mode_of_transport' => [
+            'type'        => 'select',
+            'label'       => 'Mode of Transport',
+            'required'    => true,
+            'options'     => []
+        ],
+        'craft_type' => [
+            'type'        => 'text',
+            'label'       => 'Craft Type',
+            'required'    => false,
+            'maxlength'   => 32,
+            'placeholder' => 'BOEING 777'
+        ],
+        'price_amount' => [
+            'type'        => 'number',
+            'label'       => 'Price Amount',
+            'required'    => false,
+            'step'        => '0.01',
+            'min'         => '0',
+            'placeholder' => '0.00',
+            'details'     => 'This is the price stated by the operator'
+        ],
+        'price_currency_code' => [
+            'type'        => 'select',
+            'label'       => 'Price Currency',
+            'required'    => false,
+            'options'     => [],
+        ],
+        'charged_amount' => [
+            'type'        => 'number',
+            'label'       => 'Charged Amount',
+            'required'    => false,
+            'step'        => '0.01',
+            'min'         => '0',
+            'placeholder' => '0.00',
+            'details'     => 'This is the amount charged to the credit card'
+        ],
+        'charged_currency_code' => [
+            'type'        => 'select',
+            'label'       => 'Charged Currency',
+            'required'    => false,
+            'options'     => []
+        ],
+        'journey_details' => [
+            'type'        => 'text',
+            'label'       => 'Journey Details',
+            'required'    => false,
+            'maxlength'   => 255,
+            'placeholder' => 'Flight details, connecting flights, etc',
+            'details'     => 'Use [R] for return trip, [RI] for reimbursed trip, and [C] for connecting flight'
+        ],
+        'journey_status' => [
+            'type'        => 'select',
+            'label'       => 'Journey Status',
+            'required'    => true,
+            'options'     => [
+                'as_planned' => 'As Planned',
+                'canceled'   => 'Canceled'
+            ]
+        ],
+        'google_drive_link' => [
+            'type'        => 'url',
+            'label'       => 'Google Drive Link',
+            'required'    => false,
+            'placeholder' => 'https://drive.google.com/...'
+        ]
+    ];
+
+    /**
+     * Get configurations for generating forms
+     * @param array $columns
+     * @return array
+     */
+    public function getConfigurations(array $columns = []): array
+    {
+        $configurations  = $this->configurations;
+        // Operators
+        $operator_model  = new JourneyOperatorModel();
+        $operators       = $operator_model->findAll();
+        $all_operators   = [];
+        foreach ($operators as $operator) {
+            $all_operators[$operator['id']] = (empty($port['operator_code_1']) ? '' : '[' . $port['port_code_1'] . '] ') . $operator['operator_name'];
+        }
+        $configurations['operator_id']['options'] = $all_operators;
+        // Ports
+        $port_model      = new JourneyPortModel();
+        $ports           = $port_model->findAll();
+        $all_ports       = [];
+        foreach ($ports as $port) {
+            $all_ports[$port['id']] = (empty($port['port_code_1']) ? '' : '[' . $port['port_code_1'] . '] ') . $port['port_name'];
+        }
+        $configurations['departure_port_id']['options'] = $all_ports;
+        $configurations['arrival_port_id']['options']  = $all_ports;
+        // Timezones
+        $timezones      = lang('ListTimeZones.timezones');
+        $all_timezones  = [];
+        foreach ($timezones as $key => $timezone) {
+            $all_timezones[$key] = $timezone['label'];
+        }
+        $configurations['departure_timezone']['options'] = $all_timezones;
+        $configurations['arrival_timezone']['options']   = $all_timezones;
+        // Modes of Transport
+        $configurations['mode_of_transport']['options']  = $this->getModeOfTransport();
+        // Currencies
+        $currencies     = lang('ListCurrencies.currencies');
+        $all_currencies = [];
+        foreach ($currencies as $key => $currency) {
+            $all_currencies[$key] = '[' . $key . '] ' . $currency['currency_name'];
+        }
+        $configurations['price_currency_code']['options']    = $all_currencies;
+        $configurations['charged_currency_code']['options']  = $all_currencies;
+        return $columns ? array_intersect_key($configurations, array_flip($columns)) : $configurations;
+    }
+
     /**
      * Get mode of transport
      * @param string $mode (optional)

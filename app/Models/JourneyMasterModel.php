@@ -35,7 +35,7 @@ class JourneyMasterModel extends Model
     private array $configurations = [
         'id'            => [
             'type'      => 'hidden',
-            'label_key' => 'TablesOrganization.OrganizationMaster.id'
+            'label'     => 'ID'
         ],
         'trip_code'     => [
             'type'        => 'text',
@@ -117,9 +117,10 @@ class JourneyMasterModel extends Model
      * Get configurations for generating forms
      * @param array $columns
      * @param string $country_code
+     * @param bool $ignore_if_country_code_empty
      * @return array
      */
-    public function getConfigurations(array $columns = [], $country_code = ''): array
+    public function getConfigurations(array $columns = [], string $country_code = '', bool $ignore_if_country_code_empty = FALSE): array
     {
         $configurations  = $this->configurations;
         // Countries
@@ -130,10 +131,11 @@ class JourneyMasterModel extends Model
         $configurations['country_code']['options'] = $final_countries;
         // Ports
         $port_model      = new JourneyPortModel();
-        if (empty($country_code)) {
-            $ports           = $port_model->orderBy('mode_of_transport', 'asc')->orderBy('port_code_1', 'asc')->orderBy('port_name', 'asc')->findAll();
-        } else {
+        $ports           = [];
+        if (!empty($country_code)) {
             $ports           = $port_model->where('country_code', $country_code)->orderBy('mode_of_transport', 'asc')->orderBy('port_code_1', 'asc')->orderBy('port_name', 'asc')->findAll();
+        } else if (!$ignore_if_country_code_empty) {
+            $ports           = $port_model->orderBy('mode_of_transport', 'asc')->orderBy('port_code_1', 'asc')->orderBy('port_name', 'asc')->findAll();
         }
         $modes           = $port_model->getModeOfTransport();
         $all_ports       = [];

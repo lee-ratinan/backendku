@@ -135,7 +135,7 @@ class Journey extends BaseController
             'current_role'       => $session->current_role,
             'trip_data'          => $trip_data,
             'mode'               => $mode,
-            'master_config'      => $master_model->getConfigurations([], $country_code),
+            'master_config'      => $master_model->getConfigurations([], $country_code, TRUE),
             'nonces'             => $nonces,
             'modes_of_transport' => $modes_of_transport,
             'health_records'     => $health_records
@@ -402,22 +402,43 @@ class Journey extends BaseController
     }
 
     /**
-     * @param string $port_code
+     * @param string $transport_id
      * @param int $journey_id
      * @return string
      */
-    public function transportEdit(string $port_code = 'new', int $journey_id = 0): string
+    public function transportEdit(string $transport_id = 'new', int $journey_id = 0): string
     {
         if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
             return permission_denied();
         }
-        $session = session();
+        $session   = session();
+        $model     = new JourneyTransportModel();
+        $transport = [];
+        if ('new' == $transport_id && 0 < $journey_id) {
+            // new
+            $mode         = 'new';
+            $journey_id   = intval($journey_id / JourneyTransportModel::ID_NONCE);
+            $transport_id = 0;
+            $page_title   = 'New Transport';
+        } else {
+            // edit
+            $mode         = 'edit';
+            $journey_id   = 0;
+            $transport_id = intval($transport_id / JourneyTransportModel::ID_NONCE);
+            $transport    = $model->find($transport_id);
+            $page_title   = 'Edit Transport ' . (empty($transport['flight_number']) ? '' : ' [' . $transport['flight_number'] . ']');
+        }
         $data    = [
-            'page_title'   => 'Transport',
+            'page_title'   => $page_title,
             'slug'         => 'transport',
             'user_session' => $session->user,
             'roles'        => $session->roles,
-            'current_role' => $session->current_role
+            'current_role' => $session->current_role,
+            'mode'         => $mode,
+            'config'       => $model->getConfigurations(),
+            'transport_id' => $transport_id,
+            'journey_id'   => $journey_id,
+            'transport'    => $transport
         ];
         return view('journey_transport_edit', $data);
     }
