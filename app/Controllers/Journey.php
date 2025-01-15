@@ -157,7 +157,7 @@ class Journey extends BaseController
         $countries_by_visits          = [];
         foreach ($raw_data as $row) {
             $year_1 = intval(substr($row['date_entry'], 0, 4));
-            $year_2 = intval(substr($row['date_exit'], 0, 4));
+            $year_2 = (empty($row['date_exit']) ? intval(date('Y')) : intval(substr($row['date_exit'], 0, 4)));
             $years  = range($year_1, $year_2);
             foreach ($years as $year) {
                 $visited_countries_by_year[$year][$row['country_code']] = 1;

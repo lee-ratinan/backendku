@@ -36,7 +36,7 @@ $this->extend($layout);
                             </tr>
                             </thead>
                             <tbody>
-                            <?php for ($year = date('Y'); $year >= 1989; $year--) : ?>
+                            <?php for ($year = date('Y'); $year >= 2006; $year--) : ?>
                                 <tr>
                                     <?php $class_set = $color_classes[$year % 4]; ?>
                                     <?php $annual_sum = 0; ?>

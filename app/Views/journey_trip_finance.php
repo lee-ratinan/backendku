@@ -39,7 +39,7 @@ $this->extend($layout);
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <?php for ($year = date('Y'); $year >= 1989; $year--) : ?>
+                                <?php for ($year = date('Y'); $year >= 2006; $year--) : ?>
                                     <?php
                                     $total = [];
                                     foreach ($all_currencies as $currency) {
@@ -102,9 +102,6 @@ $this->extend($layout);
                                 </tbody>
                             </table>
                         </div>
-                        <pre>
-                            <?php print_r($all_currencies); ?>
-                        </pre>
                     </div>
                 </div>
             </div>
