@@ -323,11 +323,25 @@ class Journey extends BaseController
         ]);
     }
 
-    public function transportEdit(string $port_code = 'new', int $journey_id = 0)
+    /**
+     * @param string $port_code
+     * @param int $journey_id
+     * @return string
+     */
+    public function transportEdit(string $port_code = 'new', int $journey_id = 0): string
     {
         if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
             return permission_denied();
         }
+        $session = session();
+        $data    = [
+            'page_title'   => 'Transport',
+            'slug'         => 'transport',
+            'user_session' => $session->user,
+            'roles'        => $session->roles,
+            'current_role' => $session->current_role
+        ];
+        return view('journey_transport_edit', $data);
     }
 
     public function transportSave()
@@ -451,11 +465,25 @@ class Journey extends BaseController
         ]);
     }
 
-    public function accommodationEdit(string $port_code = 'new', int $journey_id = 0)
+    /**
+     * @param string $port_code
+     * @param int $journey_id
+     * @return string
+     */
+    public function accommodationEdit(string $port_code = 'new', int $journey_id = 0): string
     {
         if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
             return permission_denied();
         }
+        $session = session();
+        $data    = [
+            'page_title'   => 'Transport',
+            'slug'         => 'transport',
+            'user_session' => $session->user,
+            'roles'        => $session->roles,
+            'current_role' => $session->current_role
+        ];
+        return view('journey_accommodation_edit', $data);
     }
 
     public function accommodationSave()
@@ -564,11 +592,25 @@ class Journey extends BaseController
         ]);
     }
 
-    public function attractionEdit(string $port_code = 'new', int $journey_id = 0)
+    /**
+     * @param string $port_code
+     * @param int $journey_id
+     * @return string
+     */
+    public function attractionEdit(string $port_code = 'new', int $journey_id = 0): string
     {
         if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
             return permission_denied();
         }
+        $session = session();
+        $data    = [
+            'page_title'   => 'Transport',
+            'slug'         => 'transport',
+            'user_session' => $session->user,
+            'roles'        => $session->roles,
+            'current_role' => $session->current_role
+        ];
+        return view('journey_attraction_edit', $data);
     }
 
     public function attractionSave()
@@ -642,11 +684,24 @@ class Journey extends BaseController
         ]);
     }
 
-    public function portEdit(string $port_code = 'new')
+    /**
+     * @param string $port_code
+     * @return string
+     */
+    public function portEdit(string $port_code = 'new'): string
     {
         if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
             return permission_denied();
         }
+        $session = session();
+        $data    = [
+            'page_title'   => 'Transport',
+            'slug'         => 'transport',
+            'user_session' => $session->user,
+            'roles'        => $session->roles,
+            'current_role' => $session->current_role
+        ];
+        return view('journey_port_edit', $data);
     }
 
     public function portSave()
@@ -715,11 +770,24 @@ class Journey extends BaseController
         ]);
     }
 
-    public function operatorEdit(string $port_code = 'new')
+    /**
+     * @param string $port_code
+     * @return string
+     */
+    public function operatorEdit(string $port_code = 'new'): string
     {
         if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
             return permission_denied();
         }
+        $session = session();
+        $data    = [
+            'page_title'   => 'Transport',
+            'slug'         => 'transport',
+            'user_session' => $session->user,
+            'roles'        => $session->roles,
+            'current_role' => $session->current_role
+        ];
+        return view('journey_operator_edit', $data);
     }
 
     public function operatorSave()
@@ -775,11 +843,24 @@ class Journey extends BaseController
         ]);
     }
 
-    public function holidayEdit(string $port_code = 'new')
+    /**
+     * @param string $port_code
+     * @return string
+     */
+    public function holidayEdit(string $port_code = 'new'): string
     {
         if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
             return permission_denied();
         }
+        $session = session();
+        $data    = [
+            'page_title'   => 'Transport',
+            'slug'         => 'transport',
+            'user_session' => $session->user,
+            'roles'        => $session->roles,
+            'current_role' => $session->current_role
+        ];
+        return view('journey_holiday_edit', $data);
     }
 
     public function holidaySave()
