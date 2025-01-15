@@ -22,7 +22,7 @@ $this->extend($layout);
                         <a class="btn btn-outline-primary btn-sm float-end ms-3" href="<?= base_url($session->locale . '/office/journey/transport/statistics') ?>"><i class="fa-solid fa-chart-line"></i> Statistics</a>
                         <h5 class="card-title"><i class="fa-solid fa-person-walking-luggage fa-fw me-3"></i> <?= $page_title ?></h5>
                         <div class="row mb-3 g-3">
-                            <div class="col-6 col-md-3">
+                            <div class="col-6 col-md-4 col-lg-2">
                                 <label for="country_code" class="form-label">Country</label><br>
                                 <select class="form-select form-select-sm" id="country_code">
                                     <option value="">All</option>
@@ -31,7 +31,7 @@ $this->extend($layout);
                                     <?php endforeach; ?>
                                 </select>
                             </div>
-                            <div class="col-6 col-md-3">
+                            <div class="col-6 col-md-4 col-lg-2">
                                 <label for="year" class="form-label">Year</label><br>
                                 <select class="form-select form-select-sm" id="year">
                                     <option value="">All</option>
@@ -40,7 +40,7 @@ $this->extend($layout);
                                     <?php endfor; ?>
                                 </select>
                             </div>
-                            <div class="col-6 col-md-3">
+                            <div class="col-6 col-md-4 col-lg-2">
                                 <label for="journey_status" class="form-label">Status</label><br>
                                 <select class="form-select form-select-sm" id="journey_status">
                                     <option value="">All</option>
@@ -48,13 +48,21 @@ $this->extend($layout);
                                     <option value="canceled">Canceled</option>
                                 </select>
                             </div>
-                            <div class="col-6 col-md-3">
-                                <label for="mode_of_transport" class="form-label">Mode of Transport</label><br>
+                            <div class="col-6 col-md-4 col-lg-2">
+                                <label for="mode_of_transport" class="form-label">Mode</label><br>
                                 <select class="form-select form-select-sm" id="mode_of_transport">
                                     <option value="">All</option>
                                     <?php foreach ($modes as $key => $value): ?>
                                         <option value="<?= $key ?>"><?= $value ?></option>
                                     <?php endforeach; ?>
+                                </select>
+                            </div>
+                            <div class="col-6 col-md-4 col-lg-2">
+                                <label for="is_domestic" class="form-label">Type</label><br>
+                                <select class="form-select form-select-sm" id="is_domestic">
+                                    <option value="">All</option>
+                                    <option value="I">International</option>
+                                    <option value="D">Domestic</option>
                                 </select>
                             </div>
                         </div>
@@ -77,6 +85,7 @@ $this->extend($layout);
                                     <th style="min-width: 180px;">Arrival</th>
                                     <th style="min-width: 180px;">Origin</th>
                                     <th style="min-width: 180px;">Destination</th>
+                                    <th style="min-width: 180px;">Type</th>
                                     <th style="min-width: 100px;">Duration</th>
                                     <th style="min-width: 100px;">Distance</th>
                                     <th style="min-width: 150px;">Price</th>
@@ -109,6 +118,7 @@ $this->extend($layout);
                         d.year = $('#year').val();
                         d.journey_status = $('#journey_status').val();
                         d.mode_of_transport = $('#mode_of_transport').val();
+                        d.is_domestic = $('#is_domestic').val();
                     }
                 },
                 order: [[1, 'desc']],
@@ -124,6 +134,7 @@ $this->extend($layout);
                 $('#year').val('');
                 $('#journey_status').val('');
                 $('#mode_of_transport').val('');
+                $('#is_domestic').val('');
                 table.ajax.reload();
             });
         });

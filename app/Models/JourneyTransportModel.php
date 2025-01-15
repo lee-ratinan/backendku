@@ -24,6 +24,7 @@ class JourneyTransportModel extends Model
         'trip_duration',
         'distance_traveled',
         'mode_of_transport',
+        'is_domestic',
         'craft_type',
         'price_amount',
         'price_currency_code',
@@ -82,9 +83,10 @@ class JourneyTransportModel extends Model
      * @param string $year
      * @param string $journey_status
      * @param string $mode_of_transport
+     * @param string $is_domestic
      * @return void
      */
-    private function applyFilter(string $search_value, string $country_code, string $year, string $journey_status, string $mode_of_transport): void
+    private function applyFilter(string $search_value, string $country_code, string $year, string $journey_status, string $mode_of_transport, string $is_domestic): void
     {
         if (!empty($search_value)) {
             $this->groupStart()
@@ -114,6 +116,9 @@ class JourneyTransportModel extends Model
         if (!empty($mode_of_transport)) {
             $this->where('journey_transport.mode_of_transport', $mode_of_transport);
         }
+        if (!empty($is_domestic)) {
+            $this->where('journey_transport.is_domestic', $is_domestic);
+        }
     }
 
     /**
@@ -126,20 +131,21 @@ class JourneyTransportModel extends Model
      * @param string $year
      * @param string $journey_status
      * @param string $mode_of_transport
+     * @param string $is_domestic
      * @return array
      */
-    public function getDataTables(int $start, int $length, string $order_column, string $order_direction, string $search_value, string $country_code, string $year, string $journey_status, string $mode_of_transport): array
+    public function getDataTables(int $start, int $length, string $order_column, string $order_direction, string $search_value, string $country_code, string $year, string $journey_status, string $mode_of_transport, string $is_domestic): array
     {
         $record_total    = $this->countAllResults();
         $record_filtered = $record_total;
-        if (!empty($search_value) || !empty($country_code) || !empty($year) || !empty($journey_status) || !empty($mode_of_transport)) {
-            $this->applyFilter($search_value, $country_code, $year, $journey_status, $mode_of_transport);
+        if (!empty($search_value) || !empty($country_code) || !empty($year) || !empty($journey_status) || !empty($mode_of_transport) || !empty($is_domestic)) {
+            $this->applyFilter($search_value, $country_code, $year, $journey_status, $mode_of_transport, $is_domestic);
             $record_filtered = $this
                 ->join('journey_operator', 'journey_transport.operator_id = journey_operator.id', 'left outer')
                 ->join('journey_port AS port_departure', 'journey_transport.departure_port_id = port_departure.id', 'left outer')
                 ->join('journey_port AS port_arrival',   'journey_transport.arrival_port_id = port_arrival.id', 'left outer')
                 ->countAllResults();
-            $this->applyFilter($search_value, $country_code, $year, $journey_status, $mode_of_transport);
+            $this->applyFilter($search_value, $country_code, $year, $journey_status, $mode_of_transport, $is_domestic);
         }
         $session    = session();
         $locale     = $session->locale;
@@ -150,7 +156,11 @@ class JourneyTransportModel extends Model
             ->join('journey_port AS port_departure', 'journey_transport.departure_port_id = port_departure.id', 'left outer')
             ->join('journey_port AS port_arrival',   'journey_transport.arrival_port_id = port_arrival.id', 'left outer')
             ->orderBy($order_column, $order_direction)->limit($length, $start)->findAll();
-        $result     = [];
+        $result      = [];
+        $is_domestic = [
+            'I' => '<i class="fa-solid fa-globe-americas"></i> International',
+            'D' => '<i class="fa-solid fa-home"></i> Domestic',
+        ];
         foreach ($raw_result as $row) {
             $new_id         = $row['id'] * self::ID_NONCE;
             $flight_numbers = [];
@@ -187,10 +197,9 @@ class JourneyTransportModel extends Model
                 $this->getModeOfTransport($row['mode_of_transport']) . (empty($row['craft_type']) ? '' : '<br><small><i class="fa-solid fa-caret-right"></i> ' . $row['craft_type'] . '</small>'),
                 $departure_time,
                 $arrival_time,
-                (empty($row['departure_port_code']) ? '' : '<h4 class="mb-0">' . $row['departure_port_code'] . '</h4>') .
-                '<span class="flag-icon flag-icon-' . strtolower($row['departure_country_code']) . '"></span> ' . $row['departure_port_name'],
-                (empty($row['arrival_port_code']) ? '' : '<h4 class="mb-0">' . $row['arrival_port_code'] . '</h4>') .
-                '<span class="flag-icon flag-icon-' . strtolower($row['arrival_country_code']) . '"></span> ' . $row['arrival_port_name'],
+                '<span class="flag-icon flag-icon-' . strtolower($row['departure_country_code']) . '"></span> ' . (empty($row['departure_port_code']) ? '' : '<h4 class="mb-0 d-inline-block">' . $row['departure_port_code'] . '</h4><br>') . '<b>' . $row['departure_port_name'] . '</b>',
+                '<span class="flag-icon flag-icon-' . strtolower($row['arrival_country_code']) . '"></span> ' . (empty($row['arrival_port_code']) ? '' : '<h4 class="mb-0 d-inline-block">' . $row['arrival_port_code'] . '</h4><br>') . '<b>' . $row['arrival_port_name'] . '</b>',
+                ($is_domestic[$row['is_domestic']] ?? ''),
                 empty($row['trip_duration']) ? '-' : $this->printMinutes($row['trip_duration']),
                 empty($row['distance_traveled']) ? '-' : number_format($row['distance_traveled']) . ' km',
                 (empty($row['price_amount']) ? '-' : currency_format($row['price_currency_code'], $row['price_amount'])) .

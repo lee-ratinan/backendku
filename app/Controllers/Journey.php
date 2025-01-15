@@ -371,6 +371,7 @@ class Journey extends BaseController
             'journey_transport.arrival_date_time',
             'port_departure.port_name',
             'port_arrival.port_name',
+            'journey_transport.is_domestic',
             'journey_transport.trip_duration',
             'journey_transport.distance_traveled',
             'journey_transport.price_amount',
@@ -390,7 +391,8 @@ class Journey extends BaseController
         $year               = $this->request->getPost('year');
         $journey_status     = $this->request->getPost('journey_status');
         $mode_of_transport  = $this->request->getPost('mode_of_transport');
-        $result             = $model->getDataTables($start, $length, $order_column, $order_direction, $search_value, $country_code, $year, $journey_status, $mode_of_transport);
+        $is_domestic        = $this->request->getPost('is_domestic');
+        $result             = $model->getDataTables($start, $length, $order_column, $order_direction, $search_value, $country_code, $year, $journey_status, $mode_of_transport, $is_domestic);
         return $this->response->setJSON([
             'draw'            => $this->request->getPost('draw'),
             'recordsTotal'    => $result['recordsTotal'],
@@ -1098,5 +1100,29 @@ class Journey extends BaseController
             unset($distance);
         }
         echo '</pre>';
+    }
+
+    public function fix2(): void
+    {
+        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
+            return;
+        }
+        $journey_transport = new JourneyTransportModel();
+        $transport_raw     = $journey_transport->select('journey_transport.id, 
+            port_departure.country_code AS departure_country,
+            port_arrival.country_code AS arrival_country')
+            ->join('journey_port AS port_departure', 'journey_transport.departure_port_id = port_departure.id', 'left outer')
+            ->join('journey_port AS port_arrival',   'journey_transport.arrival_port_id = port_arrival.id', 'left outer')
+            ->orderBy('id', 'asc')->findAll();
+        foreach ($transport_raw as $row) {
+            $id = $row['id'];
+            $departure_country = $row['departure_country'];
+            $arrival_country   = $row['arrival_country'];
+            $is_domestic = 'I';
+            if ($departure_country == $arrival_country) {
+                $is_domestic = 'D';
+            }
+            echo "UPDATE journey_transport SET is_domestic = '{$is_domestic}' WHERE id = {$id} LIMIT 1;<br>";
+        }
     }
 }

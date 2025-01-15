@@ -160,6 +160,7 @@ $routes->group('{locale}/office', ['filter' => 'auth'], static function ($routes
     // Summary, export, statistics, etc
     $routes->get('journey/export', 'Journey::export');
     $routes->get('journey/fix', 'Journey::fix');
+    $routes->get('journey/fix2', 'Journey::fix2');
     /////////////////////////////////////////////////////////////////////////////
     // PROFILE
     // Profile
