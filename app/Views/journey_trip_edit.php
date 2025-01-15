@@ -47,6 +47,10 @@ $this->extend($layout);
                                 ?>
                             </div>
                         </div>
+                        <div class="text-end">
+                            <hr>
+                            <button class="btn btn-sm btn-outline-primary" id="btn-save-journey-master"><i class="fa-solid fa-save fa-fw me-2"></i> Save</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -54,6 +58,7 @@ $this->extend($layout);
                 <div class="col-12">
                     <div class="card">
                         <div class="card-body">
+                            <a href="<?= base_url($session->locale . '/office/journey/transport/create/' . ($trip_data['master_data']['id'] * $nonces['transport'])) ?>" class="btn btn-sm btn-outline-primary float-end" target="_blank"><i class="fa-solid fa-plus-circle fa-fw me-2"></i> Add Transport</a>
                             <h5 class="card-title"><i class="fa-solid fa-person-walking-luggage fa-fw me-3"></i> Transport</h5>
                             <?php if (!empty($trip_data['transport_data'])) : ?>
                             <div class="table-responsive">
@@ -91,6 +96,8 @@ $this->extend($layout);
                                     <?php endforeach; ?>
                                 </table>
                             </div>
+                            <?php else: ?>
+                                <p>No transport data found.</p>
                             <?php endif; ?>
                         </div>
                     </div>
@@ -98,6 +105,7 @@ $this->extend($layout);
                 <div class="col-12">
                     <div class="card">
                         <div class="card-body">
+                            <a href="<?= base_url($session->locale . '/office/journey/accommodation/create/' . ($trip_data['master_data']['id'] * $nonces['accommodation'])) ?>" class="btn btn-sm btn-outline-primary float-end" target="_blank"><i class="fa-solid fa-plus-circle fa-fw me-2"></i> Add Accommodation</a>
                             <h5 class="card-title"><i class="fa-solid fa-bed fa-fw me-3"></i> Accommodation</h5>
                             <?php if (!empty($trip_data['accommodation_data'])) : ?>
                             <div class="table-responsive">
@@ -135,6 +143,8 @@ $this->extend($layout);
                                     <?php endforeach; ?>
                                 </table>
                             </div>
+                            <?php else: ?>
+                                <p>No accommodation data found.</p>
                             <?php endif; ?>
                         </div>
                     </div>
@@ -142,6 +152,7 @@ $this->extend($layout);
                 <div class="col-12">
                     <div class="card">
                         <div class="card-body">
+                            <a href="<?= base_url($session->locale . '/office/journey/attraction/create/' . ($trip_data['master_data']['id'] * $nonces['attraction'])) ?>" class="btn btn-sm btn-outline-primary float-end" target="_blank"><i class="fa-solid fa-plus-circle fa-fw me-2"></i> Add Attraction</a>
                             <h5 class="card-title"><i class="fa-solid fa-ticket fa-fw me-3"></i> Attraction</h5>
                             <?php if (!empty($trip_data['attraction_data'])) : ?>
                                 <div class="table-responsive">
@@ -173,6 +184,32 @@ $this->extend($layout);
                                         <?php endforeach; ?>
                                     </table>
                                 </div>
+                            <?php else: ?>
+                                <p>No attraction data found.</p>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title"><i class="fa-solid fa-mars fa-fw me-3"></i> Leisure</h5>
+                            <?php if (!empty($trip_data['leisure_data'])) : ?>
+                                <div class="table-responsive">
+                                    <table class="table table-sm table-hover table-striped">
+                                        <?php foreach ($trip_data['leisure_data'] as $row) : ?>
+                                            <tr>
+                                                <td>
+                                                    <pre>
+                                                        <?php print_r($row); ?>
+                                                    </pre>
+                                                </td>
+                                            </tr>
+                                        <?php endforeach; ?>
+                                    </table>
+                                </div>
+                            <?php else: ?>
+                                <p>No leisure data found.</p>
                             <?php endif; ?>
                         </div>
                     </div>

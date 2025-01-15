@@ -345,6 +345,19 @@ function currency_format(string $currency_code, float $amount): string
 }
 
 /**
+ * @param int $minutes
+ * @return string
+ */
+function minute_format(int $minutes): string
+{
+    // split into days, hours, minutes
+    $d = floor($minutes / 1440);
+    $h = floor(($minutes - $d * 1440) / 60);
+    $m = $minutes % 60;
+    return ($d > 0 ? $d . 'd ' : '') . ($h > 0 ? $h . 'h ' : '') . ($m > 0 ? $m . 'm' : '');
+}
+
+/**
  * Get role icons
  * @param string $role
  * @param bool $show_role_name
