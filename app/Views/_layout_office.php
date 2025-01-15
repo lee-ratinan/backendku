@@ -98,7 +98,7 @@
                     <li class="sidebar-item <?= ('attraction' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/journey/attraction') ?>"><i class="fa-solid fa-ticket fa-fw me-3"></i><span>Attraction</span></a></li>
                     <li class="sidebar-item <?= ('port' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/journey/port') ?>"><i class="fa-solid fa-location-dot fa-fw me-3"></i><span>Port</span></a></li>
                     <li class="sidebar-item <?= ('operator' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/journey/operator') ?>"><i class="fa-solid fa-user-tie fa-fw me-3"></i><span>Operator</span></a></li>
-                    <li class="sidebar-item <?= ('holiday' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/journey/holiday') ?>"><i class="fa-solid fa-user-tie fa-fw me-3"></i><span>Holiday</span></a></li>
+                    <li class="sidebar-item <?= ('holiday' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/journey/holiday') ?>"><i class="fa-solid fa-umbrella-beach fa-fw me-3"></i><span>Holiday</span></a></li>
                 <?php endif; ?>
                 <!-- PROFILE -->
                 <?php if (isset($session->permitted_features['profile'])): ?>

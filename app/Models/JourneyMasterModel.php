@@ -222,7 +222,10 @@ class JourneyMasterModel extends Model
             if ('canceled' == $row['journey_status']) {
                 $class    = 'text-danger';
             }
-            $split_tags   = explode(',', $row['trip_tags']);
+            $split_tags   = [];
+            if (!is_null($row['trip_tags'])) {
+                $split_tags   = explode(',', $row['trip_tags']);
+            }
             $tags         = '<span class="badge bg-primary rounded-pill">' . implode('</span><span class="badge bg-primary rounded-pill">', $split_tags) . '</span>';
             $result[]     = [
                 '<a class="btn btn-outline-primary btn-sm" href="' . base_url($locale . '/office/journey/trip/edit/' . $new_id) . '"><i class="fa-solid fa-edit"></i></a>',

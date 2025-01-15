@@ -24,6 +24,66 @@ class JourneyHolidayModel extends Model
     protected $updatedField = 'updated_at';
     const ID_NONCE = 757;
 
+    private array $configurations = [
+        'id'              => [
+            'type'      => 'hidden',
+            'label_key' => 'TablesOrganization.OrganizationMaster.id'
+        ],
+        'country_code'    => [
+            'type'        => 'select',
+            'label'       => 'Country Code',
+            'required'    => true,
+            'placeholder' => 'US',
+            'options'     => []
+        ],
+        'region_code'     => [
+            'type'        => 'text',
+            'label'       => 'Region Code',
+            'maxlength'   => 6,
+            'required'    => false,
+            'placeholder' => 'NSW',
+            'details'     => 'Only applicable to Australia (NAT for National; and NSW, QLD, VIC, WA) and United States (FED for Federal; and CA, IL, NY)'
+        ],
+        'holiday_date'    => [
+            'type'        => 'date',
+            'label'       => 'Start Date',
+            'required'    => true,
+            'placeholder' => '2025-01-01'
+        ],
+        'holiday_date_to' => [
+            'type'        => 'date',
+            'label'       => 'End Date',
+            'required'    => true,
+            'placeholder' => '2025-01-02'
+        ],
+        'holiday_name'    => [
+            'type'        => 'text',
+            'label'       => 'Name',
+            'required'    => true,
+            'maxlength'   => 128,
+            'placeholder' => 'Vacation'
+        ]
+    ];
+
+    /**
+     * Get configurations for generating forms
+     * @param array $columns
+     * @return array
+     */
+    public function getConfigurations(array $columns = []): array
+    {
+        $configurations  = $this->configurations;
+        // Countries
+        $countries       = lang('ListCountries.countries');
+        $final_countries = array_map(function ($value) {
+            return $value['common_name'];
+        }, $countries);
+        $final_countries['XV'] = 'Vacation';
+        ksort($final_countries);
+        $configurations['country_code']['options'] = $final_countries;
+        return $columns ? array_intersect_key($configurations, array_flip($columns)) : $configurations;
+    }
+
     /**
      * @param string $search_value
      * @param string $country_code
@@ -64,6 +124,15 @@ class JourneyHolidayModel extends Model
         if (!empty($search_value) || !empty($country_code) || !empty($start) || !empty($end)) {
             $this->applyFilter($search_value, $country_code, $start, $end);
         }
+        $weekdays   = [
+            'Sun' => '<span class="badge rounded-pill" style="background-color:#f00;">Sun</span>',
+            'Mon' => '<span class="badge rounded-pill" style="background-color:#ff0;color:#000">Mon</span>',
+            'Tue' => '<span class="badge rounded-pill" style="background-color:#ff69b4;color:#000">Tue</span>',
+            'Wed' => '<span class="badge rounded-pill" style="background-color:#0c0;color:#000">Wed</span>',
+            'Thu' => '<span class="badge rounded-pill" style="background-color:#ffa500;color:#000">Thu</span>',
+            'Fri' => '<span class="badge rounded-pill" style="background-color:#00f;">Fri</span>',
+            'Sat' => '<span class="badge rounded-pill" style="background-color:#9370db;color:#000">Sat</span>',
+        ];
         $session    = session();
         $locale     = $session->locale;
         $raw_result = $this->orderBy('holiday_date', 'asc')->orderBy('country_code', 'asc')->findAll();
@@ -100,8 +169,10 @@ class JourneyHolidayModel extends Model
             foreach ($data as $row) {
                 $detail .= '<a class="btn btn-outline-primary btn-sm me-3" href="' . $row['edit_link'] . '"><i class="fa-solid fa-edit"></i></a>' . $row['country'] . ' <h4 class="d-inline-block">' . $row['holiday_name'] . '</h4><br>';
             }
+            $time     = strtotime($date);
+            $wk_day   = date('D', $time);
             $result[] = [
-                date(DATE_FORMAT_UI . " (D)", strtotime($date)),
+                date(DATE_FORMAT_UI, $time) . ' ' . $weekdays[$wk_day],
                 $detail,
             ];
         }
@@ -113,4 +184,13 @@ class JourneyHolidayModel extends Model
         ];
     }
 
+    /**
+     * @param int $id
+     * @return array
+     */
+    public function getHoliday(int $id): array
+    {
+        $real_id = $id / self::ID_NONCE;
+        return $this->find($real_id);
+    }
 }

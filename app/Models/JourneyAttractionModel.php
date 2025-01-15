@@ -87,7 +87,7 @@ class JourneyAttractionModel extends Model
         $countries  = lang('ListCountries.countries');
         foreach ($raw_result as $row) {
             $new_id       = $row['id'] * self::ID_NONCE;
-            $journey_details = str_replace('[RI]', '<span class="badge bg-success"><i class="fa-solid fa-hand-holding-dollar"></i> REIMBURSED</span>', $row['journey_details']);
+            $journey_details = str_replace('[RI]', '<span class="badge bg-success"><i class="fa-solid fa-hand-holding-dollar"></i> REIMBURSED</span>', $row['journey_details'] ?? '');
             $class        = '';
             if ('canceled' == $row['journey_status']) {
                 $class    = 'text-danger';

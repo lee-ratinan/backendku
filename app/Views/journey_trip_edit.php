@@ -49,7 +49,7 @@ $this->extend($layout);
                         </div>
                         <div class="text-end">
                             <hr>
-                            <button class="btn btn-sm btn-outline-primary" id="btn-save-journey-master"><i class="fa-solid fa-save fa-fw me-2"></i> Save</button>
+                            <button class="btn btn-sm btn-outline-primary" id="btn-save-journey-master"><i class="fa-solid fa-save fa-fw me-2"></i> Save Trip</button>
                         </div>
                     </div>
                 </div>
@@ -199,10 +199,49 @@ $this->extend($layout);
                                     <table class="table table-sm table-hover table-striped">
                                         <?php foreach ($trip_data['leisure_data'] as $row) : ?>
                                             <tr>
-                                                <td>
-                                                    <pre>
-                                                        <?php print_r($row); ?>
-                                                    </pre>
+                                                <td style="min-width:225px;">
+                                                    <?php
+                                                    if ('enlarge' == $row['record_type']) {
+                                                        echo 'Enlargement: ' . number_format($row['event_type']/10, 1) . 'cm';
+                                                    } else {
+                                                        echo $health_records[$row['record_type']][$row['event_type']];
+                                                    }
+                                                    ?>
+                                                </td>
+                                                <td style="min-width:175px;">
+                                                    <?php
+                                                    $local_tz   = new \DateTimeZone($row['event_timezone']);
+                                                    $date_start = new \DateTime($row['time_start_utc'], new \DateTimeZone('UTC'));
+                                                    $date_end   = $date_start;
+                                                    $show_end   = false;
+                                                    if ($row['time_start_utc'] != $row['time_end_utc']) {
+                                                        $date_end = new \DateTime($row['time_end_utc'], new \DateTimeZone('UTC'));
+                                                        $show_end = true;
+                                                    }
+                                                    echo $date_start->setTimezone($local_tz)->format(DATETIME_FORMAT_UI);
+                                                    if ($show_end) {
+                                                        echo '<br>to ' . $date_end->setTimezone($local_tz)->format(DATETIME_FORMAT_UI);
+                                                    }
+                                                    echo '<br><small>' . lang('ListTimeZones.timezones.' . $row['event_timezone'] . '.label') . '</small>'
+                                                    ?>
+                                                </td>
+                                                <td style="min-width:175px;">
+                                                    <?php
+                                                    if (0 < $row['event_duration']) {
+                                                        echo '<small>Duration:</small> ' . minute_format($row['event_duration']) . '<br>';
+                                                    }
+                                                    if (0 < $row['duration_from_prev_ejac']) {
+                                                        echo minute_format($row['duration_from_prev_ejac']) . ' <em class="small">from previous</em><br>';
+                                                    }
+                                                    ?>
+                                                </td>
+                                                <td style="min-width:225px;"><?= $row['event_notes'] ?></td>
+                                                <td style="min-width:225px;">
+                                                    <?php
+                                                    if (!empty($row['spa_name']) || !empty($row['spa_type'])) {
+                                                        echo '<b>' . $row['spa_name'] . '</b><br><small>' . $row['spa_type'] . '<br>' . currency_format($row['currency_code'], $row['price_amount']) . ' ' . (0 < $row['price_tip'] ? currency_format($row['currency_code'], $row['price_tip']) : '') . '</small>';
+                                                    }
+                                                    ?>
                                                 </td>
                                             </tr>
                                         <?php endforeach; ?>

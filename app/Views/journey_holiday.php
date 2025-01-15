@@ -74,6 +74,13 @@ $this->extend($layout);
                                 <tbody></tbody>
                             </table>
                         </div>
+                        <div class="small">
+                            For Singapore
+                            <ul>
+                                <li>The in-lieu is to be given if the holiday falls on Saturday,</li>
+                                <li>The next working day will be a holiday if the holiday falls on Sunday.</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -34,4 +34,36 @@ class HealthLeisureModel extends Model
     protected $createdField = 'created_at';
     protected $updatedField = 'updated_at';
     const ID_NONCE = 691;
+
+    /**
+     * @return array
+     */
+    public function getRecordTypes(): array
+    {
+        return [
+            'ejac'     => [
+                'jerk-off' => 'Ejaculation / Jerk-off',
+                'sex'      => 'Ejaculation / Sex',
+                'hand-job' => 'Ejaculation / Hand-job',
+                'milking'  => 'Ejaculation / Milking'
+            ],
+            'chastity' => [
+                'cb_minime'       => 'Chastity / CB-MiniMe',
+                'mancage'         => 'Chastity / ManCage',
+                'bent'            => 'Chastity / Bent Cage',
+                'inverted'        => 'Chastity / Inverted Cage',
+                'bent_n_inverted' => 'Chastity / Bent&Inverted Cage series',
+                'flat'            => 'Chastity / Trumpet (Flat) Cage',
+                'prison'          => 'Chastity / Prison Bird Cage',
+            ],
+            'enlarge'  => [], // event_type is mm
+            'spa'      => [
+                'hand-job' => 'Massage Spa / Hand Job',
+                'b2b'      => 'Massage Spa / Body-2-Body',
+                'sex'      => 'Massage Spa / Sex',
+                'milking'  => 'Massage Spa / Milking',
+                'clean'    => 'Massage Spa / Clean Massage',
+            ]
+        ];
+    }
 }

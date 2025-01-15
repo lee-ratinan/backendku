@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Models\HealthLeisureModel;
 use App\Models\JourneyAccommodationModel;
 use App\Models\JourneyAttractionModel;
 use App\Models\JourneyHolidayModel;
@@ -9,8 +10,10 @@ use App\Models\JourneyMasterModel;
 use App\Models\JourneyOperatorModel;
 use App\Models\JourneyPortModel;
 use App\Models\JourneyTransportModel;
+use CodeIgniter\Database\Exceptions\DatabaseException;
 use CodeIgniter\Exceptions\PageNotFoundException;
 use CodeIgniter\HTTP\ResponseInterface;
+use ReflectionException;
 
 class Journey extends BaseController
 {
@@ -99,12 +102,13 @@ class Journey extends BaseController
         if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
             return permission_denied();
         }
-        $master_model = new JourneyMasterModel();
-        $trip_data    = [];
-        $mode         = 'new';
-        $page_title   = 'New Trip';
-        $nonces       = [];
+        $master_model       = new JourneyMasterModel();
+        $trip_data          = [];
+        $mode               = 'new';
+        $page_title         = 'New Trip';
+        $nonces             = [];
         $modes_of_transport = [];
+        $health_records     = [];
         if (is_numeric($trip_id)) {
             $trip_data    = $master_model->getTripData($trip_id);
             if (empty($trip_data)) {
@@ -118,6 +122,7 @@ class Journey extends BaseController
                 'attraction'    => JourneyAttractionModel::ID_NONCE
             ];
             $modes_of_transport = (new JourneyTransportModel())->getModeOfTransport();
+            $health_records     = (new HealthLeisureModel())->getRecordTypes();
         }
         $session = session();
         $data    = [
@@ -130,7 +135,8 @@ class Journey extends BaseController
             'mode'               => $mode,
             'master_config'      => $master_model->getConfigurations(),
             'nonces'             => $nonces,
-            'modes_of_transport' => $modes_of_transport
+            'modes_of_transport' => $modes_of_transport,
+            'health_records'     => $health_records
         ];
         return view('journey_trip_edit', $data);
     }
@@ -844,29 +850,89 @@ class Journey extends BaseController
     }
 
     /**
-     * @param string $port_code
+     * @param string $holiday_id
      * @return string
      */
-    public function holidayEdit(string $port_code = 'new'): string
+    public function holidayEdit(string $holiday_id = 'new'): string
     {
         if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
             return permission_denied();
         }
-        $session = session();
+        $session       = session();
+        $holiday_model = new JourneyHolidayModel();
+        $holiday       = [];
+        $page_title    = 'New Holiday';
+        $mode          = 'new';
+        if (is_numeric($holiday_id)) {
+            $holiday    = $holiday_model->getHoliday($holiday_id);
+            if (empty($holiday)) {
+                throw PageNotFoundException::forPageNotFound();
+            }
+            $page_title = 'Edit Holiday [' . $holiday['holiday_name'] . ']';
+            $mode       = 'edit';
+        }
         $data    = [
-            'page_title'   => 'Transport',
-            'slug'         => 'transport',
+            'page_title'   => $page_title,
+            'slug'         => 'holiday',
             'user_session' => $session->user,
             'roles'        => $session->roles,
-            'current_role' => $session->current_role
+            'current_role' => $session->current_role,
+            'holiday'      => $holiday,
+            'mode'         => $mode,
+            'config'       => $holiday_model->getConfigurations()
         ];
         return view('journey_holiday_edit', $data);
     }
 
-    public function holidaySave()
+    /**
+     * Save holiday
+     * @return ResponseInterface
+     */
+    public function holidaySave(): ResponseInterface
     {
         if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
             return permission_denied('json');
+        }
+        $session = session();
+        $model   = new JourneyHolidayModel();
+        $mode    = $this->request->getPost('mode');
+        $data    = [
+            'country_code'    => $this->request->getPost('country_code'),
+            'region_code'     => $this->request->getPost('region_code'),
+            'holiday_date'    => $this->request->getPost('holiday_date'),
+            'holiday_date_to' => $this->request->getPost('holiday_date_to'),
+            'holiday_name'    => $this->request->getPost('holiday_name'),
+            'created_by'      => $session->user_id,
+        ];
+        try {
+            if ('new' == $mode) {
+                $inserted_id = $model->insert($data);
+                if ($inserted_id) {
+                    return $this->response->setJSON([
+                        'status' => 'success',
+                        'toast'  => 'Holiday has been added',
+                        'url'    => base_url($session->locale . '/office/journey/holiday/edit/' . ($inserted_id * $model::ID_NONCE))
+                    ]);
+                }
+            } else {
+                $id = $this->request->getPost('id');
+                if ($model->update($id, $data)) {
+                    return $this->response->setJSON([
+                        'status' => 'success',
+                        'toast'  => 'Holiday has been updated',
+                        'url'    => base_url($session->locale . '/office/journey/holiday/edit/' . ($id * $model::ID_NONCE))
+                    ]);
+                }
+            }
+            return $this->response->setJSON([
+                'status' => 'error',
+                'toast'  => 'There was some unknown error, please try again later.'
+            ]);
+        } catch (DatabaseException|ReflectionException $e) {
+            return $this->response->setJSON([
+                'status' => 'error',
+                'toast'  => 'ERROR: ' . $e->getMessage()
+            ]);
         }
     }
 

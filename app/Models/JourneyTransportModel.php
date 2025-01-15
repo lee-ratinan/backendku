@@ -167,7 +167,7 @@ class JourneyTransportModel extends Model
             if (empty($flight_numbers) && 'canceled' == $row['journey_status']) {
                 $flight_numbers[] = '<i class="fa-solid fa-times-circle text-danger"></i> <b>CANCELED</b>';
             }
-            $journey_details = str_replace('[R]', '<span class="badge bg-success"><i class="fa-solid fa-rotate-left"></i> RETURN</span>', $row['journey_details']);
+            $journey_details = str_replace('[R]', '<span class="badge bg-success"><i class="fa-solid fa-rotate-left"></i> RETURN</span>', $row['journey_details'] ?? '');
             $journey_details = str_replace('[C]', '<span class="badge bg-success"><i class="fa-solid fa-right-left"></i> CONNECTING</span>', $journey_details);
             $journey_details = str_replace('[RI]', '<span class="badge bg-success"><i class="fa-solid fa-hand-holding-dollar"></i> REIMBURSED</span>', $journey_details);
             if ('Y' == $row['is_time_known']) {
