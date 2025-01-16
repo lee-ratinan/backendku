@@ -38,6 +38,172 @@ class JourneyAccommodationModel extends Model
     protected $updatedField = 'updated_at';
     const ID_NONCE = 607;
 
+    private array $configurations = [
+        'id'            => [
+            'type'      => 'hidden',
+            'label'     => 'ID'
+        ],
+        'journey_id'     => [
+            'type'        => 'select',
+            'label'       => 'Journey',
+            'required'    => true,
+        ],
+        'country_code'  => [
+            'type'        => 'select',
+            'label'       => 'Country',
+            'required'    => true,
+            'options'     => []
+        ],
+        'check_in_date' => [
+            'type'        => 'datetime-local',
+            'label'       => 'Check-in Date',
+            'required'    => true,
+            'placeholder' => 'Check-in'
+        ],
+        'check_out_date' => [
+            'type'        => 'datetime-local',
+            'label'       => 'Check-out Date',
+            'required'    => true,
+            'placeholder' => 'Check-out'
+        ],
+        'accommodation_timezone' => [
+            'type'        => 'select',
+            'label'       => 'Timezone',
+            'required'    => true,
+            'options'     => []
+        ],
+        'night_count' => [
+            'type' => 'number',
+            'label' => 'Nights',
+            'required' => true,
+            'min' => 1,
+            'step' => 1,
+            'placeholder' => '1'
+        ],
+        'hotel_name' => [
+            'type' => 'text',
+            'label' => 'Hotel Name',
+            'maxlength' => 128,
+            'required' => true,
+            'placeholder' => 'Hotel Name'
+        ],
+        'hotel_address' => [
+            'type' => 'text',
+            'label' => 'Hotel Address',
+            'maxlength' => 255,
+            'required' => true,
+            'placeholder' => '123 Test Street'
+        ],
+        'booking_channel' => [
+            'type' => 'text',
+            'label' => 'Booking Channel',
+            'maxlength' => 24,
+            'required' => true,
+            'placeholder' => 'AGODA'
+        ],
+        'room_type' => [
+            'type' => 'text',
+            'label' => 'Room Type',
+            'maxlength' => 24,
+            'required' => true,
+            'placeholder' => 'Superior Room'
+        ],
+        'breakfast_included' => [
+            'type'        => 'select',
+            'label'       => 'Breakfast',
+            'required'    => true,
+            'options'     => [
+                'Y' => 'Included',
+                'N' => 'Not included'
+            ]
+        ],
+        'price_amount' => [
+            'type'        => 'number',
+            'label'       => 'Price Amount',
+            'required'    => false,
+            'step'        => '0.01',
+            'min'         => '0',
+            'placeholder' => '0.00',
+            'details'     => 'This is the price stated by the operator'
+        ],
+        'price_currency_code' => [
+            'type'        => 'select',
+            'label'       => 'Price Currency',
+            'required'    => false,
+            'options'     => [],
+        ],
+        'charged_amount' => [
+            'type'        => 'number',
+            'label'       => 'Charged Amount',
+            'required'    => false,
+            'step'        => '0.01',
+            'min'         => '0',
+            'placeholder' => '0.00',
+            'details'     => 'This is the amount charged to the credit card'
+        ],
+        'charged_currency_code' => [
+            'type'        => 'select',
+            'label'       => 'Charged Currency',
+            'required'    => false,
+            'options'     => []
+        ],
+        'journey_details' => [
+            'type'        => 'text',
+            'label'       => 'Journey Details',
+            'required'    => false,
+            'maxlength'   => 255,
+            'placeholder' => 'Accommodation details'
+        ],
+        'journey_status' => [
+            'type'        => 'select',
+            'label'       => 'Journey Status',
+            'required'    => true,
+            'options'     => [
+                'as_planned' => 'As Planned',
+                'canceled'   => 'Canceled'
+            ]
+        ],
+        'google_drive_link' => [
+            'type'        => 'url',
+            'label'       => 'Google Drive Link',
+            'required'    => false,
+            'placeholder' => 'https://drive.google.com/...'
+        ]
+    ];
+
+    /**
+     * Get configurations for generating forms
+     * @param array $columns
+     * @return array
+     */
+    public function getConfigurations(array $columns = []): array
+    {
+        $configurations  = $this->configurations;
+        // Countries
+        $countries       = lang('ListCountries.countries');
+        $final_countries = array_map(function ($value) {
+            return $value['common_name'];
+        }, $countries);
+        $configurations['country_code']['options'] = $final_countries;
+        // Timezones
+        $timezones      = lang('ListTimeZones.timezones');
+        $all_timezones  = [];
+        foreach ($timezones as $key => $timezone) {
+            $all_timezones[$key] = $timezone['label'];
+        }
+        asort($all_timezones);
+        $configurations['accommodation_timezone']['options'] = $all_timezones;
+        // Currencies
+        $currencies     = lang('ListCurrencies.currencies');
+        $all_currencies = [];
+        foreach ($currencies as $key => $currency) {
+            $all_currencies[$key] = '[' . $key . '] ' . $currency['currency_name'];
+        }
+        $configurations['price_currency_code']['options']    = $all_currencies;
+        $configurations['charged_currency_code']['options']  = $all_currencies;
+        return $columns ? array_intersect_key($configurations, array_flip($columns)) : $configurations;
+    }
+
     /**
      * @param string $search_value
      * @param string $country_code

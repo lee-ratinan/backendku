@@ -94,6 +94,7 @@ class Journey extends BaseController
     }
 
     /**
+     * This page shows the trip edit form and the data of child rows associated to it
      * @param string $trip_id
      * @return string
      */
@@ -144,6 +145,7 @@ class Journey extends BaseController
     }
 
     /**
+     * This API saves the trip (journey_master) data
      * @return ResponseInterface
      */
     public function tripSave(): ResponseInterface
@@ -219,6 +221,7 @@ class Journey extends BaseController
     }
 
     /**
+     * This is the Trip Statistics page
      * @return string
      */
     public function tripStatistics(): string
@@ -256,6 +259,7 @@ class Journey extends BaseController
     }
 
     /**
+     * This returns all financial data of everything in the journey_* tables
      * @return string
      */
     public function tripFinance(): string
@@ -331,6 +335,7 @@ class Journey extends BaseController
      ************************************************************************/
 
     /**
+     * This page list all transport data
      * @return string
      */
     public function transport(): string
@@ -353,6 +358,7 @@ class Journey extends BaseController
     }
 
     /**
+     * This API returns all transport data for DataTables
      * @return ResponseInterface
      */
     public function transportList(): ResponseInterface
@@ -402,6 +408,7 @@ class Journey extends BaseController
     }
 
     /**
+     * This page show the edit form for the transport
      * @param string $transport_id
      * @param int $journey_id
      * @return string
@@ -444,6 +451,7 @@ class Journey extends BaseController
     }
 
     /**
+     * This API saves the transport data
      * @return ResponseInterface
      */
     public function transportSave(): ResponseInterface
@@ -589,6 +597,7 @@ class Journey extends BaseController
     }
 
     /**
+     * This page shows the statistical data of the transport
      * @return string
      */
     public function transportStatistics(): string
@@ -638,6 +647,7 @@ class Journey extends BaseController
      ************************************************************************/
 
     /**
+     * This page list accommodation data
      * @return string
      */
     public function accommodation(): string
@@ -658,6 +668,7 @@ class Journey extends BaseController
     }
 
     /**
+     * This API returns accommodation for DataTables
      * @return ResponseInterface
      */
     public function accommodationList(): ResponseInterface
@@ -703,30 +714,167 @@ class Journey extends BaseController
     }
 
     /**
-     * @param string $port_code
+     * This page edit the accommodation data
+     * @param string $accommodation_id
      * @param int $journey_id
      * @return string
      */
-    public function accommodationEdit(string $port_code = 'new', int $journey_id = 0): string
+    public function accommodationEdit(string $accommodation_id = 'new', int $journey_id = 0): string
     {
         if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
             return permission_denied();
         }
-        $session = session();
-        $data    = [
-            'page_title'   => 'Transport',
-            'slug'         => 'transport',
-            'user_session' => $session->user,
-            'roles'        => $session->roles,
-            'current_role' => $session->current_role
+        $session       = session();
+        $model         = new JourneyAccommodationModel();
+        $accommodation = [];
+        if ('new' == $accommodation_id && 0 < $journey_id) {
+            // new
+            $mode         = 'new';
+            $journey_id   = intval($journey_id / JourneyAccommodationModel::ID_NONCE);
+            $accommodation_id = 0;
+            $page_title   = 'New Accommodation';
+        } else {
+            // edit
+            $mode             = 'edit';
+            $accommodation_id = intval($accommodation_id / JourneyAccommodationModel::ID_NONCE);
+            $accommodation    = $model->find($accommodation_id);
+            $page_title       = 'Edit Accommodation ' . (empty($accommodation['hotel_name']) ? '' : ' [' . $accommodation['hotel_name'] . ']');
+            $journey_id       = $accommodation['journey_id'];
+        }
+        $data = [
+            'page_title'       => $page_title,
+            'slug'             => 'accommodation',
+            'user_session'     => $session->user,
+            'roles'            => $session->roles,
+            'current_role'     => $session->current_role,
+            'mode'             => $mode,
+            'config'           => $model->getConfigurations(),
+            'accommodation_id' => $accommodation_id,
+            'journey_id'       => $journey_id,
+            'accommodation'    => $accommodation
         ];
         return view('journey_accommodation_edit', $data);
     }
 
-    public function accommodationSave()
+    /**
+     * This API saves the accommodation data
+     * @return ResponseInterface
+     */
+    public function accommodationSave(): ResponseInterface
     {
         if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
             return permission_denied('json');
+        }
+        $session                = session();
+        $model                  = new JourneyAccommodationModel();
+        $mode                   = $this->request->getPost('mode');
+        $country_code           = $this->request->getPost('country_code');
+        $check_in_date          = $this->request->getPost('check_in_date');
+        $check_out_date         = $this->request->getPost('check_out_date');
+        $accommodation_timezone = $this->request->getPost('accommodation_timezone');
+        if (!empty($country_code)) {
+            $data['country_code'] = $country_code;
+        }
+        if (!empty($check_in_date)) {
+            $data['check_in_date'] = $check_in_date;
+        }
+        if (!empty($check_out_date)) {
+            $data['check_out_date'] = $check_out_date;
+        }
+        if (!empty($accommodation_timezone)) {
+            $data['accommodation_timezone'] = $accommodation_timezone;
+        }
+        if (!empty($check_in_date) && !empty($check_out_date)) {
+            try {
+                $str_chk_in          = substr($check_in_date, 0, 10) . ' 00:00:00';
+                $str_chk_out         = substr($check_out_date, 0, 10) . ' 00:00:00';
+                $check_in            = new \DateTime($str_chk_in, new \DateTimeZone('UTC'));
+                $check_out           = new \DateTime($str_chk_out, new \DateTimeZone('UTC'));
+                $diff                = $check_out->diff($check_in);
+                $data['night_count'] = $diff->days;
+            } catch (\Exception $e) {
+                log_message('error', '! Journey / accommodationSave - ' . $e->getMessage());
+            }
+        }
+        $hotel_name         = $this->request->getPost('hotel_name');
+        $hotel_address      = $this->request->getPost('hotel_address');
+        $booking_channel    = $this->request->getPost('booking_channel');
+        $room_type          = $this->request->getPost('room_type');
+        $breakfast_included = $this->request->getPost('breakfast_included');
+        if (!empty($hotel_name)) {
+            $data['hotel_name'] = $hotel_name;
+        }
+        if (!empty($hotel_address)) {
+            $data['hotel_address'] = $hotel_address;
+        }
+        if (!empty($booking_channel)) {
+            $data['booking_channel'] = $booking_channel;
+        }
+        if (!empty($room_type)) {
+            $data['room_type'] = $room_type;
+        }
+        if (!empty($breakfast_included)) {
+            $data['breakfast_included'] = $breakfast_included;
+        }
+        $price_amount          = $this->request->getPost('price_amount');
+        $price_currency_code   = $this->request->getPost('price_currency_code');
+        $charged_amount        = $this->request->getPost('charged_amount');
+        $charged_currency_code = $this->request->getPost('charged_currency_code');
+        $journey_details       = $this->request->getPost('journey_details');
+        $journey_status        = $this->request->getPost('journey_status');
+        $google_drive_link     = $this->request->getPost('google_drive_link');
+        if (!empty($price_amount)) {
+            $data['price_amount'] = $price_amount;
+        }
+        if (!empty($price_currency_code)) {
+            $data['price_currency_code'] = $price_currency_code;
+        }
+        if (!empty($charged_amount)) {
+            $data['charged_amount'] = $charged_amount;
+        }
+        if (!empty($charged_currency_code)) {
+            $data['charged_currency_code'] = $charged_currency_code;
+        }
+        if (!empty($journey_details)) {
+            $data['journey_details'] = $journey_details;
+        }
+        if (!empty($journey_status)) {
+            $data['journey_status'] = $journey_status;
+        }
+        if (!empty($google_drive_link)) {
+            $data['google_drive_link'] = $google_drive_link;
+        }
+        $data['created_by'] = $session->user_id;
+        try {
+            if ('new' == $mode) {
+                $data['journey_id'] = $this->request->getPost('journey_id');
+                $inserted_id        = $model->insert($data);
+                if ($inserted_id) {
+                    return $this->response->setJSON([
+                        'status' => 'success',
+                        'toast'  => 'Accommodation has been added',
+                        'url'    => base_url($session->locale . '/office/journey/accommodation/edit/' . ($inserted_id * $model::ID_NONCE))
+                    ]);
+                }
+            } else {
+                $id = $this->request->getPost('id');
+                if ($model->update($id, $data)) {
+                    return $this->response->setJSON([
+                        'status' => 'success',
+                        'toast'  => 'Accommodation has been updated',
+                        'url'    => base_url($session->locale . '/office/journey/accommodation/edit/' . ($id * $model::ID_NONCE))
+                    ]);
+                }
+            }
+            return $this->response->setJSON([
+                'status' => 'error',
+                'toast'  => 'There was some unknown error, please try again later.'
+            ]);
+        } catch (DatabaseException|ReflectionException $e) {
+            return $this->response->setJSON([
+                'status' => 'error',
+                'toast'  => 'ERROR: ' . $e->getMessage()
+            ]);
         }
     }
 
