@@ -54,10 +54,6 @@ function generate_form_field(string $id, array $configuration, int|string|array 
         foreach ($options as $key => $value) {
             $selected  = ($current_value == $key ? 'selected' : '');
             $str_value = lang($value);
-            if ($str_value == $value)
-            {
-                $str_value = $value;
-            }
             echo "<option value='{$key}' $selected>" . $str_value . "</option>";
         }
         echo "</select><label for='{$id}'>" . $label . "</label></div>";

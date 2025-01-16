@@ -506,13 +506,17 @@ class Journey extends BaseController
             $data['is_time_known'] = $is_time_known;
             if ('Y' == $is_time_known && !empty($departure_dt) && !empty($arrival_dt) && !empty($departure_tz) && !empty($arrival_tz)) {
                 // DEPARTURE DATETIME
-                $departure = new \DateTime($departure_dt, new \DateTimeZone($departure_tz));
-                $arrival   = new \DateTime($arrival_dt, new \DateTimeZone($arrival_tz));
-                $diff = $arrival->diff($departure);
-                $min  = $diff->days * 24 * 60;
-                $min += $diff->h * 60;
-                $min += $diff->i;
-                $data['trip_duration'] = $min;
+                try {
+                    $departure             = new \DateTime($departure_dt, new \DateTimeZone($departure_tz));
+                    $arrival               = new \DateTime($arrival_dt, new \DateTimeZone($arrival_tz));
+                    $diff                  = $arrival->diff($departure);
+                    $min                   = $diff->days * 24 * 60;
+                    $min                  += $diff->h * 60;
+                    $min                  += $diff->i;
+                    $data['trip_duration'] = $min;
+                } catch (\Exception $e) {
+                    log_message('error', '! Journey / transportSave - ' . $e->getMessage());
+                }
             }
         }
         $mode_of_transport     = $this->request->getPost('mode_of_transport');

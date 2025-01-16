@@ -216,6 +216,7 @@ class JourneyTransportModel extends Model
         foreach ($timezones as $key => $timezone) {
             $all_timezones[$key] = $timezone['label'];
         }
+        asort($all_timezones);
         $configurations['departure_timezone']['options'] = $all_timezones;
         $configurations['arrival_timezone']['options']   = $all_timezones;
         // Modes of Transport
