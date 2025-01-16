@@ -26,11 +26,126 @@ class JourneyAttractionModel extends Model
         'created_at',
         'updated_at',
     ];
-    protected $returnType = 'array';
+    protected $returnType    = 'array';
     protected $useTimestamps = true;
-    protected $createdField = 'created_at';
-    protected $updatedField = 'updated_at';
+    protected $createdField  = 'created_at';
+    protected $updatedField  = 'updated_at';
     const ID_NONCE = 673;
+
+    private array $configurations = [
+        'id'                    => [
+            'type'  => 'hidden',
+            'label' => 'ID'
+        ],
+        'journey_id'            => [
+            'type'     => 'number',
+            'label'    => 'Journey',
+            'required' => true,
+        ],
+        'country_code'          => [
+            'type'     => 'select',
+            'label'    => 'Country',
+            'required' => true,
+            'options'  => []
+        ],
+        'attraction_date'       => [
+            'type'        => 'datetime-local',
+            'label'       => 'Attraction Date',
+            'required'    => true,
+            'placeholder' => 'Attraction Date'
+        ],
+        'attraction_title'      => [
+            'type'        => 'text',
+            'label'       => 'Attraction Title',
+            'maxlength'   => 128,
+            'required'    => true,
+            'placeholder' => 'Attraction Title'
+        ],
+        'attraction_type'       => [
+            'type'        => 'text',
+            'label'       => 'Attraction Type',
+            'maxlength'   => 24,
+            'required'    => true,
+            'placeholder' => 'Attraction Type'
+        ],
+        'price_amount'          => [
+            'type'        => 'number',
+            'label'       => 'Price Amount',
+            'required'    => false,
+            'step'        => '0.01',
+            'min'         => '0',
+            'placeholder' => '0.00',
+            'details'     => 'This is the price stated by the operator'
+        ],
+        'price_currency_code'   => [
+            'type'     => 'select',
+            'label'    => 'Price Currency',
+            'required' => false,
+            'options'  => [],
+        ],
+        'charged_amount'        => [
+            'type'        => 'number',
+            'label'       => 'Charged Amount',
+            'required'    => false,
+            'step'        => '0.01',
+            'min'         => '0',
+            'placeholder' => '0.00',
+            'details'     => 'This is the amount charged to the credit card'
+        ],
+        'charged_currency_code' => [
+            'type'     => 'select',
+            'label'    => 'Charged Currency',
+            'required' => false,
+            'options'  => []
+        ],
+        'journey_details'       => [
+            'type'        => 'text',
+            'label'       => 'Journey Details',
+            'required'    => false,
+            'maxlength'   => 255,
+            'placeholder' => 'Accommodation details'
+        ],
+        'journey_status'        => [
+            'type'     => 'select',
+            'label'    => 'Journey Status',
+            'required' => true,
+            'options'  => [
+                'as_planned' => 'As Planned',
+                'canceled'   => 'Canceled'
+            ]
+        ],
+        'google_drive_link'     => [
+            'type'        => 'url',
+            'label'       => 'Google Drive Link',
+            'required'    => false,
+            'placeholder' => 'https://drive.google.com/...'
+        ]
+    ];
+
+    /**
+     * Get configurations for generating forms
+     * @param array $columns
+     * @return array
+     */
+    public function getConfigurations(array $columns = []): array
+    {
+        $configurations  = $this->configurations;
+        // Countries
+        $countries       = lang('ListCountries.countries');
+        $final_countries = array_map(function ($value) {
+            return $value['common_name'];
+        }, $countries);
+        $configurations['country_code']['options'] = $final_countries;
+        // Currencies
+        $currencies     = lang('ListCurrencies.currencies');
+        $all_currencies = [];
+        foreach ($currencies as $key => $currency) {
+            $all_currencies[$key] = '[' . $key . '] ' . $currency['currency_name'];
+        }
+        $configurations['price_currency_code']['options']    = $all_currencies;
+        $configurations['charged_currency_code']['options']  = $all_currencies;
+        return $columns ? array_intersect_key($configurations, array_flip($columns)) : $configurations;
+    }
 
     /**
      * @param string $search_value

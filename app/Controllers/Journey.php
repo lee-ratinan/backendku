@@ -879,6 +879,7 @@ class Journey extends BaseController
     }
 
     /**
+     * This page shows the statistical data of the accommodation
      * @return string
      */
     public function accommodationStatistics(): string
@@ -917,6 +918,7 @@ class Journey extends BaseController
      ************************************************************************/
 
     /**
+     * This page list all attraction data
      * @return string
      */
     public function attraction(): string
@@ -937,6 +939,7 @@ class Journey extends BaseController
     }
 
     /**
+     * This API returns all attraction data for DataTables
      * @return ResponseInterface
      */
     public function attractionList(): ResponseInterface
@@ -978,22 +981,44 @@ class Journey extends BaseController
     }
 
     /**
-     * @param string $port_code
+     * This page shows the edit form for the attraction
+     * @param string $attraction_id
      * @param int $journey_id
      * @return string
      */
-    public function attractionEdit(string $port_code = 'new', int $journey_id = 0): string
+    public function attractionEdit(string $attraction_id = 'new', int $journey_id = 0): string
     {
         if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
             return permission_denied();
         }
-        $session = session();
-        $data    = [
-            'page_title'   => 'Transport',
-            'slug'         => 'transport',
-            'user_session' => $session->user,
-            'roles'        => $session->roles,
-            'current_role' => $session->current_role
+        $session    = session();
+        $model      = new JourneyAttractionModel();
+        $attraction = [];
+        if ('new' == $attraction_id && 0 < $journey_id) {
+            // new
+            $mode          = 'new';
+            $journey_id    = intval($journey_id / JourneyAttractionModel::ID_NONCE);
+            $attraction_id = 0;
+            $page_title    = 'New Attraction';
+        } else {
+            // edit
+            $mode          = 'edit';
+            $attraction_id = intval($attraction_id / JourneyAttractionModel::ID_NONCE);
+            $attraction    = $model->find($attraction_id);
+            $page_title    = 'Edit Attraction ' . (empty($attraction['attraction_title']) ? '' : ' [' . $attraction['attraction_title'] . ']');
+            $journey_id    = $attraction['journey_id'];
+        }
+        $data = [
+            'page_title'    => $page_title,
+            'slug'          => 'attraction',
+            'user_session'  => $session->user,
+            'roles'         => $session->roles,
+            'current_role'  => $session->current_role,
+            'mode'          => $mode,
+            'config'        => $model->getConfigurations(),
+            'attraction_id' => $attraction_id,
+            'journey_id'    => $journey_id,
+            'attraction'    => $attraction
         ];
         return view('journey_attraction_edit', $data);
     }
