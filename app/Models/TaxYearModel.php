@@ -153,7 +153,7 @@ class TaxYearModel extends Model
                 currency_format($row['currency_code'], $row['total_income']),
                 currency_format($row['currency_code'], $row['taxable_income']),
                 currency_format($row['currency_code'], $row['final_tax_amount']),
-                $row['taxpayer_name'] . '<br><small>' . $row['taxpayer_id_key'] . ': ' . $row['taxpayer_id_value'] . '<br>Filing status: ' . $row['filing_status'] . '<br>Citizenship status: ' . $row['citizenship_status'] . '<br>' . $row['taxpayer_address'] . '</small>',
+                $row['taxpayer_name'] . '<br><small>' . $row['taxpayer_id_key'] . ': **' . substr($row['taxpayer_id_value'], -4) . '<br>Filing status: ' . $row['filing_status'] . '<br>Citizenship status: ' . $row['citizenship_status'] . '<br>' . $row['taxpayer_address'] . '</small>',
                 '<a class="btn btn-outline-primary btn-sm" href="' . $row['google_drive_link'] . '" target="_blank"><i class="fa-solid fa-file-pdf"></i></a>',
             ];
         }
