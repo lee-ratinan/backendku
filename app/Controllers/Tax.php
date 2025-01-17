@@ -61,9 +61,15 @@ class Tax extends BaseController
     private array $market_rates = [
         'AU' => [8000, 13000],
         'SG' => [5000, 9000],
-        'TH' => [38000, 55000]
+        'TH' => [30000, 60000]
     ];
 
+    /**
+     * Calculate tax for various countries
+     * @param float $annual_income
+     * @param string $country_code
+     * @return array
+     */
     private function taxCalculation(float $annual_income, string $country_code): array
     {
         if (!isset($this->tax_brackets[$country_code]) || !isset($this->deductions[$country_code])) {
@@ -105,14 +111,29 @@ class Tax extends BaseController
             'total'          => $total_tax,
         ];
     }
+
+    /**
+     * @return string
+     */
     public function index(): string
     {
         if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
             return permission_denied();
         }
-        return '';
+        $session = session();
+        $data    = [
+            'page_title'   => 'Tax',
+            'slug'         => 'tax',
+            'user_session' => $session->user,
+            'roles'        => $session->roles,
+            'current_role' => $session->current_role
+        ];
+        return view('tax', $data);
     }
 
+    /**
+     * @return ResponseInterface
+     */
     public function masterList(): ResponseInterface
     {
         if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
@@ -121,6 +142,9 @@ class Tax extends BaseController
         return $this->response->setJSON([]);
     }
 
+    /**
+     * @return string
+     */
     public function masterEdit(): string
     {
         if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
@@ -129,6 +153,9 @@ class Tax extends BaseController
         return '';
     }
 
+    /**
+     * @return ResponseInterface
+     */
     public function masterSave(): ResponseInterface
     {
         if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
@@ -201,6 +228,10 @@ class Tax extends BaseController
         return view('tax_projection', $data);
     }
 
+    /**
+     * Calculate tax projection for various countries
+     * @return string
+     */
     public function projectionAjax(): string
     {
         if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
@@ -235,5 +266,74 @@ class Tax extends BaseController
             'green_range' => $this->market_rates[$tax_country]
         ];
         return view('tax_projection_ajax', $data);
+    }
+
+    /**
+     * This page shows the comparison of the income tax for various countries
+     * @return string
+     */
+    public function comparison(): string
+    {
+        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
+            return permission_denied();
+        }
+        $session     = session();
+        $usd_from    = $this->request->getGet('usd_from') ?? 1000;
+        $usd_to      = $this->request->getGet('usd_to') ?? 15000;
+        $rate['thb'] = $this->request->getGet('thbusd') ?? 34.5;
+        $rate['sgd'] = $this->request->getGet('sgdusd') ?? 1.37;
+        $rate['aud'] = $this->request->getGet('audusd') ?? 1.61;
+        $data        = [];
+        $chart       = [];
+        $targets     = ['thb', 'sgd', 'aud'];
+        $countries   = [
+            'thb' => 'TH',
+            'sgd' => 'SG',
+            'aud' => 'AU',
+        ];
+        for ($usd = $usd_from; $usd <= $usd_to; $usd += 1000) {
+            foreach ($targets as $currency) {
+                $monthly_income  = $usd * $rate[$currency];
+                $annual_income   = $monthly_income * 12;
+                $tax_details     = $this->taxCalculation($annual_income, $countries[$currency]);
+                $last_line       = end($tax_details['lines']);
+                $temp[$currency] = [
+                    'monthly_income'  => $monthly_income,
+                    'annual_income'   => $annual_income,
+                    'total_tax'       => $tax_details['total'],
+                    'total_tax_usd'   => $tax_details['total'] / $rate[$currency],
+                    'max_rate'        => $last_line['rate'] . '%',
+                    'in_market_rate'  => $this->market_rates[$countries[$currency]][0] <= $monthly_income && $monthly_income <= $this->market_rates[$countries[$currency]][1],
+                ];
+            }
+            $data[] = [
+                'usd'        => $usd,
+                'usd_annual' => $usd * 12,
+                'thb'        => $temp['thb'],
+                'sgd'        => $temp['sgd'],
+                'aud'        => $temp['aud']
+            ];
+            $chart[] = [
+                'x' => $usd,
+                'y1' => $temp['thb']['total_tax_usd'],
+                'y2' => $temp['sgd']['total_tax_usd'],
+                'y3' => $temp['aud']['total_tax_usd'],
+                'l' => "Income: " . currency_format('USD', $usd) . "\nTH Tax: " . number_format($temp['thb']['total_tax'], 2) . "\nSG Tax: " . number_format($temp['sgd']['total_tax'], 2) . "\nAU Tax: " . number_format($temp['aud']['total_tax'], 2)
+            ];
+            unset($temp);
+        }
+        $data    = [
+            'page_title'   => 'Tax Comparison',
+            'slug'         => 'tax-comparison',
+            'user_session' => $session->user,
+            'roles'        => $session->roles,
+            'current_role' => $session->current_role,
+            'data'         => $data,
+            'chart'        => $chart,
+            'usd_from'     => $usd_from,
+            'usd_to'       => $usd_to,
+            'rate'         => $rate
+        ];
+        return view('tax_comparison', $data);
     }
 }

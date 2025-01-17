@@ -90,6 +90,7 @@
                     <li class="sidebar-item <?= ('tax' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/tax') ?>"><i class="fa-solid fa-building-columns fa-fw me-3"></i><span>Tax</span></a></li>
                     <li class="sidebar-item <?= ('tax-calculator' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/tax/calculator') ?>"><i class="fa-solid fa-calculator fa-fw me-3"></i><span>Tax Calculator</span></a></li>
                     <li class="sidebar-item <?= ('tax-projection' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/tax/projection') ?>"><i class="fa-solid fa-chart-line fa-fw me-3"></i><span>Tax Projection</span></a></li>
+                    <li class="sidebar-item <?= ('tax-comparison' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/tax/comparison') ?>"><i class="fa-solid fa-code-compare fa-fw me-3"></i><span>Tax Comparison</span></a></li>
                 <?php endif; ?>
                 <!-- JOURNEY -->
                 <?php if (isset($session->permitted_features['journey'])): ?>

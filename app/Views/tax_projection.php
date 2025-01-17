@@ -14,6 +14,7 @@ $this->extend($layout);
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="<?= base_url($session->locale . '/office/dashboard') ?>"><?= lang('System.dashboard.page_title') ?></a></li>
+                <li class="breadcrumb-item"><a href="<?= base_url($session->locale . '/office/tax') ?>">Tax</a></li>
                 <li class="breadcrumb-item active"><?= $page_title ?></li>
             </ol>
         </nav>

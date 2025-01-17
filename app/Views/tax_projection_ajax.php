@@ -6,6 +6,7 @@
             <th>Annual Income</th>
             <th>Deduction</th>
             <th>Taxable Income</th>
+            <th>Max %</th>
             <th>Total Tax</th>
         </tr>
         </thead>
@@ -16,13 +17,15 @@
             if ($green_range[0] <= $row['monthly_income'] && $row['monthly_income'] <= $green_range[1]) {
                 $market_rate = 'text-success';
             }
+            $last_line = end($row['lines'])
             ?>
         <tr>
-            <td class="text-end <?= $market_rate ?>"><?= number_format($row['monthly_income']) ?></td>
-            <td class="text-end <?= $market_rate ?>"><?= number_format($row['annual_income']) ?></td>
-            <td class="text-end <?= $market_rate ?>"><?= number_format($row['deduction']) ?></td>
-            <td class="text-end <?= $market_rate ?>"><?= number_format($row['taxable_income']) ?></td>
-            <td class="text-end <?= $market_rate ?>"><?= number_format($row['total_tax']) ?></td>
+            <td class="text-end <?= $market_rate ?>"><?= number_format($row['monthly_income'], 2) ?></td>
+            <td class="text-end <?= $market_rate ?>"><?= number_format($row['annual_income'], 2) ?></td>
+            <td class="text-end <?= $market_rate ?>"><?= number_format($row['deduction'], 2) ?></td>
+            <td class="text-end <?= $market_rate ?>"><?= number_format($row['taxable_income'], 2) ?></td>
+            <td class="text-end"><?= number_format($last_line['rate'], 2) ?>%</td>
+            <td class="text-end <?= $market_rate ?>"><?= number_format($row['total_tax'], 2) ?></td>
         </tr>
         <?php endforeach; ?>
         </tbody>

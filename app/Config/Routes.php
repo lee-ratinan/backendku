@@ -111,6 +111,7 @@ $routes->group('{locale}/office', ['filter' => 'auth'], static function ($routes
     $routes->post('tax/calculator', 'Tax::calculatorAjax'); // just simple tax calculator
     $routes->get('tax/projection', 'Tax::projection');
     $routes->post('tax/projection', 'Tax::projectionAjax');
+    $routes->get('tax/comparison', 'Tax::comparison');
     /////////////////////////////////////////////////////////////////////////////
     // JOURNEY
     // journey_port table
