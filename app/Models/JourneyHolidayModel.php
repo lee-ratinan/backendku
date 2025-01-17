@@ -125,13 +125,13 @@ class JourneyHolidayModel extends Model
             $this->applyFilter($search_value, $country_code, $start, $end);
         }
         $weekdays   = [
-            'Sun' => '<span class="badge rounded-pill" style="background-color:#f00;">Sun</span>',
-            'Mon' => '<span class="badge rounded-pill" style="background-color:#ff0;color:#000">Mon</span>',
-            'Tue' => '<span class="badge rounded-pill" style="background-color:#ff69b4;color:#000">Tue</span>',
-            'Wed' => '<span class="badge rounded-pill" style="background-color:#0c0;color:#000">Wed</span>',
-            'Thu' => '<span class="badge rounded-pill" style="background-color:#ffa500;color:#000">Thu</span>',
-            'Fri' => '<span class="badge rounded-pill" style="background-color:#00f;">Fri</span>',
-            'Sat' => '<span class="badge rounded-pill" style="background-color:#9370db;color:#000">Sat</span>',
+            'Sun' => '<span class="badge bg-danger rounded-pill">Sun</span>',
+            'Mon' => '(Mon)',
+            'Tue' => '(Tue)',
+            'Wed' => '(Wed)',
+            'Thu' => '(Thu)',
+            'Fri' => '(Fri)',
+            'Sat' => '<span class="badge bg-secondary rounded-pill">Sat</span>',
         ];
         $session    = session();
         $locale     = $session->locale;
