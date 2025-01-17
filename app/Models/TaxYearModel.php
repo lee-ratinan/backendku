@@ -50,10 +50,10 @@ class TaxYearModel extends Model
             'required'  => true,
         ],
         'currency_code' => [
-            'type'      => 'text',
+            'type'      => 'select',
             'label'     => 'Currency Code',
             'required'  => true,
-            'maxlength' => 3,
+            'options'   => []
         ],
         'total_income'  => [
             'type'      => 'number',
@@ -89,14 +89,21 @@ class TaxYearModel extends Model
         // Countries
         $country_codes   = ['AU', 'SG', 'TH', 'US'];
         foreach ($country_codes as $code) {
-            $configurations['country_code']['options'] = lang('ListCountries.countries.' . $code . '.common_name');
+            $configurations['country_code']['options'][$code] = lang('ListCountries.countries.' . $code . '.common_name');
         }
+        // Currencies
+        $configurations['currency_code']['options'] = [
+            'AUD' => 'Australian Dollar',
+            'SGD' => 'Singapore Dollar',
+            'THB' => 'Thai Baht',
+            'USD' => 'US Dollar',
+        ];
         // Taxpayer
         $taxpayer_model  = new TaxpayerInfoModel();
         $taxpayer_rows   = $taxpayer_model->findAll();
         $final_taxpayers = [];
         foreach ($taxpayer_rows as $row) {
-            $final_taxpayers[$row['id']] = '***' . substr($row['taxpayer_name'], -4) . ', ' . $row['filing_status'] . ', ' . $row['taxpayer_address'];
+            $final_taxpayers[$row['id']] = '***' . substr($row['taxpayer_id_value'], -4) . ', ' . $row['citizenship_status'] . ', ' . $row['filing_status'] . ', ' . $row['taxpayer_address'];
         }
         $configurations['taxpayer_id']['options']  = $final_taxpayers;
         return $columns ? array_intersect_key($configurations, array_flip($columns)) : $configurations;

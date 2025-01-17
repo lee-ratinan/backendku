@@ -55,13 +55,13 @@ $this->extend($layout);
                         <div class="table-responsive">
                             <table class="table table-sm table-striped table-hover">
                                 <thead>
-                                <tr>
+                                <tr class="text-center">
                                     <th>USD</th>
                                     <th colspan="3">Thailand</th>
                                     <th colspan="3">Singapore</th>
                                     <th colspan="3">Australia</th>
                                 </tr>
-                                <tr>
+                                <tr class="text-end">
                                     <th>Income</th>
                                     <th>Income</th>
                                     <th>%</th>

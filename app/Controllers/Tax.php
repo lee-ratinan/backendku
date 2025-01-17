@@ -2,8 +2,12 @@
 
 namespace App\Controllers;
 
+use App\Models\TaxpayerInfoModel;
+use App\Models\TaxRecordModel;
 use App\Models\TaxYearModel;
+use CodeIgniter\Database\Exceptions\DatabaseException;
 use CodeIgniter\HTTP\ResponseInterface;
+use ReflectionException;
 
 class Tax extends BaseController
 {
@@ -177,17 +181,60 @@ class Tax extends BaseController
     }
 
     /**
+     * Edit tax year
+     * @param string $tax_id
      * @return string
      */
-    public function masterEdit(): string
+    public function masterEdit(string $tax_id = 'new'): string
     {
         if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
             return permission_denied();
         }
-        return '';
+        $session          = session();
+        $tax_year_model   = new TaxYearModel();
+        $tax_record_model = new TaxRecordModel();
+        $taxpayer_model   = new TaxpayerInfoModel();
+        $mode             = 'new';
+        $page_title       = 'New Tax Record';
+        if ('new' == $tax_id) {
+            $tax_year    = [];
+            $tax_records = [];
+            $taxpayer    = [];
+        } else {
+            $tax_id      = intval($tax_id) / $tax_year_model::ID_NONCE;
+            $tax_year    = $tax_year_model->find($tax_id);
+            $tr_raw      = $tax_record_model->where('tax_year_id', $tax_id)->findAll();
+            $tax_records = [];
+            foreach ($tr_raw as $row) {
+                $tax_records[$row['desc_type']][] = [
+                    'id'              => $row['id'],
+                    'new_id'          => $row['id'] * $tax_record_model::ID_NONCE,
+                    'tax_description' => $row['tax_description'],
+                    'money_amount'    => $row['money_amount'],
+                    'item_notes'      => $row['item_notes'],
+                ];
+            }
+            $taxpayer    = $taxpayer_model->find($tax_year['taxpayer_id']);
+            $mode        = 'edit';
+            $page_title  = 'Edit Tax Record [' . lang('ListCountries.countries.' . $tax_year['country_code'] . '.common_name') . ' / ' . $tax_year['tax_year'] . ']';
+        }
+        $data    = [
+            'page_title'   => $page_title,
+            'slug'         => 'tax',
+            'user_session' => $session->user,
+            'roles'        => $session->roles,
+            'current_role' => $session->current_role,
+            'mode'         => $mode,
+            'tax_year'     => $tax_year,
+            'tax_records'  => $tax_records,
+            'taxpayer'     => $taxpayer,
+            'ty_config'    => $tax_year_model->getConfigurations(),
+        ];
+        return view('tax_edit', $data);
     }
 
     /**
+     * Save the tax year
      * @return ResponseInterface
      */
     public function masterSave(): ResponseInterface
@@ -195,8 +242,54 @@ class Tax extends BaseController
         if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
             return permission_denied('json');
         }
-        return $this->response->setJSON([]);
+        $session = session();
+        $model   = new TaxYearModel();
+        $mode    = $this->request->getPost('mode');
+        $data    = [];
+        $data['tax_year']          = $this->request->getPost('tax_year');
+        $data['country_code']      = $this->request->getPost('country_code');
+        $data['google_drive_link'] = $this->request->getPost('google_drive_link');
+        $data['currency_code']     = $this->request->getPost('currency_code');
+        $data['total_income']      = $this->request->getPost('total_income');
+        $data['taxable_income']    = $this->request->getPost('taxable_income');
+        $data['final_tax_amount']  = $this->request->getPost('final_tax_amount');
+        $data['taxpayer_id']       = $this->request->getPost('taxpayer_id');
+        try {
+            if ('new' == $mode) {
+                $data['created_by'] = $session->user_id;
+                $inserted_id        = $model->insert($data);
+                if ($inserted_id) {
+                    return $this->response->setJSON([
+                        'status' => 'success',
+                        'toast'  => 'Tax year has been added',
+                        'url'    => base_url($session->locale . '/office/tax/edit/' . ($inserted_id * $model::ID_NONCE))
+                    ]);
+                }
+            } else {
+                $id = $this->request->getPost('id');
+                if ($model->update($id, $data)) {
+                    return $this->response->setJSON([
+                        'status' => 'success',
+                        'toast'  => 'Tax year has been updated',
+                        'url'    => base_url($session->locale . '/office/tax/edit/' . ($id * $model::ID_NONCE))
+                    ]);
+                }
+            }
+            return $this->response->setJSON([
+                'status' => 'error',
+                'toast'  => 'There was some unknown error, please try again later.'
+            ]);
+        } catch (DatabaseException|ReflectionException $e) {
+            return $this->response->setJSON([
+                'status' => 'error',
+                'toast'  => 'ERROR: ' . $e->getMessage()
+            ]);
+        }
     }
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////
+    // Tax Calculator and Other Tools
+    //////////////////////////////////////////////////////////////////////////////////////////////////
 
     /**
      * Calculate tax for various countries
