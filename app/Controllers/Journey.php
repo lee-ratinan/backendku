@@ -1039,9 +1039,9 @@ class Journey extends BaseController
         $model                  = new JourneyAttractionModel();
         $mode                   = $this->request->getPost('mode');
         $country_code           = $this->request->getPost('country_code');
-        $attraction_date          = $this->request->getPost('attraction_date');
-        $attraction_title          = $this->request->getPost('attraction_title');
-        $attraction_type          = $this->request->getPost('attraction_type');
+        $attraction_date        = $this->request->getPost('attraction_date');
+        $attraction_title       = $this->request->getPost('attraction_title');
+        $attraction_type        = $this->request->getPost('attraction_type');
         if (!empty($country_code)) {
             $data['country_code'] = $country_code;
         }
@@ -1121,6 +1121,7 @@ class Journey extends BaseController
      ************************************************************************/
 
     /**
+     * This page list all port data
      * @return string
      */
     public function port(): string
@@ -1143,6 +1144,7 @@ class Journey extends BaseController
     }
 
     /**
+     * This API returns all port data for DataTables
      * @return ResponseInterface
      */
     public function portList(): ResponseInterface
@@ -1181,29 +1183,117 @@ class Journey extends BaseController
     }
 
     /**
-     * @param string $port_code
+     * This page shows the edit form for the port
+     * @param string $port_id
      * @return string
      */
-    public function portEdit(string $port_code = 'new'): string
+    public function portEdit(string $port_id = 'new'): string
     {
         if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
             return permission_denied();
         }
-        $session = session();
+        $session    = session();
+        $model      = new JourneyPortModel();
+        $port       = [];
+        $page_title = 'New Port';
+        $mode       = 'new';
+        if ('new' != $port_id && is_numeric($port_id)) {
+            $port_id    = intval($port_id / $model::ID_NONCE);
+            $port       = $model->find($port_id);
+            $page_title = 'Edit Port' . ($port['port_name'] ? ' [' . $port['port_name'] . ']' : '');
+            $mode       = 'edit';
+        }
         $data    = [
-            'page_title'   => 'Transport',
-            'slug'         => 'transport',
+            'page_title'   => $page_title,
+            'slug'         => 'port',
             'user_session' => $session->user,
             'roles'        => $session->roles,
-            'current_role' => $session->current_role
+            'current_role' => $session->current_role,
+            'config'       => $model->getConfigurations(),
+            'port'         => $port,
+            'mode'         => $mode
         ];
         return view('journey_port_edit', $data);
     }
 
-    public function portSave()
+    /**
+     * This API saves the port data
+     * @return ResponseInterface
+     */
+    public function portSave(): ResponseInterface
     {
         if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
             return permission_denied('json');
+        }
+        $session                = session();
+        $model                  = new JourneyPortModel();
+        $mode                   = $this->request->getPost('mode');
+        $mode_of_transport      = $this->request->getPost('mode_of_transport');
+        $port_code_1            = $this->request->getPost('port_code_1');
+        $port_code_2            = $this->request->getPost('port_code_2');
+        $country_code           = $this->request->getPost('country_code');
+        $location_latitude      = $this->request->getPost('location_latitude');
+        $location_longitude     = $this->request->getPost('location_longitude');
+        $port_name              = $this->request->getPost('port_name');
+        $port_local_name        = $this->request->getPost('port_local_name');
+        $port_full_name         = $this->request->getPost('port_full_name');
+        $city_name              = $this->request->getPost('city_name');
+        if (!empty($mode_of_transport)) {
+            $data['mode_of_transport'] = $mode_of_transport;
+        }
+        if (!empty($port_code_1)) {
+            $data['port_code_1'] = $port_code_1;
+        }
+        if (!empty($port_code_2)) {
+            $data['port_code_2'] = $port_code_2;
+        }
+        if (!empty($country_code)) {
+            $data['country_code'] = $country_code;
+        }
+        $data['location_latitude'] = $location_latitude;
+        $data['location_longitude'] = $location_longitude;
+        if (!empty($port_name)) {
+            $data['port_name'] = $port_name;
+        }
+        if (!empty($port_local_name)) {
+            $data['port_local_name'] = $port_local_name;
+        }
+        if (!empty($port_full_name)) {
+            $data['port_full_name'] = $port_full_name;
+        }
+        if (!empty($city_name)) {
+            $data['city_name'] = $city_name;
+        }
+        $data['created_by'] = $session->user_id;
+        try {
+            if ('new' == $mode) {
+                $inserted_id        = $model->insert($data);
+                if ($inserted_id) {
+                    return $this->response->setJSON([
+                        'status' => 'success',
+                        'toast'  => 'Port has been added',
+                        'url'    => base_url($session->locale . '/office/journey/port/edit/' . ($inserted_id * $model::ID_NONCE))
+                    ]);
+                }
+            } else {
+                $id = $this->request->getPost('id');
+                if ($model->update($id, $data)) {
+                    return $this->response->setJSON([
+                        'status' => 'success',
+                        'toast'  => 'Port has been updated',
+                        'url'    => base_url($session->locale . '/office/journey/port/edit/' . ($id * $model::ID_NONCE))
+                    ]);
+                }
+            }
+            return $this->response->setJSON([
+                'status' => 'error',
+                'toast'  => 'There was some unknown error, please try again later.'
+            ]);
+        } catch (DatabaseException|ReflectionException $e) {
+            return $this->response->setJSON([
+                'status' => 'error',
+                'toast'  => 'ERROR: ' . $e->getMessage()
+            ]);
         }
     }
 

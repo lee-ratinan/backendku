@@ -30,6 +30,106 @@ class JourneyPortModel extends Model
     protected $updatedField = 'updated_at';
     const ID_NONCE = 509;
 
+    private array $configurations = [
+        'id'                 => [
+            'type'  => 'hidden',
+            'label' => 'ID'
+        ],
+        'mode_of_transport'  => [
+            'type'     => 'select',
+            'label'    => 'Mode of Transport',
+            'required' => true,
+            'options'  => []
+        ],
+        'port_code_1'        => [
+            'type'        => 'text',
+            'label'       => 'Port Code',
+            'required'    => true,
+            'maxlength'   => 12,
+            'placeholder' => 'BKK',
+            'details'     => 'IATA Airport Code or any other codes for other modes of transport'
+        ],
+        'port_code_2'        => [
+            'type'        => 'text',
+            'label'       => 'Port Code',
+            'required'    => false,
+            'maxlength'   => 4,
+            'placeholder' => 'Port Code 2',
+            'details'     => 'ICAO Airport Code'
+        ],
+        'country_code'       => [
+            'type'     => 'select',
+            'label'    => 'Country',
+            'required' => true,
+            'options'  => []
+        ],
+        'location_latitude'  => [
+            'type'        => 'number',
+            'label'       => 'Latitude',
+            'required'    => true,
+            'step'        => '0.00001',
+            'min'         => '-90',
+            'max'         => '90',
+            'placeholder' => '0.00000'
+        ],
+        'location_longitude' => [
+            'type'        => 'number',
+            'label'       => 'Longitude',
+            'required'    => true,
+            'step'        => '0.00001',
+            'min'         => '-180',
+            'max'         => '180',
+            'placeholder' => '0.00000'
+        ],
+        'port_name'          => [
+            'type'        => 'text',
+            'label'       => 'Port Name',
+            'required'    => true,
+            'maxlength'   => 128,
+            'placeholder' => 'Port Name'
+        ],
+        'port_local_name'    => [
+            'type'        => 'text',
+            'label'       => 'Port Local Name',
+            'required'    => false,
+            'maxlength'   => 128,
+            'placeholder' => 'Port Local Name'
+        ],
+        'port_full_name'     => [
+            'type'        => 'text',
+            'label'       => 'Port Full Name',
+            'required'    => false,
+            'maxlength'   => 128,
+            'placeholder' => 'Port Full Name'
+        ],
+        'city_name'          => [
+            'type'        => 'text',
+            'label'       => 'City Name',
+            'required'    => true,
+            'maxlength'   => 128,
+            'placeholder' => 'City Name'
+        ]
+    ];
+
+    /**
+     * Get configurations for generating forms
+     * @param array $columns
+     * @return array
+     */
+    public function getConfigurations(array $columns = []): array
+    {
+        $configurations  = $this->configurations;
+        // Countries
+        $countries       = lang('ListCountries.countries');
+        $final_countries = array_map(function ($value) {
+            return $value['common_name'];
+        }, $countries);
+        $configurations['country_code']['options'] = $final_countries;
+        // Mode of transport
+        $configurations['mode_of_transport']['options'] = $this->getModeOfTransport();
+        return $columns ? array_intersect_key($configurations, array_flip($columns)) : $configurations;
+    }
+
     /**
      * Get mode of transport
      * @param string $mode (optional)
