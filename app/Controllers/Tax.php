@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Models\TaxYearModel;
 use CodeIgniter\HTTP\ResponseInterface;
 
 class Tax extends BaseController
@@ -113,6 +114,7 @@ class Tax extends BaseController
     }
 
     /**
+     * Display the tax page
      * @return string
      */
     public function index(): string
@@ -120,18 +122,24 @@ class Tax extends BaseController
         if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
             return permission_denied();
         }
-        $session = session();
+        $session   = session();
+        $countries = [];
+        foreach ($this->countries as $country_code) {
+            $countries[$country_code] = lang('ListCountries.countries.' . $country_code . '.common_name');
+        }
         $data    = [
             'page_title'   => 'Tax',
             'slug'         => 'tax',
             'user_session' => $session->user,
             'roles'        => $session->roles,
-            'current_role' => $session->current_role
+            'current_role' => $session->current_role,
+            'countries'    => $countries
         ];
         return view('tax', $data);
     }
 
     /**
+     * This API returns the list of tax records
      * @return ResponseInterface
      */
     public function masterList(): ResponseInterface
@@ -139,7 +147,33 @@ class Tax extends BaseController
         if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
             return permission_denied('datatables');
         }
-        return $this->response->setJSON([]);
+        $model              = new TaxYearModel();
+        $columns            = [
+            '',
+            'tax_year.id',
+            'tax_year.tax_year',
+            'tax_year.country_code',
+            'tax_year.total_income',
+            'tax_year.taxable_income',
+            'tax_year.final_tax_amount',
+            'taxpayer_info.taxpayer_id_value',
+            'tax_year.google_drive_link',
+        ];
+        $order              = $this->request->getPost('order');
+        $start              = $this->request->getPost('start');
+        $length             = $this->request->getPost('length');
+        $order_column_index = $order[0]['column'] ?? 0;
+        $order_column       = $columns[$order_column_index];
+        $order_direction    = $order[0]['dir'] ?? 'desc';
+        $country_code       = $this->request->getPost('country_code');
+        $year               = $this->request->getPost('year');
+        $result             = $model->getDataTables($start, $length, $order_column, $order_direction, $country_code, $year);
+        return $this->response->setJSON([
+            'draw'            => $this->request->getPost('draw'),
+            'recordsTotal'    => $result['recordsTotal'],
+            'recordsFiltered' => $result['recordsFiltered'],
+            'data'            => $result['data']
+        ]);
     }
 
     /**
