@@ -58,6 +58,11 @@ class Tax extends BaseController
         'SG' => 1000,
         'TH' => 60000,
     ];
+    private array $market_rates = [
+        'AU' => [8000, 13000],
+        'SG' => [5000, 9000],
+        'TH' => [38000, 55000]
+    ];
 
     private function taxCalculation(float $annual_income, string $country_code): array
     {
@@ -67,9 +72,13 @@ class Tax extends BaseController
         $tax_brackets   = $this->tax_brackets[$country_code];
         $deduction      = $this->deductions[$country_code];
         if ('SG' == $country_code) {
-            $deduction += min(102000, $annual_income * 0.2); // CPF
+            $cpf_annual = min(102000, $annual_income);
+            $deduction += $cpf_annual * 0.2;
+        } else if ('TH' == $country_code) {
+            $deduction += 9000; // social security (750 monthly)
         }
         $taxable_income = $annual_income - $deduction;
+        $taxable_income = (0 > $taxable_income) ? 0 : $taxable_income;
         $total_tax      = 0.00;
         $prev_limit     = 0;
         $line_details   = [];
@@ -170,5 +179,61 @@ class Tax extends BaseController
             'after_tax'      => $annual_income-$tax_details['total']
         ];
         return view('tax_calculator_ajax', $data);
+    }
+
+    /**
+     * This page shows the projection of the income tax for various countries
+     * @return string
+     */
+    public function projection(): string
+    {
+        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
+            return permission_denied();
+        }
+        $session = session();
+        $data    = [
+            'page_title'   => 'Tax Projection',
+            'slug'         => 'tax-projection',
+            'user_session' => $session->user,
+            'roles'        => $session->roles,
+            'current_role' => $session->current_role
+        ];
+        return view('tax_projection', $data);
+    }
+
+    public function projectionAjax(): string
+    {
+        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
+            return permission_denied('html_piece');
+        }
+        $tax_country = $this->request->getPost('tax_country');
+        $min_income  = intval($this->request->getPost('min_income'));
+        $max_income  = intval($this->request->getPost('max_income'));
+        $step        = intval($this->request->getPost('step'));
+        $tax_details = [];
+        $graph       = [];
+        for ($monthly_income = $min_income; $monthly_income <= $max_income; $monthly_income += $step) {
+            $annual_income   = $monthly_income * 12;
+            $calculation     = $this->taxCalculation($annual_income, $tax_country);
+            $graph[]         = [
+                'x' => $monthly_income,
+                'y' => $calculation['total'],
+                'l' => "Monthly income: " . number_format($monthly_income, 2) . "\nAnnual income: " . number_format($annual_income, 2) . "\nTax: " . number_format($calculation['total'], 2)
+            ];
+            $tax_details []  = [
+                'monthly_income' => $monthly_income,
+                'annual_income'  => $annual_income,
+                'deduction'      => $calculation['deduction'],
+                'taxable_income' => $calculation['taxable_income'],
+                'total_tax'      => $calculation['total'],
+                'lines'          => $calculation['lines'],
+            ];
+        }
+        $data = [
+            'tax_details' => $tax_details,
+            'graph'       => $graph,
+            'green_range' => $this->market_rates[$tax_country]
+        ];
+        return view('tax_projection_ajax', $data);
     }
 }

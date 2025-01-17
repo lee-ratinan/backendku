@@ -18,10 +18,10 @@ $this->extend($layout);
         <div class="row">
             <div class="col">
                 <div class="card">
-                    <div class="card-body pt-3">
-                        <h5 class="card-title"><i class="fa-solid fa-calculator fa-fw me-3"></i> <?= $page_title ?></h5>
+                    <div class="card-body">
+                        <h5 class="card-title"><?= $page_title ?></h5>
                         <div class="card-text">
-                            <h3>Taxable Income</h3>
+                            <h6>Taxable Income</h6>
                             <div class="row">
                                 <div class="col-12 col-md-6">
                                     <table class="table table-sm table-hover">
