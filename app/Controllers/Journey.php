@@ -1357,29 +1357,103 @@ class Journey extends BaseController
     }
 
     /**
-     * @param string $port_code
+     * Page to edit operator
+     * @param string $operator_id
      * @return string
      */
-    public function operatorEdit(string $port_code = 'new'): string
+    public function operatorEdit(string $operator_id = 'new'): string
     {
         if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
             return permission_denied();
         }
-        $session = session();
+        $session    = session();
+        $model      = new JourneyOperatorModel();
+        $operator   = [];
+        $page_title = 'New Operator';
+        $mode       = 'new';
+        if ('new' != $operator_id && is_numeric($operator_id)) {
+            $operator_id = intval($operator_id / $model::ID_NONCE);
+            $operator    = $model->find($operator_id);
+            $page_title  = 'Edit Operator' . ($operator['operator_name'] ? ' [' . $operator['operator_name'] . ']' : '');
+            $mode        = 'edit';
+        }
         $data    = [
-            'page_title'   => 'Transport',
-            'slug'         => 'transport',
+            'page_title'   => $page_title,
+            'slug'         => 'operator',
             'user_session' => $session->user,
             'roles'        => $session->roles,
-            'current_role' => $session->current_role
+            'current_role' => $session->current_role,
+            'config'       => $model->getConfigurations(),
+            'operator'     => $operator,
+            'mode'         => $mode
         ];
         return view('journey_operator_edit', $data);
     }
 
-    public function operatorSave()
+    /**
+     * Save operator data
+     * @return ResponseInterface
+     */
+    public function operatorSave(): ResponseInterface
     {
         if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
             return permission_denied('json');
+        }
+        $session                 = session();
+        $model                   = new JourneyOperatorModel();
+        $mode                    = $this->request->getPost('mode');
+        $operator_code_1         = $this->request->getPost('operator_code_1');
+        $operator_code_2         = $this->request->getPost('operator_code_2');
+        $operator_callsign       = $this->request->getPost('operator_callsign');
+        $operator_name           = $this->request->getPost('operator_name');
+        $operator_logo_file_name = $this->request->getPost('operator_logo_file_name');
+        $mode_of_transport       = $this->request->getPost('mode_of_transport');
+        if (!empty($operator_code_1)) {
+            $data['operator_code_1'] = $operator_code_1;
+        }
+        if (!empty($operator_code_2)) {
+            $data['operator_code_2'] = $operator_code_2;
+        }
+        if (!empty($operator_callsign)) {
+            $data['operator_callsign'] = $operator_callsign;
+        }
+        $data['operator_name'] = $operator_name;
+        if (!empty($operator_logo_file_name)) {
+            $data['operator_logo_file_name'] = $operator_logo_file_name;
+        }
+        if (!empty($mode_of_transport)) {
+            $data['mode_of_transport'] = $mode_of_transport;
+        }
+        $data['created_by'] = $session->user_id;
+        try {
+            if ('new' == $mode) {
+                $inserted_id        = $model->insert($data);
+                if ($inserted_id) {
+                    return $this->response->setJSON([
+                        'status' => 'success',
+                        'toast'  => 'Operator has been added',
+                        'url'    => base_url($session->locale . '/office/journey/operator/edit/' . ($inserted_id * $model::ID_NONCE))
+                    ]);
+                }
+            } else {
+                $id = $this->request->getPost('id');
+                if ($model->update($id, $data)) {
+                    return $this->response->setJSON([
+                        'status' => 'success',
+                        'toast'  => 'Operator has been updated',
+                        'url'    => base_url($session->locale . '/office/journey/operator/edit/' . ($id * $model::ID_NONCE))
+                    ]);
+                }
+            }
+            return $this->response->setJSON([
+                'status' => 'error',
+                'toast'  => 'There was some unknown error, please try again later.'
+            ]);
+        } catch (DatabaseException|ReflectionException $e) {
+            return $this->response->setJSON([
+                'status' => 'error',
+                'toast'  => 'ERROR: ' . $e->getMessage()
+            ]);
         }
     }
 

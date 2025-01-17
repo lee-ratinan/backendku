@@ -26,6 +26,69 @@ class JourneyOperatorModel extends Model
     protected $updatedField = 'updated_at';
     const ID_NONCE = 503;
 
+    private array $configurations = [
+        'id'                 => [
+            'type'  => 'hidden',
+            'label' => 'ID'
+        ],
+        'operator_code_1'    => [
+            'type'        => 'text',
+            'label'       => 'Operator Code',
+            'required'    => true,
+            'maxlength'   => 2,
+            'placeholder' => 'IATA',
+            'details'     => 'IATA Airline Code or other codes for other modes of transport'
+        ],
+        'operator_code_2'    => [
+            'type'        => 'text',
+            'label'       => 'Operator Code',
+            'required'    => false,
+            'maxlength'   => 3,
+            'placeholder' => 'ICAO',
+            'details'     => 'ICAO Airline Code'
+        ],
+        'operator_callsign'  => [
+            'type'        => 'text',
+            'label'       => 'Operator Call Sign',
+            'required'    => true,
+            'maxlength'   => 32,
+            'placeholder' => 'CALLSIGN',
+            'details'     => 'Airline Call Sign'
+        ],
+        'operator_name'      => [
+            'type'        => 'text',
+            'label'       => 'Operator Name',
+            'required'    => true,
+            'maxlength'   => 64,
+            'details'     => 'Airline Name'
+        ],
+        'operator_logo_file_name' => [
+            'type'        => 'text',
+            'label'       => 'Operator Logo',
+            'required'    => false,
+            'details'     => 'Only the name part, without prefix and extension'
+        ],
+        'mode_of_transport'  => [
+            'type'     => 'select',
+            'label'    => 'Mode of Transport',
+            'required' => true,
+            'options'  => []
+        ]
+    ];
+
+    /**
+     * Get configurations for generating forms
+     * @param array $columns
+     * @return array
+     */
+    public function getConfigurations(array $columns = []): array
+    {
+        $configurations  = $this->configurations;
+        // Mode of transport
+        $configurations['mode_of_transport']['options'] = $this->getModeOfTransport();
+        return $columns ? array_intersect_key($configurations, array_flip($columns)) : $configurations;
+    }
+
     /**
      * Get mode of transport
      * @param string $mode (optional)
