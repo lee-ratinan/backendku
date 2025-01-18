@@ -39,24 +39,36 @@ $this->extend($layout);
                             <?php for ($year = date('Y'); $year >= 2006; $year--) : ?>
                                 <tr>
                                     <?php $class_set = $color_classes[$year % 4]; ?>
-                                    <?php $annual_sum = 0; ?>
                                     <td><?= $year ?></td>
                                     <td>
-                                        <?php if (isset($by_year[$year])) : ?>
-                                            <?php foreach ($by_year[$year] as $country_code => $list) : ?>
-                                                <span class="badge text-bg-primary rounded-pill">= <?= array_sum($list) ?> nights</span>
-                                                <span class="flag-icon flag-icon-<?= strtolower($country_code) ?>"></span> <?= $countries[$country_code]['common_name'] ?>
-                                                <?php foreach ($list as $i => $nights) : ?>
-                                                    <span class="badge bg-<?= $class_set[$i % 2] ?> rounded-pill"><?= $nights ?></span>
-                                                    <?php $annual_sum += $nights; ?>
-                                                <?php endforeach; ?>
-                                                <br>
+                                        <table class="table table-sm table-borderless mb-0">
+                                            <?php if (isset($by_year[$year])) : ?>
+                                            <?php foreach ($by_year[$year]['countries'] as $country_code => $data) : ?>
+                                            <tr>
+                                                <td style="max-width:40px"><span class="flag-icon flag-icon-<?= strtolower($country_code) ?>"></span></td>
+                                                <td style="min-width:200px">
+                                                    <div class="progress-stacked">
+                                                        <?php foreach ($data['list'] as $i => $num) : ?>
+                                                            <?php
+                                                            $length = 0;
+                                                            if ($by_year[$year]['annual_count'] > $by_year_half) {
+                                                                $length = $num/$by_year_max*100;
+                                                            } else {
+                                                                $length = $num/$by_year_half*100;
+                                                            }
+                                                            ?>
+                                                            <div class="progress" role="progressbar" aria-label="<?= $num ?>" aria-valuenow="<?= $length ?>" aria-valuemin="0" aria-valuemax="100" style="width:<?= $length ?>%">
+                                                                <div class="progress-bar bg-<?= $class_set[$i % 2] ?>"><?= $num ?></div>
+                                                            </div>
+                                                        <?php endforeach; ?>
+                                                    </div>
+                                                </td>
+                                            </tr>
                                             <?php endforeach; ?>
-                                        <?php else: ?>
-                                            -
-                                        <?php endif; ?>
+                                            <?php endif; ?>
+                                        </table>
                                     </td>
-                                    <td class="text-end"><?= (0 < $annual_sum ? '<h6>' . number_format($annual_sum) . '</h6>' : '') ?></td>
+                                    <td class="text-end"><h6><?= (isset($by_year[$year]['annual_count']) ? number_format($by_year[$year]['annual_count']) : '-') ?></h6></td>
                                 </tr>
                             <?php endfor; ?>
                             </tbody>
@@ -71,27 +83,36 @@ $this->extend($layout);
                         <table class="table table-sm table-striped table-hover">
                             <thead>
                             <tr>
-                                <th style="max-width:100px">Country</th>
+                                <th style="max-width:120px">Country</th>
                                 <th style="min-width:200px"></th>
                                 <th class="text-end" style="max-width:80px">Nights</th>
                             </tr>
                             </thead>
                             <tbody>
-                            <?php $row = 0; ?>
-                            <?php foreach ($by_country as $country_code => $list) : ?>
-                                <?php $class_set = $color_classes[$row % 4]; $row++; ?>
-                                <tr>
-                                    <td>
-                                        <span class="flag-icon flag-icon-<?= strtolower($country_code) ?>"></span> <?= $countries[$country_code]['common_name'] ?>
-                                    </td>
-                                    <td>
-                                        <?= count($list) ?> times:
-                                        <?php foreach ($list as $i => $nights) : ?>
-                                            <span class="badge bg-<?= $class_set[$i % 2] ?> rounded-pill"><?= $nights ?></span>
+                            <?php $counter = 0; ?>
+                            <?php foreach ($by_country as $country_code => $data) : ?>
+                            <tr>
+                                <?php $class_set = $color_classes[$counter % 4]; $counter++; ?>
+                                <td><span class="flag-icon flag-icon-<?= strtolower($country_code) ?>"></span> <?= lang('ListCountries.countries.' . $country_code . '.common_name') ?></td>
+                                <td>
+                                    <div class="progress-stacked">
+                                        <?php foreach ($data['list'] as $i => $num) : ?>
+                                            <?php
+                                            $length = 0;
+                                            if ($data['nights'] > $by_country_half) {
+                                                $length = $num/$by_country_max*100;
+                                            } else {
+                                                $length = $num/$by_country_half*100;
+                                            }
+                                            ?>
+                                            <div class="progress" role="progressbar" aria-label="<?= $num ?>" aria-valuenow="<?= $length ?>" aria-valuemin="0" aria-valuemax="100" style="width:<?= $length ?>%">
+                                                <div class="progress-bar bg-<?= $class_set[$i % 2] ?>"><?= $num ?></div>
+                                            </div>
                                         <?php endforeach; ?>
-                                    </td>
-                                    <td class="text-end"><h6><?= array_sum($list) ?></h6></td>
-                                </tr>
+                                    </div>
+                                </td>
+                                <td class="text-end"><h6><?= number_format($data['nights']) ?></h6></td>
+                            </tr>
                             <?php endforeach; ?>
                             </tbody>
                         </table>

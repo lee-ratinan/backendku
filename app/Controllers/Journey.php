@@ -897,20 +897,45 @@ class Journey extends BaseController
         foreach ($raw_data as $row) {
             // count it based on check-in date, although check-out is not in the same year...
             $year = substr($row['check_in_date'], 0, 4);
-            $by_year[$year][$row['country_code']][] = $row['night_count'];
-            $by_country[$row['country_code']][]     = $row['night_count'];
+            $by_year[$year]['countries'][$row['country_code']]['list'][] = $row['night_count'];
+            $by_year[$year]['countries'][$row['country_code']]['nights'] = (isset($by_year[$year]['countries'][$row['country_code']]['nights']) ? $by_year[$year]['countries'][$row['country_code']]['nights'] + $row['night_count'] : $row['night_count']);
+            $by_country[$row['country_code']]['list'][]                  = $row['night_count'];
+            $by_country[$row['country_code']]['nights']                  = (isset($by_country[$row['country_code']]['nights']) ? $by_country[$row['country_code']]['nights'] + $row['night_count'] : $row['night_count']);
+        }
+        // find by_year annual count, and max of all years
+        $by_year_max = 0;
+        foreach ($by_year as $year => $data) {
+            $annual_count = 0;
+            foreach ($data['countries'] as $country_code => $detail) {
+                $annual_count += $detail['nights'];
+            }
+            $by_year[$year]['annual_count'] = $annual_count;
+            if ($by_year_max < $annual_count) {
+                $by_year_max = $annual_count;
+            }
+        }
+        // find by_country max
+        $by_country_max = 0;
+        foreach ($by_country as $country_code => $detail) {
+            if ($detail['nights'] > $by_country_max) {
+                $by_country_max = $detail['nights'];
+            }
         }
         ksort($by_country);
         $data = [
-            'page_title'    => 'Statistics',
-            'slug'          => 'accommodation',
-            'user_session'  => $session->user,
-            'roles'         => $session->roles,
-            'current_role'  => $session->current_role,
-            'color_classes' => $this->color_classes,
-            'countries'     => lang('ListCountries.countries'),
-            'by_year'       => $by_year,
-            'by_country'    => $by_country,
+            'page_title'      => 'Statistics',
+            'slug'            => 'accommodation',
+            'user_session'    => $session->user,
+            'roles'           => $session->roles,
+            'current_role'    => $session->current_role,
+            'color_classes'   => $this->color_classes,
+            'countries'       => lang('ListCountries.countries'),
+            'by_year'         => $by_year,
+            'by_year_max'     => $by_year_max,
+            'by_year_half'    => $by_year_max / 2,
+            'by_country'      => $by_country,
+            'by_country_max'  => $by_country_max,
+            'by_country_half' => $by_country_max / 2,
         ];
         return view('journey_accommodation_statistics', $data);
     }

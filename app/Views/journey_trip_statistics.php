@@ -82,7 +82,7 @@ $this->extend($layout);
                             <tbody>
                             <?php foreach ($countries_considered_home as $country_code) : ?>
                                 <tr>
-                                    <td><h5><span class="flag-icon flag-icon-<?= strtolower($country_code) ?>"></span> <?= $countries[$country_code]['common_name'] ?></h5></td>
+                                    <td><h5 class="d-inline-block"><span class="flag-icon flag-icon-<?= strtolower($country_code) ?>"></span> <?= $countries[$country_code]['common_name'] ?></h5> <i class="fa-solid fa-home"></i></td>
                                     <td colspan="2"><h5><span class="badge text-bg-warning rounded-pill"><?= $countries_by_visits[$country_code] ?></span></h5></td>
                                 </tr>
                                 <?php unset($countries_by_visits[$country_code]); ?>
