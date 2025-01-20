@@ -20,35 +20,41 @@ $this->extend($layout);
             <div class="col-12 col-md-6">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Visits by Year</h5>
+                        <h2>Visits by Year</h2>
                         <table class="table table-sm table-hover table-striped">
-                            <thead>
-                            <tr>
-                                <th style="max-width:80px;">Year</th>
-                                <th>#</th>
-                            </tr>
-                            </thead>
                             <tbody>
                             <?php $c = 0; ?>
                             <?php for ($year = date('Y'); $year >= 2006; $year--): ?>
                                 <tr>
-                                    <td><?= $year ?></td>
-                                    <td>
-                                        <?php if (isset($by_year[$year])): ?>
-                                            <?php arsort($by_year[$year]) ?>
-                                            <?php foreach ($by_year[$year] as $port_id => $count) : ?>
-                                                <?php $color_set = $colors[$c%4]; $c++; ?>
-                                                <span class="float-end"><b><?= $ports[$port_id]['name'] ?> (<?= $count ?>)</b> <?= explode('</i> ', $modes[$ports[$port_id]['type']])[0] . '</i>' ?> <span class="flag-icon flag-icon-<?= strtolower($ports[$port_id]['country_code']) ?>"></span></span>
-                                                <?php for ($i = 0; $i < $count; $i++) : ?>
-                                                    <i class="fa-solid fa-circle text-<?= $color_set[$i%2] ?>"></i>
-                                                <?php endfor; ?>
-                                                <br>
-                                            <?php endforeach; ?>
-                                        <?php else: ?>
-                                            -
-                                        <?php endif; ?>
-                                    </td>
+                                    <td colspan="3" class="text-center"><h6><?= $year ?></h6></td>
                                 </tr>
+                                <?php if (isset($by_year[$year])): ?>
+                                    <?php arsort($by_year[$year]) ?>
+                                    <?php foreach ($by_year[$year] as $port_id => $count) : ?>
+                                        <?php $color_set = $colors[$c % 4]; $c++; ?>
+                                        <tr>
+                                            <td style="width:60px;">
+                                                <span class="flag-icon flag-icon-<?= strtolower($ports[$port_id]['country_code']) ?>"></span>
+                                                <?= explode('</i> ', $modes[$ports[$port_id]['type']])[0] . '</i>' ?>
+                                            </td>
+                                            <td style="width:180px;"><b><?= $ports[$port_id]['name'] ?></b></td>
+                                            <td>
+                                                <?php if (10 < $count) : ?>
+                                                    <span class="badge bg-<?= $color_set[0] ?> rounded-pill w-100">- <?= $count ?> -</span>
+                                                <?php else : ?>
+                                                    <?php $length = $count/10*100; ?>
+                                                    <div class="progress" role="progressbar" aria-label="Count" aria-valuenow="<?= $length ?>" aria-valuemin="0" aria-valuemax="100">
+                                                        <div class="progress-bar bg-<?= $color_set[0] ?>" style="width: <?= $length ?>%"><?= $count ?></div>
+                                                    </div>
+                                                <?php endif; ?>
+                                            </td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                <?php else: ?>
+                                    <tr>
+                                        <td colspan="3" class="text-center">-</td>
+                                    </tr>
+                                <?php endif; ?>
                             <?php endfor; ?>
                             </tbody>
                         </table>
@@ -58,28 +64,27 @@ $this->extend($layout);
             <div class="col-12 col-md-6">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Visits by Port</h5>
+                        <h2>Visits by Port</h2>
                         <table class="table table-sm table-hover table-striped">
-                            <thead>
-                            <tr>
-                                <th style="min-width:120px;">Port</th>
-                                <th>#</th>
-                            </tr>
-                            </thead>
                             <tbody>
                             <?php $c = 0; ?>
                             <?php foreach ($by_port as $port_id => $count) : ?>
                                 <?php $color_set = $colors[$c%4]; $c++; ?>
                                 <tr>
-                                    <td>
-                                        <span class="flag-icon flag-icon-<?= strtolower($ports[$port_id]['country_code']) ?>"></span> <?= explode('</i> ', $modes[$ports[$port_id]['type']])[0] . '</i>' ?> <?= $ports[$port_id]['code'] ? '<b>' . $ports[$port_id]['code'] . '</b>' : '' ?><br>
-                                        <b><?= $ports[$port_id]['name'] ?></b>
+                                    <td style="width:60px;">
+                                        <span class="flag-icon flag-icon-<?= strtolower($ports[$port_id]['country_code']) ?>"></span>
+                                        <?= explode('</i> ', $modes[$ports[$port_id]['type']])[0] . '</i>' ?>
                                     </td>
+                                    <td style="width:180px;"><b><?= $ports[$port_id]['name'] ?></b></td>
                                     <td>
-                                        <?php for ($i = 0; $i < $count; $i++) : ?>
-                                            <i class="fa-solid fa-circle text-<?= $color_set[$i%2] ?>"></i>
-                                        <?php endfor; ?>
-                                        (<?= $count ?>)
+                                        <?php if (20 < $count) : ?>
+                                            <span class="badge bg-<?= $color_set[0] ?> rounded-pill w-100">- <?= $count ?> -</span>
+                                        <?php else : ?>
+                                            <?php $length = $count/20*100; ?>
+                                            <div class="progress" role="progressbar" aria-label="Count" aria-valuenow="<?= $length ?>" aria-valuemin="0" aria-valuemax="100">
+                                                <div class="progress-bar bg-<?= $color_set[0] ?>" style="width: <?= $length ?>%"><?= $count ?></div>
+                                            </div>
+                                        <?php endif; ?>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>

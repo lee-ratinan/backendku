@@ -33,7 +33,7 @@ $this->extend($layout);
                             <?php for ($year = date('Y'); $year >= 2006; $year--) : ?>
                                 <tr>
                                     <?php $class_set = $color_classes[$year % 4]; ?>
-                                    <td><?= $year ?></td>
+                                    <td class="text-center"><h6><?= $year ?></h6></td>
                                     <td>
                                         <table class="table table-sm table-borderless mb-0">
                                             <?php if (isset($by_year[$year])) : ?>

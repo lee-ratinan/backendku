@@ -35,8 +35,8 @@ helper('math');
                             <?php for ($year = date('Y'); $year >= 2006; $year--) : ?>
                                 <tr>
                                     <?php $class_set = $color_classes[$year % 4]; ?>
-                                    <td><?= $year ?></td>
-                                    <td><?= (!empty($distant_by_year[$year]) ? count($distant_by_year[$year]) : '-') ?></td>
+                                    <td class="text-center"><h6><?= $year ?></h6></td>
+                                    <td class="text-center"><h6><?= (!empty($distant_by_year[$year]) ? count($distant_by_year[$year]) : '-') ?></h6></td>
                                     <td class="text-end"><?= (in_array($year, [2020, 2021, 2022]) ? '<i class="fa-solid fa-viruses"></i>' : '') ?><?= (isset($distant_by_year_sum[$year]) ? number_format($distant_by_year_sum[$year]) : '') ?></td>
                                     <td>
                                         <div class="progress-stacked">

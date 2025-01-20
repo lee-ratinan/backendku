@@ -1172,6 +1172,7 @@ class Journey extends BaseController
             'current_role'    => $session->current_role,
             'categories'      => $categories,
             'by_year'         => $by_year,
+            'colors'          => $this->color_classes,
         ];
         return view('journey_attraction_statistics', $data);
     }
@@ -1598,13 +1599,49 @@ class Journey extends BaseController
         if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
             return permission_denied();
         }
-        $session    = session();
+        $session         = session();
+        $types           = [
+            'AIRBUS 319' => 'Narrow-body',
+            'AIRBUS 320' => 'Narrow-body',
+            'AIRBUS 321' => 'Narrow-body',
+            'AIRBUS 330' => 'Wide-body',
+            'AIRBUS 340' => 'Wide-body',
+            'AIRBUS 350' => 'Wide-body',
+            'AIRBUS 380' => 'Wide-body',
+            'BOEING 737' => 'Narrow-body',
+            'BOEING 747' => 'Wide-body',
+            'BOEING 777' => 'Wide-body',
+            'BOEING 787' => 'Wide-body',
+        ];
+        $transport_model = new JourneyTransportModel();
+        $raw_data        = $transport_model->select('craft_type, COUNT(*) AS cnt')->where('craft_type IS NOT NULL')->where('journey_status', 'as_planned')->where('departure_date_time <=', date(DATE_FORMAT_DB))->groupBy('craft_type')->findAll();
+        $aircrafts       = [];
+        $by_manufacturer = [];
+        foreach ($raw_data as $row) {
+            $craft   = $row['craft_type'];
+            $model   = substr($craft, 0, 10);
+            $explode = explode(' ', $model);
+            // Type
+            if (isset($types[$model])) {
+                $aircrafts[$types[$model]][$model] = (isset($aircrafts[$types[$model]][$model]) ? $aircrafts[$types[$model]][$model] + $row['cnt'] : $row['cnt']);
+            } else {
+                $aircrafts['Other'][$craft] = (isset($aircrafts['Other'][$craft]) ? $aircrafts['Other'][$craft] + $row['cnt'] : $row['cnt']);
+            }
+            // Manufacturer
+            $manufacturer = strtoupper($explode[0]);
+            if (in_array($manufacturer, ['AIRBUS', 'BOEING', 'EMBRAER'])) {
+                $by_manufacturer[$manufacturer] = (isset($by_manufacturer[$manufacturer]) ? $by_manufacturer[$manufacturer] + $row['cnt'] : $row['cnt']);
+            }
+        }
         $data = [
             'page_title'      => 'Statistics',
             'slug'            => 'aircraft-stats',
             'user_session'    => $session->user,
             'roles'           => $session->roles,
-            'current_role'    => $session->current_role
+            'current_role'    => $session->current_role,
+            'aircrafts'       => $aircrafts,
+            'by_manufacturer' => $by_manufacturer,
+            'colors'          => $this->color_classes
         ];
         return view('journey_operator_aircraft_statistics', $data);
     }

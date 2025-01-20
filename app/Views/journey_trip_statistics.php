@@ -19,7 +19,7 @@ $this->extend($layout);
         <div class="row">
             <div class="col-12 col-md-6">
                 <div class="card">
-                    <div class="card-body p-3">
+                    <div class="card-body">
                         <h2>Visited Countries by Year</h2>
                         <table class="table table-sm table-striped table-hover">
                             <thead>
@@ -33,8 +33,8 @@ $this->extend($layout);
                             <?php for ($year = date('Y'); $year >= 1989; $year--) : ?>
                                 <tr>
                                     <?php $count = count($visited_countries_by_year[$year]); ?>
-                                    <td><?= $year ?></td>
-                                    <td><?= $count ?></td>
+                                    <td><h6><?= $year ?></h6></td>
+                                    <td class="text-center"><h6><?= $count ?></h6></td>
                                     <td>
                                         <?php ksort($visited_countries_by_year[$year]) ?>
                                         <h5>
@@ -85,7 +85,7 @@ $this->extend($layout);
                             <?php foreach ($countries_by_visits as $country_code => $count) : ?>
                                 <tr>
                                     <td><span class="flag-icon flag-icon-<?= strtolower($country_code) ?>"></span> <?= $countries[$country_code]['common_name'] ?></td>
-                                    <td><?= $count ?></td>
+                                    <td class="text-center"><h6><?= $count ?></h6></td>
                                     <td>
                                         <?php $percent = round($count/$frequent_max*100); ?>
                                         <div class="progress" role="progressbar" aria-label="<?= $countries[$country_code]['common_name'] ?>" aria-valuenow="<?= $percent ?>" aria-valuemin="0" aria-valuemax="100">
