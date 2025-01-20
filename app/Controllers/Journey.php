@@ -246,7 +246,7 @@ class Journey extends BaseController
         ksort($countries_by_visits);
         $data = [
             'page_title'                   => 'Statistics',
-            'slug'                         => 'trip',
+            'slug'                         => 'trip-stats',
             'user_session'                 => $session->user,
             'roles'                        => $session->roles,
             'current_role'                 => $session->current_role,
@@ -319,7 +319,7 @@ class Journey extends BaseController
         ksort($all_currencies);
         $data = [
             'page_title'     => 'Finance',
-            'slug'           => 'trip',
+            'slug'           => 'trip-finance-stats',
             'user_session'   => $session->user,
             'roles'          => $session->roles,
             'current_role'   => $session->current_role,
@@ -628,7 +628,7 @@ class Journey extends BaseController
         }
         $data = [
             'page_title'          => 'Statistics',
-            'slug'                => 'transport',
+            'slug'                => 'transport-stats',
             'user_session'        => $session->user,
             'roles'               => $session->roles,
             'current_role'        => $session->current_role,
@@ -924,7 +924,7 @@ class Journey extends BaseController
         ksort($by_country);
         $data = [
             'page_title'      => 'Statistics',
-            'slug'            => 'accommodation',
+            'slug'            => 'accommodation-stats',
             'user_session'    => $session->user,
             'roles'           => $session->roles,
             'current_role'    => $session->current_role,
@@ -1141,6 +1141,41 @@ class Journey extends BaseController
         }
     }
 
+    /**
+     * This page shows the statistical data of the attraction
+     * @return string
+     */
+    public function attractionStatistics(): string
+    {
+        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
+            return permission_denied();
+        }
+        $session    = session();
+        $model      = new JourneyAttractionModel();
+        $raw_data   = $model->where('journey_status', 'as_planned')->where('attraction_date <=', date(DATE_FORMAT_DB))->orderBy('attraction_date', 'asc')->findAll();
+        $categories = [];
+        $by_year    = [];
+        foreach ($raw_data as $row) {
+            if (empty($row['attraction_type'])) {
+                continue;
+            }
+            $year = substr($row['attraction_date'], 0, 4);
+            $category = $row['attraction_type'];
+            $categories[$category] = (isset($categories[$category]) ? $categories[$category] + 1 : 1);
+            $by_year[$year][$category] = (isset($by_year[$year][$category]) ? $by_year[$year][$category] + 1 : 1);
+        }
+        $data = [
+            'page_title'      => 'Statistics',
+            'slug'            => 'attraction-stats',
+            'user_session'    => $session->user,
+            'roles'           => $session->roles,
+            'current_role'    => $session->current_role,
+            'categories'      => $categories,
+            'by_year'         => $by_year,
+        ];
+        return view('journey_attraction_statistics', $data);
+    }
+
     /************************************************************************
      * PORT
      ************************************************************************/
@@ -1322,6 +1357,26 @@ class Journey extends BaseController
         }
     }
 
+    /**
+     * This page shows the statistical data of the port
+     * @return string
+     */
+    public function portStatistics(): string
+    {
+        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
+            return permission_denied();
+        }
+        $session    = session();
+        $data = [
+            'page_title'      => 'Statistics',
+            'slug'            => 'port-stats',
+            'user_session'    => $session->user,
+            'roles'           => $session->roles,
+            'current_role'    => $session->current_role
+        ];
+        return view('journey_port_statistics', $data);
+    }
+
     /************************************************************************
      * OPERATOR
      ************************************************************************/
@@ -1482,8 +1537,48 @@ class Journey extends BaseController
         }
     }
 
+    /**
+     * This page shows the statistical data of the port
+     * @return string
+     */
+    public function operatorStatistics(): string
+    {
+        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
+            return permission_denied();
+        }
+        $session    = session();
+        $data = [
+            'page_title'      => 'Statistics',
+            'slug'            => 'operator-stats',
+            'user_session'    => $session->user,
+            'roles'           => $session->roles,
+            'current_role'    => $session->current_role
+        ];
+        return view('journey_operator_statistics', $data);
+    }
+
+    /**
+     * This page shows the statistical data of the aircraft
+     * @return string
+     */
+    public function aircraftStatistics(): string
+    {
+        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
+            return permission_denied();
+        }
+        $session    = session();
+        $data = [
+            'page_title'      => 'Statistics',
+            'slug'            => 'aircraft-stats',
+            'user_session'    => $session->user,
+            'roles'           => $session->roles,
+            'current_role'    => $session->current_role
+        ];
+        return view('journey_operator_aircraft_statistics', $data);
+    }
+
     /************************************************************************
-     * OPERATOR
+     * HOLIDAY
      ************************************************************************/
 
     /**

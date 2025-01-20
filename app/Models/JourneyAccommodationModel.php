@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use CodeIgniter\Exceptions\PageNotFoundException;
 use CodeIgniter\Model;
 
 class JourneyAccommodationModel extends Model
@@ -274,6 +275,14 @@ class JourneyAccommodationModel extends Model
                 $check_in  = date(DATETIME_FORMAT_UI, strtotime($row['check_in_date'])) . '<br><small>' . lang('ListTimeZones.timezones.' . $row['accommodation_timezone'] . '.label') . '</small>';
                 $check_out = date(DATETIME_FORMAT_UI, strtotime($row['check_out_date'])) . '<br><small>' . lang('ListTimeZones.timezones.' . $row['accommodation_timezone'] . '.label') . '</small>';
             }
+            // Booking Platform
+            $file      = realpath(WRITEPATH . 'uploads/platform-' . strtolower($row['booking_channel']) . '.png');
+            $booking_channel = '';
+            if (!file_exists($file)) {
+                $booking_channel = strtoupper($row['booking_channel']);
+            } else {
+                $booking_channel = '<img src="' . base_url('file/platform-' . strtolower($row['booking_channel']) . '.png') . '" alt="' . $row['booking_channel'] . '" class="img-thumbnail" style="max-height: 2.5rem">';
+            }
             $result[]     = [
                 '<a class="btn btn-outline-primary btn-sm" href="' . base_url($locale . '/office/journey/accommodation/edit/' . $new_id) . '"><i class="fa-solid fa-edit"></i></a>',
                 $row['id'],
@@ -282,7 +291,7 @@ class JourneyAccommodationModel extends Model
                 $check_out,
                 $row['night_count'],
                 $row['hotel_name'] . '<br><small>' . $row['hotel_address'] . '</small>',
-                $row['booking_channel'],
+                $booking_channel,
                 $row['room_type'],
                 ('Y' == $row['breakfast_included'] ? '<i class="fa-solid fa-check text-success"></i>' : '-'),
                 (empty($row['price_amount']) ? '-' : currency_format($row['price_currency_code'], $row['price_amount'])) .

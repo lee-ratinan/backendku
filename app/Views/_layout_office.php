@@ -101,6 +101,19 @@
                     <li class="sidebar-item <?= ('port' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/journey/port') ?>"><i class="fa-solid fa-location-dot fa-fw me-3"></i><span>Port</span></a></li>
                     <li class="sidebar-item <?= ('operator' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/journey/operator') ?>"><i class="fa-solid fa-user-tie fa-fw me-3"></i><span>Operator</span></a></li>
                     <li class="sidebar-item <?= ('holiday' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/journey/holiday') ?>"><i class="fa-solid fa-umbrella-beach fa-fw me-3"></i><span>Holiday</span></a></li>
+                    <li class="sidebar-item <?= (str_contains($slug, '-stats') ? 'active' : '' ) ?>">
+                        <a data-bs-target="#sidebar-journey-statistics" data-bs-toggle="collapse" class="sidebar-link <?= (str_contains($slug, '-stats') ? '' : 'collapsed' ) ?>" aria-expanded="<?= (str_contains($slug, '-stats') ? 'true' : 'false' ) ?>"><i class="fa-solid fa-fw fa-chart-line text-info"></i> Statistics</a>
+                        <ul id="sidebar-journey-statistics" class="sidebar-dropdown list-unstyled <?= (str_contains($slug, '-stats') ? '' : 'collapse' ) ?>" data-bs-parent="#sidebar" style="">
+                            <li class="sidebar-item <?= ('trip-stats' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/journey/trip/statistics') ?>">Trip</a></li>
+                            <li class="sidebar-item <?= ('transport-stats' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/journey/transport/statistics') ?>">Transport</a></li>
+                            <li class="sidebar-item <?= ('accommodation-stats' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/journey/accommodation/statistics') ?>">Accommodation</a></li>
+                            <li class="sidebar-item <?= ('attraction-stats' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/journey/attraction/statistics') ?>">Attraction</a></li>
+                            <li class="sidebar-item <?= ('port-stats' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/journey/port/statistics') ?>">Port</a></li>
+                            <li class="sidebar-item <?= ('operator-stats' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/journey/operator/statistics') ?>">Operator</a></li>
+                            <li class="sidebar-item <?= ('aircraft-stats' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/journey/operator/aircraft/statistics') ?>">Aircraft</a></li>
+                            <li class="sidebar-item <?= ('trip-finance-stats' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/journey/trip/finance') ?>">Finance</a></li>
+                        </ul>
+                    </li>
                 <?php endif; ?>
                 <!-- PROFILE -->
                 <?php if (isset($session->permitted_features['profile'])): ?>

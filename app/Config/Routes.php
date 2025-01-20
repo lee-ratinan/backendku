@@ -120,12 +120,15 @@ $routes->group('{locale}/office', ['filter' => 'auth'], static function ($routes
     $routes->get('journey/port/create', 'Journey::portEdit/new');
     $routes->get('journey/port/edit/(:any)', 'Journey::portEdit/$1');
     $routes->post('journey/port/edit', 'Journey::portSave');
+    $routes->get('journey/port/statistics', 'Journey::portStatistics');
     // journey_operator table
     $routes->get('journey/operator', 'Journey::operator');
     $routes->post('journey/operator', 'Journey::operatorList');
     $routes->get('journey/operator/create', 'Journey::operatorEdit/new');
     $routes->get('journey/operator/edit/(:any)', 'Journey::operatorEdit/$1');
     $routes->post('journey/operator/edit', 'Journey::operatorSave');
+    $routes->get('journey/operator/statistics', 'Journey::operatorStatistics');
+    $routes->get('journey/operator/aircraft/statistics', 'Journey::aircraftStatistics');
     // journey_master table
     $routes->get('journey/trip', 'Journey::trip');
     $routes->post('journey/trip', 'Journey::tripList');
@@ -154,6 +157,7 @@ $routes->group('{locale}/office', ['filter' => 'auth'], static function ($routes
     $routes->get('journey/attraction/create/(:num)', 'Journey::attractionEdit/new/$1');
     $routes->get('journey/attraction/edit/(:num)', 'Journey::attractionEdit/$1');
     $routes->post('journey/attraction/edit', 'Journey::attractionSave');
+    $routes->get('journey/attraction/statistics', 'Journey::attractionStatistics');
     // journey_holiday table
     $routes->get('journey/holiday', 'Journey::holiday');
     $routes->post('journey/holiday', 'Journey::holidayList');
