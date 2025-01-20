@@ -1366,13 +1366,45 @@ class Journey extends BaseController
         if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
             return permission_denied();
         }
-        $session    = session();
-        $data = [
-            'page_title'      => 'Statistics',
-            'slug'            => 'port-stats',
-            'user_session'    => $session->user,
-            'roles'           => $session->roles,
-            'current_role'    => $session->current_role
+        $session         = session();
+        $transport_model = new JourneyTransportModel();
+        $port_model      = new JourneyPortModel();
+        $raw_data        = $transport_model->where('journey_status', 'as_planned')->where('departure_date_time <=', date(DATE_FORMAT_DB))->orderBy('departure_date_time', 'asc')->findAll();
+        $port_ids        = [];
+        $by_year         = [];
+        $by_port         = [];
+        foreach ($raw_data as $row) {
+            $year = substr($row['departure_date_time'], 0, 4);
+            $port_ids[$row['departure_port_id']] = $row['departure_port_id'];
+            $port_ids[$row['arrival_port_id']]   = $row['arrival_port_id'];
+            $by_year[$year][$row['departure_port_id']] = (isset($by_year[$year][$row['departure_port_id']]) ? $by_year[$year][$row['departure_port_id']] + 1 : 1);
+            $by_year[$year][$row['arrival_port_id']]   = (isset($by_year[$year][$row['arrival_port_id']]) ? $by_year[$year][$row['arrival_port_id']] + 1 : 1);
+            $by_port[$row['departure_port_id']] = (isset($by_port[$row['departure_port_id']]) ? $by_port[$row['departure_port_id']] + 1 : 1);
+            $by_port[$row['arrival_port_id']]   = (isset($by_port[$row['arrival_port_id']]) ? $by_port[$row['arrival_port_id']] + 1 : 1);
+        }
+        $port_ids  = array_keys($port_ids);
+        $raw_ports = $port_model->whereIn('id', $port_ids)->findAll();
+        $ports     = [];
+        foreach ($raw_ports as $row) {
+            $ports[$row['id']] = [
+                'name'         => $row['port_name'],
+                'code'         => $row['port_code_1'],
+                'type'         => $row['mode_of_transport'],
+                'country_code' => $row['country_code']
+            ];
+        }
+        arsort($by_port);
+        $data     = [
+            'page_title'   => 'Statistics',
+            'slug'         => 'port-stats',
+            'user_session' => $session->user,
+            'roles'        => $session->roles,
+            'current_role' => $session->current_role,
+            'by_year'      => $by_year,
+            'by_port'      => $by_port,
+            'ports'        => $ports,
+            'modes'        => $port_model->getModeOfTransport(),
+            'colors'       => $this->color_classes
         ];
         return view('journey_port_statistics', $data);
     }

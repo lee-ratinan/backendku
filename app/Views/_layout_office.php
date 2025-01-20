@@ -32,6 +32,7 @@
         table.dataTable tbody tr:nth-of-type(odd)>.dtfc-fixed-start, table.dataTable tbody tr:nth-of-type(odd)>.dtfc-fixed-end {background-color:#323c4c!important;}
         table.dataTable thead tr>.dtfc-fixed-start, table.dataTable thead tr>.dtfc-fixed-end, table.dataTable tfoot tr>.dtfc-fixed-start, table.dataTable tfoot tr>.dtfc-fixed-end {background-color:#292f43;}
         .bg-red {background-color: #740001 !important;} .bg-gold {background-color: #D3A625 !important;color:#000!important;} .bg-yellow {background-color: #FFD800 !important;color:#000!important;} .bg-black {background-color: #000000 !important;} .bg-blue {background-color: #0E1A40 !important;} .bg-bronze {background-color: #946B2D !important;} .bg-green {background-color: #1A472A !important;} .bg-silver {background-color: #5D5D5D !important;}
+        .text-red {color: #740001 !important;} .text-gold {color: #D3A625 !important} .text-yellow {color: #FFD800 !important} .text-black {color: #000000 !important;} .text-blue {color: #0E1A40 !important;} .text-bronze {color: #946B2D !important;} .text-green {color: #1A472A !important;} .text-silver {color: #5D5D5D !important;}
     </style>
 </head>
 <body>
