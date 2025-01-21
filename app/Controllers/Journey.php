@@ -1579,13 +1579,47 @@ class Journey extends BaseController
         if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
             return permission_denied();
         }
-        $session    = session();
-        $data = [
+        $session         = session();
+        $transport_model = new JourneyTransportModel();
+        $operator_model  = new JourneyOperatorModel();
+        $raw_data        = $transport_model->where('journey_status', 'as_planned')->where('departure_date_time <=', date(DATE_FORMAT_DB))->orderBy('departure_date_time', 'asc')->findAll();
+        $operator_ids    = [];
+        $by_year         = [];
+        $by_operator     = [];
+        foreach ($raw_data as $row) {
+            $year                                = substr($row['departure_date_time'], 0, 4);
+            $operator_ids[$row['operator_id']]   = $row['operator_id'];
+            $by_year[$year][$row['operator_id']] = (isset($by_year[$year][$row['operator_id']]) ? $by_year[$year][$row['operator_id']] + 1 : 1);
+            $by_operator[$row['operator_id']]    = (isset($by_operator[$row['operator_id']]) ? $by_operator[$row['operator_id']] + 1 : 1);
+        }
+        $operator_ids  = array_keys($operator_ids);
+        $raw_operators = $operator_model->whereIn('id', $operator_ids)->findAll();
+        $operators     = [];
+        foreach ($raw_operators as $row) {
+            $operators[$row['id']] = [
+                'name' => $row['operator_name'],
+                'code' => $row['operator_code_1'],
+                'type' => $row['mode_of_transport'],
+                'file' => $row['operator_logo_file_name']
+            ];
+        }
+        $modes          = $operator_model->getModeOfTransport();
+        $modes_of_trans = [];
+        foreach ($modes as $key => $val) {
+            $modes_of_trans[$key] = explode('</i>', $val)[0] . '</i>';
+        }
+        arsort($by_operator);
+        $data           = [
             'page_title'      => 'Statistics',
             'slug'            => 'operator-stats',
             'user_session'    => $session->user,
             'roles'           => $session->roles,
-            'current_role'    => $session->current_role
+            'current_role'    => $session->current_role,
+            'colors'          => $this->color_classes,
+            'by_year'         => $by_year,
+            'by_operator'     => $by_operator,
+            'operators'       => $operators,
+            'modes'           => $modes_of_trans
         ];
         return view('journey_operator_statistics', $data);
     }

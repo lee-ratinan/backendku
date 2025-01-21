@@ -52,7 +52,7 @@ $this->extend($layout);
                                     <?php endforeach; ?>
                                 <?php else: ?>
                                     <tr>
-                                        <td colspan="3" class="text-center">-</td>
+                                        <td colspan="3" class="text-center">- No data -</td>
                                     </tr>
                                 <?php endif; ?>
                             <?php endfor; ?>
