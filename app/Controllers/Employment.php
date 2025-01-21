@@ -19,6 +19,15 @@ class Employment extends BaseController
         'THB',
         'USD',
     ];
+    private array $countries = [
+        'AU',
+        'GB',
+        'ID',
+        'SG',
+        'TH',
+        'TW',
+        'US'
+    ];
 
     /************************************************************************
      * COMPANY
@@ -39,7 +48,7 @@ class Employment extends BaseController
             'user_session' => $session->user,
             'roles'        => $session->roles,
             'current_role' => $session->current_role,
-            'countries'    => lang('ListCountries.countries'),
+            'countries'    => $this->countries,
         ];
         return view('employment_company', $data);
     }
@@ -83,12 +92,32 @@ class Employment extends BaseController
         ]);
     }
 
-    public function companyEdit(string $port_code = 'new'): string
+    public function companyEdit(string $company_id = 'new'): string
     {
         if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
             return permission_denied();
         }
-        return '';
+        $session       = session();
+        $company_model = new CompanyMasterModel();
+        $page_title    = 'New Company';
+        if ('new' != $company_id && is_numeric($company_id)) {
+            $company_id = $company_id/$company_model::ID_NONCE;
+            $company    = $company_model->find($company_id);
+            $page_title = 'Edit [' . $company['company_trade_name'] . ']';
+        } else {
+            $company    = [];
+        }
+        $data    = [
+            'page_title'   => $page_title,
+            'slug'         => 'company',
+            'user_session' => $session->user,
+            'roles'        => $session->roles,
+            'current_role' => $session->current_role,
+            'company'      => $company,
+            'countries'    => $this->countries,
+            'currencies'   => $this->currencies
+        ];
+        return view('employment_company_edit', $data);
     }
 
     public function companySave()

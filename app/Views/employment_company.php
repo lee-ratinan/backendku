@@ -26,8 +26,8 @@ $this->extend($layout);
                                 <label for="country_code" class="form-label">Country</label><br>
                                 <select class="form-select form-select-sm" id="country_code">
                                     <option value="">All</option>
-                                    <?php foreach ($countries as $code => $name): ?>
-                                        <option value="<?= $code ?>"><?= $name['common_name'] ?></option>
+                                    <?php foreach ($countries as $code): ?>
+                                        <option value="<?= $code ?>"><?= lang('ListCountries.countries.' . $code . '.common_name') ?></option>
                                     <?php endforeach; ?>
                                 </select>
                             </div>
