@@ -92,6 +92,10 @@ class Employment extends BaseController
         ]);
     }
 
+    /**
+     * @param string $company_id
+     * @return string
+     */
     public function companyEdit(string $company_id = 'new'): string
     {
         if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
@@ -120,7 +124,10 @@ class Employment extends BaseController
         return view('employment_company_edit', $data);
     }
 
-    public function companySave()
+    /**
+     * @return ResponseInterface
+     */
+    public function companySave(): ResponseInterface
     {
         if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
             return permission_denied('json');
@@ -222,18 +229,48 @@ class Employment extends BaseController
         ]);
     }
 
-    public function salaryEdit(string $port_code = 'new')
+    /**
+     * @param string $salary_id
+     * @return string
+     */
+    public function salaryEdit(string $salary_id = 'new'): string
     {
         if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
             return permission_denied();
         }
+        $session       = session();
+        $salary_model  = new CompanySalaryModel();
+        $company_model = new CompanyMasterModel();
+        $page_title    = 'New Salary';
+        if ('new' != $salary_id && is_numeric($salary_id)) {
+            $salary_id  = $salary_id/$salary_model::ID_NONCE;
+            $salary     = $salary_model->find($salary_id);
+            $page_title = 'Edit [' . date(MONTH_FORMAT_UI, strtotime($salary['pay_date'])) . ']';
+        } else {
+            $salary    = [];
+        }
+        $companies = $company_model->where('employment_end_date', null)->orderBy('company_legal_name', 'asc')->findAll();
+        $data      = [
+            'page_title'   => $page_title,
+            'slug'         => 'salary',
+            'user_session' => $session->user,
+            'roles'        => $session->roles,
+            'current_role' => $session->current_role,
+            'salary'       => $salary,
+            'companies'    => $companies,
+        ];
+        return view('employment_salary_edit', $data);
     }
 
-    public function salarySave()
+    /**
+     * @return ResponseInterface
+     */
+    public function salarySave(): ResponseInterface
     {
         if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
             return permission_denied('json');
         }
+        return $this->response->setJSON([]);
     }
 
     /************************************************************************
@@ -315,18 +352,52 @@ class Employment extends BaseController
         ]);
     }
 
-    public function cpfEdit(string $port_code = 'new')
+    /**
+     * @param string $cpf_id
+     * @return string
+     */
+    public function cpfEdit(string $cpf_id = 'new'): string
     {
         if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
             return permission_denied();
         }
+        $session       = session();
+        $cpf_model     = new CompanyCPFModel();
+        $company_model = new CompanyMasterModel();
+        $page_title    = 'New CPF';
+        $cpf           = [];
+        if ('new' != $cpf_id && is_numeric($cpf_id)) {
+            $cpf_id     = $cpf_id/$cpf_model::ID_NONCE;
+            $cpf        = $cpf_model->find($cpf_id);
+            $page_title = 'Edit CPF [' . date(MONTH_FORMAT_UI, strtotime($cpf['transaction_date'])) . ']';
+        }
+        $companies = $company_model
+            ->groupStart()
+            ->where('employment_end_date >=', '2020-01-02')
+            ->orWhere('employment_end_date', null)
+            ->groupEnd()
+            ->where('company_country_code', 'SG')->orderBy('company_legal_name', 'asc')->findAll();
+        $data      = [
+            'page_title'   => $page_title,
+            'slug'         => 'cpf',
+            'user_session' => $session->user,
+            'roles'        => $session->roles,
+            'current_role' => $session->current_role,
+            'cpf'          => $cpf,
+            'companies'    => $companies,
+        ];
+        return view('employment_cpf_edit', $data);
     }
 
-    public function cpfSave()
+    /**
+     * @return ResponseInterface
+     */
+    public function cpfSave(): ResponseInterface
     {
         if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
             return permission_denied('json');
         }
+        return $this->response->setJSON([]);
     }
 
     /**
@@ -422,18 +493,40 @@ class Employment extends BaseController
         ]);
     }
 
-    public function freelanceEdit(string $port_code = 'new')
+    /**
+     * @param string $freelance_project_id
+     * @return string
+     */
+    public function freelanceEdit(string $freelance_project_id = 'new'): string
     {
         if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
             return permission_denied();
         }
+        $session       = session();
+        $model         = new CompanyFreelanceProjectModel();
+        $company_model = new CompanyMasterModel();
+        $page_title    = 'New Freelance Project';
+        $data          = [
+            'page_title'   => $page_title,
+            'slug'         => 'freelance',
+            'user_session' => $session->user,
+            'roles'        => $session->roles,
+            'current_role' => $session->current_role,
+//            'freelance'    => [],
+//            'companies'    => $company_model->orderBy('company_legal_name', 'asc')->findAll(),
+        ];
+        return view('employment_freelance_edit', $data);
     }
 
-    public function freelanceSave()
+    /**
+     * @return ResponseInterface
+     */
+    public function freelanceSave(): ResponseInterface
     {
         if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
             return permission_denied('json');
         }
+        return $this->response->setJSON([]);
     }
 
 }

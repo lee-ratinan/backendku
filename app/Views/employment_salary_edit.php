@@ -10,7 +10,7 @@ $this->extend($layout);
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="<?= base_url($session->locale . '/office/dashboard') ?>"><?= lang('System.dashboard.page_title') ?></a></li>
-                <li class="breadcrumb-item"><a href="<?= base_url($session->locale . '/office/employment') ?>">Employment</a></li>
+                <li class="breadcrumb-item"><a href="<?= base_url($session->locale . '/office/employment/salary') ?>">Salary</a></li>
                 <li class="breadcrumb-item active"><?= $page_title ?></li>
             </ol>
         </nav>
@@ -23,9 +23,8 @@ $this->extend($layout);
                         <h2><?= $page_title ?></h2>
                         <pre>
                             <?php
-                            print_r($company);
-                            print_r($countries);
-                            print_r($currencies);
+                            print_r($salary);
+                            print_r($companies);
                             ?>
                         </pre>
                     </div>
