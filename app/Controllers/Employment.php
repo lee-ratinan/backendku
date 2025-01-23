@@ -649,4 +649,48 @@ class Employment extends BaseController
         ]);
     }
 
+    /**
+     * @param string $freelance_income_id
+     * @return string
+     */
+    public function freelanceIncomeEdit(string $freelance_income_id = 'new'): string
+    {
+        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
+            return permission_denied();
+        }
+        $session       = session();
+        $income_model  = new CompanyFreelanceIncomeModel();
+        $page_title    = 'New Freelance Income';
+        $income        = [];
+        $mode          = 'new';
+        if ('new' != $freelance_income_id && is_numeric($freelance_income_id)) {
+            $freelance_income_id = $freelance_income_id/$income_model::ID_NONCE;
+            $income              = $income_model->find($freelance_income_id);
+            $page_title          = 'Edit Freelance Income [' . date(DATE_FORMAT_UI, strtotime($income['pay_date'])) . ']';
+            $mode                = 'edit';
+        }
+        $data          = [
+            'page_title'   => $page_title,
+            'slug'         => 'freelance-income',
+            'user_session' => $session->user,
+            'roles'        => $session->roles,
+            'current_role' => $session->current_role,
+            'income'       => $income,
+            'mode'         => $mode,
+            'config'       => $income_model->getConfigurations([], $this->currencies)
+        ];
+        return view('employment_freelance_income_edit', $data);
+    }
+
+    /**
+     * @return ResponseInterface
+     */
+    public function freelanceIncomeSave(): ResponseInterface
+    {
+        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
+            return permission_denied('json');
+        }
+        return $this->response->setJSON([]);
+    }
+
 }

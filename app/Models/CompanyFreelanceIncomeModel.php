@@ -10,13 +10,18 @@ class CompanyFreelanceIncomeModel extends Model
     protected $primaryKey = 'id';
     protected $allowedFields = [
         'id',
-        'company_id',
-        'project_title',
-        'project_slug',
-        'project_start_date',
-        'project_end_date',
-        'client_name',
-        'client_organization_name',
+        'project_id',
+        'pay_date',
+        'payment_method',
+        'payment_currency',
+        'base_amount',
+        'deduction_amount',
+        'claim_amount',
+        'subtotal_amount',
+        'tax_amount',
+        'total_amount',
+        'payment_details',
+        'google_drive_link',
         'created_by',
         'created_at',
         'updated_at'
@@ -26,6 +31,117 @@ class CompanyFreelanceIncomeModel extends Model
     protected $createdField = 'created_at';
     protected $updatedField = 'updated_at';
     const ID_NONCE = 661;
+    private array $configurations = [
+        'project_id'        => [
+            'type'     => 'select',
+            'label'    => 'Project',
+            'required' => true,
+            'options'  => [],
+        ],
+        'pay_date'          => [
+            'type'        => 'date',
+            'label'       => 'Pay Date',
+            'required'    => true,
+            'placeholder' => 'Date',
+        ],
+        'payment_method'    => [
+            'type'     => 'select',
+            'label'    => 'Payment Method',
+            'required' => true,
+            'options'  => [],
+        ],
+        'payment_currency'  => [
+            'type'        => 'select',
+            'label'       => 'Currency',
+            'required'    => true,
+            'placeholder' => 'Currency',
+            'options'     => [],
+        ],
+        'base_amount'       => [
+            'type'        => 'number',
+            'label'       => 'Base Amount',
+            'required'    => true,
+            'step'        => 0.01,
+            'placeholder' => 'Base Amount',
+        ],
+        'deduction_amount'  => [
+            'type'        => 'number',
+            'label'       => 'Deduction',
+            'required'    => true,
+            'step'        => 0.01,
+            'placeholder' => 'Deduction',
+        ],
+        'claim_amount'      => [
+            'type'        => 'number',
+            'label'       => 'Claim',
+            'required'    => true,
+            'step'        => 0.01,
+            'placeholder' => 'Claim',
+        ],
+        'subtotal_amount'   => [
+            'type'        => 'number',
+            'label'       => 'Subtotal',
+            'required'    => true,
+            'step'        => 0.01,
+            'placeholder' => 'Subtotal',
+        ],
+        'tax_amount'        => [
+            'type'        => 'number',
+            'label'       => 'Tax Deduction',
+            'required'    => true,
+            'step'        => 0.01,
+            'placeholder' => 'Tax Deduction',
+        ],
+        'total_amount'      => [
+            'type'        => 'number',
+            'label'       => 'Total',
+            'required'    => true,
+            'step'        => 0.01,
+            'placeholder' => 'Total',
+        ],
+        'payment_details'   => [
+            'type'        => 'textarea',
+            'label'       => 'Details',
+            'required'    => false,
+            'placeholder' => 'Details',
+        ],
+        'google_drive_link' => [
+            'type'        => 'text',
+            'label'       => 'Google Drive Link',
+            'required'    => false,
+            'maxlength'   => 155,
+            'placeholder' => 'Google Drive Link',
+        ]
+    ];
+
+    /**
+     * Get configurations for generating forms
+     * @param array $columns
+     * @param array $currencies
+     * @return array
+     */
+    public function getConfigurations(array $columns = [], $currencies = []): array
+    {
+        $configurations  = $this->configurations;
+        // project
+        $project_model   = new CompanyFreelanceProjectModel();
+        $projects        = $project_model->orderBy('project_title')->findAll();
+        $project_option  = [];
+        foreach ($projects as $project) {
+            $project_option[$project['id']] = $project['project_title'];
+        }
+        // currencies
+        $currency_option['THB'] = 'THB';
+        if (!empty($currencies)) {
+            foreach ($currencies as $currency) {
+                $currency_option[$currency] = $currency;
+            }
+        }
+        $configurations['payment_currency']['options'] = $currency_option;
+        $configurations['payment_method']['options']   = $this->getPaymentMethod();
+        $configurations['project_id']['options']       = $project_option;
+        return $columns ? array_intersect_key($configurations, array_flip($columns)) : $configurations;
+    }
 
     /**
      * @param string $method
