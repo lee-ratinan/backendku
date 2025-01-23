@@ -21,7 +21,7 @@ $this->extend($layout);
             <div class="col-12 col-md-10 col-lg-6">
                 <div class="card">
                     <div class="card-body">
-                        <h2><?= $page_title ?></h2>
+                        <h5 class="card-title"><?= $page_title ?></h5>
                         <?php
                         $fields = [
                             'statement_year',

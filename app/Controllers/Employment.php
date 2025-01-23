@@ -543,17 +543,25 @@ class Employment extends BaseController
             return permission_denied();
         }
         $session       = session();
-        $model         = new CompanyFreelanceProjectModel();
-        $company_model = new CompanyMasterModel();
+        $project_model = new CompanyFreelanceProjectModel();
         $page_title    = 'New Freelance Project';
+        $project       = [];
+        $mode          = 'new';
+        if ('new' != $freelance_project_id && is_numeric($freelance_project_id)) {
+            $freelance_project_id = $freelance_project_id/$project_model::ID_NONCE;
+            $project              = $project_model->find($freelance_project_id);
+            $page_title           = 'Edit Freelance Project [' . $project['project_title'] . ']';
+            $mode                 = 'edit';
+        }
         $data          = [
             'page_title'   => $page_title,
             'slug'         => 'freelance',
             'user_session' => $session->user,
             'roles'        => $session->roles,
             'current_role' => $session->current_role,
-//            'freelance'    => [],
-//            'companies'    => $company_model->orderBy('company_legal_name', 'asc')->findAll(),
+            'project'      => $project,
+            'config'       => $project_model->getConfigurations(),
+            'mode'         => $mode
         ];
         return view('employment_freelance_edit', $data);
     }

@@ -26,6 +26,71 @@ class CompanyFreelanceProjectModel extends Model
     protected $createdField = 'created_at';
     protected $updatedField = 'updated_at';
     const ID_NONCE = 571;
+    private $configurations = [
+        'company_id'               => [
+            'type'     => 'select',
+            'label'    => 'Company',
+            'required' => true,
+            'options'  => [],
+        ],
+        'project_title'            => [
+            'type'        => 'text',
+            'label'       => 'Project Title',
+            'required'    => true,
+            'maxlength'   => 255,
+            'placeholder' => 'Project Title',
+        ],
+        'project_slug'             => [
+            'type'        => 'text',
+            'label'       => 'Project Slug',
+            'required'    => true,
+            'maxlength'   => 255,
+            'placeholder' => 'Project Slug',
+        ],
+        'project_start_date'       => [
+            'type'        => 'date',
+            'label'       => 'Start Date',
+            'required'    => true,
+            'placeholder' => 'Date',
+        ],
+        'project_end_date'         => [
+            'type'        => 'date',
+            'label'       => 'End Date',
+            'required'    => false,
+            'placeholder' => 'Date',
+        ],
+        'client_name'              => [
+            'type'        => 'text',
+            'label'       => 'Client Name',
+            'required'    => false,
+            'placeholder' => 'Client Name',
+        ],
+        'client_organization_name' => [
+            'type'        => 'text',
+            'label'       => 'Client Organization Name',
+            'required'    => false,
+            'placeholder' => 'Client Organization Name',
+        ],
+    ];
+
+    /**
+     * Get configurations for generating forms
+     * @param array $columns
+     * @return array
+     */
+    public function getConfigurations(array $columns = []): array
+    {
+        $configurations  = $this->configurations;
+        // company
+        $company_model   = new CompanyMasterModel();
+        $companies       = $company_model->orderBy('company_legal_name')->findAll();
+        $company_options  = [];
+        foreach ($companies as $company) {
+            $company_options[$company['id']] = $company['company_legal_name'];
+        }
+        $configurations['company_id']['options'] = $company_options;
+        return $columns ? array_intersect_key($configurations, array_flip($columns)) : $configurations;
+    }
 
     /**
      * @param string $search_value
