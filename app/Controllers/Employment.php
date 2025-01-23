@@ -104,10 +104,12 @@ class Employment extends BaseController
         $session       = session();
         $company_model = new CompanyMasterModel();
         $page_title    = 'New Company';
+        $mode          = 'new';
         if ('new' != $company_id && is_numeric($company_id)) {
             $company_id = $company_id/$company_model::ID_NONCE;
             $company    = $company_model->find($company_id);
             $page_title = 'Edit [' . $company['company_trade_name'] . ']';
+            $mode       = 'edit';
         } else {
             $company    = [];
         }
@@ -117,9 +119,9 @@ class Employment extends BaseController
             'user_session' => $session->user,
             'roles'        => $session->roles,
             'current_role' => $session->current_role,
+            'mode'         => $mode,
             'company'      => $company,
-            'countries'    => $this->countries,
-            'currencies'   => $this->currencies
+            'config'       => $company_model->getConfigurations([], $this->countries, $this->currencies)
         ];
         return view('employment_company_edit', $data);
     }
@@ -240,24 +242,25 @@ class Employment extends BaseController
         }
         $session       = session();
         $salary_model  = new CompanySalaryModel();
-        $company_model = new CompanyMasterModel();
         $page_title    = 'New Salary';
+        $mode          = 'new';
         if ('new' != $salary_id && is_numeric($salary_id)) {
             $salary_id  = $salary_id/$salary_model::ID_NONCE;
             $salary     = $salary_model->find($salary_id);
             $page_title = 'Edit [' . date(MONTH_FORMAT_UI, strtotime($salary['pay_date'])) . ' Salary]';
+            $mode       = 'edit';
         } else {
             $salary    = [];
         }
-        $companies = $company_model->where('employment_end_date', null)->orderBy('company_legal_name', 'asc')->findAll();
         $data      = [
             'page_title'   => $page_title,
             'slug'         => 'salary',
             'user_session' => $session->user,
             'roles'        => $session->roles,
             'current_role' => $session->current_role,
+            'mode'         => $mode,
             'salary'       => $salary,
-            'companies'    => $companies,
+            'config'       => $salary_model->getConfigurations([], $this->countries, $this->currencies)
         ];
         return view('employment_salary_edit', $data);
     }

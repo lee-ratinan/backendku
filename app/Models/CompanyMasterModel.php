@@ -35,6 +35,143 @@ class CompanyMasterModel extends Model
     protected $createdField = 'created_at';
     protected $updatedField = 'updated_at';
     const ID_NONCE = 647;
+    private array $configurations = [
+        'id'            => [
+            'type'      => 'hidden',
+            'label'     => 'ID'
+        ],
+        'company_slug' => [
+            'type'        => 'text',
+            'label'       => 'Company Slug',
+            'required'    => true,
+            'maxlength'   => 64,
+            'placeholder' => 'Slug'
+        ],
+        'company_legal_name' => [
+            'type'        => 'text',
+            'label'       => 'Legal Name',
+            'required'    => true,
+            'maxlength'   => 255,
+            'placeholder' => 'Legal Name'
+        ],
+        'company_trade_name' => [
+            'type'        => 'text',
+            'label'       => 'Trade Name',
+            'required'    => true,
+            'maxlength'   => 255,
+            'placeholder' => 'Trade Name'
+        ],
+        'company_other_names' => [
+            'type'        => 'text',
+            'label'       => 'Other Names (optional)',
+            'required'    => true,
+            'placeholder' => 'Other Names',
+            'details'     => 'Separate multiple names with a semicolon'
+        ],
+        'company_address' => [
+            'type'        => 'text',
+            'label'       => 'Address',
+            'required'    => true,
+            'placeholder' => 'Address'
+        ],
+        'company_country_code' => [
+            'type'        => 'select',
+            'label'       => 'Country',
+            'required'    => true,
+            'options'     => []
+        ],
+        'company_hq_country_code' => [
+            'type'        => 'select',
+            'label'       => 'HQ Country',
+            'required'    => true,
+            'options'     => []
+        ],
+        'company_currency_code' => [
+            'type'        => 'select',
+            'label'       => 'Currency',
+            'required'    => true,
+            'options'     => []
+        ],
+        'company_website' => [
+            'type'        => 'text',
+            'label'       => 'Website URL',
+            'required'    => true,
+            'maxlength'   => 128,
+            'placeholder' => 'URL',
+            'details'     => 'Separate each websites by a semicolon'
+        ],
+        'company_details' => [
+            'type'        => 'text',
+            'label'       => 'Details',
+            'required'    => true,
+            'placeholder' => 'Details'
+        ],
+        'company_registration' => [
+            'type'        => 'text',
+            'label'       => 'Registration',
+            'required'    => true,
+            'maxlength'   => 128,
+            'placeholder' => 'Registration'
+        ],
+        'company_color' => [
+            'type'        => 'color',
+            'label'       => 'Color Code',
+            'required'    => true,
+            'placeholder' => 'Code'
+        ],
+        'employment_start_date' => [
+            'type'        => 'date',
+            'label'       => 'Start Date',
+            'required'    => true,
+            'placeholder' => 'Start Date'
+        ],
+        'employment_end_date' => [
+            'type'        => 'date',
+            'label'       => 'End Date',
+            'required'    => true,
+            'placeholder' => 'End Date'
+        ],
+        'position_titles' => [
+            'type'        => 'text',
+            'label'       => 'Titles',
+            'required'    => true,
+            'placeholder' => 'Titles',
+            'details'     => 'Separate positions by semicolon, add YYYY-MM: before job title'
+        ]
+    ];
+
+    /**
+     * Get configurations for generating forms
+     * @param array $columns
+     * @param array $country_codes
+     * @param array $currency_codes
+     * @return array
+     */
+    public function getConfigurations(array $columns = [], array $country_codes = [], array $currency_codes = []): array
+    {
+        $configurations  = $this->configurations;
+        // countries
+        $country_options = [];
+        if (empty($country_codes)) {
+            $countries = lang('ListCountries.countries');
+            foreach ($countries as $country_code => $country) {
+                $country_options[$country_code] = $country['common_name'];
+            }
+        } else {
+            foreach ($country_codes as $country_code) {
+                $country_options[$country_code] = lang('ListCountries.countries.' . $country_code . '.common_name');
+            }
+        }
+        // currencies
+        $currency_options['THB'] = 'THB';
+        foreach ($currency_codes as $code) {
+            $currency_options[$code] = $code;
+        }
+        $configurations['company_country_code']['options']    = $country_options;
+        $configurations['company_hq_country_code']['options'] = $country_options;
+        $configurations['company_currency_code']['options']   = $currency_options;
+        return $columns ? array_intersect_key($configurations, array_flip($columns)) : $configurations;
+    }
 
     /**
      * @param string $search_value
