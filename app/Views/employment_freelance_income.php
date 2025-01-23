@@ -1,0 +1,117 @@
+<?php
+$layout = getenv('LAYOUT_FILE_OFFICE');
+$layout = (!empty($layout) ? $layout : 'system/_layout_office');
+$this->extend($layout);
+?>
+<?= $this->section('content') ?>
+<?php $session = session(); ?>
+    <div class="pagetitle">
+        <h1><?= $page_title ?></h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="<?= base_url($session->locale . '/office/dashboard') ?>"><?= lang('System.dashboard.page_title') ?></a></li>
+                <li class="breadcrumb-item active"><?= $page_title ?></li>
+            </ol>
+        </nav>
+    </div>
+    <section class="section">
+        <div class="row">
+            <div class="col">
+                <div class="card">
+                    <div class="card-body pt-3">
+                        <a class="btn btn-outline-primary btn-sm float-end ms-3" href="<?= base_url($session->locale . '/office/employment/freelance-income/create') ?>"><i class="fa-solid fa-plus-circle"></i> New Income</a>
+                        <h5 class="card-title"><i class="fa-solid fa-dollar-sign fa-fw me-3"></i> <?= $page_title ?></h5>
+                        <div class="row mb-3">
+                            <div class="col-6 col-md-4">
+                                <label for="project_id" class="form-label">Project</label><br>
+                                <select class="form-select form-select-sm" id="project_id">
+                                    <option value="">All</option>
+                                    <?php foreach ($projects as $project_id => $project_name): ?>
+                                        <option value="<?= $project_id ?>"><?= $project_name ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                            <div class="col-6 col-md-4">
+                                <label for="year" class="form-label">Year</label><br>
+                                <select class="form-select form-select-sm" id="year">
+                                    <option value="">All</option>
+                                    <?php for ($year = date('Y'); $year > 2009; $year--): ?>
+                                        <option value="<?= $year ?>"><?= $year ?></option>
+                                    <?php endfor; ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col text-end">
+                                <button id="btn-reset" class="btn btn-sm btn-outline-primary">Reset</button>
+                                <button id="btn-filter" class="btn btn-sm btn-primary">Filter</button>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-sm table-striped table-hover">
+                                <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>ID</th>
+                                    <th style="min-width:225px">Project</th>
+                                    <th style="min-width:100px">Pay Date</th>
+                                    <th style="min-width:125px">Payment Method</th>
+                                    <th style="min-width:100px">Currency</th>
+                                    <th style="min-width:150px">Base Amount</th>
+                                    <th style="min-width:150px">Deduction</th>
+                                    <th style="min-width:150px">Claim</th>
+                                    <th style="min-width:150px">Subtotal</th>
+                                    <th style="min-width:150px">Tax Deduction</th>
+                                    <th style="min-width:150px">Total</th>
+                                    <th style="min-width:225px">Details</th>
+                                    <th>Payslip</th>
+                                </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            let serverFooter = [];
+            const table = $('table').DataTable({
+                processing: true,
+                serverSide: true,
+                fixedHeader: true,
+                searching: false, // don't allow the search for this one
+                pageLength: 50,
+                fixedColumns: {start: 3},
+                scrollX: true,
+                ajax: {
+                    url: '<?= base_url($session->locale . '/office/employment/freelance-income') ?>',
+                    type: 'POST',
+                    data: function (d) {
+                        d.project_id    = $('#project_id').val();
+                        d.year          = $('#year').val();
+                    },
+                    dataSrc: function (json) {
+                        serverFooter = json.footer;
+                        return json.data;
+                    }
+                },
+                order: [[1, 'desc']],
+                columnDefs: [
+                    {orderable: false, targets: 0},
+                    {className: 'text-end', targets: [6,7,8,9,10,11] }
+                ],
+            });
+            $('#btn-filter').on('click', function () {
+                table.ajax.reload();
+            });
+            $('#btn-reset').on('click', function () {
+                $('#project_id').val('');
+                $('#year').val('');
+                table.ajax.reload();
+            });
+        });
+    </script>
+<?php $this->endSection() ?>

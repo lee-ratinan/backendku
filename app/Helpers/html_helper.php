@@ -266,7 +266,7 @@ function currency_format(string $currency_code, float $amount): string
         'MYR' => '<small>RM</small> ###',
         'PHP' => '₱ ###',
         'SGD' => 'S$ ###',
-        'THB' => '### ฿',
+        'THB' => '### บ.',
         'VND' => '### ₫',
         // Europe
         'CHF' => 'fr. ###',

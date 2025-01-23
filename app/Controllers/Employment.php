@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Models\CompanyCPFModel;
 use App\Models\CompanyCPFStatementModel;
+use App\Models\CompanyFreelanceIncomeModel;
 use App\Models\CompanyFreelanceProjectModel;
 use App\Models\CompanyMasterModel;
 use App\Models\CompanySalaryModel;
@@ -575,6 +576,77 @@ class Employment extends BaseController
             return permission_denied('json');
         }
         return $this->response->setJSON([]);
+    }
+
+    /**
+     * @return string
+     */
+    public function freelanceIncome(): string
+    {
+        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
+            return permission_denied();
+        }
+        $session       = session();
+        $project_model = new CompanyFreelanceProjectModel();
+        $project_raw   = $project_model->orderBy('project_title', 'asc')->findAll();
+        $project_list  = [];
+        foreach ($project_raw as $row) {
+            $project_list[$row['id']] = $row['project_title'];
+        }
+        $data          = [
+            'page_title'   => 'Freelance Income',
+            'slug'         => 'freelance-income',
+            'user_session' => $session->user,
+            'roles'        => $session->roles,
+            'current_role' => $session->current_role,
+            'projects'     => $project_list
+        ];
+        return view('employment_freelance_income', $data);
+    }
+
+    /**
+     * @return ResponseInterface
+     */
+    public function freelanceIncomeList(): ResponseInterface
+    {
+        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
+            return permission_denied('datatables');
+        }
+        $model              = new CompanyFreelanceIncomeModel();
+        $columns            = [
+            '',
+            'company_freelance_income.id',
+            'project_id',
+            'pay_date',
+            'payment_method',
+            'payment_currency',
+            'base_amount',
+            'deduction_amount',
+            'claim_amount',
+            'subtotal_amount',
+            'tax_amount',
+            'total_amount',
+            'payment_details',
+            'google_drive_link'
+        ];
+        $order              = $this->request->getPost('order');
+        $search             = $this->request->getPost('search');
+        $start              = $this->request->getPost('start');
+        $length             = $this->request->getPost('length');
+        $order_column_index = $order[0]['column'] ?? 0;
+        $order_column       = $columns[$order_column_index];
+        $order_direction    = $order[0]['dir'] ?? 'desc';
+        $project_id         = intval($this->request->getPost('project_id'));
+        $year               = $this->request->getPost('year');
+        $search_value       = $search['value'];
+        $result             = $model->getDataTables($start, $length, $order_column, $order_direction, $search_value, $project_id, $year);
+        return $this->response->setJSON([
+            'draw'            => $this->request->getPost('draw'),
+            'recordsTotal'    => $result['recordsTotal'],
+            'recordsFiltered' => $result['recordsFiltered'],
+            'data'            => $result['data'],
+            'footer'          => $result['footer']
+        ]);
     }
 
 }

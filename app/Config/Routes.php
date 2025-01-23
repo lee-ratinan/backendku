@@ -89,13 +89,15 @@ $routes->group('{locale}/office', ['filter' => 'auth'], static function ($routes
     $routes->get('employment/cpf/statement/create', 'Employment::cpfStatementEdit/new');
     $routes->get('employment/cpf/statement/edit/(:any)', 'Employment::cpfStatementEdit/$1');
     $routes->post('employment/cpf/statement/edit', 'Employment::cpfStatementSave');
-    // company_freelance_project and company_freelance_income
+    // company_freelance_project
     $routes->get('employment/freelance', 'Employment::freelance');
     $routes->post('employment/freelance', 'Employment::freelanceList');
-    $routes->get('employment/freelance/view/(:any)', 'Employment::freelanceView/$1');
     $routes->get('employment/freelance/create', 'Employment::freelanceEdit/new');
     $routes->get('employment/freelance/edit/(:any)', 'Employment::freelanceEdit/$1');
     $routes->post('employment/freelance/edit', 'Employment::freelanceSave');
+    // company_freelance_income
+    $routes->get('employment/freelance-income', 'Employment::freelanceIncome');
+    $routes->post('employment/freelance-income', 'Employment::freelanceIncomeList');
     $routes->get('employment/freelance-income/create', 'Employment::freelanceIncomeEdit/new');
     $routes->get('employment/freelance-income/edit/(:any)', 'Employment::freelanceIncomeEdit/$1');
     $routes->post('employment/freelance-income/edit', 'Employment::freelanceIncomeSave');
