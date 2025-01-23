@@ -423,9 +423,43 @@ class Employment extends BaseController
             'user_session' => $session->user,
             'roles'        => $session->roles,
             'current_role' => $session->current_role,
-            'statements'   => $model->findAll()
+            'statements'   => $model->findAll(),
+            'nonce'        => $model::ID_NONCE
         ];
         return view('employment_cpf_statement', $data);
+    }
+
+    /**
+     * @param string $cpf_statement_id
+     * @return string
+     */
+    public function cpfStatementEdit(string $cpf_statement_id = 'new'): string
+    {
+        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
+            return permission_denied();
+        }
+        $session    = session();
+        $model      = new CompanyCPFStatementModel();
+        $page_title = 'New CPF Statement';
+        $mode       = 'new';
+        $statement  = [];
+        if ('new' != $cpf_statement_id && is_numeric($cpf_statement_id)) {
+            $cpf_id     = $cpf_statement_id/$model::ID_NONCE;
+            $statement  = $model->find($cpf_id);
+            $page_title = 'View CPF Statement [' . $statement['statement_year'] . ']';
+            $mode       = 'edit';
+        }
+        $data    = [
+            'page_title'   => $page_title,
+            'slug'         => 'cpf',
+            'user_session' => $session->user,
+            'roles'        => $session->roles,
+            'current_role' => $session->current_role,
+            'statement'    => $statement,
+            'mode'         => $mode,
+            'config'       => $model->getConfiguration()
+        ];
+        return view('employment_cpf_statement_edit', $data);
     }
 
     /************************************************************************

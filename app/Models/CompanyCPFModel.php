@@ -224,7 +224,7 @@ class CompanyCPFModel extends Model
         foreach ($raw_result as $row) {
             $new_id       = $row['id'] * self::ID_NONCE;
             $result[]     = [
-                '<a class="btn btn-outline-primary btn-sm" href="' . base_url($locale . '/office/employment/cpf/edit/' . $new_id) . '"><i class="fa-solid fa-edit"></i></a>',
+                '<a class="btn btn-outline-primary btn-sm" href="' . base_url($locale . '/office/employment/cpf/edit/' . $new_id) . '"><i class="fa-solid fa-eye"></i></a>',
                 $row['id'],
                 date(DATE_FORMAT_UI, strtotime($row['transaction_date'])),
                 $row['transaction_code'],

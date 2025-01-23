@@ -25,18 +25,29 @@ $this->extend($layout);
     </div>
     <section class="section">
         <div class="row">
-            <div class="col">
+            <div class="col-12 col-md-10 col-lg-6">
                 <div class="card">
                     <div class="card-body pt-3">
                         <a class="btn btn-outline-primary btn-sm float-end ms-3" href="<?= base_url($session->locale . '/office/employment/cpf/statement/create') ?>"><i class="fa-solid fa-plus-circle"></i> New Statement</a>
                         <h5 class="card-title"><i class="fa-solid fa-piggy-bank fa-fw me-3"></i> <?= $page_title ?></h5>
-                        <div class="row g-3">
+                        <table class="table table-sm table-hover table-striped">
+                            <thead>
+                            <tr>
+                                <th></th>
+                                <th>Year</th>
+                                <th>Statement</th>
+                            </tr>
+                            </thead>
+                            <tbody>
                             <?php foreach ($statements as $row) : ?>
-                                <div class="col-4 col-md-3">
-                                    <a class="btn btn-outline-primary btn-sm p-3 w-100" href="<?= $row['google_drive_url'] ?>" target="_blank"><h3 class="my-0"><?= $row['statement_year'] ?></h3></a>
-                                </div>
+                                <tr>
+                                    <td><a class="btn btn-outline-primary btn-sm" href="<?= base_url($session->locale . '/office/employment/cpf/statement/edit/' . ($row['id'] * $nonce)) ?>"><i class="fa-solid fa-eye"></i></a></td>
+                                    <td><?= $row['statement_year'] ?></td>
+                                    <td><a class="btn btn-outline-primary btn-sm w-100" href="<?= $row['google_drive_url'] ?>" target="_blank"><i class="fa-solid fa-file-pdf"></i> CPF Statement: <?= $row['statement_year'] ?></a></td>
+                                </tr>
                             <?php endforeach; ?>
-                        </div>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
