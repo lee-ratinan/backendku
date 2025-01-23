@@ -366,28 +366,31 @@ class Employment extends BaseController
         }
         $session       = session();
         $cpf_model     = new CompanyCPFModel();
-        $company_model = new CompanyMasterModel();
         $page_title    = 'New CPF';
         $cpf           = [];
+        $cpf_latest    = [];
+        $cpf_last_con  = [];
+        $mode          = 'new';
         if ('new' != $cpf_id && is_numeric($cpf_id)) {
             $cpf_id     = $cpf_id/$cpf_model::ID_NONCE;
             $cpf        = $cpf_model->find($cpf_id);
-            $page_title = 'Edit CPF [' . $cpf['transaction_code'] . ' - ' . date(MONTH_FORMAT_UI, strtotime($cpf['transaction_date'])) . ']';
+            $page_title = 'View CPF [' . $cpf['transaction_code'] . ' - ' . date(MONTH_FORMAT_UI, strtotime($cpf['transaction_date'])) . ']';
+            $mode       = 'edit';
+        } else {
+            $cpf_latest   = $cpf_model->orderBy('id', 'desc')->first();
+            $cpf_last_con = $cpf_model->where('transaction_code', 'CON')->orderBy('id', 'desc')->first();
         }
-        $companies = $company_model
-            ->groupStart()
-            ->where('employment_end_date >=', '2020-01-02')
-            ->orWhere('employment_end_date', null)
-            ->groupEnd()
-            ->where('company_country_code', 'SG')->orderBy('company_legal_name', 'asc')->findAll();
-        $data      = [
+        $data = [
             'page_title'   => $page_title,
             'slug'         => 'cpf',
             'user_session' => $session->user,
             'roles'        => $session->roles,
             'current_role' => $session->current_role,
             'cpf'          => $cpf,
-            'companies'    => $companies,
+            'config'       => $cpf_model->getConfigurations(),
+            'mode'         => $mode,
+            'cpf_latest'   => $cpf_latest,
+            'cpf_last_con' => $cpf_last_con
         ];
         return view('employment_cpf_edit', $data);
     }

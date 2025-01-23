@@ -36,6 +36,141 @@ class CompanyCPFModel extends Model
     protected $createdField = 'created_at';
     protected $updatedField = 'updated_at';
     const ID_NONCE = 617;
+    private array $configurations = [
+        'id'            => [
+            'type'      => 'hidden',
+            'label'     => 'ID'
+        ],
+        'transaction_date' => [
+            'type'        => 'date',
+            'label'       => 'Transaction Date',
+            'required'    => true,
+            'placeholder' => 'Transaction Date'
+        ],
+        'transaction_code' => [
+            'type'        => 'select',
+            'label'       => 'Transaction Code',
+            'required'    => true,
+            'options'     => [
+                'CON' => 'Contribution (CON)',
+                'CSL' => 'CareShield Life (CSL)',
+                'DPS' => 'Dependants’ Protection Scheme (DPS)',
+                'INT' => 'Interest (INT)',
+                'INV' => 'Investment (INV)',
+                'MSL' => 'MediShield Life (MSL)',
+                'SUP' => 'ElderShield Supplement / CareShield Life Supplement (SUP)',
+            ]
+        ],
+        'ordinary_amount' => [
+            'type'        => 'number',
+            'label'       => '<span class="badge bg-oa rounded-pill">Ordinary Account Amount</span>',
+            'step'        => 0.01,
+            'placeholder' => 'Amount',
+        ],
+        'ordinary_balance' => [
+            'type'        => 'number',
+            'label'       => '<span class="badge bg-oa rounded-pill">Ordinary Account Balance</span>',
+            'step'        => 0.01,
+            'placeholder' => 'Amount',
+        ],
+        'special_amount' => [
+            'type'        => 'number',
+            'label'       => '<span class="badge bg-sa rounded-pill">Special Account Amount</span>',
+            'step'        => 0.01,
+            'placeholder' => 'Amount',
+        ],
+        'special_balance' => [
+            'type'        => 'number',
+            'label'       => '<span class="badge bg-sa rounded-pill">Special Account Balance</span>',
+            'step'        => 0.01,
+            'placeholder' => 'Amount',
+        ],
+        'medisave_amount' => [
+            'type'        => 'number',
+            'label'       => '<span class="badge bg-ma rounded-pill">MediSave Account Amount</span>',
+            'step'        => 0.01,
+            'placeholder' => 'Amount',
+        ],
+        'medisave_balance' => [
+            'type'        => 'number',
+            'label'       => '<span class="badge bg-ma rounded-pill">MediSave Account Balance</span>',
+            'step'        => 0.01,
+            'placeholder' => 'Amount',
+        ],
+        'transaction_amount' => [
+            'type'        => 'number',
+            'label'       => '<span class="badge bg-success rounded-pill">Transaction Amount</span>',
+            'step'        => 0.01,
+            'placeholder' => 'Amount',
+        ],
+        'account_balance' => [
+            'type'        => 'number',
+            'label'       => '<span class="badge bg-success rounded-pill">Account Balance</span>',
+            'step'        => 0.01,
+            'placeholder' => 'Amount',
+        ],
+        'contribution_month' => [
+            'type'        => 'text',
+            'label'       => 'Contribution Month',
+            'maxlength'   => 7,
+            'placeholder' => '####-##',
+            'details'     => 'YYYY-MM'
+        ],
+        'company_id' => [
+            'type'        => 'select',
+            'label'       => 'Company',
+            'required'    => false,
+            'options'     => []
+        ],
+        'staff_contribution' => [
+            'type'        => 'number',
+            'label'       => 'Staff Contribution Amount',
+            'step'        => 0.01,
+            'placeholder' => 'Amount',
+        ],
+        'staff_ytd' => [
+            'type'        => 'number',
+            'label'       => 'Staff Contribution YTD',
+            'step'        => 0.01,
+            'placeholder' => 'Amount',
+        ],
+        'company_match' => [
+            'type'        => 'number',
+            'label'       => 'Company Match Amount',
+            'step'        => 0.01,
+            'placeholder' => 'Amount',
+        ],
+        'company_ytd' => [
+            'type'        => 'number',
+            'label'       => 'Company Match YTD',
+            'step'        => 0.01,
+            'placeholder' => 'Amount',
+        ],
+    ];
+
+    /**
+     * Get configurations for generating forms
+     * @param array $columns
+     * @param array $country_codes
+     * @param array $currency_codes
+     * @return array
+     */
+    public function getConfigurations(array $columns = [], array $country_codes = [], array $currency_codes = []): array
+    {
+        $configurations  = $this->configurations;
+        // company
+        $company_model   = new CompanyMasterModel();
+        $companies       = $company_model
+            ->where('employment_end_date >=', '2020-01-01')
+            ->orWhere('employment_end_date', null)
+            ->orderBy('company_legal_name')->findAll();
+        $company_options  = [];
+        foreach ($companies as $company) {
+            $company_options[$company['id']] = $company['company_legal_name'];
+        }
+        $configurations['company_id']['options'] = $company_options;
+        return $columns ? array_intersect_key($configurations, array_flip($columns)) : $configurations;
+    }
 
     /**
      * @param string $transaction_code
