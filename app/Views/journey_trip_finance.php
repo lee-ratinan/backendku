@@ -20,7 +20,7 @@ $this->extend($layout);
             <div class="col">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title"><i class="fa-solid fa-credit-card fa-fw me-3"></i> Finance</h5>
+                        <h2><i class="fa-solid fa-credit-card fa-fw me-3"></i> Finance</h2>
                         <div class="table-responsive">
                             <table class="table table-sm table-striped table-hover">
                                 <thead>

@@ -245,7 +245,7 @@ class Employment extends BaseController
         if ('new' != $salary_id && is_numeric($salary_id)) {
             $salary_id  = $salary_id/$salary_model::ID_NONCE;
             $salary     = $salary_model->find($salary_id);
-            $page_title = 'Edit [' . date(MONTH_FORMAT_UI, strtotime($salary['pay_date'])) . ']';
+            $page_title = 'Edit [' . date(MONTH_FORMAT_UI, strtotime($salary['pay_date'])) . ' Salary]';
         } else {
             $salary    = [];
         }
@@ -369,7 +369,7 @@ class Employment extends BaseController
         if ('new' != $cpf_id && is_numeric($cpf_id)) {
             $cpf_id     = $cpf_id/$cpf_model::ID_NONCE;
             $cpf        = $cpf_model->find($cpf_id);
-            $page_title = 'Edit CPF [' . date(MONTH_FORMAT_UI, strtotime($cpf['transaction_date'])) . ']';
+            $page_title = 'Edit CPF [' . $cpf['transaction_code'] . ' - ' . date(MONTH_FORMAT_UI, strtotime($cpf['transaction_date'])) . ']';
         }
         $companies = $company_model
             ->groupStart()

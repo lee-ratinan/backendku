@@ -245,7 +245,7 @@ class Journey extends BaseController
         }
         ksort($countries_by_visits);
         $data = [
-            'page_title'                   => 'Statistics',
+            'page_title'                   => 'Trip Statistics',
             'slug'                         => 'trip-stats',
             'user_session'                 => $session->user,
             'roles'                        => $session->roles,
@@ -627,7 +627,7 @@ class Journey extends BaseController
             }
         }
         $data = [
-            'page_title'          => 'Statistics',
+            'page_title'          => 'Transport Statistics',
             'slug'                => 'transport-stats',
             'user_session'        => $session->user,
             'roles'               => $session->roles,
@@ -923,7 +923,7 @@ class Journey extends BaseController
         }
         ksort($by_country);
         $data = [
-            'page_title'      => 'Statistics',
+            'page_title'      => 'Accommodation Statistics',
             'slug'            => 'accommodation-stats',
             'user_session'    => $session->user,
             'roles'           => $session->roles,
@@ -1165,7 +1165,7 @@ class Journey extends BaseController
             $by_year[$year][$category] = (isset($by_year[$year][$category]) ? $by_year[$year][$category] + 1 : 1);
         }
         $data = [
-            'page_title'      => 'Statistics',
+            'page_title'      => 'Attraction Statistics',
             'slug'            => 'attraction-stats',
             'user_session'    => $session->user,
             'roles'           => $session->roles,
@@ -1396,7 +1396,7 @@ class Journey extends BaseController
         }
         arsort($by_port);
         $data     = [
-            'page_title'   => 'Statistics',
+            'page_title'   => 'Port Statistics',
             'slug'         => 'port-stats',
             'user_session' => $session->user,
             'roles'        => $session->roles,
@@ -1610,7 +1610,7 @@ class Journey extends BaseController
         }
         arsort($by_operator);
         $data           = [
-            'page_title'      => 'Statistics',
+            'page_title'      => 'Operator Statistics',
             'slug'            => 'operator-stats',
             'user_session'    => $session->user,
             'roles'           => $session->roles,
@@ -1668,7 +1668,7 @@ class Journey extends BaseController
             }
         }
         $data = [
-            'page_title'      => 'Statistics',
+            'page_title'      => 'Aircraft Statistics',
             'slug'            => 'aircraft-stats',
             'user_session'    => $session->user,
             'roles'           => $session->roles,

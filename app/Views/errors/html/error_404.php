@@ -61,50 +61,6 @@
                     <span><?= $session->user['employee_title'] ?></span>
                 </li>
                 <li class="sidebar-item <?= ('dashboard' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/dashboard') ?>"><i class="fa-solid fa-house-chimney fa-fw me-3"></i><span><?= lang('System.dashboard.page_title') ?></span></a></li>
-                <!-- USER -->
-                <?php if (isset($session->permitted_features['user_master'])): ?>
-                    <li class="sidebar-item <?= ('user' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/user') ?>"><i class="fa-solid fa-user fa-fw me-3"></i><span><?= lang('User.index.page_title') ?></span></a></li>
-                <?php endif; ?>
-                <!-- ROLE -->
-                <?php if (isset($session->permitted_features['role_master'])): ?>
-                    <li class="sidebar-item <?= ('role' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/role') ?>"><i class="fa-solid fa-list-check fa-fw me-3"></i><span><?= lang('Role.index.page_title') ?></span></a></li>
-                <?php endif; ?>
-                <!-- LOG -->
-                <?php if (isset($session->permitted_features['log'])): ?>
-                    <li class="sidebar-item <?= ('log' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/log') ?>"><i class="fa-solid fa-list fa-fw me-3"></i><span><?= lang('Log.index.page_title') ?></span></a></li>
-                    <li class="sidebar-item <?= ('log-email' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/log/email') ?>"><i class="fa-solid fa-list fa-fw me-3"></i><span><?= lang('Log.email.page_title') ?></span></a></li>
-                    <li class="sidebar-item <?= ('log-file' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/log/log-file') ?>"><i class="fa-solid fa-list fa-fw me-3"></i><span><?= lang('Log.file_list.page_title') ?></span></a></li>
-                <?php endif; ?>
-                <!-- ORGANIZATION -->
-                <?php if (isset($session->permitted_features['organization'])): ?>
-                    <li class="sidebar-item <?= ('organization' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/organization') ?>"><i class="fa-solid fa-building fa-fw me-3"></i><span><?= lang('Organization.page_title') ?></span></a></li>
-                <?php endif; ?>
-                <!-- FINANCE -->
-                <?php if (isset($session->permitted_features['finance'])): ?>
-                    <li class="sidebar-header">Employment</li>
-                    <li class="sidebar-item <?= ('company' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/employment') ?>"><i class="fa-solid fa-suitcase fa-fw me-3"></i><span>Company</span></a></li>
-                    <li class="sidebar-item <?= ('salary' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/employment/salary') ?>"><i class="fa-solid fa-dollar-sign fa-fw me-3"></i><span>Salary</span></a></li>
-                    <li class="sidebar-item <?= ('cpf' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/employment/cpf') ?>"><i class="fa-solid fa-piggy-bank fa-fw me-3"></i><span>CPF</span></a></li>
-                    <li class="sidebar-item <?= ('freelance' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/employment/freelance') ?>"><i class="fa-solid fa-laptop-code fa-fw me-3"></i><span>Freelance</span></a></li>
-                    <li class="sidebar-header">Tax</li>
-                    <li class="sidebar-item <?= ('tax' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/tax') ?>"><i class="fa-solid fa-building-columns fa-fw me-3"></i><span>Tax</span></a></li>
-                    <li class="sidebar-item <?= ('tax-calculator' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/tax/calculator') ?>"><i class="fa-solid fa-calculator fa-fw me-3"></i><span>Tax Calculator</span></a></li>
-                <?php endif; ?>
-                <!-- JOURNEY -->
-                <?php if (isset($session->permitted_features['journey'])): ?>
-                    <li class="sidebar-item <?= ('trip' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/journey/trip') ?>"><i class="fa-solid fa-passport fa-fw me-3"></i><span>Trip</span></a></li>
-                    <li class="sidebar-item <?= ('transport' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/journey/transport') ?>"><i class="fa-solid fa-person-walking-luggage fa-fw me-3"></i><span>Transportation</span></a></li>
-                    <li class="sidebar-item <?= ('accommodation' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/journey/accommodation') ?>"><i class="fa-solid fa-bed fa-fw me-3"></i><span>Accommodation</span></a></li>
-                    <li class="sidebar-item <?= ('attraction' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/journey/attraction') ?>"><i class="fa-solid fa-ticket fa-fw me-3"></i><span>Attraction</span></a></li>
-                    <li class="sidebar-item <?= ('port' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/journey/port') ?>"><i class="fa-solid fa-location-dot fa-fw me-3"></i><span>Port</span></a></li>
-                    <li class="sidebar-item <?= ('operator' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/journey/operator') ?>"><i class="fa-solid fa-user-tie fa-fw me-3"></i><span>Operator</span></a></li>
-                    <li class="sidebar-item <?= ('holiday' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/journey/holiday') ?>"><i class="fa-solid fa-umbrella-beach fa-fw me-3"></i><span>Holiday</span></a></li>
-                <?php endif; ?>
-                <!-- PROFILE -->
-                <?php if (isset($session->permitted_features['profile'])): ?>
-                    <li class="sidebar-item <?= ('profile-data' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/profile/data') ?>"><i class="fa-regular fa-address-card fa-fw me-3"></i><span>Profile</span></a></li>
-                    <li class="sidebar-item <?= ('resume' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/profile/resume') ?>"><i class="fa-regular fa-file-lines fa-fw me-3"></i><span>Resume</span></a></li>
-                <?php endif; ?>
             </ul>
         </div>
     </nav>
