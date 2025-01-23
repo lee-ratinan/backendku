@@ -112,6 +112,24 @@ $this->extend($layout);
                             </div>
                         </form>
                         <hr />
+                        <h5 class="card-title">Resume 2</h5>
+                        <form method="GET" action="<?= base_url($session->locale . '/office/profile/resume/builder2') ?>" target="_blank">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="job_title" name="job_title" value="Technical Lead" required>
+                                <label for="job_title">Job Title</label>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <select class="form-select" id="return" name="return">
+                                    <option value="pdf">PDF</option>
+                                    <option value="html">HTML</option>
+                                </select>
+                                <label for="return">Return Format</label>
+                            </div>
+                            <div class="text-end">
+                                <input class="btn btn-outline-primary btn-sm" type="submit" value="Generate Resume" />
+                            </div>
+                        </form>
+                        <hr />
                         <h5 class="card-title">Cover Letter</h5>
                         <form method="POST" action="<?= base_url($session->locale . '/office/profile/resume/cover-letter') ?>" target="_blank">
                             <div class="form-floating mb-3">

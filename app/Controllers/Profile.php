@@ -105,6 +105,26 @@ class Profile extends BaseController
     /**
      * @return ResponseInterface|string
      */
+    public function resumeBuilder2(): ResponseInterface|string
+    {
+        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
+            return permission_denied();
+        }
+        $return = $this->request->getGet('return');
+        $data   = [
+            'job_title'  => ucwords(strtolower($this->request->getGet('job_title'))),
+        ];
+        $file_name   = 'Ratinan L - ' . $data['job_title'] . ' - Resume.pdf';
+        $resume_html = view('profile_resume_builder2', $data);
+        if ('html' == $return) {
+            return $resume_html;
+        }
+        return $this->generatePdf($resume_html, $file_name);
+    }
+
+    /**
+     * @return ResponseInterface|string
+     */
     public function resumeCoverLetter(): ResponseInterface|string
     {
         if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
