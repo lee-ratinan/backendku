@@ -76,7 +76,7 @@ $this->extend($layout);
                                             break;
                                         case 'employment_start_date':
                                         case 'employment_end_date':
-                                            echo date(DATE_FORMAT_UI, strtotime($company[$field]));
+                                            echo (empty($company[$field]) ? '-' : date(DATE_FORMAT_UI, strtotime($company[$field])));
                                             break;
                                         default:
                                             echo $company[$field];
