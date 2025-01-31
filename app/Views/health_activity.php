@@ -78,15 +78,15 @@ $this->extend($layout);
                                 <tr>
                                     <th></th>
                                     <th>ID</th>
-                                    <th>Time</th>
-                                    <th>Duration</th>
-                                    <th>Time from PE</th>
-                                    <th>Detail</th>
-                                    <th>Reached?</th>
-                                    <th>Spa</th>
-                                    <th>Price</th>
-                                    <th>Notes</th>
-                                    <th>Location</th>
+                                    <th style="min-width:200px">Time</th>
+                                    <th style="min-width:100px">Duration</th>
+                                    <th style="min-width:100px">Time from PE</th>
+                                    <th style="min-width:160px">Detail</th>
+                                    <th style="min-width:100px">Reached?</th>
+                                    <th style="min-width:180px">Spa</th>
+                                    <th style="min-width:100px">Price</th>
+                                    <th style="min-width:150px">Notes</th>
+                                    <th style="min-width:100px">Location</th>
                                 </tr>
                                 </thead>
                                 <tbody></tbody>
