@@ -2,7 +2,7 @@
 
 namespace App\Controllers;
 
-use App\Models\HealthLeisureModel;
+use App\Models\HealthActivityModel;
 use App\Models\JourneyAccommodationModel;
 use App\Models\JourneyAttractionModel;
 use App\Models\JourneyHolidayModel;
@@ -125,7 +125,7 @@ class Journey extends BaseController
                 'attraction'    => JourneyAttractionModel::ID_NONCE
             ];
             $modes_of_transport = (new JourneyTransportModel())->getModeOfTransport();
-            $health_records     = (new HealthLeisureModel())->getRecordTypes();
+            $health_records     = (new HealthActivityModel())->getRecordTypes();
         }
         $session = session();
         $data    = [

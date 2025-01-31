@@ -270,7 +270,7 @@ class JourneyMasterModel extends Model
         $transport_model     = new JourneyTransportModel();
         $accommodation_model = new JourneyAccommodationModel();
         $attraction_model    = new JourneyAttractionModel();
-        $leisure_model       = new HealthLeisureModel();
+        $leisure_model       = new HealthActivityModel();
         $transport_data      = $transport_model->findById($real_id, 'journey_id');
         $accommodation_data  = $accommodation_model->where('journey_id', $real_id)->orderBy('check_in_date', 'asc')->findAll();
         $attraction_data     = $attraction_model->where('journey_id', $real_id)->orderBy('attraction_date', 'asc')->findAll();

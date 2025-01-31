@@ -4,9 +4,9 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class HealthLeisureModel extends Model
+class HealthActivityModel extends Model
 {
-    protected $table = 'health_leisure';
+    protected $table = 'health_activity';
     protected $primaryKey = 'id';
     protected $allowedFields = [
         'id',
