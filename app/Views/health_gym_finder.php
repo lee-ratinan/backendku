@@ -53,10 +53,10 @@ $this->extend($layout);
                 $.post('<?= base_url($session->locale . '/office/health/gym-finder') ?>',
                     {latitude: coords.latitude, longitude: coords.longitude, city_code: city_code},
                     function (data) {
-                        console.log(data);
+                        $('#target').html('');
                         $.each(data.data, function (index, gym) {
-                            console.log(gym);
                             $('#target').append('<h6>'+gym.club+'</h6><p>'+gym.distance + 'km<br>Opens: '+gym.open+' - '+gym.close+'<br><a href="'+gym.url+'" target="_blank">Check the website</a></p>');
+                            $('#btn-filter').prop('disabled', false);
                         });
                     }
                 );
@@ -65,6 +65,8 @@ $this->extend($layout);
                 toastr.error('Error: ' + error.message);
             }
             $('#btn-filter').click(function() {
+                $(this).prop('disabled', true);
+                $('#target').html('<i class="fa-solid fa-circle-notch fa-spin"></i> Loading...');
                 if (navigator.geolocation) {
                     navigator.geolocation.getCurrentPosition(filter_gym, show_error);
                 } else {
