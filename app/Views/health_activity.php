@@ -21,21 +21,52 @@ $this->extend($layout);
                     <div class="card-body pt-3">
                         <a class="btn btn-outline-primary btn-sm float-end ms-3" href="<?= base_url($session->locale . '/office/health/activity/create') ?>"><i class="fa-solid fa-plus-circle"></i> New Activity</a>
                         <h5 class="card-title"><i class="fa-solid fa-spa fa-fw me-3"></i> <?= $page_title ?></h5>
-                        <div class="row mb-3 d-none">
+                        <div class="row mb-3">
                             <div class="col">
-                                <label for="country_code" class="form-label">Country</label><br>
-                                <select class="form-select form-select-sm" id="country_code">
+                                <label for="from" class="form-label">From</label><br>
+                                <input type="date" class="form-control form-control-sm" id="from" value="<?= date('Y-m-01') ?>" min="2022-05-01" max="<?= date(DATE_FORMAT_DB) ?>">
+                            </div>
+                            <div class="col">
+                                <label for="to" class="form-label">To</label><br>
+                                <input type="date" class="form-control form-control-sm" id="to" value="<?= date(DATE_FORMAT_DB) ?>" min="2022-05-01" max="<?= date(DATE_FORMAT_DB) ?>">
+                            </div>
+                            <div class="col">
+                                <label for="record_type" class="form-label">Record Type</label><br>
+                                <select class="form-select form-select-sm" id="record_type">
                                     <option value="">All</option>
+                                    <?php foreach ($record_types as $category => $types) : ?>
+                                        <optgroup label="<?= $record_cate[$category] ?>">
+                                            <option value="<?= $category ?>:"><?= $record_cate[$category] ?> / *</option>
+                                            <?php if ('enlarge' == $category): ?>
+                                                <?php for ($l = 110; $l <= 180; $l += 5) : ?>
+                                                    <option value="<?= $category . ':' . $l ?>"><?= number_format($l/10, 1) ?>cm</option>
+                                                <?php endfor; ?>
+                                            <?php else: ?>
+                                                <?php foreach ($types as $type => $value) : ?>
+                                                    <option value="<?= $category . ':' . $type ?>"><?= $value ?></option>
+                                                <?php endforeach; ?>
+                                            <?php endif; ?>
+                                    <?php endforeach; ?>
                                 </select>
                             </div>
                             <div class="col">
-                                <label for="mode_of_transport" class="form-label">Mode of Transport</label><br>
-                                <select class="form-select form-select-sm" id="mode_of_transport">
+                                <label for="is_ejac" class="form-label">Reached?</label><br>
+                                <select class="form-select form-select-sm" id="is_ejac">
                                     <option value="">All</option>
+                                    <option value="Y">Yes</option>
+                                    <option value="N">No</option>
+                                </select>
+                            </div>
+                            <div class="col">
+                                <label for="event_location" class="form-label">Location</label><br>
+                                <select class="form-select form-select-sm" id="event_location">
+                                    <option value="">All</option>
+                                    <option value="FF">FF</option>
+                                    <option value="YNMR">YNMR</option>
                                 </select>
                             </div>
                         </div>
-                        <div class="row mb-3 d-none">
+                        <div class="row mb-3">
                             <div class="col text-end">
                                 <button id="btn-reset" class="btn btn-sm btn-outline-primary">Reset</button>
                                 <button id="btn-filter" class="btn btn-sm btn-primary">Filter</button>
@@ -47,12 +78,15 @@ $this->extend($layout);
                                 <tr>
                                     <th></th>
                                     <th>ID</th>
-                                    <th>Country</th>
-                                    <th>City</th>
-                                    <th>Type</th>
-                                    <th>Code</th>
-                                    <th>Name</th>
-                                    <th>Coordinate</th>
+                                    <th>Time</th>
+                                    <th>Duration</th>
+                                    <th>Time from PE</th>
+                                    <th>Detail</th>
+                                    <th>Reached?</th>
+                                    <th>Spa</th>
+                                    <th>Price</th>
+                                    <th>Notes</th>
+                                    <th>Location</th>
                                 </tr>
                                 </thead>
                                 <tbody></tbody>
@@ -75,19 +109,36 @@ $this->extend($layout);
                     url: '<?= base_url($session->locale . '/office/health/activity') ?>',
                     type: 'POST',
                     data: function (d) {
-                        // d.country_code = $('#country_code').val();
-                        // d.mode_of_transport = $('#mode_of_transport').val();
+                        d.from = $('#from').val();
+                        d.to = $('#to').val();
+                        d.record_type = $('#record_type').val();
+                        d.is_ejac = $('#is_ejac').val();
+                        d.event_location = $('#event_location').val();
                     }
                 },
                 order: [[2, 'desc']],
                 columnDefs: [{orderable: false, targets: 0}],
+                drawCallback: function () {
+                    let DateTime = luxon.DateTime;
+                    $('.utc-to-local-time').each(function () {
+                        const utc = $(this).text();
+                        if ('' !== utc) {
+                            $(this).text(DateTime.fromISO(utc).toLocaleString(DateTime.DATETIME_MED));
+                        } else {
+                            $(this).text('-');
+                        }
+                    });
+                },
             });
             $('#btn-filter').on('click', function () {
                 table.ajax.reload();
             });
             $('#btn-reset').on('click', function () {
-                // $('#country_code').val('');
-                // $('#mode_of_transport').val('');
+                $('#from').val('2022-05-01');
+                $('#to').val('<?= date(DATE_FORMAT_DB) ?>');
+                $('#record_type').val('');
+                $('#is_ejac').val('');
+                $('#event_location').val('');
                 table.ajax.reload();
             });
         });
