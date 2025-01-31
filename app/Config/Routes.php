@@ -185,6 +185,13 @@ $routes->group('{locale}/office', ['filter' => 'auth'], static function ($routes
     $routes->get('health/gym-finder', 'Health::gymFinder');
     $routes->post('health/gym-finder', 'Health::gymFinderList');
     $routes->get('health/vaccine', 'Health::vaccine');
+    // Activity
     $routes->get('health/activity', 'Health::activity');
     $routes->post('health/activity', 'Health::activityList');
+    $routes->get('health/activity/create', 'Health::activityEdit/new');
+    $routes->get('health/activity/edit/(:any)', 'Health::activityEdit/$1');
+    $routes->post('health/activity/edit', 'Health::activitySave');
+    // Weight
+    // MBTI
+    // PHQ-9
 });
