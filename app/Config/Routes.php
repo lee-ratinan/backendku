@@ -182,6 +182,8 @@ $routes->group('{locale}/office', ['filter' => 'auth'], static function ($routes
     /////////////////////////////////////////////////////////////////////////////
     // HEALTH
     $routes->get('health/gym', 'Health::gym');
+    $routes->get('health/gym-finder', 'Health::gymFinder');
+    $routes->post('health/gym-finder', 'Health::gymFinderList');
     $routes->get('health/vaccine', 'Health::vaccine');
     $routes->get('health/activity', 'Health::activity');
     $routes->post('health/activity', 'Health::activityList');
