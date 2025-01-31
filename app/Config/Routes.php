@@ -179,4 +179,10 @@ $routes->group('{locale}/office', ['filter' => 'auth'], static function ($routes
     $routes->post('profile/resume/builder', 'Profile::resumeBuilder');
     $routes->get('profile/resume/builder2', 'Profile::resumeBuilder2');
     $routes->post('profile/resume/cover-letter', 'Profile::resumeCoverLetter');
+    /////////////////////////////////////////////////////////////////////////////
+    // HEALTH
+    $routes->get('health/gym', 'Health::gym');
+    $routes->get('health/vaccine', 'Health::vaccine');
+    $routes->get('health/activity', 'Health::activity');
+    $routes->post('health/activity', 'Health::activityList');
 });

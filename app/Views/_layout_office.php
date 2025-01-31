@@ -123,6 +123,12 @@
                     <li class="sidebar-item <?= ('profile-data' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/profile/data') ?>"><i class="fa-regular fa-address-card fa-fw me-3"></i><span>Profile</span></a></li>
                     <li class="sidebar-item <?= ('resume' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/profile/resume') ?>"><i class="fa-regular fa-file-lines fa-fw me-3"></i><span>Resume</span></a></li>
                 <?php endif; ?>
+                <!-- HEALTH -->
+                <?php if (isset($session->permitted_features['health'])): ?>
+                    <li class="sidebar-item <?= ('health-gym' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/health/gym') ?>"><i class="fa-solid fa-dumbbell fa-fw me-3"></i><span>Gym</span></a></li>
+                    <li class="sidebar-item <?= ('health-vaccine' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/health/vaccine') ?>"><i class="fa-solid fa-syringe fa-fw me-3"></i><span>Vaccine</span></a></li>
+                    <li class="sidebar-item <?= ('health-activity' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/health/activity') ?>"><i class="fa-solid fa-spa fa-fw me-3"></i><span>Activity</span></a></li>
+                <?php endif; ?>
             </ul>
             <!-- SIDEBAR DOWNLOAD BTN -->
             <div class="sidebar-cta d-none">
