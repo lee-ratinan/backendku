@@ -19,7 +19,9 @@ $this->extend($layout);
             <div class="col">
                 <div class="card">
                     <div class="card-body">
-                        <a class="btn btn-outline-primary btn-sm float-end ms-3" href="<?= base_url($session->locale . '/office/tax/create') ?>"><i class="fa-solid fa-plus-circle"></i> New Tax Year</a>
+                        <div class="text-end">
+                            <a class="btn btn-outline-primary btn-sm" href="<?= base_url($session->locale . '/office/tax/create') ?>"><i class="fa-solid fa-plus-circle"></i> New Tax Year</a>
+                        </div>
                         <h5 class="card-title"><i class="fa-solid fa-building-columns fa-fw me-3"></i> <?= $page_title ?></h5>
                         <div class="row mb-3">
                             <div class="col">

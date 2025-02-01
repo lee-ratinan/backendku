@@ -27,8 +27,10 @@ $this->extend($layout);
             <div class="col">
                 <div class="card">
                     <div class="card-body pt-3">
-                        <a class="btn btn-outline-primary btn-sm float-end ms-3" href="<?= base_url($session->locale . '/office/employment/cpf/statement') ?>"><i class="fa-solid fa-file-pdf"></i> Annual Statement</a>
-                        <a class="btn btn-outline-primary btn-sm float-end ms-3" href="<?= base_url($session->locale . '/office/employment/cpf/create') ?>"><i class="fa-solid fa-plus-circle"></i> New CPF</a>
+                        <div class="text-end">
+                            <a class="btn btn-outline-primary btn-sm" href="<?= base_url($session->locale . '/office/employment/cpf/statement') ?>"><i class="fa-solid fa-file-pdf"></i> Annual Statement</a>
+                            <a class="btn btn-outline-primary btn-sm ms-3" href="<?= base_url($session->locale . '/office/employment/cpf/create') ?>"><i class="fa-solid fa-plus-circle"></i> New CPF</a>
+                        </div>
                         <h5 class="card-title"><i class="fa-solid fa-piggy-bank fa-fw me-3"></i> <?= $page_title ?></h5>
                         <div class="row mb-3">
                             <div class="col-6 col-md-4">

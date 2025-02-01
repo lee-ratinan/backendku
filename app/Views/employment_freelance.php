@@ -19,7 +19,9 @@ $this->extend($layout);
             <div class="col">
                 <div class="card">
                     <div class="card-body pt-3">
-                        <a class="btn btn-outline-primary btn-sm float-end ms-3" href="<?= base_url($session->locale . '/office/employment/freelance/create') ?>"><i class="fa-solid fa-plus-circle"></i> New Freelance Project</a>
+                        <div class="text-end">
+                            <a class="btn btn-outline-primary btn-sm" href="<?= base_url($session->locale . '/office/employment/freelance/create') ?>"><i class="fa-solid fa-plus-circle"></i> New Freelance Project</a>
+                        </div>
                         <h5 class="card-title"><i class="fa-solid fa-laptop-code fa-fw me-3"></i> <?= $page_title ?></h5>
                         <div class="row mb-3">
                             <div class="col">
