@@ -126,7 +126,7 @@
 </head>
 <body>
 <h1 style="margin-top:10px">RATINAN “NAT” LEELA-NGAMWONGSA</h1>
-<h2 style="margin-bottom:8px"><?= $job_title ?>, MSc, PSM&trade;, PSPO&trade;</h2>
+<h2 style="margin-bottom:8px"><?= $job_title ?>, MSc, CSM, PSM, PSPO</h2>
 <p class="center">
     <a href="https://wa.me/6597754577">+65 9775 4577</a> -
     <a href="mailto:lee@ratinan.com">lee@ratinan.com</a> -
@@ -134,7 +134,7 @@
     <a href="https://www.google.com/maps/place/Singapore/" target="_blank">Singapore</a><br>
     <a href="https://www.linkedin.com/in/ratinanlee/" target="_blank">linkedin.com/in/ratinanlee</a> -
     <a href="https://github.com/lee-ratinan" target="_blank">github.com/lee-ratinan</a> -
-    <a href="https://www.credly.com/users/ratinan-lee" target="_blank">credly.com/users/ratinan-lee</a>
+    <a href="https://www.credly.com/users/ratinanlee" target="_blank">credly.com/users/ratinanlee</a>
 </p>
 <h3>AIM</h3>
 <p>To work as a senior-level <?= strtolower($job_title) ?>.</p>

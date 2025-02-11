@@ -35,7 +35,7 @@ $this->extend($layout);
                                 [
                                     'Soft Skills',
                                     'skills[soft]',
-                                    'Scrum Master/Project Management (PSM™ I-II Certified), Product Management (PSPO™ I Certified), Leadership Skills, Analytical and Strategical Problem-Solving Skills, Mentorship, Coaching, Collaboration, Business Strategies, Eﬀective Communication, Teamwork, Time Management, Adaptability'
+                                    'Scrum Master/Project Management (CSM, PSM I-II Certified), Product Management (PSPO I-II Certified), Leadership Skills, Analytical and Strategical Problem-Solving Skills, Mentorship, Coaching, Collaboration, Business Strategies, Eﬀective Communication, Teamwork, Time Management, Adaptability'
                                 ],
                                 [
                                     'Technical Skills',
@@ -100,6 +100,13 @@ $this->extend($layout);
                                 echo '</div>';
                             }
                             ?>
+                            <div class="form-floating mb-3">
+                                <select class="form-select" id="template" name="template">
+                                    <option value="generic">Generic</option>
+                                    <option value="europass">EUROPASS</option>
+                                </select>
+                                <label for="return">Return Format</label>
+                            </div>
                             <div class="form-floating mb-3">
                                 <select class="form-select" id="return" name="return">
                                     <option value="pdf">PDF</option>
