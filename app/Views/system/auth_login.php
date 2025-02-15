@@ -152,6 +152,7 @@ $this->extend($layout);
                         if ('success' === response.status) {
                             $('#otp-form').slideDown();
                             $('#btn-resend-otp').prop('disabled', true);
+                            $('#otp').focus();
                             let seconds = 60;
                             let interval = setInterval(function() {
                                 seconds--;

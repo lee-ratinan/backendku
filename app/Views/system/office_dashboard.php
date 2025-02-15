@@ -40,6 +40,7 @@ $this->extend($layout);
         document.addEventListener('DOMContentLoaded', function() {
             $('.btn-switch-role').on('click', function (e) {
                 e.preventDefault();
+                $('.btn-switch-role').prop('disabled', true);
                 let new_role = $(this).data('role');
                 $.ajax({
                     url: '<?= base_url($session->locale . '/office/switch-role') ?>',
@@ -52,6 +53,7 @@ $this->extend($layout);
                         }, 3000);
                     },
                     error: function () {
+                        $('.btn-switch-role').prop('disabled', false);
                         toastr.error('<?= lang('System.status_message.generic_error') ?>');
                     }
                 });
