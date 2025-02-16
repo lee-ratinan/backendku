@@ -128,6 +128,9 @@
                     <li class="sidebar-item <?= ('health-gym' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/health/gym') ?>"><i class="fa-solid fa-dumbbell fa-fw me-3"></i><span>Gym</span></a></li>
                     <li class="sidebar-item <?= ('health-vaccine' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/health/vaccine') ?>"><i class="fa-solid fa-syringe fa-fw me-3"></i><span>Vaccine</span></a></li>
                     <li class="sidebar-item <?= ('health-activity' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/health/activity') ?>"><i class="fa-solid fa-spa fa-fw me-3"></i><span>Activity</span></a></li>
+                    <li class="sidebar-item <?= ('health-measurement' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/health/measurement') ?>"><i class="fa-solid fa-ruler fa-fw me-3"></i><span>Measurement</span></a></li>
+                    <li class="sidebar-item <?= ('health-mbti' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/health/mbti') ?>"><i class="fa-regular fa-face-smile fa-fw me-3"></i><span>MBTI</span></a></li>
+                    <li class="sidebar-item <?= ('health-depression' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/health/depression') ?>"><i class="fa-regular fa-face-frown fa-fw me-3"></i><span>Depression</span></a></li>
                 <?php endif; ?>
             </ul>
             <!-- SIDEBAR DOWNLOAD BTN -->
@@ -253,7 +256,7 @@
                             <a class="dropdown-item" href="<?= base_url($session->locale . '/office/profile') ?>"><i class="fa-solid fa-user-cog fa-fw me-3"></i><span><?= lang('System.menu.my_profile') ?></span></a>
                             <a class="dropdown-item" href="<?= base_url($session->locale . '/office/switch-role') ?>"><i class="fa-solid fa-arrows-rotate fa-fw me-3"></i><span><?= lang('System.menu.switch_role') ?></span></a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="<?= base_url('logout') ?>">Sign out</a>
+                            <a class="dropdown-item" href="<?= base_url('logout') ?>"><?= lang('System.menu.log_out') ?></a>
                         </div>
                     </li>
                 </ul>
@@ -289,5 +292,6 @@
 <script src="<?= base_url('assets/vendor/toastrjs/toastr.min.js') ?>"></script>
 <script src="<?= base_url('assets/vendor/Luxon/luxon.min.js') ?>"></script>
 <script src="<?= base_url('assets/vendor/DataTables/datatables.min.js') ?>"></script>
+<script> $(function () { setTimeout(() => { window.location.href = '<?= base_url('logout') ?>'; }, 300000); }); </script>
 </body>
 </html>

@@ -25,7 +25,6 @@ $this->extend($layout);
                                 <a class="btn btn-outline-primary btn-sm" href="<?= base_url($session->locale . '/office/role/create') ?>"><i class="fa-solid fa-plus"></i> <?= lang('Role.index.new_role') ?></a>
                             <?php endif; ?>
                         </div>
-                        <h5 class="card-title"><?= $page_title ?></h5>
                         <div class="table-responsive">
                             <table class="table table-sm table-striped table-hover">
                                 <thead>

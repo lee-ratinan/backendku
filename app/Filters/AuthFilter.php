@@ -28,11 +28,10 @@ class AuthFilter implements FilterInterface
     public function before(RequestInterface $request, $arguments = null)
     {
         $session = session();
-        if ($session->logged_in)
+        if ($session->logged_in && isset($session->organization) && isset($session->app_name))
         {
             return $request;
         }
-        // Not logged in
         $method = strtoupper($request->getMethod());
         if ('GET' == $method)
         {
