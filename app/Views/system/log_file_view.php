@@ -21,7 +21,7 @@ $this->extend($layout);
                 <div class="card">
                     <div class="card-body pt-3">
                         <h6><?= lang('Log.file_view.file_name') ?>: <?= $file_name ?></h6>
-                        <pre><?= $file_content ?></pre>
+                        <pre id="file-content"><?= $file_content ?></pre>
                     </div>
                 </div>
             </div>
@@ -32,7 +32,7 @@ $this->extend($layout);
             const fileContent = document.getElementById('file-content');
             fileContent.innerHTML = fileContent.innerHTML.replace(/(ERROR|CRITICAL|ALERT|EMERGENCY)/g, '<span class="text-danger">$1</span>');
             fileContent.innerHTML = fileContent.innerHTML.replace(/(WARNING)/g, '<span class="text-warning">$1</span>');
-            fileContent.innerHTML = fileContent.innerHTML.replace(/(DEBUG|INFO)/g, '<span class="text-info">$1</span>');
+            fileContent.innerHTML = fileContent.innerHTML.replace(/(DEBUG|INFO|NOTICE)/g, '<span class="text-info">$1</span>');
         });
     </script>
 <?php $this->endSection() ?>

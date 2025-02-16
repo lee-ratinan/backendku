@@ -267,14 +267,14 @@
         <footer class="footer">
             <div class="container-fluid">
                 <div class="row text-muted">
-                    <div class="col-6 text-start">
+                    <div class="col-md-6">
                         <ul class="list-inline">
                             <li class="list-inline-item"><a class="text-muted" href="<?= base_url($session->locale . '/office/profile') ?>">Profile</a></li>
                             <li class="list-inline-item"><a class="text-muted" href="<?= base_url($session->locale . '/office/switch-role') ?>">Switch Role</a></li>
                             <li class="list-inline-item"><a class="text-muted" href="<?= base_url('logout') ?>">Sign out</a></li>
                         </ul>
                     </div>
-                    <div class="col-6 text-end">
+                    <div class="col-md-6 text-md-end">
                         <p class="mb-0">
                             &copy; <?= date('Y') . ' ' . $session->organization['organization_name'] ?>
                         </p>
