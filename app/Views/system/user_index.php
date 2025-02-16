@@ -24,7 +24,6 @@ $this->extend($layout);
                                 <a class="btn btn-outline-primary btn-sm" href="<?= base_url($session->locale . '/office/user/create') ?>"><i class="fa-solid fa-plus"></i> <?= lang('User.edit.page_title_new') ?></a>
                             </div>
                         <?php endif; ?>
-                        <h5 class="card-title"><?= $page_title ?></h5>
                         <div class="row">
                             <div class="col">
                                 <label for="account_type"><?= lang('TablesUser.UserMaster.account_type') ?></label>

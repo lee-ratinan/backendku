@@ -4,7 +4,7 @@ $layout = (!empty($layout) ? $layout : 'system/_layout_office');
 $this->extend($layout);
 ?>
 <?= $this->section('content') ?>
-    <?php $session = session(); ?>
+<?php $session = session(); ?>
     <div class="pagetitle">
         <h1><?= $page_title ?></h1>
         <nav>
@@ -20,7 +20,6 @@ $this->extend($layout);
             <div class="col-lg-10">
                 <div class="card">
                     <div class="card-body pt-3">
-                        <h5 class="card-title"><?= $page_title ?></h5>
                         <h6><i class="fa-solid fa-circle-info"></i> <?= lang('Role.edit.details') ?></h6>
                         <!-- FORM 1: ROLE_MASTER -->
                         <?php
@@ -33,18 +32,18 @@ $this->extend($layout);
                         }
                         ?>
                         <?php if ('edit' == $mode) : ?>
-                        <div class="row">
-                            <?php
-                            generate_label_column_from_field(lang($role_master_config['created_by']['label_key']), @$role_accesses['role_master']['user_name_first'] . ' ' . @$role_accesses['role_master']['user_name_family']);
-                            generate_label_column_from_field(lang($role_master_config['created_at']['label_key']), @$role_accesses['role_master']['created_at'] ?? '', 'datetime');
-                            generate_label_column_from_field(lang($role_master_config['updated_at']['label_key']), @$role_accesses['role_master']['updated_at'] ?? '', 'datetime');
-                            ?>
-                        </div>
+                            <div class="row">
+                                <?php
+                                generate_label_column_from_field(lang($role_master_config['created_by']['label_key']), @$role_accesses['role_master']['user_name_first'] . ' ' . @$role_accesses['role_master']['user_name_family']);
+                                generate_label_column_from_field(lang($role_master_config['created_at']['label_key']), @$role_accesses['role_master']['created_at'] ?? '', 'datetime');
+                                generate_label_column_from_field(lang($role_master_config['updated_at']['label_key']), @$role_accesses['role_master']['updated_at'] ?? '', 'datetime');
+                                ?>
+                            </div>
                         <?php endif; ?>
                         <?php if (PERMISSION_EDITABLE == $permission_level) : ?>
-                        <div class="text-end">
-                            <button class="btn btn-primary btn-sm" id="btn-save-role-master"><i class="fa-solid fa-save"></i> <?= lang('System.menu.save') ?></button>
-                        </div>
+                            <div class="text-end">
+                                <button class="btn btn-primary btn-sm" id="btn-save-role-master"><i class="fa-solid fa-save"></i> <?= lang('System.menu.save') ?></button>
+                            </div>
                         <?php endif; ?>
                         <!-- FORM 2: ROLE_ACCESS -->
                         <?php if ('edit' == $mode) : ?>
@@ -59,10 +58,10 @@ $this->extend($layout);
                                 <table class="table table-sm table-striped table-hover">
                                     <thead>
                                     <tr>
-                                        <th><?= lang('Role.edit.feature') ?></th>
-                                        <th><?= lang('Role.edit.access') ?></th>
-                                        <th><?= lang('Role.edit.details') ?></th>
-                                        <th></th>
+                                        <th style="min-width:150px;"><?= lang('Role.edit.feature') ?></th>
+                                        <th style="min-width:150px;"><?= lang('Role.edit.access') ?></th>
+                                        <th style="min-width:600px;"><?= lang('Role.edit.details') ?></th>
+                                        <th style="min-width:100px;"></th>
                                     </tr>
                                     </thead>
                                     <tbody>

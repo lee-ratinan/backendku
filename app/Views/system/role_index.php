@@ -20,10 +20,10 @@ $this->extend($layout);
                 <div class="card">
                     <div class="card-body pt-3">
                         <div class="text-end">
+                            <a class="btn btn-outline-primary btn-sm ms-3" href="<?= base_url($session->locale . '/office/role/feature') ?>"><i class="fa-solid fa-eye"></i> <?= lang('Role.role_feature.page_title') ?></a>
                             <?php if (PERMISSION_EDITABLE == $permission_level) : ?>
-                                <a class="btn btn-outline-primary btn-sm me-3" href="<?= base_url($session->locale . '/office/role/create') ?>"><i class="fa-solid fa-plus"></i> <?= lang('Role.index.new_role') ?></a>
+                                <a class="btn btn-outline-primary btn-sm" href="<?= base_url($session->locale . '/office/role/create') ?>"><i class="fa-solid fa-plus"></i> <?= lang('Role.index.new_role') ?></a>
                             <?php endif; ?>
-                            <a class="btn btn-outline-primary btn-sm" href="<?= base_url($session->locale . '/office/role/feature') ?>"><i class="fa-solid fa-eye"></i> <?= lang('Role.role_feature.page_title') ?></a>
                         </div>
                         <h5 class="card-title"><?= $page_title ?></h5>
                         <div class="table-responsive">
