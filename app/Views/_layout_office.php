@@ -117,6 +117,7 @@
                             <li class="sidebar-item <?= ('trip-finance-stats' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/journey/trip/finance') ?>">Finance</a></li>
                         </ul>
                     </li>
+                    <li class="sidebar-item <?= ('map' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/journey/map') ?>"><i class="fa-solid fa-map fa-fw me-3"></i><span>Map</span></a></li>
                 <?php endif; ?>
                 <!-- PROFILE -->
                 <?php if (isset($session->permitted_features['profile'])): ?>
@@ -292,6 +293,6 @@
 <script src="<?= base_url('assets/vendor/toastrjs/toastr.min.js') ?>"></script>
 <script src="<?= base_url('assets/vendor/Luxon/luxon.min.js') ?>"></script>
 <script src="<?= base_url('assets/vendor/DataTables/datatables.min.js') ?>"></script>
-<script> $(function () { setTimeout(() => { window.location.href = '<?= base_url('logout') ?>'; }, 300000); }); </script>
+<script> $(function () { setTimeout(() => { window.location.href = '<?= base_url('logout') ?>'; }, 1800000); }); </script>
 </body>
 </html>

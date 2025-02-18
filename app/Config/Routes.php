@@ -167,6 +167,7 @@ $routes->group('{locale}/office', ['filter' => 'auth'], static function ($routes
     $routes->get('journey/holiday/edit/(:any)', 'Journey::holidayEdit/$1');
     $routes->post('journey/holiday/edit', 'Journey::holidaySave');
     // Summary, export, statistics, etc
+    $routes->get('journey/map', 'Journey::map');
     $routes->get('journey/export', 'Journey::export');
     $routes->get('journey/fix', 'Journey::fix');
     $routes->get('journey/fix2', 'Journey::fix2');

@@ -1854,6 +1854,147 @@ class Journey extends BaseController
         return view('journey_export', $data);
     }
 
+    public function map(): string
+    {
+        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
+            return permission_denied();
+        }
+        $session    = session();
+        $data = [
+            'page_title'          => 'Map',
+            'slug'                => 'map',
+            'user_session'        => $session->user,
+            'roles'               => $session->roles,
+            'current_role'        => $session->current_role,
+            'visited_countries'   => [
+                [
+                    'name'  => 'Visited Countries',
+                    'color' => '#7ddd68',
+                    'data'  => [
+                        ['id' => 'TH', 'detail' => 'I was born in 1989', 'file' => 'thailandLow'],
+                        ['id' => 'SG', 'detail' => 'First visited in 2006', 'file' => 'singaporeLow'],
+                        ['id' => 'US', 'detail' => 'First visited in 2010', 'file' => 'usaLow'],
+                        ['id' => 'MY', 'detail' => 'First visited in 2014', 'file' => 'malaysiaLow'],
+                        ['id' => 'JP', 'detail' => 'First visited in 2016', 'file' => 'japanLow'],
+                        ['id' => 'ID', 'detail' => 'First visited in 2016', 'file' => 'indonesiaLow'],
+                        ['id' => 'TW', 'detail' => 'First visited in 2018', 'file' => 'taiwanLow'],
+                        ['id' => 'AU', 'detail' => 'First visited in 2019', 'file' => 'australiaLow'],
+                        ['id' => 'VN', 'detail' => 'First visited in 2022', 'file' => 'vietnamLow'],
+                        ['id' => 'PH', 'detail' => 'First visited in 2023', 'file' => 'philippinesLow']
+                    ]
+                ],
+                [
+                    'name'  => 'Wishlist',
+                    'color' => '#dcd368',
+                    'data'  => [
+                        ['id' => 'KR', 'detail' => 'Wishlist'],
+                        ['id' => 'CA', 'detail' => 'Wishlist'],
+                        ['id' => 'NZ', 'detail' => 'Wishlist'],
+                        ['id' => 'GB', 'detail' => 'Wishlist'],
+                        ['id' => 'FR', 'detail' => 'Wishlist'],
+                        ['id' => 'ES', 'detail' => 'Wishlist'],
+                        ['id' => 'IT', 'detail' => 'Wishlist'],
+                        ['id' => 'GR', 'detail' => 'Wishlist'],
+                        ['id' => 'TR', 'detail' => 'Wishlist']
+                    ]
+                ],
+                [
+                    'name'  => 'Banned',
+                    'color' => '#dc6a68',
+                    'data'  => [
+                        ['id' => 'AF', 'detail' => 'Banned'],
+                        ['id' => 'CN', 'detail' => 'Banned'],
+                        ['id' => 'IL', 'detail' => 'Banned'],
+                        ['id' => 'IQ', 'detail' => 'Banned'],
+                        ['id' => 'IR', 'detail' => 'Banned'],
+                        ['id' => 'KH', 'detail' => 'Banned'],
+                        ['id' => 'KP', 'detail' => 'Banned'],
+                        ['id' => 'LA', 'detail' => 'Banned'],
+                        ['id' => 'MM', 'detail' => 'Banned'],
+                        ['id' => 'RU', 'detail' => 'Banned'],
+                    ]
+                ]
+            ],
+            'visited_states'      => [
+                'AU' => [
+                    'AU-NSW', // Sydney
+                    'AU-VIC'  // Melbourne
+                ],
+                'ID' => [
+                    'ID-BA', // Bali
+                    'ID-JK', // Jakarta
+                    'ID-KR', // Kepulauan Riau - Batam
+                ],
+                'JP' => [
+                    'JP-13', // Tokyo - Chiba is not counted, just the airport
+                    'JP-14', // Kanagawa - Yokohama, Fujisawa, Kamakura
+                    'JP-26', // Kyoto
+                    'JP-27', // Osaka
+                    'JP-28', // Hyogo - Kobe
+                    'JP-29', // Nara
+                ],
+                'MY' => [
+                    'MY-01', // Johor - JB, Desaru
+                    'MY-02', // Kedah - Pulau Langkawi
+                    'MY-07', // Pulau Pinang
+                    'MY-14', // Wilayah Persekutuan Kuala Lumpur
+                ],
+                'PH' => [
+                    'PH-CEB' // Cebu
+                ],
+                'SG' => ['SG-01','SG-02','SG-03','SG-04','SG-05'], // Whole country
+                'TH' => [
+                    // Central
+                    'TH-10', // Bangkok
+                    'TH-11', //	Samut Prakan
+                    'TH-12', // Nonthaburi
+                    'TH-13', // Pathum Thani
+                    'TH-14', // Ayutthaya
+                    'TH-16', // Lop Buri
+                    'TH-19', // Saraburi
+                    'TH-20', // Chon Buri
+                    'TH-21', // Rayong
+                    'TH-22', // Chanthaburi
+                    'TH-24', // Chachoengsao
+                    'TH-S',  // Pattaya
+                    // Northeast
+                    'TH-25', // Prachin Buri
+                    'TH-26', // Nakhon Nayok
+                    'TH-30', // Nakhon Ratchasima
+                    // North
+                    'TH-50', // Chiang Mai
+                    'TH-63', // Tak
+                    // South-West
+                    'TH-70', // Ratchaburi
+                    'TH-71', // Kanchanaburi
+                    'TH-73', // Nakhon Pathom
+                    'TH-74', // Samut Sakhon
+                    'TH-75', // Samut Songkhram
+                    'TH-76', // Phetchaburi
+                    'TH-77', // Prachuap Khiri Khan
+                    // South
+                    'TH-83', // Phuket
+                ],
+                'TW' => [
+                    'TW-NWT', // New Taipei
+                    'TW-TPE', // Taipei - Taoyuan is not counted, just the airport
+                    'TW-HUA'  // Hualien
+                ],
+                'US' => [
+                    'US-IL', // Illinois - Chicago
+                    'US-NY', // New York - Manhattan
+                    'US-KY', // Kentucky - Newport, Covington
+                    'US-OH', // Ohio - Cincinnati, Jeffersonville - don't count CA, TX, just the connecting airports
+                ],
+                'VN' => [
+                    'VN-SG' // Hồ Chí Minh (Sài Gòn)
+                ]
+            ],
+            'countries'           => lang('ListCountries.countries'),
+        ];
+        return view('journey_map', $data);
+    }
+
     public function fix(): void
     {
         if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
