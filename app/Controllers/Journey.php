@@ -1860,41 +1860,52 @@ class Journey extends BaseController
             return permission_denied();
         }
         $session    = session();
-        $data = [
-            'page_title'          => 'Map',
-            'slug'                => 'map',
-            'user_session'        => $session->user,
-            'roles'               => $session->roles,
-            'current_role'        => $session->current_role,
-            'visited_countries'   => [
+        $data       = [
+            'page_title'        => 'Map',
+            'slug'              => 'map',
+            'user_session'      => $session->user,
+            'roles'             => $session->roles,
+            'current_role'      => $session->current_role,
+            'visited_countries' => [
                 [
                     'name'  => 'Visited Countries',
                     'color' => '#7ddd68',
                     'data'  => [
-                        ['id' => 'TH', 'detail' => 'I was born in 1989', 'file' => 'thailandLow'],
-                        ['id' => 'SG', 'detail' => 'First visited in 2006', 'file' => 'singaporeLow'],
-                        ['id' => 'US', 'detail' => 'First visited in 2010', 'file' => 'usaLow'],
-                        ['id' => 'MY', 'detail' => 'First visited in 2014', 'file' => 'malaysiaLow'],
-                        ['id' => 'JP', 'detail' => 'First visited in 2016', 'file' => 'japanLow'],
-                        ['id' => 'ID', 'detail' => 'First visited in 2016', 'file' => 'indonesiaLow'],
-                        ['id' => 'TW', 'detail' => 'First visited in 2018', 'file' => 'taiwanLow'],
-                        ['id' => 'AU', 'detail' => 'First visited in 2019', 'file' => 'australiaLow'],
-                        ['id' => 'VN', 'detail' => 'First visited in 2022', 'file' => 'vietnamLow'],
-                        ['id' => 'PH', 'detail' => 'First visited in 2023', 'file' => 'philippinesLow']
+                        ['id' => 'TH', 'detail' => 'I was born in 1989'],
+                        ['id' => 'SG', 'detail' => 'First visited in 2006'],
+                        ['id' => 'US', 'detail' => 'First visited in 2010'],
+                        ['id' => 'MY', 'detail' => 'First visited in 2014'],
+                        ['id' => 'JP', 'detail' => 'First visited in 2016'],
+                        ['id' => 'ID', 'detail' => 'First visited in 2016'],
+                        ['id' => 'TW', 'detail' => 'First visited in 2018'],
+                        ['id' => 'AU', 'detail' => 'First visited in 2019'],
+                        ['id' => 'VN', 'detail' => 'First visited in 2022'],
+                        ['id' => 'PH', 'detail' => 'First visited in 2023']
                     ]
                 ],
                 [
                     'name'  => 'Wishlist',
                     'color' => '#dcd368',
                     'data'  => [
-                        ['id' => 'KR', 'detail' => 'Wishlist'],
+                        ['id' => 'AS', 'detail' => 'Wishlist'],
+                        ['id' => 'AT', 'detail' => 'Wishlist'],
+                        ['id' => 'BR', 'detail' => 'Wishlist'],
                         ['id' => 'CA', 'detail' => 'Wishlist'],
-                        ['id' => 'NZ', 'detail' => 'Wishlist'],
-                        ['id' => 'GB', 'detail' => 'Wishlist'],
-                        ['id' => 'FR', 'detail' => 'Wishlist'],
+                        ['id' => 'CH', 'detail' => 'Wishlist'],
+                        ['id' => 'DE', 'detail' => 'Wishlist'],
+                        ['id' => 'DK', 'detail' => 'Wishlist'],
                         ['id' => 'ES', 'detail' => 'Wishlist'],
-                        ['id' => 'IT', 'detail' => 'Wishlist'],
+                        ['id' => 'FJ', 'detail' => 'Wishlist'],
+                        ['id' => 'FR', 'detail' => 'Wishlist'],
+                        ['id' => 'GB', 'detail' => 'Wishlist'],
                         ['id' => 'GR', 'detail' => 'Wishlist'],
+                        ['id' => 'IS', 'detail' => 'Wishlist'],
+                        ['id' => 'IT', 'detail' => 'Wishlist'],
+                        ['id' => 'KR', 'detail' => 'Wishlist'],
+                        ['id' => 'NO', 'detail' => 'Wishlist'],
+                        ['id' => 'NZ', 'detail' => 'Wishlist'],
+                        ['id' => 'PF', 'detail' => 'Wishlist'],
+                        ['id' => 'SE', 'detail' => 'Wishlist'],
                         ['id' => 'TR', 'detail' => 'Wishlist']
                     ]
                 ],
@@ -1912,10 +1923,11 @@ class Journey extends BaseController
                         ['id' => 'LA', 'detail' => 'Banned'],
                         ['id' => 'MM', 'detail' => 'Banned'],
                         ['id' => 'RU', 'detail' => 'Banned'],
+                        ['id' => 'SY', 'detail' => 'Banned'],
                     ]
                 ]
             ],
-            'visited_states'      => [
+            'visited_states'    => [
                 'AU' => [
                     'AU-NSW', // Sydney
                     'AU-VIC'  // Melbourne
@@ -1942,7 +1954,7 @@ class Journey extends BaseController
                 'PH' => [
                     'PH-CEB' // Cebu
                 ],
-                'SG' => ['SG-01','SG-02','SG-03','SG-04','SG-05'], // Whole country
+                'SG' => ['SG-01', 'SG-02', 'SG-03', 'SG-04', 'SG-05'], // Whole country
                 'TH' => [
                     // Central
                     'TH-10', // Bangkok
@@ -1990,7 +2002,6 @@ class Journey extends BaseController
                     'VN-SG' // Hồ Chí Minh (Sài Gòn)
                 ]
             ],
-            'countries'           => lang('ListCountries.countries'),
         ];
         return view('journey_map', $data);
     }

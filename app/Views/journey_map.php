@@ -29,14 +29,15 @@ $this->extend($layout);
             <div class="col">
                 <div class="card">
                     <div id="world-div"></div>
-                    <div id="country-div" class="border-top"></div>
+                    <div id="country-name" class="text-center"><div id="country-name-label"></div><a class='btn btn-outline-success mb-3' id='btn-back-world'>Show World Map</a></div>
+                    <div id="country-div"></div>
                 </div>
             </div>
         </div>
     </section>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            $('#country-div').hide();
+            $('#country-div, #country-name').hide();
             am5.ready(function() {
                 let groupData = <?= json_encode($visited_countries) ?>;
                 let root = am5.Root.new("world-div");
@@ -122,11 +123,10 @@ $this->extend($layout);
                         title = am5geodata_data_countries2[countryCode]["country"];
                     }
                 }
+                $('#country-name-label').html("<h3 class='text-center my-3'>"+title+"</h3>");
                 am5.net.load("https://cdn.amcharts.com/lib/5/geodata/json/" + currentMap + ".json", chart).then(function (result) {
                     let geodata = am5.JSONParser.parse(result.response);
-                    let polygonSeries = chart.series.push(
-                        am5map.MapPolygonSeries.new(root, {geoJSON: geodata})
-                    );
+                    let polygonSeries = chart.series.push(am5map.MapPolygonSeries.new(root, {geoJSON: geodata}));
                     polygonSeries.mapPolygons.template.setAll({
                         fill: am5.color("#ccc"),
                         stroke: am5.color("#000"),
@@ -141,8 +141,14 @@ $this->extend($layout);
                         });
                     });
                 });
-                $('#country-div').show();
+                $('#country-div, #country-name').show();
+                $('#world-div').hide();
             }
+            $('body').on('click', '#btn-back-world', function (e) {
+                e.preventDefault();
+                $('#country-div, #country-name').hide();
+                $('#world-div').show();
+            });
         });
     </script>
 <?php $this->endSection() ?>
