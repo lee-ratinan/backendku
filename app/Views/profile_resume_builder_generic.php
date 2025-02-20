@@ -30,7 +30,7 @@
     <a href="https://github.com/lee-ratinan" target="_blank">GitHub: /lee-ratinan</a> -
     <a href="https://www.credly.com/users/ratinanlee" target="_blank">Credly: /ratinanlee</a>
 </p>
-<p><?= $summary ?></p>
+<p><?= str_replace('[JOB-TITLE]', $job_title, $summary) ?></p>
 <h3 class="center bb">Skills</h3>
 <?php
 foreach ($skills as $key => $value) {
@@ -68,8 +68,7 @@ foreach ($skills as $key => $value) {
 </table>
 <h3 class="center bb">Awards</h3>
 <p>
-    <b>Singapore FinTech AI Award</b> at Singapore FinTech Festival, Nov 2023<br>
-    <b>Sirindhorn Technology Scholarship</b> for Undergraduate Degree at Thammasat University, 2008-2012
+    <b>Singapore FinTech AI Award</b> at Singapore FinTech Festival, Nov 2023
 </p>
 <h3 class="center bb">Languages</h3>
 <p><b>English</b> (full professional proficiency), <b>Thai</b> (native proficiency)</p>

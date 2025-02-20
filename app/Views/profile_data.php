@@ -17,15 +17,9 @@ $this->extend($layout);
     <section class="section">
         <div class="row">
             <?php foreach ($documents as $row) : ?>
-                <div class="col">
+                <div class="col-sm-6 col-lg-4 col-xl-3">
                     <div class="card">
-                        <?php
-                        if ('passport' == $row['document_type']) {
-                            $image = 'profile-header-passport.jpg';
-                        } else {
-                            $image = 'profile-header-' . strtolower($row['country_code']) . '.jpg';
-                        }
-                        ?>
+                        <?php $image = ('passport' == $row['document_type'] ? 'profile-header-passport.jpg' : 'profile-header-' . strtolower($row['country_code']) . '.jpg'); ?>
                         <img src="<?= base_url('file/' . $image)?>" class="card-img-top" alt="<?= $row['document_title'] ?>">
                         <div class="card-body pt-3">
                             <h6 class="card-title"><?= $row['document_title'] ?></h6>
@@ -38,14 +32,9 @@ $this->extend($layout);
                             }
                             ?>
                             <div><?= $document_types[$row['document_type']] ?></div>
-                            <div class="row">
-                                <div class="col-4 text-end">#</div>
-                                <div class="col-8"><?= $row['document_number'] ?></div>
-                                <div class="col-4 text-end">Issued</div>
-                                <div class="col-8"><?= date(DATE_FORMAT_UI, strtotime($row['issued_date'])) ?></div>
-                                <div class="col-4 text-end">Expiry</div>
-                                <div class="col-8"><?= empty($row['expiry_date']) ? '-' : date(DATE_FORMAT_UI, strtotime($row['expiry_date'])) ?></div>
-                            </div>
+                            <div><b>#:</b> <?= $row['document_number'] ?></div>
+                            <div><b>Issued:</b> <?= date(DATE_FORMAT_UI, strtotime($row['issued_date'])) ?></div>
+                            <div><b>Expiry:</b> <?= empty($row['expiry_date']) ? '-' : date(DATE_FORMAT_UI, strtotime($row['expiry_date'])) ?></div>
                             <hr>
                             <?= $row['other_notes'] ?>
                         </div>

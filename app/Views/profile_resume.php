@@ -30,7 +30,7 @@ $this->extend($layout);
                                 [
                                     'Summary',
                                     'summary',
-                                    'Senior Technical Project Manager with over 11 years of experience driving software development with data-driven decision-making skills. Achievements include a 20% increase in project completion rates and an over 10-time increase in system capability for the e-commerce platform. Skilled in Agile leadership, system design, and cloud architecture.'
+                                    '[JOB-TITLE] with over 11 years of experience driving software development with data-driven decision-making skills. Achievements include a 20% increase in project completion rates and an over 10-time increase in system capability for the e-commerce platform. Skilled in Agile leadership, system design, and cloud architecture.'
                                 ],
                                 [
                                     'Soft Skills',
@@ -151,18 +151,33 @@ $this->extend($layout);
                                 <input type="text" class="form-control" id="position" name="position" placeholder="Position" required>
                                 <label for="position">Position</label>
                             </div>
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="company_industry" name="company_industry" placeholder="Company Industry" required>
+                                <label for="company_industry">Company Industry [COMPANY]’s commitment to innovations and [COMPANY_INDUSTRY] aligns perfectly ...</label>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="prev_expertise" name="prev_expertise" placeholder="Previous Expertise" required>
+                                <label for="prev_expertise">Previous Expertise (With a proven track record in [PREV_EXPERTISE] and ...)</label>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="prev_company" name="prev_company" placeholder="Previous Company" required>
+                                <label for="prev_company">Previous Company (My previous experience at [PREVIOUS_COMPANY] has ...)</label>
+                            </div>
+
+
+                            COMPANY_INDUSTRY
                             <?php
                             $fields = [
                                 [
                                     'Paragraph 1',
                                     'paragraph-1',
-                                    'I am writing to express my keen interest in the [POSITION] position at [COMPANY], which was advertised on [LINKEDIN]. With a proven track record in [PREV_EXPERTISE] and a passion for driving innovative solutions, I am confident that I can contribute significantly to your team.',
+                                    'I am writing to express my keen interest in the [POSITION] position at [COMPANY], which was advertised on LinkedIn. With a proven track record in [PREV_EXPERTISE] and a passion for driving innovative solutions, I am confident that I can contribute significantly to your team.',
                                     100
                                 ],
                                 [
                                     'Paragraph 2',
                                     'paragraph-2',
-                                    '[COMPANY]’s commitment to innovations and [COMPANY_INDUSTRY] aligns perfectly with my professional goals. My previous experience at [PRIVIOUS_COMPANY] has equipped me with a deep understanding of the unique challenges and opportunities within the consumer product development sector.',
+                                    '[COMPANY]’s commitment to innovations and [COMPANY_INDUSTRY] aligns perfectly with my professional goals. My previous experience at [PREVIOUS_COMPANY] has equipped me with a deep understanding of the unique challenges and opportunities within the consumer product development sector.',
                                     100
                                 ],
                                 [
@@ -215,6 +230,15 @@ $this->extend($layout);
             });
             $('#position').change(function () {
                 replace_text('[POSITION]', $(this).val());
+            });
+            $('#prev_expertise').change(function () {
+                replace_text('[PREV_EXPERTISE]', $(this).val());
+            });
+            $('#prev_company').change(function () {
+                replace_text('[PREVIOUS_COMPANY]', $(this).val());
+            });
+            $('#company_industry').change(function () {
+                replace_text('[COMPANY_INDUSTRY]', $(this).val());
             });
         });
     </script>
