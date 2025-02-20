@@ -22,7 +22,7 @@
     <link href="<?= base_url('assets/vendor/toastrjs/toastr.min.css') ?>" rel="stylesheet">
     <link href="<?= base_url('assets/vendor/bootstrap/css/bootstrap.min.css') ?>" rel="stylesheet">
     <link href="<?= base_url('appstack/css/app.css') ?>" rel="stylesheet" />
-    <style>h1,h2,h3,h4,h5,h6{font-family:"Oxanium",sans-serif;} .alert{padding:1rem;}  svg:not(:host).svg-inline--fa, svg:not(:root).svg-inline--fa {overflow: visible;box-sizing: content-box;margin: auto 0.25rem;}</style>
+    <style>h1,h2,h3,h4,h5,h6{font-family:"Oxanium",sans-serif;} .alert{padding:1rem;}  svg:not(:host).svg-inline--fa, svg:not(:root).svg-inline--fa {overflow: visible;box-sizing: content-box;margin: auto 0.25rem;} .lock-screen {position:fixed;width:100%;height:100%;top:0;left:0;background-color:rgba(200,200,200,0.75);z-index:9999;display:none;text-align:center;padding-top:100px;}</style>
 </head>
 <body>
 <div class="container-fluid p-0">
@@ -59,8 +59,10 @@
         </div>
     </div>
 </div>
+<div class="lock-screen"><h1>Screen locked. Please refresh.</h1></div>
 <script src="<?= base_url('appstack/js/app.js') ?>"></script>
 <script src="<?= base_url('assets/vendor/toastrjs/toastr.min.js') ?>"></script>
 <script src="<?= base_url('assets/vendor/fontawesome/js/all.min.js') ?>"></script>
+<script>$(function () { setTimeout(() => { $('.lock-screen').show(); }, 300000); });</script>
 </body>
 </html>
