@@ -20,57 +20,64 @@
 </head>
 <body>
 <h1 style="margin-top:10px">RATINAN “NAT” LEELA-NGAMWONGSA</h1>
-<h2 style="margin-bottom:8px"><?= $job_title ?> - MSc, CSM, PSM, PSPO</h2>
+<h2 style="margin-bottom:8px"><?= $job_title ?> | Software Engineering | Cloud | Agile</h2>
 <p class="center">
     <a href="https://wa.me/6597754577">+65 9775 4577</a> -
     <a href="mailto:lee@ratinan.com">lee@ratinan.com</a> -
+    <a href="https://www.linkedin.com/in/ratinanlee/" target="_blank">linkedin.com/in/ratinanlee</a> -
     <a href="https://lee.ratinan.com" target="_blank">lee.ratinan.com</a> -
-    <a href="https://www.google.com/maps/place/Singapore/" target="_blank">Singapore</a><br>
-    <a href="https://www.linkedin.com/in/ratinanlee/" target="_blank">LinkedIn: /ratinanlee</a> -
-    <a href="https://github.com/lee-ratinan" target="_blank">GitHub: /lee-ratinan</a> -
-    <a href="https://www.credly.com/users/ratinanlee" target="_blank">Credly: /ratinanlee</a>
+    <a href="https://github.com/lee-ratinan" target="_blank">github.com/lee-ratinan</a>
 </p>
 <p><?= str_replace('[JOB-TITLE]', $job_title, $summary) ?></p>
-<h3 class="center bb">Skills</h3>
-<?php
-foreach ($skills as $key => $value) {
-    if (empty($value)) {
-        continue;
-    }
-    echo '<p><b>' . $skill_keys[$key] . '</b>: ' . $value . '</p>';
-}
-?>
+<h3 class="center bb">Skills and Expertise</h3>
+<p><b>Leadership and Agile Methodologies</b><br>Agile, Scrum, Kanban, Project Management, Sprint Planning, Risk Management, Stakeholder Management, Product Backlog Refinement, Release Planning, Coaching and Mentorship</p>
+<p><b>Cloud and Infrastructure</b><br>AWS (EC2, S3, RDS, Lambda), VPS, Docker, Microservices, Cloud Computing</p>
+<p><b>Software Development and Architecture</b><br>PHP, Laravel, CodeIgniter, Python, API Development, CI/CD, Software Design, UX/UI, Performance Engineering</p>
+<p><b>Database and Data Analysis</b><br>SQL, MySQL, PostgreSQL, NoSQL, Data Analytics, AI, Machine Learning</p>
+<p><b>Version Control and Collaboration Tools</b><br>Git, BitBucket, Jira, Asana, Trello</p>
 <h3 class="center bb">Experience</h3>
-<table>
-    <?php
-    foreach ($experiences as $key => $values) {
-        echo '<tr><td><b>' . $values['title'] . '<br>' . $values['company'] . '</b></td>';
-        echo '<td class="right">' . $values['location'] . '<br>' . $values['period'] . '</td></tr>';
-        echo '<tr><td colspan="2" style="padding-bottom:10px">' . str_replace("\n", '<br>', $experience[$key]) . '</td></tr>';
+<?php
+foreach ($experiences as $key => $values) {
+    echo '<p><b>' . $values['title'] . '</b><br>' . $values['company'] . ' - ' . $values['location'] . ' | ' . $values['period'] . '<br>';
+    echo str_replace("\n", '<br>', $experience[$key]) . '</p>';
     }
-    ?>
-</table>
+?>
 <h3 class="center bb">Education</h3>
 <p>
     <?php
     foreach ($education as $values) {
-        echo '<b>' . $values['degree'] . '</b>, ' . $values['school'] . ' - ' . $values['location'] . ' - ' . $values['class_of'] . '<br>';
+        echo '- <b>' . $values['degree'] . '</b>, ' . $values['school'] . ', ' . $values['location'] . ' - ' . $values['class_of'] . '<br>';
     }
     ?>
 </p>
+<div style="page-break-after: always;"></div>
 <h3 class="center bb">Certifications</h3>
-<table>
-    <?php foreach ($certifications as $key => $values) {
-        echo '<tr><td style="padding-right:10px"><b>' . $key . '</b></td><td>';
-        echo implode('<br>', $values);
-        echo '</td></tr>';
-    } ?>
-</table>
+<p>
+    - <b>Professional Scrum Master I (PSM I)</b> - Scrum.org<br>
+    - <b>Professional Scrum Master II (PSM II)</b> - Scrum.org<br>
+    - <b>Professional Scrum Product Owner I (PSPO I)</b> - Scrum.org<br>
+    - <b>Professional Scrum Product Owner II (PSPO II)</b> - Scrum.org<br>
+    - <b>Certified ScrumMaster (CSM)</b> - Scrum Alliance<br>
+    - <b>AWS Cloud Practitioner Essentials course on Coursera</b> - AWS<br>
+    - <b>Project Management Professional Certificate</b> - Google<br>
+    - <b>AI Essentials Certificate</b> - Google<br>
+    - <b>Data Analytics Professional Certificate</b> - Google<br>
+    - <b>UX Design Professional Certificate</b> - Google
+</p>
 <h3 class="center bb">Awards</h3>
 <p>
-    <b>Singapore FinTech AI Award</b> at Singapore FinTech Festival, Nov 2023
+    - <b>Singapore FinTech AI Award</b>, Singapore FinTech Festival - Nov 2023<br>
 </p>
 <h3 class="center bb">Languages</h3>
-<p><b>English</b> (full professional proficiency), <b>Thai</b> (native proficiency)</p>
+<p>
+    - <b>English</b> (fluent)<br>
+    - <b>Thai</b> (native)<br>
+</p>
+<h3 class="center bb">Additional Information</h3>
+<p>
+    - <b>Nationality:</b> Thai<br>
+    - <b>Residency Status:</b> Singapore Permanent Resident<br>
+</p>
+<br>
 </body>
 </html>

@@ -26,71 +26,53 @@ $this->extend($layout);
                                 <label for="job_title">Job Title</label>
                             </div>
                             <?php
+                            $experience_year = date('Y') - 2012;
                             $fields = [
                                 [
                                     'Summary',
                                     'summary',
-                                    '[JOB-TITLE] with over 11 years of experience driving software development with data-driven decision-making skills. Achievements include a 20% increase in project completion rates and an over 10-time increase in system capability for the e-commerce platform. Skilled in Agile leadership, system design, and cloud architecture.'
-                                ],
-                                [
-                                    'Soft Skills',
-                                    'skills[soft]',
-                                    'Scrum Master/Project Management (CSM, PSM I-II Certified), Product Management (PSPO I-II Certified), Leadership Skills, Analytical and Strategical Problem-Solving Skills, Mentorship, Coaching, Collaboration, Business Strategies, Eﬀective Communication, Teamwork, Time Management, Adaptability'
-                                ],
-                                [
-                                    'Technical Skills',
-                                    'skills[technical]',
-                                    'Agile/Scrum, Kanban, Cloud Architecture/Infrastructure (AWS, VPS), Cloud Computing, UX/UI Design, Software Design and Analysis, Database (SQL, MySQL, PostgreSQL, RDS, NoSQL), Software Optimisation, Performance Engineering, Code Review and Quality Assurance, Data Analysis/Data Science, Database Design, API Development, Artificial Intelligence, Machine Learning, CI/CD'
-                                ],
-                                [
-                                    'Tech Stack',
-                                    'skills[tech-stack]',
-                                    'PHP , Laravel, CodeIgniter (CI), SQL, AWS, EC2, S3, RDS, Lambda, Git, BitBucket, CI/CD, HTML, CSS, JS, jQuery, DataTables, Python, Microservice, API, Docker'
-                                ],
-                                [
-                                    'Project Management',
-                                    'skills[project-management]',
-                                    'Jira, Asana, ClickUp, Trello, Gantt Chart, Kanban Board, Product Backlog, Market Research, Sprint Planning, Release Planning, Risk Management, Stakeholder Management, Project Documentation, Project Scheduling, Project Budgeting, Project Evaluation, Project Reporting'
+                                    'Experienced [JOB-TITLE] with ' . $experience_year . '+ years in software development, cloud architecture, and Agile leadership. Expertise in optimising system performance, leading cross-functional teams, and scaling high-impact solutions. Proven track record of accelerating project completion by 20% and enhancing system capabilities 10x in e-commerce and FinTech sectors. Passionate about innovation, automation, and mentoring engineering teams to drive business success.',
                                 ],
                                 [
                                     'Moolahgo',
                                     'experience[moolahgo]',
-                                    '- Designed and implemented scalable and secure technical architectures and innovative financial solutions to support the company’s growing business needs and expanded the company’s services to new markets. Helped the team remove impediments, refined product backlog, etc., for seamless project delivery across 3 main product domains, significantly increasing financial activities, and the innovative solutions drove business growth by 300% in 6 months.
-- Implemented process improvements by inspecting the current process and adapting to new and innovative solutions, such as optimised testing and deployment methodologies, resulting in a 20% increase in the project completion rate in 3 months.
-- Led a team of 6 software engineers, mentored their software development, and ensured efficient collaboration for timely project delivery while maintaining quality standards and compliance. Designed and implemented high-performance backend systems to meet stringent regulatory requirements, including remittance, KYC, and fraud detection features.',
-                                    200
+                                    '- Designed scalable financial architectures, expanding services to new markets and driving <b>300% business growth in 6 months</b>.
+- Facilitated backlog refinement and removed team impediments, ensuring seamless Agile delivery across <b>3 product domains</b>.
+- Implemented optimised testing and deployment methodologies, increasing project completion rates by <b>20% in 3 months</b>.
+- Managed a team of <b>6 engineers</b>, ensuring on-time delivery and regulatory compliance for remittance, KYC, and fraud detection features.',
+                                    100
                                 ],
                                 [
                                     'Irvins',
                                     'experience[irvins]',
-                                    '- Led the development team on the state-of-the-art back office system that integrated multiple Shopify stores that addressed the pain points experienced by the stakeholders, accelerated the efficiency and operations process at the distribution centers by 80%, and slashed monthly infrastructure bills by 50%.
-- Implemented effective fraud prevention and detection policies, improved customer satisfaction, and significantly reduced chargeback cases from international customers by 90%.
-- Led a team of developers to successfully implement a new back office system, ensuring on-time delivery and adherence to project timelines while maintaining high-quality standards.',
-                                    200
+                                    '- Spearheaded the development of an integrated back-office system for multiple Shopify stores, improving operational efficiency by <b>80%</b>.
+- Implemented fraud prevention policies, reducing international chargeback cases by <b>90%</b>.
+- Led a team of developers to deliver a robust back-office system, optimising stakeholder processes and cutting infrastructure costs by <b>50%</b>.',
+                                    100
                                 ],
                                 [
                                     'Secretlab',
                                     'experience[secretlab]',
-                                    '- Successfully managed the implementation of a new backend system, ensuring on-time delivery and adherence to project timelines while maintaining high-quality standards, freeing up 2+ hours daily for the local delivery team alone and countless more man-hours for other departments downstream; it enabled the company to handle more than 1000+% growth of orders worldwide within 1 year.
-- Provided technical guidance and problem-solving expertise to address complex challenges and ensure the system’s reliability and performance, migrated the system to improve reliability across multiple availability zones, and rectified various technical problems for the whole company.
-- Effectively led a small backend team, fostering a collaborative and innovative work environment to deliver high-quality systems that met the needs of the business on time.',
-                                    200
+                                    '- Developed a backend system that streamlined internal operations, freeing up <b>2+ hours</b> daily for logistics teams.
+- Enabled the company to scale to <b>1000%+ order growth worldwide</b> in 1 year by optimising backend processes.
+- Led a backend team to migrate systems across multiple availability zones, ensuring reliability and scalability.',
+                                    100
                                 ],
                                 [
                                     'BuzzCity',
                                     'experience[buzzcity]',
-                                    '- Enhanced the publisher’s payout system by implementing a background process, optimising system performance, and improving overall efficiency, accelerated the downstream systems by 80%.
-- Implemented a new robust payout recording system to replace the broken one by re-analysing all requirements and adopting new design ideas that fit the solutions, demonstrating strong technical skills and problem-solving abilities.
-- Received training and mentorship to develop leadership skills, positioning me for future leadership roles within the team. Provided guidance and support to junior team members, fostering a collaborative and innovative work environment.',
-                                    175
+                                    '- Enhanced the publisher’s payout system, improving system performance and <b>accelerating downstream processes by 80%</b>.
+- Designed and implemented a new payout recording system, resolving inefficiencies and improving transaction reliability.
+- Provided mentorship to junior team members, fostering a strong engineering culture.',
+                                    100
                                 ],
                                 [
                                     'DST',
                                     'experience[dst]',
-                                    '- Optimised the complex fund redemption calculation, which reduced processing time by over 50% through code refactoring, complexity analysis, and performance engineering.
-- Successfully implemented and trained the team on Scrum and Kanban methodologies, improved the work processes for the team, and increased the team’s productivity by 30% after adopting the Kanban board.
-- Successfully managed multiple projects, including dividend processing, redemption calculation, and report generation, ensuring timely delivery and adherence to project timelines.',
-                                    175
+                                    '- Optimised fund redemption calculations, reducing processing time by <b>50%</b> through performance engineering.
+- Introduced Scrum and Kanban methodologies, increasing team productivity by <b>30%</b>.
+- Led multiple projects, ensuring timely delivery of financial reporting and transaction processing solutions.',
+                                    100
                                 ],
                             ];
                             foreach ($fields as $field) {
@@ -100,31 +82,6 @@ $this->extend($layout);
                                 echo '</div>';
                             }
                             ?>
-                            <div class="form-floating mb-3">
-                                <select class="form-select" id="template" name="template">
-                                    <option value="generic">Generic</option>
-                                    <option value="europass">EUROPASS</option>
-                                </select>
-                                <label for="return">Return Format</label>
-                            </div>
-                            <div class="form-floating mb-3">
-                                <select class="form-select" id="return" name="return">
-                                    <option value="pdf">PDF</option>
-                                    <option value="html">HTML</option>
-                                </select>
-                                <label for="return">Return Format</label>
-                            </div>
-                            <div class="text-end">
-                                <input class="btn btn-outline-primary btn-sm" type="submit" value="Generate Resume" />
-                            </div>
-                        </form>
-                        <hr />
-                        <h5 class="card-title">Resume 2</h5>
-                        <form method="GET" action="<?= base_url($session->locale . '/office/profile/resume/builder2') ?>" target="_blank">
-                            <div class="form-floating mb-3">
-                                <input type="text" class="form-control" id="job_title" name="job_title" value="Technical Lead" required>
-                                <label for="job_title">Job Title</label>
-                            </div>
                             <div class="form-floating mb-3">
                                 <select class="form-select" id="return" name="return">
                                     <option value="pdf">PDF</option>
