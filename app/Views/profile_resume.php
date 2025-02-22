@@ -36,42 +36,42 @@ $this->extend($layout);
                                 [
                                     'Moolahgo',
                                     'experience[moolahgo]',
-                                    '- Designed scalable financial architectures, expanding services to new markets and driving <b>300% business growth in 6 months</b>.
-- Facilitated backlog refinement and removed team impediments, ensuring seamless Agile delivery across <b>3 product domains</b>.
-- Implemented optimised testing and deployment methodologies, increasing project completion rates by <b>20% in 3 months</b>.
-- Managed a team of <b>6 engineers</b>, ensuring on-time delivery and regulatory compliance for remittance, KYC, and fraud detection features.',
+                                    '- <em>Architected scalable financial systems</em>, expanding services to new markets and driving <b>300%</b> business growth in six months.
+- <em>Led an Agile transformation</em>, optimising backlog refinement and eliminating bottlenecks, resulting in <b>20%</b> faster project delivery.
+- <em>Developed and implemented secure remittance, KYC, and fraud detection features</em>, ensuring compliance with financial regulations.
+- <em>Orchestrated cross-functional collaboration and mentored a team of six engineers</em>, fostering a high-performance culture that improved cross-functional collaboration.',
                                     100
                                 ],
                                 [
                                     'Irvins',
                                     'experience[irvins]',
-                                    '- Spearheaded the development of an integrated back-office system for multiple Shopify stores, improving operational efficiency by <b>80%</b>.
-- Implemented fraud prevention policies, reducing international chargeback cases by <b>90%</b>.
-- Led a team of developers to deliver a robust back-office system, optimising stakeholder processes and cutting infrastructure costs by <b>50%</b>.',
+                                    '- <em>Spearheaded the development of an integrated back-office system</em> for multiple Shopify stores, improving operational efficiency by <b>80%</b>.
+- <em>Designed and enforced fraud prevention policies</em>, reducing international chargeback cases by <b>90%</b>.
+- <em>Optimised infrastructure costs</em> by <b>50%</b> through system enhancements and cloud optimisations.',
                                     100
                                 ],
                                 [
                                     'Secretlab',
                                     'experience[secretlab]',
-                                    '- Developed a backend system that streamlined internal operations, freeing up <b>2+ hours</b> daily for logistics teams.
-- Enabled the company to scale to <b>1000%+ order growth worldwide</b> in 1 year by optimising backend processes.
-- Led a backend team to migrate systems across multiple availability zones, ensuring reliability and scalability.',
+                                    '- <em>Developed an advanced backend system</em> that streamlined and automated logistics operations, saving <b>2+ hours</b> per day for teams.
+- <em>Enabled the company to scale</em> <b>1000%+</b> in global orders by optimising backend processes and ensuring system reliability.
+- <em>Led a system migration across multiple availability zones</em>, improving uptime, performance, and scalability.',
                                     100
                                 ],
                                 [
                                     'BuzzCity',
                                     'experience[buzzcity]',
-                                    '- Enhanced the publisher’s payout system, improving system performance and <b>accelerating downstream processes by 80%</b>.
-- Designed and implemented a new payout recording system, resolving inefficiencies and improving transaction reliability.
-- Provided mentorship to junior team members, fostering a strong engineering culture.',
+                                    '- <em>Redesigned the publisher payout system</em>, enhancing performance and accelerating transaction processing by <b>80%</b>.
+- <em>Engineered a new payout recording system</em>, increasing transaction reliability and eliminating reporting inefficiencies.
+- <em>Mentored junior developers</em>, fostering a culture of technical excellence and continuous learning.',
                                     100
                                 ],
                                 [
                                     'DST',
                                     'experience[dst]',
-                                    '- Optimised fund redemption calculations, reducing processing time by <b>50%</b> through performance engineering.
-- Introduced Scrum and Kanban methodologies, increasing team productivity by <b>30%</b>.
-- Led multiple projects, ensuring timely delivery of financial reporting and transaction processing solutions.',
+                                    '- <em>Optimised fund redemption calculations</em>, cutting processing time by <b>50%</b> through algorithm and database optimisations.
+- <em>Introduced Scrum & Kanban methodologies</em>, increasing team productivity by <b>30%</b> and improving project predictability.
+- <em>Led multiple financial software projects</em>, ensuring timely delivery of reporting and transaction solutions.',
                                     100
                                 ],
                             ];

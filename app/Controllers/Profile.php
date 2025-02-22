@@ -162,7 +162,7 @@ class Profile extends BaseController
             'education'      => $this->education,
             'certifications' => $this->certifications
         ];
-        $file_name   = 'Ratinan L - ' . $data['job_title'] . ' - Resume.pdf';
+        $file_name   = 'Ratinan_Lee-' . str_replace(' ', '_', $data['job_title']) . '.pdf';
         $resume_html = view('profile_resume_builder_generic', $data);
         if ('html' == $return) {
             return $resume_html;
