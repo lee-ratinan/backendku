@@ -146,21 +146,24 @@ class Profile extends BaseController
     }
 
     /**
-     * @return ResponseInterface|string
+     *
      */
-    public function resumeBuilder(): ResponseInterface|string
+    public function resumeBuilder()
     {
         if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
             return permission_denied();
         }
         $return   = $this->request->getPost('return');
-        $data     = [
-            'job_title'      => ucwords(strtolower($this->request->getPost('job_title'))),
-            'summary'        => $this->request->getPost('summary'),
-            'experiences'    => $this->experiences,
-            'experience'     => $this->request->getPost('experience'),
-            'education'      => $this->education,
-            'certifications' => $this->certifications
+        $data = [
+            'job_title'              => ucwords(strtolower($this->request->getPost('job_title'))),
+            'summary'                => $this->request->getPost('summary'),
+            'skills'                 => $this->request->getPost('skills'),
+            'experiences'            => $this->request->getPost('experiences'),
+            'education'              => $this->request->getPost('education'),
+            'certifications'         => $this->request->getPost('certifications'),
+            'awards'                 => $this->request->getPost('awards'),
+            'languages'              => $this->request->getPost('languages'),
+            'additional_information' => $this->request->getPost('additional_information'),
         ];
         $file_name   = 'Ratinan_Lee-' . str_replace(' ', '_', $data['job_title']) . '.pdf';
         $resume_html = view('profile_resume_builder_generic', $data);

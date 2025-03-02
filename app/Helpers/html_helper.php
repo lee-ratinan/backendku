@@ -57,9 +57,13 @@ function generate_form_field(string $id, array $configuration, int|string|array 
             echo "<option value='{$key}' $selected>" . $str_value . "</option>";
         }
         echo "</select><label for='{$id}'>" . $label . "</label></div>";
-//    } else if ('textarea' == $input_type) {
-//        $placeholder = @$configuration['placeholder'] ?? '';
-//        echo "<div class='form-floating mb-3'><textarea class='form-control' id='{$id}' name='{$id}' placeholder='{$placeholder}' $required $readonly $disabled $min $minlength $max $maxlength>" . @$current_value . "</textarea><label for='{$id}'>" . lang($configuration['label_key']) . "</label></div>";
+    } else if ('textarea' == $input_type) {
+        $placeholder = @$configuration['placeholder'] ?? '';
+        echo "<div class='form-floating mb-3'><textarea class='form-control' id='{$id}' name='{$id}' placeholder='{$placeholder}' $required $readonly $disabled style='height:100px'>{$current_value}</textarea><label for='{$id}'>" . $label . "</label>";
+        if (!empty($configuration['details'])) {
+            echo "<small class='form-text text-muted small'>" . lang($configuration['details']) . "</small>";
+        }
+        echo "</div>";
     }
 }
 
