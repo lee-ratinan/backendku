@@ -155,9 +155,10 @@ class Profile extends BaseController
         }
         $return   = $this->request->getPost('return');
         $data = [
-            'job_title'              => ucwords(strtolower($this->request->getPost('job_title'))),
+            'job_title'              => $this->request->getPost('job_title'),
             'summary'                => $this->request->getPost('summary'),
             'skills'                 => $this->request->getPost('skills'),
+            'skill_head'             => $this->request->getPost('skill_head'),
             'experiences'            => $this->request->getPost('experiences'),
             'education'              => $this->request->getPost('education'),
             'certifications'         => $this->request->getPost('certifications'),

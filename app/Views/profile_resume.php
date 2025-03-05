@@ -61,7 +61,16 @@ $this->extend($layout);
                                     <td colspan="5"><b>SKILLS AND EXPERTISE</b></td>
                                 </tr>
                                 <tr>
-                                    <td colspan="5">
+                                    <td>
+                                        <?php
+                                        generate_form_field('skill_head[agile]', [
+                                            'label'       => 'Header',
+                                            'placeholder' => 'Agile Methodologies & Project Management',
+                                            'type'        => 'text'
+                                        ], 'Agile Methodologies & Project Management');
+                                        ?>
+                                    </td>
+                                    <td colspan="4">
                                         <?php generate_form_field('skills[agile]', [
                                             'label'       => 'Agile Methodologies',
                                             'placeholder' => 'Agile, Scrum, Kanban, Project Management, Sprint Planning, Risk Management, Stakeholder Management, Product Backlog Refinement, Release Planning, Coaching and Mentorship',
@@ -70,7 +79,14 @@ $this->extend($layout);
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td colspan="5">
+                                    <td>
+                                        <?php generate_form_field('skill_head[cloud]', [
+                                            'label'       => 'Header',
+                                            'placeholder' => 'Cloud and Infrastructure',
+                                            'type'        => 'text'
+                                        ], 'Cloud & Infrastructure'); ?>
+                                    </td>
+                                    <td colspan="4">
                                         <?php generate_form_field('skills[cloud]', [
                                             'label'       => 'Cloud and Infrastructure',
                                             'placeholder' => 'AWS (EC2, S3, RDS, Lambda), VPS, Docker, Microservices, Cloud Computing',
@@ -79,7 +95,14 @@ $this->extend($layout);
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td colspan="5">
+                                    <td>
+                                        <?php generate_form_field('skill_head[software]', [
+                                            'label'       => 'Header',
+                                            'placeholder' => 'Software Development and Architecture',
+                                            'type'        => 'text'
+                                        ], 'Software Development & Architecture'); ?>
+                                    </td>
+                                    <td colspan="4">
                                         <?php generate_form_field('skills[software]', [
                                             'label'       => 'Software Development and Architecture',
                                             'placeholder' => 'PHP, Laravel, CodeIgniter, Python, API Development, CI/CD, Software Design, UX/UI, Performance Engineering',
@@ -88,7 +111,14 @@ $this->extend($layout);
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td colspan="5">
+                                    <td>
+                                        <?php generate_form_field('skill_head[database]', [
+                                            'label'       => 'Header',
+                                            'placeholder' => 'Database and Data Analysis',
+                                            'type'        => 'text'
+                                        ], 'Database & Data Analysis'); ?>
+                                    </td>
+                                    <td colspan="4">
                                         <?php generate_form_field('skills[database]', [
                                             'label'       => 'Database and Data Analysis',
                                             'placeholder' => 'SQL, MySQL, PostgreSQL, NoSQL, Data Analytics, AI, Machine Learning',
@@ -97,7 +127,14 @@ $this->extend($layout);
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td colspan="5">
+                                    <td>
+                                        <?php generate_form_field('skill_head[version_control]', [
+                                            'label'       => 'Header',
+                                            'placeholder' => 'Version Control and Collaboration Tools',
+                                            'type'        => 'text'
+                                        ], 'Version Control & Collaboration Tools'); ?>
+                                    </td>
+                                    <td colspan="4">
                                         <?php generate_form_field('skills[version_control]', [
                                             'label'       => 'Version Control and Collaboration Tools',
                                             'placeholder' => 'Git, BitBucket, Jira, Asana, Trello',
@@ -106,7 +143,14 @@ $this->extend($layout);
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td colspan="5">
+                                    <td>
+                                        <?php generate_form_field('skill_head[leadership]', [
+                                            'label'       => 'Header',
+                                            'placeholder' => 'Leadership & Teamwork',
+                                            'type'        => 'text'
+                                        ], 'Leadership & Teamwork'); ?>
+                                    </td>
+                                    <td colspan="4">
                                         <?php generate_form_field('skills[leadership]', [
                                             'label'       => 'Leadership & Teamwork',
                                             'placeholder' => 'Cross-Functional Collaboration, Mentorship & Coaching, Conflict Resolution, Critical Thinking, Decision-Making, Adaptability, Communication Skills, Stakeholder Management',

@@ -32,18 +32,8 @@
 <p><?= $summary ?></p>
 
 <h3>Skills and Expertise</h3>
-<?php
-$skill_keys = [
-    'agile'           => 'Agile Methodologies',
-    'cloud'           => 'Cloud Computing and Infrastructure',
-    'software'        => 'Software Development and Architecture',
-    'database'        => 'Database Management and Data Analytics',
-    'version_control' => 'Version Control and Collaboration Tools',
-    'leadership'      => 'Leadership and Teamwork',
-];
-?>
 <?php foreach ($skills as $key => $skill): ?>
-    <h4><?= $skill_keys[$key] ?></h4>
+    <h4><?= $skill_head[$key] ?></h4>
     <p><?= $skill ?></p>
 <?php endforeach; ?>
 
