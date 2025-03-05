@@ -39,9 +39,6 @@ class Employment extends BaseController
      */
     public function index(): string
     {
-        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
-            return permission_denied();
-        }
         $session = session();
         $data    = [
             'page_title'   => 'Employment',
@@ -59,9 +56,6 @@ class Employment extends BaseController
      */
     public function companyList(): ResponseInterface
     {
-        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
-            return permission_denied('datatables');
-        }
         $model              = new CompanyMasterModel();
         $columns            = [
             '',
@@ -99,9 +93,6 @@ class Employment extends BaseController
      */
     public function companyEdit(string $company_id = 'new'): string
     {
-        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
-            return permission_denied();
-        }
         $session       = session();
         $company_model = new CompanyMasterModel();
         $page_title    = 'New Company';
@@ -132,9 +123,6 @@ class Employment extends BaseController
      */
     public function companySave(): ResponseInterface
     {
-        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
-            return permission_denied('json');
-        }
         return $this->response->setJSON([]);
     }
 
@@ -147,9 +135,6 @@ class Employment extends BaseController
      */
     public function salary(): string
     {
-        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
-            return permission_denied();
-        }
         $session      = session();
         $company      = new CompanyMasterModel();
         $company_raw  = $company->orderBy('company_legal_name', 'asc')->findAll();
@@ -177,9 +162,6 @@ class Employment extends BaseController
      */
     public function salaryList(): ResponseInterface
     {
-        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
-            return permission_denied('datatables');
-        }
         $model              = new CompanySalaryModel();
         $columns            = [
             '',
@@ -238,9 +220,6 @@ class Employment extends BaseController
      */
     public function salaryEdit(string $salary_id = 'new'): string
     {
-        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
-            return permission_denied();
-        }
         $session       = session();
         $salary_model  = new CompanySalaryModel();
         $page_title    = 'New Salary';
@@ -271,9 +250,6 @@ class Employment extends BaseController
      */
     public function salarySave(): ResponseInterface
     {
-        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
-            return permission_denied('json');
-        }
         return $this->response->setJSON([]);
     }
 
@@ -286,9 +262,6 @@ class Employment extends BaseController
      */
     public function cpf(): string
     {
-        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
-            return permission_denied();
-        }
         $session = session();
         $model   = new CompanyMasterModel();
         $data    = [
@@ -313,9 +286,6 @@ class Employment extends BaseController
      */
     public function cpfList(): ResponseInterface
     {
-        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
-            return permission_denied('datatables');
-        }
         $model              = new CompanyCPFModel();
         $columns            = [
             '',
@@ -362,9 +332,6 @@ class Employment extends BaseController
      */
     public function cpfEdit(string $cpf_id = 'new'): string
     {
-        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
-            return permission_denied();
-        }
         $session       = session();
         $cpf_model     = new CompanyCPFModel();
         $page_title    = 'New CPF';
@@ -401,9 +368,6 @@ class Employment extends BaseController
      */
     public function cpfSave(): ResponseInterface
     {
-        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
-            return permission_denied('json');
-        }
         return $this->response->setJSON([]);
     }
 
@@ -413,9 +377,6 @@ class Employment extends BaseController
      */
     public function cpfStatement(): string
     {
-        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
-            return permission_denied();
-        }
         $session = session();
         $model   = new CompanyCPFStatementModel();
         $data    = [
@@ -436,9 +397,6 @@ class Employment extends BaseController
      */
     public function cpfStatementEdit(string $cpf_statement_id = 'new'): string
     {
-        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
-            return permission_denied();
-        }
         $session    = session();
         $model      = new CompanyCPFStatementModel();
         $page_title = 'New CPF Statement';
@@ -472,9 +430,6 @@ class Employment extends BaseController
      */
     public function freelance(): string
     {
-        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
-            return permission_denied();
-        }
         $session       = session();
         $company      = new CompanyMasterModel();
         $company_raw  = $company->orderBy('company_legal_name', 'asc')->findAll();
@@ -501,9 +456,6 @@ class Employment extends BaseController
      */
     public function freelanceList(): ResponseInterface
     {
-        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
-            return permission_denied('datatables');
-        }
         $model              = new CompanyFreelanceProjectModel();
         $columns            = [
             '',
@@ -540,9 +492,6 @@ class Employment extends BaseController
      */
     public function freelanceEdit(string $freelance_project_id = 'new'): string
     {
-        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
-            return permission_denied();
-        }
         $session       = session();
         $project_model = new CompanyFreelanceProjectModel();
         $page_title    = 'New Freelance Project';
@@ -572,9 +521,6 @@ class Employment extends BaseController
      */
     public function freelanceSave(): ResponseInterface
     {
-        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
-            return permission_denied('json');
-        }
         return $this->response->setJSON([]);
     }
 
@@ -583,9 +529,6 @@ class Employment extends BaseController
      */
     public function freelanceIncome(): string
     {
-        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
-            return permission_denied();
-        }
         $session       = session();
         $project_model = new CompanyFreelanceProjectModel();
         $project_raw   = $project_model->orderBy('project_title', 'asc')->findAll();
@@ -609,9 +552,6 @@ class Employment extends BaseController
      */
     public function freelanceIncomeList(): ResponseInterface
     {
-        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
-            return permission_denied('datatables');
-        }
         $model              = new CompanyFreelanceIncomeModel();
         $columns            = [
             '',
@@ -655,9 +595,6 @@ class Employment extends BaseController
      */
     public function freelanceIncomeEdit(string $freelance_income_id = 'new'): string
     {
-        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
-            return permission_denied();
-        }
         $session       = session();
         $income_model  = new CompanyFreelanceIncomeModel();
         $page_title    = 'New Freelance Income';
@@ -687,9 +624,6 @@ class Employment extends BaseController
      */
     public function freelanceIncomeSave(): ResponseInterface
     {
-        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
-            return permission_denied('json');
-        }
         return $this->response->setJSON([]);
     }
 

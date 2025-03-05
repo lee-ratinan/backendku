@@ -45,15 +45,11 @@ class User extends BaseController
      */
     public function index(): string
     {
-        $permission_level = retrieve_permission_for_user(self::PERMISSION_REQUIRED);
-        if (PERMISSION_NOT_PERMITTED == $permission_level) {
-            return permission_denied();
-        }
         $session = session();
         $data    = [
             'page_title'       => lang('User.index.page_title'),
             'slug'             => 'user',
-            'permission_level' => $permission_level,
+            'permission_level' => PERMISSION_EDITABLE,
             'user_session'     => $session->user,
             'roles'            => $session->roles,
             'current_role'     => $session->current_role
@@ -67,9 +63,6 @@ class User extends BaseController
      */
     public function list():ResponseInterface
     {
-        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
-            return permission_denied('datatables');
-        }
         $model              = new UserMasterModel();
         $columns            = [
             '',
@@ -109,10 +102,6 @@ class User extends BaseController
      */
     public function edit(string $encoded_email): string
     {
-        $permission_level = retrieve_permission_for_user(self::PERMISSION_REQUIRED);
-        if (PERMISSION_EDITABLE != $permission_level) {
-            return permission_denied();
-        }
         $user_model = new UserMasterModel();
         $mode       = 'new';
         $user       = [];
@@ -142,7 +131,7 @@ class User extends BaseController
         $data = [
             'page_title'         => $page_title,
             'slug'               => 'user',
-            'permission_level'   => $permission_level,
+            'permission_level'   => PERMISSION_EDITABLE,
             'user_configuration' => $user_model->getConfigurations(),
             'mode'               => $mode,
             'user'               => $user,
@@ -159,10 +148,6 @@ class User extends BaseController
      */
     public function editScript(): ResponseInterface
     {
-        $permission_level = retrieve_permission_for_user(self::PERMISSION_REQUIRED);
-        if (PERMISSION_EDITABLE != $permission_level) {
-            return permission_denied('json');
-        }
         $action            = $this->request->getPost('action');
         $user_master_model = new UserMasterModel();
         $user_role_model   = new UserRoleModel();

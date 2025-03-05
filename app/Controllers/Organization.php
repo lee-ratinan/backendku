@@ -34,9 +34,6 @@ class Organization extends BaseController
      */
     public function index(): string
     {
-        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
-            return permission_denied();
-        }
         // There are only ONE role in this table, always get the first record
         $model   = new OrganizationMasterModel();
         $data    = [

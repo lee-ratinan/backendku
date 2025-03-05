@@ -123,9 +123,6 @@ class Tax extends BaseController
      */
     public function index(): string
     {
-        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
-            return permission_denied();
-        }
         $session   = session();
         $countries = [];
         foreach ($this->countries as $country_code) {
@@ -148,9 +145,6 @@ class Tax extends BaseController
      */
     public function masterList(): ResponseInterface
     {
-        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
-            return permission_denied('datatables');
-        }
         $model              = new TaxYearModel();
         $columns            = [
             '',
@@ -187,9 +181,6 @@ class Tax extends BaseController
      */
     public function masterEdit(string $tax_id = 'new'): string
     {
-        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
-            return permission_denied();
-        }
         $session          = session();
         $tax_year_model   = new TaxYearModel();
         $tax_record_model = new TaxRecordModel();
@@ -239,9 +230,6 @@ class Tax extends BaseController
      */
     public function masterSave(): ResponseInterface
     {
-        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
-            return permission_denied('json');
-        }
         $session = session();
         $model   = new TaxYearModel();
         $mode    = $this->request->getPost('mode');
@@ -297,9 +285,6 @@ class Tax extends BaseController
      */
     public function calculator(): string
     {
-        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
-            return permission_denied();
-        }
         $session      = session();
         $data         = [
             'page_title'   => 'Tax Calculator',
@@ -317,9 +302,6 @@ class Tax extends BaseController
      */
     public function calculatorAjax(): string
     {
-        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
-            return permission_denied('html_piece');
-        }
         $tax_country    = $this->request->getPost('tax_country');
         $monthly_income = $this->request->getPost('monthly_income');
         $annual_income  = $this->request->getPost('annual_income');
@@ -341,9 +323,6 @@ class Tax extends BaseController
      */
     public function projection(): string
     {
-        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
-            return permission_denied();
-        }
         $session = session();
         $data    = [
             'page_title'   => 'Tax Projection',
@@ -361,9 +340,6 @@ class Tax extends BaseController
      */
     public function projectionAjax(): string
     {
-        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
-            return permission_denied('html_piece');
-        }
         $tax_country = $this->request->getPost('tax_country');
         $min_income  = intval($this->request->getPost('min_income'));
         $max_income  = intval($this->request->getPost('max_income'));
@@ -401,9 +377,6 @@ class Tax extends BaseController
      */
     public function comparison(): string
     {
-        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
-            return permission_denied();
-        }
         $session     = session();
         $usd_from    = $this->request->getGet('usd_from') ?? 1000;
         $usd_to      = $this->request->getGet('usd_to') ?? 15000;

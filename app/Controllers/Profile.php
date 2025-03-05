@@ -109,9 +109,6 @@ class Profile extends BaseController
      */
     public function index(): string
     {
-        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
-            return permission_denied();
-        }
         $session = session();
         $model   = new ProfileIdentityModel();
         $data    = [
@@ -131,9 +128,6 @@ class Profile extends BaseController
      */
     public function resume(): string
     {
-        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
-            return permission_denied();
-        }
         $session = session();
         $data    = [
             'page_title'       => 'Resume',
@@ -150,9 +144,6 @@ class Profile extends BaseController
      */
     public function resumeBuilder()
     {
-        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
-            return permission_denied();
-        }
         $return   = $this->request->getPost('return');
         $data = [
             'job_title'              => $this->request->getPost('job_title'),
@@ -179,9 +170,6 @@ class Profile extends BaseController
      */
     public function resumeCoverLetter(): ResponseInterface|string
     {
-        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
-            return permission_denied();
-        }
         $return = $this->request->getPost('return');
         $data   = [
             'company_name'   => ucwords(strtolower($this->request->getPost('company_name'))),

@@ -306,9 +306,6 @@ class Health extends BaseController
      */
     public function gym(): string
     {
-        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
-            return permission_denied();
-        }
         $session = session();
         $data    = [
             'page_title'   => 'Gym',
@@ -325,9 +322,6 @@ class Health extends BaseController
      */
     public function gymFinder(): string
     {
-        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
-            return permission_denied();
-        }
         $session = session();
         $data    = [
             'page_title'   => 'Gym Finder',
@@ -344,9 +338,6 @@ class Health extends BaseController
      */
     public function gymFinderList(): ResponseInterface
     {
-        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
-            return permission_denied('json');
-        }
         helper('math');
         $holiday      = new JourneyHolidayModel();
         $latitude     = $this->request->getPost('latitude');
@@ -389,9 +380,6 @@ class Health extends BaseController
      */
     public function vaccine(): string
     {
-        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
-            return permission_denied();
-        }
         $session = session();
         $data    = [
             'page_title'   => 'Vaccine',
@@ -408,9 +396,6 @@ class Health extends BaseController
      */
     public function activity(): string
     {
-        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
-            return permission_denied();
-        }
         $session = session();
         $data    = [
             'page_title'   => 'Activity',
@@ -431,9 +416,6 @@ class Health extends BaseController
      */
     public function activityList(): ResponseInterface
     {
-        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
-            return permission_denied('datatables');
-        }
         $model              = new HealthActivityModel();
         $columns            = [
             '',
@@ -476,9 +458,6 @@ class Health extends BaseController
      */
     public function activityEdit(string $activity_id): string
     {
-        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
-            return permission_denied();
-        }
         $session = session();
         $data    = [
             'page_title'   => 'Edit Activity',
@@ -494,9 +473,6 @@ class Health extends BaseController
 
     public function activitySave(): ResponseInterface
     {
-        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
-            return permission_denied('json');
-        }
         $session = session();
         $model   = new HealthActivityModel();
         $mode    = $this->request->getPost('mode');

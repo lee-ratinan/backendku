@@ -41,10 +41,6 @@ class Role extends BaseController
      */
     public function index(): string
     {
-        $permission_level = retrieve_permission_for_user(self::PERMISSION_REQUIRED);
-        if (PERMISSION_NOT_PERMITTED == $permission_level) {
-            return permission_denied();
-        }
         $session = session();
         $data    = [
             'page_title'       => lang('Role.index.page_title'),
@@ -52,7 +48,7 @@ class Role extends BaseController
             'user_session'     => $session->user,
             'roles'            => $session->roles,
             'current_role'     => $session->current_role,
-            'permission_level' => $permission_level
+            'permission_level' => PERMISSION_EDITABLE
         ];
         return view('system/role_index', $data);
     }
@@ -63,9 +59,6 @@ class Role extends BaseController
      */
     public function list(): ResponseInterface
     {
-        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
-            return permission_denied('datatables');
-        }
         $model              = new RoleMasterModel();
         $columns            = [
             '',
@@ -101,16 +94,9 @@ class Role extends BaseController
      */
     public function edit($role_name): string
     {
-        $permission_level = retrieve_permission_for_user(self::PERMISSION_REQUIRED);
-        if (PERMISSION_NOT_PERMITTED == $permission_level) {
-            return permission_denied();
-        }
         $role_master_model = new RoleMasterModel();
         $role_access_model = new RoleAccessModel();
         if ('new-role' == $role_name) {
-            if (PERMISSION_READ_ONLY == $permission_level) {
-                return permission_denied();
-            }
             $mode          = 'new';
             $role_accesses = [];
         } else {
@@ -123,7 +109,7 @@ class Role extends BaseController
         $data = [
             'page_title'         => ($mode == 'edit' ? lang('Role.edit.page_title', [$role_accesses['role_master']['role_name']]) : lang('Role.new.page_title')),
             'slug'               => 'role',
-            'permission_level'   => $permission_level,
+            'permission_level'   => PERMISSION_EDITABLE,
             'mode'               => $mode,
             'feature_master'     => retrieve_feature_master(),
             'role_accesses'      => $role_accesses,
@@ -140,9 +126,6 @@ class Role extends BaseController
      */
     public function editScript(): ResponseInterface
     {
-        if (PERMISSION_EDITABLE != retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
-            return permission_denied('json');
-        }
         $session           = session();
         $action            = $this->request->getPost('action');
         $role_master_model = new RoleMasterModel();
@@ -281,10 +264,6 @@ class Role extends BaseController
      */
     public function feature(): string
     {
-        $permission_level = retrieve_permission_for_user(self::PERMISSION_REQUIRED);
-        if (PERMISSION_NOT_PERMITTED == $permission_level) {
-            return permission_denied();
-        }
         $role_access_model = new RoleAccessModel();
         $data              = [
             'page_title'    => lang('Role.role_feature.page_title'),

@@ -36,9 +36,6 @@ class Journey extends BaseController
      */
     public function trip(): string
     {
-        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
-            return permission_denied();
-        }
         $session = session();
         $data    = [
             'page_title'   => 'Trip',
@@ -58,9 +55,6 @@ class Journey extends BaseController
      */
     public function tripList(): ResponseInterface
     {
-        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
-            return permission_denied('datatables');
-        }
         $model              = new JourneyMasterModel();
         $columns            = [
             '',
@@ -100,9 +94,6 @@ class Journey extends BaseController
      */
     public function tripEdit(string $trip_id = 'new'): string
     {
-        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
-            return permission_denied();
-        }
         $master_model       = new JourneyMasterModel();
         $trip_data          = [];
         $mode               = 'new';
@@ -150,9 +141,6 @@ class Journey extends BaseController
      */
     public function tripSave(): ResponseInterface
     {
-        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
-            return permission_denied('json');
-        }
         $session = session();
         $model   = new JourneyMasterModel();
         $mode    = $this->request->getPost('mode');
@@ -226,9 +214,6 @@ class Journey extends BaseController
      */
     public function tripStatistics(): string
     {
-        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
-            return permission_denied();
-        }
         $session  = session();
         $model    = new JourneyMasterModel();
         $raw_data = $model->where('journey_status', 'as_planned')->where('date_entry <=', date(DATE_FORMAT_DB))->findAll();
@@ -264,9 +249,6 @@ class Journey extends BaseController
      */
     public function tripFinance(): string
     {
-        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
-            return permission_denied();
-        }
         $session                = session();
         $transport_model        = new JourneyTransportModel();
         $accommodation_model    = new JourneyAccommodationModel();
@@ -340,9 +322,6 @@ class Journey extends BaseController
      */
     public function transport(): string
     {
-        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
-            return permission_denied();
-        }
         $session = session();
         $model   = new JourneyTransportModel();
         $data    = [
@@ -363,9 +342,6 @@ class Journey extends BaseController
      */
     public function transportList(): ResponseInterface
     {
-        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
-            return permission_denied('datatables');
-        }
         $model              = new JourneyTransportModel();
         $columns            = [
             '',
@@ -415,9 +391,6 @@ class Journey extends BaseController
      */
     public function transportEdit(string $transport_id = 'new', int $journey_id = 0): string
     {
-        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
-            return permission_denied();
-        }
         $session   = session();
         $model     = new JourneyTransportModel();
         $transport = [];
@@ -457,9 +430,6 @@ class Journey extends BaseController
      */
     public function transportSave(): ResponseInterface
     {
-        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
-            return permission_denied('json');
-        }
         helper('math');
         $session       = session();
         $model         = new JourneyTransportModel();
@@ -603,9 +573,6 @@ class Journey extends BaseController
      */
     public function transportStatistics(): string
     {
-        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
-            return permission_denied();
-        }
         $session    = session();
         $model      = new JourneyTransportModel();
         // Count everything that departs before end of today
@@ -653,9 +620,6 @@ class Journey extends BaseController
      */
     public function accommodation(): string
     {
-        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
-            return permission_denied();
-        }
         $session = session();
         $data    = [
             'page_title'   => 'Accommodation',
@@ -674,9 +638,6 @@ class Journey extends BaseController
      */
     public function accommodationList(): ResponseInterface
     {
-        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
-            return permission_denied('datatables');
-        }
         $model              = new JourneyAccommodationModel();
         $columns            = [
             '',
@@ -722,9 +683,6 @@ class Journey extends BaseController
      */
     public function accommodationEdit(string $accommodation_id = 'new', int $journey_id = 0): string
     {
-        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
-            return permission_denied();
-        }
         $session       = session();
         $model         = new JourneyAccommodationModel();
         $accommodation = [];
@@ -764,9 +722,6 @@ class Journey extends BaseController
      */
     public function accommodationSave(): ResponseInterface
     {
-        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
-            return permission_denied('json');
-        }
         $session                = session();
         $model                  = new JourneyAccommodationModel();
         $mode                   = $this->request->getPost('mode');
@@ -886,9 +841,6 @@ class Journey extends BaseController
      */
     public function accommodationStatistics(): string
     {
-        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
-            return permission_denied();
-        }
         $session    = session();
         $model      = new JourneyAccommodationModel();
         $by_country = [];
@@ -950,9 +902,6 @@ class Journey extends BaseController
      */
     public function attraction(): string
     {
-        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
-            return permission_denied();
-        }
         $session = session();
         $data    = [
             'page_title'   => 'Attraction',
@@ -971,9 +920,6 @@ class Journey extends BaseController
      */
     public function attractionList(): ResponseInterface
     {
-        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
-            return permission_denied('datatables');
-        }
         $model              = new JourneyAttractionModel();
         $columns            = [
             '',
@@ -1015,9 +961,6 @@ class Journey extends BaseController
      */
     public function attractionEdit(string $attraction_id = 'new', int $journey_id = 0): string
     {
-        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
-            return permission_denied();
-        }
         $session    = session();
         $model      = new JourneyAttractionModel();
         $attraction = [];
@@ -1057,9 +1000,6 @@ class Journey extends BaseController
      */
     public function attractionSave(): ResponseInterface
     {
-        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
-            return permission_denied('json');
-        }
         $session                = session();
         $model                  = new JourneyAttractionModel();
         $mode                   = $this->request->getPost('mode');
@@ -1147,9 +1087,6 @@ class Journey extends BaseController
      */
     public function attractionStatistics(): string
     {
-        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
-            return permission_denied();
-        }
         $session    = session();
         $model      = new JourneyAttractionModel();
         $raw_data   = $model->where('journey_status', 'as_planned')->where('attraction_date <=', date(DATE_FORMAT_DB))->orderBy('attraction_date', 'asc')->findAll();
@@ -1187,9 +1124,6 @@ class Journey extends BaseController
      */
     public function port(): string
     {
-        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
-            return permission_denied();
-        }
         $session   = session();
         $model     = new JourneyPortModel();
         $data      = [
@@ -1210,9 +1144,6 @@ class Journey extends BaseController
      */
     public function portList(): ResponseInterface
     {
-        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
-            return permission_denied('datatables');
-        }
         $model              = new JourneyPortModel();
         $columns            = [
             '',
@@ -1250,9 +1181,6 @@ class Journey extends BaseController
      */
     public function portEdit(string $port_id = 'new'): string
     {
-        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
-            return permission_denied();
-        }
         $session    = session();
         $model      = new JourneyPortModel();
         $port       = [];
@@ -1283,9 +1211,6 @@ class Journey extends BaseController
      */
     public function portSave(): ResponseInterface
     {
-        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
-            return permission_denied('json');
-        }
         $session                = session();
         $model                  = new JourneyPortModel();
         $mode                   = $this->request->getPost('mode');
@@ -1364,9 +1289,6 @@ class Journey extends BaseController
      */
     public function portStatistics(): string
     {
-        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
-            return permission_denied();
-        }
         $session         = session();
         $transport_model = new JourneyTransportModel();
         $port_model      = new JourneyPortModel();
@@ -1419,9 +1341,6 @@ class Journey extends BaseController
      */
     public function operator(): string
     {
-        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
-            return permission_denied();
-        }
         $session = session();
         $model   = new JourneyOperatorModel();
         $data    = [
@@ -1440,9 +1359,6 @@ class Journey extends BaseController
      */
     public function operatorList(): ResponseInterface
     {
-        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
-            return permission_denied('datatables');
-        }
         $model              = new JourneyOperatorModel();
         $columns            = [
             '',
@@ -1476,9 +1392,6 @@ class Journey extends BaseController
      */
     public function operatorEdit(string $operator_id = 'new'): string
     {
-        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
-            return permission_denied();
-        }
         $session    = session();
         $model      = new JourneyOperatorModel();
         $operator   = [];
@@ -1509,9 +1422,6 @@ class Journey extends BaseController
      */
     public function operatorSave(): ResponseInterface
     {
-        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
-            return permission_denied('json');
-        }
         $session                 = session();
         $model                   = new JourneyOperatorModel();
         $mode                    = $this->request->getPost('mode');
@@ -1576,9 +1486,6 @@ class Journey extends BaseController
      */
     public function operatorStatistics(): string
     {
-        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
-            return permission_denied();
-        }
         $session         = session();
         $transport_model = new JourneyTransportModel();
         $operator_model  = new JourneyOperatorModel();
@@ -1630,9 +1537,6 @@ class Journey extends BaseController
      */
     public function aircraftStatistics(): string
     {
-        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
-            return permission_denied();
-        }
         $session         = session();
         $types           = [
             'AIRBUS 319' => 'Narrow-body',
@@ -1689,9 +1593,6 @@ class Journey extends BaseController
      */
     public function holiday(): string
     {
-        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
-            return permission_denied();
-        }
         $session   = session();
         $data           = [
             'page_title'   => 'Holiday',
@@ -1708,9 +1609,6 @@ class Journey extends BaseController
      */
     public function holidayList(): ResponseInterface
     {
-        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
-            return permission_denied('datatables');
-        }
         $model              = new JourneyHolidayModel();
         $search             = $this->request->getPost('search');
         $search_value       = $search['value'];
@@ -1732,9 +1630,6 @@ class Journey extends BaseController
      */
     public function holidayEdit(string $holiday_id = 'new'): string
     {
-        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
-            return permission_denied();
-        }
         $session       = session();
         $holiday_model = new JourneyHolidayModel();
         $holiday       = [];
@@ -1767,9 +1662,6 @@ class Journey extends BaseController
      */
     public function holidaySave(): ResponseInterface
     {
-        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
-            return permission_denied('json');
-        }
         $session = session();
         $model   = new JourneyHolidayModel();
         $mode    = $this->request->getPost('mode');
@@ -1819,9 +1711,6 @@ class Journey extends BaseController
 
     public function export(): string
     {
-        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
-            return permission_denied();
-        }
         $journey_master    = new JourneyMasterModel();
         $journey_transport = new JourneyTransportModel();
         $journey_accom     = new JourneyAccommodationModel();
@@ -1856,9 +1745,6 @@ class Journey extends BaseController
 
     public function map(): string
     {
-        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
-            return permission_denied();
-        }
         $session    = session();
         $data       = [
             'page_title'        => 'Map',
@@ -2008,9 +1894,6 @@ class Journey extends BaseController
 
     public function fix(): void
     {
-        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
-            return;
-        }
         helper('math');
         $journey_transport = new JourneyTransportModel();
         $transport_raw     = $journey_transport->select('journey_transport.*, 
@@ -2061,9 +1944,6 @@ class Journey extends BaseController
 
     public function fix2(): void
     {
-        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
-            return;
-        }
         $journey_transport = new JourneyTransportModel();
         $transport_raw     = $journey_transport->select('journey_transport.id, 
             port_departure.country_code AS departure_country,

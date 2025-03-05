@@ -33,9 +33,6 @@ class Log extends BaseController
      */
     public function index(): string
     {
-        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
-            return permission_denied();
-        }
         $model   = new LogActivityModel();
         $data    = [
             'page_title'    => lang('Log.index.page_title'),
@@ -51,9 +48,6 @@ class Log extends BaseController
      */
     public function list(): ResponseInterface
     {
-        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
-            return permission_denied('datatables');
-        }
         $model              = new LogActivityModel();
         $columns            = [
             'done_at',
@@ -95,9 +89,6 @@ class Log extends BaseController
      */
     public function email(): string
     {
-        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
-            return permission_denied();
-        }
         $data    = [
             'page_title'    => lang('Log.email.page_title'),
             'slug'          => 'log-email'
@@ -111,9 +102,6 @@ class Log extends BaseController
      */
     public function emailList(): ResponseInterface
     {
-        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
-            return permission_denied('datatables');
-        }
         $model              = new LogEmailModel();
         $columns            = [
             'created_at',
@@ -152,9 +140,6 @@ class Log extends BaseController
      */
     public function fileList(): string
     {
-        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
-            return permission_denied();
-        }
         $data  = [
             'error_files'  => scandir(WRITEPATH . 'logs/'),
             'page_title'   => lang('Log.file_list.page_title'),
@@ -170,9 +155,6 @@ class Log extends BaseController
      */
     public function fileView(string $date): string
     {
-        if (PERMISSION_NOT_PERMITTED == retrieve_permission_for_user(self::PERMISSION_REQUIRED)) {
-            return permission_denied();
-        }
         $file_name = 'log-' . $date . '.log';
         $file_path = WRITEPATH . 'logs/' . $file_name;
         if (!file_exists($file_path)) {
