@@ -61,79 +61,142 @@
                     <h6><?= $session->display_name ?></h6>
                     <span><?= $session->user['employee_title'] ?></span>
                 </li>
-                <li class="sidebar-item <?= ('dashboard' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/dashboard') ?>"><i class="fa-solid fa-house-chimney fa-fw me-3"></i><span><?= lang('System.dashboard.page_title') ?></span></a></li>
-                <li class="sidebar-item <?= (in_array($slug, ['user', 'role', 'organization']) ? 'active' : '' ) ?>">
-                    <a data-bs-target="#sidebar-group-user-role" data-bs-toggle="collapse" class="sidebar-link <?= (in_array($slug, ['user', 'role', 'organization']) ? '' : 'collapsed' ) ?>" aria-expanded="<?= (in_array($slug, ['user', 'role', 'organization']) ? 'true' : 'false' ) ?>"><i class="fa-solid fa-user fa-fw me-3"></i><span>User/Role</span></a>
-                    <ul id="sidebar-group-user-role" class="sidebar-dropdown list-unstyled <?= (in_array($slug, ['user', 'role', 'organization']) ? '' : 'collapse' ) ?>" data-bs-parent="#sidebar" style="">
-                        <li class="sidebar-item <?= ('user' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/user') ?>"><span><?= lang('User.index.page_title') ?></span></a></li>
-                        <li class="sidebar-item <?= ('role' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/role') ?>"><span><?= lang('Role.index.page_title') ?></span></a></li>
-                        <li class="sidebar-item <?= ('organization' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/organization') ?>"><span><?= lang('Organization.page_title') ?></span></a></li>
-                    </ul>
-                </li>
-
-                <li class="sidebar-item <?= (TRUE ? 'active' : '' ) ?>">
-                    <a data-bs-target="#sidebar-xxx" data-bs-toggle="collapse" class="sidebar-link <?= (TRUE ? '' : 'collapsed' ) ?>" aria-expanded="<?= (TRUE ? 'true' : 'false' ) ?>">???</a>
-                    <ul id="sidebar-xxx" class="sidebar-dropdown list-unstyled <?= (TRUE ? '' : 'collapse' ) ?>" data-bs-parent="#sidebar" style="">
-                    </ul>
-                </li>
-
-                <li class="sidebar-item <?= (str_contains($slug, 'log') ? 'active' : '' ) ?>">
-                    <a data-bs-target="#sidebar-log" data-bs-toggle="collapse" class="sidebar-link <?= (str_contains($slug, 'log') ? '' : 'collapsed' ) ?>" aria-expanded="<?= (str_contains($slug, 'log') ? 'true' : 'false' ) ?>"><i class="fa-solid fa-list fa-fw me-3"></i><span>Log</span></a>
-                    <ul id="sidebar-log" class="sidebar-dropdown list-unstyled <?= (str_contains($slug, 'log') ? '' : 'collapse' ) ?>" data-bs-parent="#sidebar" style="">
-                        <li class="sidebar-item <?= ('log' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/log') ?>"><span><?= lang('Log.index.page_title') ?></span></a></li>
-                        <li class="sidebar-item <?= ('log-email' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/log/email') ?>"><span><?= lang('Log.email.page_title') ?></span></a></li>
-                        <li class="sidebar-item <?= ('log-file' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/log/log-file') ?>"><span><?= lang('Log.file_list.page_title') ?></span></a></li>
-                    </ul>
-                </li>
-
-                <li class="sidebar-header"><b>Finance</b></li>
-                <li class="sidebar-header">Employment</li>
-                <li class="sidebar-item <?= ('company' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/employment') ?>"><i class="fa-solid fa-suitcase fa-fw me-3"></i><span>Company</span></a></li>
-                <li class="sidebar-item <?= ('salary' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/employment/salary') ?>"><i class="fa-solid fa-dollar-sign fa-fw me-3"></i><span>Salary</span></a></li>
-                <li class="sidebar-item <?= ('cpf' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/employment/cpf') ?>"><i class="fa-solid fa-piggy-bank fa-fw me-3"></i><span>CPF</span></a></li>
-                <li class="sidebar-item <?= ('freelance' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/employment/freelance') ?>"><i class="fa-solid fa-laptop-code fa-fw me-3"></i><span>Freelance</span></a></li>
-                <li class="sidebar-item <?= ('freelance-income' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/employment/freelance-income') ?>"><i class="fa-solid fa-dollar-sign fa-fw me-3"></i><span>Freelance Income</span></a></li>
-<!--            <li class="sidebar-item --><?php //= ('investment' == $slug ? 'active' : '' ) ?><!--"><a class="sidebar-link disabled" disabled href="--><?php //= base_url($session->locale . '/office/investment') ?><!--"><i class="fa-solid fa-line-chart fa-fw me-3"></i><span>Investment</span></a></li>-->
-                <li class="sidebar-header">Tax</li>
-                <li class="sidebar-item <?= ('tax' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/tax') ?>"><i class="fa-solid fa-building-columns fa-fw me-3"></i><span>Tax</span></a></li>
-                <li class="sidebar-item <?= ('tax-calculator' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/tax/calculator') ?>"><i class="fa-solid fa-calculator fa-fw me-3"></i><span>Tax Calculator</span></a></li>
-                <li class="sidebar-item <?= ('tax-projection' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/tax/projection') ?>"><i class="fa-solid fa-chart-line fa-fw me-3"></i><span>Tax Projection</span></a></li>
-                <li class="sidebar-item <?= ('tax-comparison' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/tax/comparison') ?>"><i class="fa-solid fa-code-compare fa-fw me-3"></i><span>Tax Comparison</span></a></li>
-                <!-- JOURNEY -->
-                <li class="sidebar-header"><b>Journey</b></li>
-                <li class="sidebar-item <?= ('trip' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/journey/trip') ?>"><i class="fa-solid fa-passport fa-fw me-3"></i><span>Trip</span></a></li>
-                <li class="sidebar-item <?= ('transport' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/journey/transport') ?>"><i class="fa-solid fa-person-walking-luggage fa-fw me-3"></i><span>Transportation</span></a></li>
-                <li class="sidebar-item <?= ('accommodation' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/journey/accommodation') ?>"><i class="fa-solid fa-bed fa-fw me-3"></i><span>Accommodation</span></a></li>
-                <li class="sidebar-item <?= ('attraction' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/journey/attraction') ?>"><i class="fa-solid fa-ticket fa-fw me-3"></i><span>Attraction</span></a></li>
-                <li class="sidebar-item <?= ('port' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/journey/port') ?>"><i class="fa-solid fa-location-dot fa-fw me-3"></i><span>Port</span></a></li>
-                <li class="sidebar-item <?= ('operator' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/journey/operator') ?>"><i class="fa-solid fa-user-tie fa-fw me-3"></i><span>Operator</span></a></li>
-                <li class="sidebar-item <?= ('holiday' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/journey/holiday') ?>"><i class="fa-solid fa-umbrella-beach fa-fw me-3"></i><span>Holiday</span></a></li>
-                <li class="sidebar-item <?= (str_contains($slug, '-stats') ? 'active' : '' ) ?>">
-                    <a data-bs-target="#sidebar-journey-statistics" data-bs-toggle="collapse" class="sidebar-link <?= (str_contains($slug, '-stats') ? '' : 'collapsed' ) ?>" aria-expanded="<?= (str_contains($slug, '-stats') ? 'true' : 'false' ) ?>"><i class="fa-solid fa-fw fa-chart-line"></i> Statistics</a>
-                    <ul id="sidebar-journey-statistics" class="sidebar-dropdown list-unstyled <?= (str_contains($slug, '-stats') ? '' : 'collapse' ) ?>" data-bs-parent="#sidebar" style="">
-                        <li class="sidebar-item <?= ('trip-stats' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/journey/trip/statistics') ?>">Trip</a></li>
-                        <li class="sidebar-item <?= ('transport-stats' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/journey/transport/statistics') ?>">Transport</a></li>
-                        <li class="sidebar-item <?= ('accommodation-stats' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/journey/accommodation/statistics') ?>">Accommodation</a></li>
-                        <li class="sidebar-item <?= ('attraction-stats' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/journey/attraction/statistics') ?>">Attraction</a></li>
-                        <li class="sidebar-item <?= ('port-stats' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/journey/port/statistics') ?>">Port</a></li>
-                        <li class="sidebar-item <?= ('operator-stats' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/journey/operator/statistics') ?>">Operator</a></li>
-                        <li class="sidebar-item <?= ('aircraft-stats' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/journey/operator/aircraft/statistics') ?>">Aircraft</a></li>
-                        <li class="sidebar-item <?= ('trip-finance-stats' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/journey/trip/finance') ?>">Finance</a></li>
-                    </ul>
-                </li>
-                <li class="sidebar-item <?= ('map' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/journey/map') ?>"><i class="fa-solid fa-map fa-fw me-3"></i><span>Map</span></a></li>
-                <!-- PROFILE -->
-                <li class="sidebar-header"><b>Profile</b></li>
-                <li class="sidebar-item <?= ('profile-data' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/profile/data') ?>"><i class="fa-regular fa-address-card fa-fw me-3"></i><span>Profile</span></a></li>
-                <li class="sidebar-item <?= ('resume' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/profile/resume') ?>"><i class="fa-regular fa-file-lines fa-fw me-3"></i><span>Resume</span></a></li>
-                <!-- HEALTH -->
-                <li class="sidebar-header"><b>Health</b></li>
-                <li class="sidebar-item <?= ('health-gym' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/health/gym') ?>"><i class="fa-solid fa-dumbbell fa-fw me-3"></i><span>Gym</span></a></li>
-                <li class="sidebar-item <?= ('health-vaccine' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/health/vaccine') ?>"><i class="fa-solid fa-syringe fa-fw me-3"></i><span>Vaccine</span></a></li>
-                <li class="sidebar-item <?= ('health-activity' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/health/activity') ?>"><i class="fa-solid fa-spa fa-fw me-3"></i><span>Activity</span></a></li>
-                <li class="sidebar-item <?= ('health-measurement' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/health/measurement') ?>"><i class="fa-solid fa-ruler fa-fw me-3"></i><span>Measurement</span></a></li>
-                <li class="sidebar-item <?= ('health-mbti' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/health/mbti') ?>"><i class="fa-regular fa-face-smile fa-fw me-3"></i><span>MBTI</span></a></li>
-                <li class="sidebar-item <?= ('health-depression' == $slug ? 'active' : '' ) ?>"><a class="sidebar-link" href="<?= base_url($session->locale . '/office/health/depression') ?>"><i class="fa-regular fa-face-frown fa-fw me-3"></i><span>Depression</span></a></li>
+                <?php
+                $navigation = [
+                    [
+                        'header' => null,
+                        'items'  => [
+                            '/office/dashboard' => '<i class="fa-solid fa-house-chimney fa-fw me-3"></i> Dashboard',
+                        ]
+                    ],
+                    [
+                        'header' => 'Finance',
+                        'menu'   => [
+                            [
+                                'id'    => 'employment',
+                                'group' => '<i class="fa-solid fa-suitcase fa-fw me-3"></i> Employment',
+                                'items' => [
+                                    '/office/employment'                  => 'Company',
+                                    '/office/employment/salary'           => 'Salary',
+                                    '/office/employment/cpf'              => 'CPF',
+                                    '/office/employment/freelance'        => 'Freelance',
+                                    '/office/employment/freelance-income' => 'Freelance Income',
+                                ]
+                            ],
+                            [
+                                'id'    => 'tax',
+                                'group' => '<i class="fa-solid fa-building-columns fa-fw me-3"></i> Tax',
+                                'items' => [
+                                    '/office/tax'            => 'Tax',
+                                    '/office/tax/calculator' => 'Tax Calculator',
+                                    '/office/tax/projection' => 'Tax Projection',
+                                    '/office/tax/comparison' => 'Tax Comparison',
+                                ]
+                            ],
+                        ]
+                    ],
+                    [
+                        'header' => 'Journey',
+                        'menu' => [
+                            [
+                                'id'    => 'trip',
+                                'group' => '<i class="fa-solid fa-passport fa-fw me-3"></i> Trip',
+                                'items' => [
+                                    '/office/journey/trip'                         => 'Trip',
+                                    '/office/journey/trip/statistics'              => 'Trip Statistics',
+                                    '/office/journey/transport'                    => 'Transportation',
+                                    '/office/journey/transport/statistics'         => 'Transportation Statistics',
+                                    '/office/journey/accommodation'                => 'Accommodation',
+                                    '/office/journey/accommodation/statistics'     => 'Accommodation Statistics',
+                                    '/office/journey/attraction'                   => 'Attraction',
+                                    '/office/journey/attraction/statistics'        => 'Attraction Statistics',
+                                    '/office/journey/port'                         => 'Port',
+                                    '/office/journey/port/statistics'              => 'Port Statistics',
+                                    '/office/journey/operator'                     => 'Operator',
+                                    '/office/journey/operator/statistics'          => 'Operator Statistics',
+                                    '/office/journey/operator/aircraft/statistics' => 'Aircraft Statistics',
+                                    '/office/journey/holiday'                      => 'Holiday',
+                                    '/office/journey/map'                          => 'Map',
+                                    '/office/journey/trip/finance'                 => 'Finance',
+                                ]
+                            ]
+                        ]
+                    ],
+                    [
+                        'header' => 'Health',
+                        'menu'   => [
+                            [
+                                'id'    => 'health',
+                                'group' => '<i class="fa-solid fa-dumbbell fa-fw me-3"></i> Health',
+                                'items' => [
+                                    '/office/health/gym'         => 'Gym',
+                                    '/office/health/measurement' => 'Measurement',
+                                    '/office/health/activity'    => 'Activity',
+                                    '/office/health/vaccine'     => 'Vaccine',
+                                ]
+                            ],
+                            [
+                                'id'    => 'health-forms',
+                                'group' => '<i class="fa-solid fa-ruler fa-fw me-3"></i> Measurement',
+                                'items' => [
+                                    '/office/health/mbti'       => 'MBTI',
+                                    '/office/health/depression' => 'Depression',
+                                ]
+                            ],
+                        ]
+                    ],
+                    [
+                        'header' => 'Profile',
+                        'items'  => [
+                            '/office/profile/data'   => '<i class="fa-solid fa-user-cog fa-fw me-3"></i> Profile',
+                            '/office/profile/resume' => '<i class="fa-regular fa-file-lines fa-fw me-3"></i> Resume',
+                        ]
+                    ],
+                    [
+                        'header' => 'System',
+                        'menu'   => [
+                            [
+                                'id'    => 'user',
+                                'group' => '<i class="fa-solid fa-user fa-fw me-3"></i> User/Role',
+                                'items' => [
+                                    '/office/user'         => 'User',
+                                    '/office/role'         => 'Role',
+                                    '/office/organization' => 'Organization',
+                                ]
+                            ],
+                            [
+                                'id'    => 'log',
+                                'group' => '<i class="fa-solid fa-list fa-fw me-3"></i> Log',
+                                'items' => [
+                                    '/office/log'       => 'Log',
+                                    '/office/log/email' => 'Email',
+                                    '/office/log/file'  => 'File List',
+                                ]
+                            ]
+                        ]
+                    ]
+                ];
+                foreach ($navigation as $group) {
+                    if (!empty($group['header'])) {
+                        echo '<li class="sidebar-header">' . $group['header'] . '</li>';
+                    }
+                    if (!empty($group['menu'])) {
+                        foreach ($group['menu'] as $menu) {
+                            echo '<li class="sidebar-item"><a data-bs-target="#sidebar-group-' . $menu['id'] . '" data-bs-toggle="collapse" class="sidebar-link collapsed" aria-expanded="false"><span>' . $menu['group'] . '</span></a>';
+                            echo '<ul id="sidebar-group-' . $menu['id'] . '" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar" style="">';
+                            foreach ($menu['items'] as $url => $label) {
+                                echo '<li class="sidebar-item ' . ($slug == $url ? 'active' : '') . '"><a class="sidebar-link" href="' . base_url($session->locale . $url) . '">' . $label . '</a></li>';
+                            }
+                            echo '</ul></li>';
+                        }
+                    }
+                    if (!empty($group['items'])) {
+                        foreach ($group['items'] as $url => $label) {
+                            echo '<li class="sidebar-item ' . ($slug == $url ? 'active' : '') . '"><a class="sidebar-link" href="' . base_url($session->locale . $url) . '">' . $label . '</a></li>';
+                        }
+                    }
+                }
+                ?>
             </ul>
             <!-- SIDEBAR DOWNLOAD BTN -->
             <div class="sidebar-cta d-none">
