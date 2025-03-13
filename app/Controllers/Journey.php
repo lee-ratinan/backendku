@@ -1820,6 +1820,7 @@ class Journey extends BaseController
                 ],
                 'ID' => [
                     'ID-BA', // Bali
+                    'ID-BT', // Banten - Tangerang, Karawaci
                     'ID-JK', // Jakarta
                     'ID-KR', // Kepulauan Riau - Batam
                 ],
@@ -1835,6 +1836,8 @@ class Journey extends BaseController
                     'MY-01', // Johor - JB, Desaru
                     'MY-02', // Kedah - Pulau Langkawi
                     'MY-07', // Pulau Pinang
+                    'MY-08', // Perak - Ipoh
+//                    'MY-10', // Selangor - KLIA - not included, just the airport
                     'MY-14', // Wilayah Persekutuan Kuala Lumpur
                 ],
                 'PH' => [
@@ -1876,6 +1879,7 @@ class Journey extends BaseController
                 'TW' => [
                     'TW-NWT', // New Taipei
                     'TW-TPE', // Taipei - Taoyuan is not counted, just the airport
+                    'TW-TXG', // Taichung
                     'TW-HUA'  // Hualien
                 ],
                 'US' => [

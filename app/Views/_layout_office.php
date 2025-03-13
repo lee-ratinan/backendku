@@ -66,7 +66,7 @@
                     [
                         'header' => null,
                         'items'  => [
-                            '/office/dashboard' => '<i class="fa-solid fa-house-chimney fa-fw me-3"></i> Dashboard',
+                            '/office/dashboard' => '<i class="fa-solid fa-house-chimney fa-fw"></i> Dashboard',
                         ]
                     ],
                     [
@@ -74,18 +74,18 @@
                         'menu'   => [
                             [
                                 'id'    => 'employment',
-                                'group' => '<i class="fa-solid fa-suitcase fa-fw me-3"></i> Employment',
+                                'group' => '<i class="fa-solid fa-suitcase fa-fw"></i> Employment',
                                 'items' => [
                                     '/office/employment'                  => 'Company',
                                     '/office/employment/salary'           => 'Salary',
-                                    '/office/employment/cpf'              => 'CPF',
                                     '/office/employment/freelance'        => 'Freelance',
                                     '/office/employment/freelance-income' => 'Freelance Income',
+                                    '/office/employment/cpf'              => 'CPF',
                                 ]
                             ],
                             [
                                 'id'    => 'tax',
-                                'group' => '<i class="fa-solid fa-building-columns fa-fw me-3"></i> Tax',
+                                'group' => '<i class="fa-solid fa-building-columns fa-fw"></i> Tax',
                                 'items' => [
                                     '/office/tax'            => 'Tax',
                                     '/office/tax/calculator' => 'Tax Calculator',
@@ -93,6 +93,13 @@
                                     '/office/tax/comparison' => 'Tax Comparison',
                                 ]
                             ],
+                            [
+                                'id'    =>'investment',
+                                'group' => '<i class="fa-solid fa-chart-line fa-fw"></i> Investment',
+                                'items' => [
+                                    '/office/investment' => 'Investment',
+                                ]
+                            ]
                         ]
                     ],
                     [
@@ -100,24 +107,30 @@
                         'menu' => [
                             [
                                 'id'    => 'trip',
-                                'group' => '<i class="fa-solid fa-passport fa-fw me-3"></i> Trip',
+                                'group' => '<i class="fa-solid fa-plane-departure fa-fw"></i> Trip',
                                 'items' => [
-                                    '/office/journey/trip'                         => 'Trip',
-                                    '/office/journey/trip/statistics'              => 'Trip Statistics',
-                                    '/office/journey/transport'                    => 'Transportation',
-                                    '/office/journey/transport/statistics'         => 'Transportation Statistics',
-                                    '/office/journey/accommodation'                => 'Accommodation',
-                                    '/office/journey/accommodation/statistics'     => 'Accommodation Statistics',
-                                    '/office/journey/attraction'                   => 'Attraction',
-                                    '/office/journey/attraction/statistics'        => 'Attraction Statistics',
-                                    '/office/journey/port'                         => 'Port',
-                                    '/office/journey/port/statistics'              => 'Port Statistics',
-                                    '/office/journey/operator'                     => 'Operator',
-                                    '/office/journey/operator/statistics'          => 'Operator Statistics',
-                                    '/office/journey/operator/aircraft/statistics' => 'Aircraft Statistics',
-                                    '/office/journey/holiday'                      => 'Holiday',
-                                    '/office/journey/map'                          => 'Map',
-                                    '/office/journey/trip/finance'                 => 'Finance',
+                                    '/office/journey/trip'                         => '<i class="fa-solid fa-list fa-fw"></i> Trip',
+                                    '/office/journey/trip/statistics'              => '<i class="fa-solid fa-chart-line fa-fw"></i> Trip',
+                                    '/office/journey/transport'                    => '<i class="fa-solid fa-list fa-fw"></i> Transportation',
+                                    '/office/journey/transport/statistics'         => '<i class="fa-solid fa-chart-line fa-fw"></i> Transportation',
+                                    '/office/journey/accommodation'                => '<i class="fa-solid fa-list fa-fw"></i> Accommodation',
+                                    '/office/journey/accommodation/statistics'     => '<i class="fa-solid fa-chart-line fa-fw"></i> Accommodation',
+                                    '/office/journey/attraction'                   => '<i class="fa-solid fa-list fa-fw"></i> Attraction',
+                                    '/office/journey/attraction/statistics'        => '<i class="fa-solid fa-chart-line fa-fw"></i> Attraction',
+                                    '/office/journey/holiday'                      => '<i class="fa-solid fa-calendar-check fa-fw"></i> Holiday',
+                                    '/office/journey/map'                          => '<i class="fa-solid fa-map fa-fw"></i> Map',
+                                    '/office/journey/trip/finance'                 => '<i class="fa-solid fa-chart-line fa-fw"></i> Finance',
+                                ]
+                            ],
+                            [
+                                'id'    => 'trip-support-data',
+                                'group' => '<i class="fa-solid fa-file fa-fw"></i> Supported Data',
+                                'items' => [
+                                    '/office/journey/port'                         => '<i class="fa-solid fa-list fa-fw"></i> Port',
+                                    '/office/journey/port/statistics'              => '<i class="fa-solid fa-chart-line fa-fw"></i> Port',
+                                    '/office/journey/operator'                     => '<i class="fa-solid fa-list fa-fw"></i> Operator',
+                                    '/office/journey/operator/statistics'          => '<i class="fa-solid fa-chart-line fa-fw"></i> Operator',
+                                    '/office/journey/operator/aircraft/statistics' => '<i class="fa-solid fa-chart-line fa-fw"></i> Aircraft',
                                 ]
                             ]
                         ]
@@ -127,7 +140,7 @@
                         'menu'   => [
                             [
                                 'id'    => 'health',
-                                'group' => '<i class="fa-solid fa-dumbbell fa-fw me-3"></i> Health',
+                                'group' => '<i class="fa-solid fa-dumbbell fa-fw"></i> Health',
                                 'items' => [
                                     '/office/health/gym'         => 'Gym',
                                     '/office/health/measurement' => 'Measurement',
@@ -137,9 +150,9 @@
                             ],
                             [
                                 'id'    => 'health-forms',
-                                'group' => '<i class="fa-solid fa-ruler fa-fw me-3"></i> Measurement',
+                                'group' => '<i class="fa-solid fa-file fa-fw"></i> Forms',
                                 'items' => [
-                                    '/office/health/mbti'       => 'MBTI',
+                                    '/office/health/mbti'       => 'MBTI (Personality)',
                                     '/office/health/depression' => 'Depression',
                                 ]
                             ],
@@ -148,8 +161,8 @@
                     [
                         'header' => 'Profile',
                         'items'  => [
-                            '/office/profile/data'   => '<i class="fa-solid fa-user-cog fa-fw me-3"></i> Profile',
-                            '/office/profile/resume' => '<i class="fa-regular fa-file-lines fa-fw me-3"></i> Resume',
+                            '/office/profile/data'   => '<i class="fa-solid fa-user-cog fa-fw"></i> Profile',
+                            '/office/profile/resume' => '<i class="fa-regular fa-file-lines fa-fw"></i> Resume',
                         ]
                     ],
                     [
@@ -157,7 +170,7 @@
                         'menu'   => [
                             [
                                 'id'    => 'user',
-                                'group' => '<i class="fa-solid fa-user fa-fw me-3"></i> User/Role',
+                                'group' => '<i class="fa-solid fa-user fa-fw"></i> User/Role',
                                 'items' => [
                                     '/office/user'         => 'User',
                                     '/office/role'         => 'Role',
@@ -166,11 +179,11 @@
                             ],
                             [
                                 'id'    => 'log',
-                                'group' => '<i class="fa-solid fa-list fa-fw me-3"></i> Log',
+                                'group' => '<i class="fa-solid fa-list fa-fw"></i> Log',
                                 'items' => [
-                                    '/office/log'       => 'Log',
-                                    '/office/log/email' => 'Email',
-                                    '/office/log/file'  => 'File List',
+                                    '/office/log'          => 'Log',
+                                    '/office/log/email'    => 'Email',
+                                    '/office/log/log-file' => 'File List',
                                 ]
                             ]
                         ]
@@ -182,8 +195,11 @@
                     }
                     if (!empty($group['menu'])) {
                         foreach ($group['menu'] as $menu) {
-                            echo '<li class="sidebar-item"><a data-bs-target="#sidebar-group-' . $menu['id'] . '" data-bs-toggle="collapse" class="sidebar-link collapsed" aria-expanded="false"><span>' . $menu['group'] . '</span></a>';
-                            echo '<ul id="sidebar-group-' . $menu['id'] . '" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar" style="">';
+                            $active    = ($menu['id'] == @$slug_group ? 'active' : '');
+                            $collapsed = ($menu['id'] == @$slug_group ? '' : 'collapsed');
+                            $collapse  = ($menu['id'] == @$slug_group ? '' : 'collapse');
+                            echo '<li class="sidebar-item ' . $active . '"><a data-bs-target="#sidebar-group-' . $menu['id'] . '" data-bs-toggle="collapse" class="sidebar-link ' . $collapsed . '" aria-expanded="false"><span>' . $menu['group'] . '</span></a>';
+                            echo '<ul id="sidebar-group-' . $menu['id'] . '" class="sidebar-dropdown list-unstyled ' . $collapse . '" data-bs-parent="#sidebar" style="">';
                             foreach ($menu['items'] as $url => $label) {
                                 echo '<li class="sidebar-item ' . ($slug == $url ? 'active' : '') . '"><a class="sidebar-link" href="' . base_url($session->locale . $url) . '">' . $label . '</a></li>';
                             }
@@ -259,56 +275,6 @@
                             </div>
                         </div>
                     </li>
-                    <li class="nav-item dropdown d-none">
-                        <a class="nav-icon dropdown-toggle" href="#" id="alertsDropdown" data-bs-toggle="dropdown">
-                            <div class="position-relative">
-                                <i class="align-middle text-body" data-lucide="bell-off"></i>
-                            </div>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end py-0" aria-labelledby="alertsDropdown">
-                            <div class="dropdown-menu-header">
-                                4 New Notifications
-                            </div>
-                            <div class="list-group">
-                                <a href="#" class="list-group-item">
-                                    <div class="row g-0 align-items-center">
-                                        <div class="col-2">
-                                            <i class="text-danger" data-lucide="alert-circle"></i>
-                                        </div>
-                                        <div class="col-10">
-                                            <div>Update completed</div>
-                                            <div class="text-muted small mt-1">Restart server 12 to complete the update.</div>
-                                            <div class="text-muted small mt-1">2h ago</div>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="dropdown-menu-footer">
-                                <a href="#" class="text-muted">Show all notifications</a>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="nav-item nav-theme-toggle dropdown d-none">
-                        <a class="nav-icon js-theme-toggle" href="#">
-                            <div class="position-relative">
-                                <i class="align-middle text-body nav-theme-toggle-light" data-lucide="sun"></i>
-                                <i class="align-middle text-body nav-theme-toggle-dark" data-lucide="moon"></i>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-flag dropdown-toggle" href="#" id="languageDropdown" data-bs-toggle="dropdown"><i class="flag-icon flag-icon-us small"></i></a>
-                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="languageDropdown">
-                            <a class="dropdown-item" href="<?= base_url('en/office/dashboard') ?>">
-                                <i class="flag-icon flag-icon-us"></i>
-                                <span class="align-middle">English (US)</span>
-                            </a>
-                            <a class="dropdown-item" href="<?= base_url('th/office/dashboard') ?>">
-                                <i class="flag-icon flag-icon-th"></i>
-                                <span class="align-middle">ภาษาไทย</span>
-                            </a>
-                        </div>
-                    </li>
                     <li class="nav-item dropdown">
                         <a class="nav-icon dropdown-toggle d-inline-block d-sm-none" href="#" data-bs-toggle="dropdown">
                             <i class="align-middle" data-lucide="settings"></i>
@@ -318,8 +284,7 @@
                             <span><?= $session->display_name ?></span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-end">
-                            <a class="dropdown-item" href="<?= base_url($session->locale . '/office/profile') ?>"><i class="fa-solid fa-user-cog fa-fw me-3"></i><span><?= lang('System.menu.my_profile') ?></span></a>
-                            <a class="dropdown-item" href="<?= base_url($session->locale . '/office/switch-role') ?>"><i class="fa-solid fa-arrows-rotate fa-fw me-3"></i><span><?= lang('System.menu.switch_role') ?></span></a>
+                            <a class="dropdown-item" href="<?= base_url($session->locale . '/office/profile') ?>"><i class="fa-solid fa-user-cog fa-fw"></i><span><?= lang('System.menu.my_profile') ?></span></a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="<?= base_url('logout') ?>"><?= lang('System.menu.log_out') ?></a>
                         </div>
@@ -337,9 +302,8 @@
                 <div class="row text-muted">
                     <div class="col-md-6">
                         <ul class="list-inline">
-                            <li class="list-inline-item"><a class="text-muted" href="<?= base_url($session->locale . '/office/profile') ?>">Profile</a></li>
-                            <li class="list-inline-item"><a class="text-muted" href="<?= base_url($session->locale . '/office/switch-role') ?>">Switch Role</a></li>
-                            <li class="list-inline-item"><a class="text-muted" href="<?= base_url('logout') ?>">Sign out</a></li>
+                            <li class="list-inline-item">[ <a class="text-muted" href="<?= base_url($session->locale . '/office/profile') ?>">Profile</a> ]</li>
+                            <li class="list-inline-item">[ <a class="text-muted" href="<?= base_url('logout') ?>">Sign out</a> ]</li>
                         </ul>
                     </div>
                     <div class="col-md-6 text-md-end">

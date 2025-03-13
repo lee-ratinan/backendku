@@ -38,7 +38,8 @@ class Organization extends BaseController
         $model   = new OrganizationMasterModel();
         $data    = [
             'page_title'     => lang('Organization.page_title'),
-            'slug'           => 'organization',
+            'slug_group'     => 'user',
+            'slug'           => '/office/organization',
             'organization'   => $model->first(),
             'configurations' => $model->getConfigurations()
         ];

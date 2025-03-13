@@ -48,7 +48,8 @@ class User extends BaseController
         $session = session();
         $data    = [
             'page_title'       => lang('User.index.page_title'),
-            'slug'             => 'user',
+            'slug_group'       => 'user',
+            'slug'             => '/office/user',
             'permission_level' => PERMISSION_EDITABLE,
             'user_session'     => $session->user,
             'roles'            => $session->roles,
@@ -130,7 +131,8 @@ class User extends BaseController
         }
         $data = [
             'page_title'         => $page_title,
-            'slug'               => 'user',
+            'slug_group'         => 'user',
+            'slug'               => '/office/user',
             'permission_level'   => PERMISSION_EDITABLE,
             'user_configuration' => $user_model->getConfigurations(),
             'mode'               => $mode,
@@ -273,7 +275,8 @@ class User extends BaseController
         }
         $data = [
             'page_title' => $user['user_name_first'] . ' ' . $user['user_name_family'],
-            'slug'       => 'public-profile',
+            'slug_group' => 'user',
+            'slug'       => '/office/user',
             'user'       => $user
         ];
         return view('system/user_public_profile', $data);

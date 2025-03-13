@@ -36,7 +36,8 @@ class Log extends BaseController
         $model   = new LogActivityModel();
         $data    = [
             'page_title'    => lang('Log.index.page_title'),
-            'slug'          => 'log',
+            'slug_group'    => 'log',
+            'slug'          => '/office/log',
             'activity_keys' => $model->getActivityKeys()
         ];
         return view('system/log_index', $data);
@@ -91,7 +92,8 @@ class Log extends BaseController
     {
         $data    = [
             'page_title'    => lang('Log.email.page_title'),
-            'slug'          => 'log-email'
+            'slug_group'    => 'log',
+            'slug'          => '/office/log/email'
         ];
         return view('system/log_email', $data);
     }
@@ -143,7 +145,8 @@ class Log extends BaseController
         $data  = [
             'error_files'  => scandir(WRITEPATH . 'logs/'),
             'page_title'   => lang('Log.file_list.page_title'),
-            'slug'         => 'log-file'
+            'slug_group'   => 'log',
+            'slug'         => '/office/log/log-file'
         ];
         return view('system/log_file_list', $data);
     }
@@ -163,7 +166,8 @@ class Log extends BaseController
         $file_content = file_get_contents($file_path);
         $data         = [
             'page_title'   => lang('Log.file_view.page_title', [date(DATE_FORMAT_UI, strtotime($date))]),
-            'slug'         => 'log-file',
+            'slug_group'   => 'log',
+            'slug'         => '/office/log/log-file',
             'file_name'    => $file_name,
             'file_content' => $file_content
         ];

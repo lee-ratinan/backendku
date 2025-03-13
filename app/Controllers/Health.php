@@ -309,7 +309,8 @@ class Health extends BaseController
         $session = session();
         $data    = [
             'page_title'   => 'Gym',
-            'slug'         => 'health-gym',
+            'slug_group'   => 'health',
+            'slug'         => '/office/health/gym',
             'user_session' => $session->user,
             'roles'        => $session->roles,
             'current_role' => $session->current_role
@@ -325,7 +326,8 @@ class Health extends BaseController
         $session = session();
         $data    = [
             'page_title'   => 'Gym Finder',
-            'slug'         => 'health-gym',
+            'slug_group'   => 'health',
+            'slug'         => '/office/health/gym',
             'user_session' => $session->user,
             'roles'        => $session->roles,
             'current_role' => $session->current_role
@@ -383,7 +385,8 @@ class Health extends BaseController
         $session = session();
         $data    = [
             'page_title'   => 'Vaccine',
-            'slug'         => 'health-vaccine',
+            'slug_group'   => 'health',
+            'slug'         => '/office/health/vaccine',
             'user_session' => $session->user,
             'roles'        => $session->roles,
             'current_role' => $session->current_role
@@ -399,7 +402,8 @@ class Health extends BaseController
         $session = session();
         $data    = [
             'page_title'   => 'Activity',
-            'slug'         => 'health-activity',
+            'slug_group'   => 'health',
+            'slug'         => '/office/health/activity',
             'user_session' => $session->user,
             'roles'        => $session->roles,
             'current_role' => $session->current_role,
@@ -461,7 +465,8 @@ class Health extends BaseController
         $session = session();
         $data    = [
             'page_title'   => 'Edit Activity',
-            'slug'         => 'health-activity',
+            'slug_group'   => 'health',
+            'slug'         => '/office/health/activity',
             'user_session' => $session->user,
             'roles'        => $session->roles,
             'current_role' => $session->current_role,

@@ -113,7 +113,7 @@ class Profile extends BaseController
         $model   = new ProfileIdentityModel();
         $data    = [
             'page_title'       => 'Profile',
-            'slug'             => 'profile-data',
+            'slug'             => '/office/profile/data',
             'user_session'     => $session->user,
             'roles'            => $session->roles,
             'current_role'     => $session->current_role,
@@ -131,7 +131,8 @@ class Profile extends BaseController
         $session = session();
         $data    = [
             'page_title'       => 'Resume',
-            'slug'             => 'resume',
+            'slug_group'       => 'office',
+            'slug'             => '/office/profile/resume',
             'user_session'     => $session->user,
             'roles'            => $session->roles,
             'current_role'     => $session->current_role

@@ -44,7 +44,8 @@ class Role extends BaseController
         $session = session();
         $data    = [
             'page_title'       => lang('Role.index.page_title'),
-            'slug'             => 'role',
+            'slug_group'       => 'user',
+            'slug'             => '/office/role',
             'user_session'     => $session->user,
             'roles'            => $session->roles,
             'current_role'     => $session->current_role,
@@ -108,7 +109,8 @@ class Role extends BaseController
         }
         $data = [
             'page_title'         => ($mode == 'edit' ? lang('Role.edit.page_title', [$role_accesses['role_master']['role_name']]) : lang('Role.new.page_title')),
-            'slug'               => 'role',
+            'slug_group'         => 'user',
+            'slug'               => '/office/role',
             'permission_level'   => PERMISSION_EDITABLE,
             'mode'               => $mode,
             'feature_master'     => retrieve_feature_master(),
@@ -267,7 +269,8 @@ class Role extends BaseController
         $role_access_model = new RoleAccessModel();
         $data              = [
             'page_title'    => lang('Role.role_feature.page_title'),
-            'slug'          => 'role',
+            'slug_group'    => 'user',
+            'slug'          => '/office/role',
             'role_accesses' => $role_access_model->getAllRoles(),
             'features'      => retrieve_feature_master(),
         ];
