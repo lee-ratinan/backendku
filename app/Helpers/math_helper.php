@@ -1,14 +1,15 @@
 <?php
 
 /**
- * @param $lat1
- * @param $lon1
- * @param $lat2
- * @param $lon2
- * @param $earthRadius
+ * @param float $lat1
+ * @param float $lon1
+ * @param float $lat2
+ * @param float $lon2
+ * @param int $earthRadius
  * @return float|int
  */
-function calculateDistance($lat1, $lon1, $lat2, $lon2, $earthRadius = 6371) {
+function calculateDistance(float $lat1, float $lon1, float $lat2, float $lon2, int $earthRadius = 6371): float|int
+{
     // Convert degrees to radians
     $lat1 = deg2rad($lat1);
     $lon1 = deg2rad($lon1);

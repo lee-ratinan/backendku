@@ -36,7 +36,7 @@ $this->extend($layout);
                                         <button class="btn btn-outline-danger btn-gym mb-3" data-target="th"><span class="flag-icon flag-icon-th"></span> Thailand</button>
                                         <button class="btn btn-outline-danger btn-gym mb-3" data-target="my"><span class="flag-icon flag-icon-my"></span> Malaysia</button>
                                         <button class="btn btn-outline-danger btn-gym mb-3" data-target="id"><span class="flag-icon flag-icon-id"></span> Indonesia</button>
-                                        <a href="<?= base_url($session->locale . '/office/health/gym-finder') ?>" class="btn btn-outline-primary btn-sm float-end"><i class="fa-solid fa-external-link"></i> Gym Finder</a>
+                                        <a href="<?= base_url($session->locale . '/office/health/gym-finder') ?>" class="btn btn-outline-danger btn-sm float-end"><i class="fa-solid fa-external-link"></i> Gym Finder</a>
                                     </div>
                                     <div class="col-12" id="target-map"></div>
                                 </div>

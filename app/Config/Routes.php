@@ -190,7 +190,16 @@ $routes->group('{locale}/office', ['filter' => 'auth'], static function ($routes
     $routes->get('health/activity/create', 'Health::activityEdit/new');
     $routes->get('health/activity/edit/(:any)', 'Health::activityEdit/$1');
     $routes->post('health/activity/edit', 'Health::activitySave');
-    // Weight
+    // Measurement
+    $routes->get('health/measurement', 'Health::measurement');
+    $routes->post('health/measurement', 'Health::measurementList');
+    $routes->get('health/measurement/create', 'Health::measurementEdit/new');
+    $routes->get('health/measurement/edit/(:any)', 'Health::measurementEdit/$1');
+    $routes->post('health/measurement/edit', 'Health::measurementSave');
     // MBTI
+    $routes->get('health/mbti', 'Health::mbti');
+    $routes->post('health/mbti', 'Health::mbtiList');
     // PHQ-9
+    $routes->get('health/phq9', 'Health::phq9');
+    $routes->post('health/phq9', 'Health::phq9List');
 });

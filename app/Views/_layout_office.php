@@ -152,8 +152,8 @@
                                 'id'    => 'health-forms',
                                 'group' => '<i class="fa-solid fa-file fa-fw"></i> Forms',
                                 'items' => [
-                                    '/office/health/mbti'       => 'MBTI (Personality)',
-                                    '/office/health/depression' => 'Depression',
+                                    '/office/health/mbti' => 'MBTI (Personality)',
+                                    '/office/health/phq9' => 'PHQ-9 (Depression)',
                                 ]
                             ],
                         ]

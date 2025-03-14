@@ -363,7 +363,8 @@ class Health extends BaseController
                     $opens['close'] = date(TIME_FORMAT_UI, strtotime('2025-01-01 ' . $group['time'][1]));
                 }
             }
-            $result[$distance*1000] = [
+            $distance_index         = intval($distance * 1000);
+            $result[$distance_index] = [
                 'club'     => $club['club'],
                 'distance' => number_format($distance, 2),
                 'open'     => $opens['open'] ?? '',
@@ -544,5 +545,57 @@ class Health extends BaseController
                 'toast'  => 'ERROR: ' . $e->getMessage()
             ]);
         }
+    }
+
+    public function measurement(): string
+    {
+        $session = session();
+        $data    = [
+            'page_title'   => 'Measurement',
+            'slug_group'   => 'health',
+            'slug'         => '/office/health/measurement',
+            'user_session' => $session->user,
+            'roles'        => $session->roles,
+            'current_role' => $session->current_role
+        ];
+        return view('health_measurement', $data);
+    }
+
+    public function measurementList(): ResponseInterface
+    {
+        return $this->response->setJSON([
+            'draw'            => $this->request->getPost('draw'),
+            'recordsTotal'    => 0,
+            'recordsFiltered' => 0,
+            'data'            => []
+        ]);
+    }
+
+    public function mbti(): string
+    {
+        $session = session();
+        $data    = [
+            'page_title'   => 'MBTI',
+            'slug_group'   => 'health-forms',
+            'slug'         => '/office/health/mbti',
+            'user_session' => $session->user,
+            'roles'        => $session->roles,
+            'current_role' => $session->current_role
+        ];
+        return view('health_mbti', $data);
+    }
+
+    public function phq9(): string
+    {
+        $session = session();
+        $data    = [
+            'page_title'   => 'PHQ-9',
+            'slug_group'   => 'health-forms',
+            'slug'         => '/office/health/phq9',
+            'user_session' => $session->user,
+            'roles'        => $session->roles,
+            'current_role' => $session->current_role
+        ];
+        return view('health_phq9', $data);
     }
 }

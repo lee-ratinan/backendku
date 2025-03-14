@@ -39,7 +39,8 @@ class Journey extends BaseController
         $session = session();
         $data    = [
             'page_title'   => 'Trip',
-            'slug'         => 'trip',
+            'slug_group'   => 'trip',
+            'slug'         => '/office/journey/trip',
             'user_session' => $session->user,
             'roles'        => $session->roles,
             'current_role' => $session->current_role,
@@ -121,7 +122,8 @@ class Journey extends BaseController
         $session = session();
         $data    = [
             'page_title'         => $page_title,
-            'slug'               => 'trip',
+            'slug_group'         => 'trip',
+            'slug'               => '/office/journey/trip',
             'user_session'       => $session->user,
             'roles'              => $session->roles,
             'current_role'       => $session->current_role,
@@ -231,7 +233,8 @@ class Journey extends BaseController
         ksort($countries_by_visits);
         $data = [
             'page_title'                   => 'Trip Statistics',
-            'slug'                         => 'trip-stats',
+            'slug_group'                   => 'trip',
+            'slug'                         => '/office/journey/trip/statistics',
             'user_session'                 => $session->user,
             'roles'                        => $session->roles,
             'current_role'                 => $session->current_role,
@@ -301,7 +304,8 @@ class Journey extends BaseController
         ksort($all_currencies);
         $data = [
             'page_title'     => 'Finance',
-            'slug'           => 'trip-finance-stats',
+            'slug_group'     => 'trip',
+            'slug'           => '/office/journey/trip/finance',
             'user_session'   => $session->user,
             'roles'          => $session->roles,
             'current_role'   => $session->current_role,
@@ -326,7 +330,8 @@ class Journey extends BaseController
         $model   = new JourneyTransportModel();
         $data    = [
             'page_title'   => 'Transport',
-            'slug'         => 'transport',
+            'slug_group'   => 'trip',
+            'slug'         => '/office/journey/transport',
             'user_session' => $session->user,
             'roles'        => $session->roles,
             'current_role' => $session->current_role,
@@ -410,7 +415,8 @@ class Journey extends BaseController
         }
         $data    = [
             'page_title'   => $page_title,
-            'slug'         => 'transport',
+            'slug_group'   => 'trip',
+            'slug'         => '/office/journey/transport',
             'user_session' => $session->user,
             'roles'        => $session->roles,
             'current_role' => $session->current_role,
@@ -595,7 +601,8 @@ class Journey extends BaseController
         }
         $data = [
             'page_title'          => 'Transport Statistics',
-            'slug'                => 'transport-stats',
+            'slug_group'          => 'trip',
+            'slug'                => '/office/journey/transport/statistics',
             'user_session'        => $session->user,
             'roles'               => $session->roles,
             'current_role'        => $session->current_role,
@@ -623,7 +630,8 @@ class Journey extends BaseController
         $session = session();
         $data    = [
             'page_title'   => 'Accommodation',
-            'slug'         => 'accommodation',
+            'slug_group'   => 'trip',
+            'slug'         => '/office/journey/accommodation',
             'user_session' => $session->user,
             'roles'        => $session->roles,
             'current_role' => $session->current_role,
@@ -702,7 +710,8 @@ class Journey extends BaseController
         }
         $data = [
             'page_title'       => $page_title,
-            'slug'             => 'accommodation',
+            'slug_group'       => 'trip',
+            'slug'             => '/office/journey/accommodation',
             'user_session'     => $session->user,
             'roles'            => $session->roles,
             'current_role'     => $session->current_role,
@@ -876,7 +885,8 @@ class Journey extends BaseController
         ksort($by_country);
         $data = [
             'page_title'      => 'Accommodation Statistics',
-            'slug'            => 'accommodation-stats',
+            'slug_group'      => 'trip',
+            'slug'            => '/office/journey/accommodation/statistics',
             'user_session'    => $session->user,
             'roles'           => $session->roles,
             'current_role'    => $session->current_role,
@@ -905,7 +915,8 @@ class Journey extends BaseController
         $session = session();
         $data    = [
             'page_title'   => 'Attraction',
-            'slug'         => 'attraction',
+            'slug_group'   => 'trip',
+            'slug'         => '/office/journey/attraction',
             'user_session' => $session->user,
             'roles'        => $session->roles,
             'current_role' => $session->current_role,
@@ -980,7 +991,8 @@ class Journey extends BaseController
         }
         $data = [
             'page_title'    => $page_title,
-            'slug'          => 'attraction',
+            'slug_group'    => 'trip',
+            'slug'          => '/office/journey/attraction',
             'user_session'  => $session->user,
             'roles'         => $session->roles,
             'current_role'  => $session->current_role,
@@ -1103,7 +1115,8 @@ class Journey extends BaseController
         }
         $data = [
             'page_title'      => 'Attraction Statistics',
-            'slug'            => 'attraction-stats',
+            'slug_group'      => 'trip',
+            'slug'            => '/office/journey/attraction/statistics',
             'user_session'    => $session->user,
             'roles'           => $session->roles,
             'current_role'    => $session->current_role,
@@ -1128,7 +1141,8 @@ class Journey extends BaseController
         $model     = new JourneyPortModel();
         $data      = [
             'page_title'   => 'Port',
-            'slug'         => 'port',
+            'slug_group'   => 'trip-support-data',
+            'slug'         => '/office/journey/port',
             'user_session' => $session->user,
             'roles'        => $session->roles,
             'current_role' => $session->current_role,
@@ -1194,7 +1208,8 @@ class Journey extends BaseController
         }
         $data    = [
             'page_title'   => $page_title,
-            'slug'         => 'port',
+            'slug_group'   => 'trip-support-data',
+            'slug'         => '/office/journey/port',
             'user_session' => $session->user,
             'roles'        => $session->roles,
             'current_role' => $session->current_role,
@@ -1319,7 +1334,8 @@ class Journey extends BaseController
         arsort($by_port);
         $data     = [
             'page_title'   => 'Port Statistics',
-            'slug'         => 'port-stats',
+            'slug_group'   => 'trip-support-data',
+            'slug'         => '/office/journey/port/statistics',
             'user_session' => $session->user,
             'roles'        => $session->roles,
             'current_role' => $session->current_role,
@@ -1345,7 +1361,8 @@ class Journey extends BaseController
         $model   = new JourneyOperatorModel();
         $data    = [
             'page_title'   => 'Operator',
-            'slug'         => 'operator',
+            'slug_group'   => 'trip-support-data',
+            'slug'         => '/office/journey/operator',
             'user_session' => $session->user,
             'roles'        => $session->roles,
             'current_role' => $session->current_role,
@@ -1405,7 +1422,8 @@ class Journey extends BaseController
         }
         $data    = [
             'page_title'   => $page_title,
-            'slug'         => 'operator',
+            'slug_group'   => 'trip-support-data',
+            'slug'         => '/office/journey/operator',
             'user_session' => $session->user,
             'roles'        => $session->roles,
             'current_role' => $session->current_role,
@@ -1518,7 +1536,8 @@ class Journey extends BaseController
         arsort($by_operator);
         $data           = [
             'page_title'      => 'Operator Statistics',
-            'slug'            => 'operator-stats',
+            'slug_group'      => 'trip-support-data',
+            'slug'            => '/office/journey/operator/statistics',
             'user_session'    => $session->user,
             'roles'           => $session->roles,
             'current_role'    => $session->current_role,
@@ -1573,7 +1592,8 @@ class Journey extends BaseController
         }
         $data = [
             'page_title'      => 'Aircraft Statistics',
-            'slug'            => 'aircraft-stats',
+            'slug_group'      => 'trip-support-data',
+            'slug'            => '/office/journey/operator/aircraft/statistics',
             'user_session'    => $session->user,
             'roles'           => $session->roles,
             'current_role'    => $session->current_role,
@@ -1596,7 +1616,8 @@ class Journey extends BaseController
         $session   = session();
         $data           = [
             'page_title'   => 'Holiday',
-            'slug'         => 'holiday',
+            'slug_group'   => 'trip',
+            'slug'         => '/office/journey/holiday',
             'user_session' => $session->user,
             'roles'        => $session->roles,
             'current_role' => $session->current_role,
@@ -1645,7 +1666,8 @@ class Journey extends BaseController
         }
         $data    = [
             'page_title'   => $page_title,
-            'slug'         => 'holiday',
+            'slug_group'   => 'trip',
+            'slug'         => '/office/journey/holiday',
             'user_session' => $session->user,
             'roles'        => $session->roles,
             'current_role' => $session->current_role,
@@ -1705,50 +1727,13 @@ class Journey extends BaseController
         }
     }
 
-    /************************************************************************
-     * EXPORT
-     ************************************************************************/
-
-    public function export(): string
-    {
-        $journey_master    = new JourneyMasterModel();
-        $journey_transport = new JourneyTransportModel();
-        $journey_accom     = new JourneyAccommodationModel();
-        $journey_data      = [];
-        $journey_raw       = $journey_master->select('journey_master.*, entry_port.port_name AS entry_port_name, exit_port.port_name AS exit_port_name')
-            ->join('journey_port AS entry_port', 'journey_master.entry_port_id = entry_port.id', 'left outer')
-            ->join('journey_port AS exit_port',  'journey_master.exit_port_id = exit_port.id', 'left outer')
-            ->orderBy('id', 'asc')->findAll();
-        $transport_raw     = $journey_transport->select('journey_transport.*, journey_operator.operator_name, port_departure.port_name AS departure_port_name, port_arrival.port_name AS arrival_port_name')
-            ->join('journey_operator', 'journey_transport.operator_id = journey_operator.id', 'left outer')
-            ->join('journey_port AS port_departure', 'journey_transport.departure_port_id = port_departure.id', 'left outer')
-            ->join('journey_port AS port_arrival',   'journey_transport.arrival_port_id = port_arrival.id', 'left outer')
-            ->orderBy('id', 'asc')->findAll();
-        $accom_raw         = $journey_accom->orderBy('id', 'asc')->findAll();
-        foreach ($journey_raw as $row) {
-            $journey_data[$row['id']]['master'] = $row;
-        }
-        foreach ($transport_raw as $row) {
-            $journey_data[$row['journey_id']]['transport'][] = $row;
-        }
-        foreach ($accom_raw as $row) {
-            if (0 < $row['journey_id']) {
-                $journey_data[$row['journey_id']]['accommodation'][] = $row;
-            }
-        }
-        $data = [
-            'journey'   => $journey_data,
-            'countries' => lang('ListCountries.countries')
-        ];
-        return view('journey_export', $data);
-    }
-
     public function map(): string
     {
         $session    = session();
         $data       = [
             'page_title'        => 'Map',
-            'slug'              => 'map',
+            'slug_group'        => 'trip',
+            'slug'              => '/office/journey/map',
             'user_session'      => $session->user,
             'roles'             => $session->roles,
             'current_role'      => $session->current_role,
@@ -1837,7 +1822,7 @@ class Journey extends BaseController
                     'MY-02', // Kedah - Pulau Langkawi
                     'MY-07', // Pulau Pinang
                     'MY-08', // Perak - Ipoh
-//                    'MY-10', // Selangor - KLIA - not included, just the airport
+                    //                    'MY-10', // Selangor - KLIA - not included, just the airport
                     'MY-14', // Wilayah Persekutuan Kuala Lumpur
                 ],
                 'PH' => [
@@ -1894,6 +1879,44 @@ class Journey extends BaseController
             ],
         ];
         return view('journey_map', $data);
+    }
+
+    /************************************************************************
+     * EXPORT
+     ************************************************************************/
+
+    public function export(): string
+    {
+        $journey_master    = new JourneyMasterModel();
+        $journey_transport = new JourneyTransportModel();
+        $journey_accom     = new JourneyAccommodationModel();
+        $journey_data      = [];
+        $journey_raw       = $journey_master->select('journey_master.*, entry_port.port_name AS entry_port_name, exit_port.port_name AS exit_port_name')
+            ->join('journey_port AS entry_port', 'journey_master.entry_port_id = entry_port.id', 'left outer')
+            ->join('journey_port AS exit_port',  'journey_master.exit_port_id = exit_port.id', 'left outer')
+            ->orderBy('id', 'asc')->findAll();
+        $transport_raw     = $journey_transport->select('journey_transport.*, journey_operator.operator_name, port_departure.port_name AS departure_port_name, port_arrival.port_name AS arrival_port_name')
+            ->join('journey_operator', 'journey_transport.operator_id = journey_operator.id', 'left outer')
+            ->join('journey_port AS port_departure', 'journey_transport.departure_port_id = port_departure.id', 'left outer')
+            ->join('journey_port AS port_arrival',   'journey_transport.arrival_port_id = port_arrival.id', 'left outer')
+            ->orderBy('id', 'asc')->findAll();
+        $accom_raw         = $journey_accom->orderBy('id', 'asc')->findAll();
+        foreach ($journey_raw as $row) {
+            $journey_data[$row['id']]['master'] = $row;
+        }
+        foreach ($transport_raw as $row) {
+            $journey_data[$row['journey_id']]['transport'][] = $row;
+        }
+        foreach ($accom_raw as $row) {
+            if (0 < $row['journey_id']) {
+                $journey_data[$row['journey_id']]['accommodation'][] = $row;
+            }
+        }
+        $data = [
+            'journey'   => $journey_data,
+            'countries' => lang('ListCountries.countries')
+        ];
+        return view('journey_export', $data);
     }
 
     public function fix(): void
