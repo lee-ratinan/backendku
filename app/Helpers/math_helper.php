@@ -26,6 +26,22 @@ function calculateDistance(float $lat1, float $lon1, float $lat2, float $lon2, i
 }
 
 /**
+ * Generate 6-digit unique identifier using Crockford’s Alphabet
+ * @return string
+ */
+function uniqueIdentifier(): string
+{
+    $alphabet = '0123456789ABCDEFGHJKMNPQRSTVWXYZ';
+    $rand     = intval(microtime(true) * 1000);
+    $id       = '';
+    for ($i = 0; $i < 6; $i++) {
+        $id   = $id . $alphabet[$rand % 32];
+        $rand = intval($rand / 32) * rand(5, 20);
+    }
+    return $id;
+}
+
+/**
  * @param float $km
  * @return float
  */
