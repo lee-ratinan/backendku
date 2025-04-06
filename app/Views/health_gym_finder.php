@@ -35,7 +35,6 @@ $this->extend($layout);
                                 </div>
                             </div>
                             <div class="col-12 col-lg-8" id="target">
-
                             </div>
                         </div>
                     </div>
@@ -55,7 +54,7 @@ $this->extend($layout);
                     function (data) {
                         $('#target').html('');
                         $.each(data.data, function (index, gym) {
-                            $('#target').append('<a class="btn btn-outline-danger btn-sm float-end" href="'+gym.url+'" target="_blank">Check the website <i class="fa-solid fa-arrow-up-right-from-square"></i></a><h6>'+gym.club+'</h6><p>'+gym.distance + 'km<br>Opens: '+gym.open+' - '+gym.close+'</p><hr />');
+                            $('#target').append('<a class="btn btn-outline-danger btn-sm float-end" href="'+gym.url+'" target="_blank">Check the website <i class="fa-solid fa-arrow-up-right-from-square"></i></a><h6>'+gym.club+'</h6><p>'+gym.distance + 'km<br>Opens ('+gym.day+'): '+gym.open+' - '+gym.close+'</p><hr />');
                             $('#btn-filter').prop('disabled', false);
                         });
                     }

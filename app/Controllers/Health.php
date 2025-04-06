@@ -31,26 +31,6 @@ class Health extends BaseController
                 ]
             ],
             [
-                'club'      => '321 Clementi',
-                'url'       => 'https://www.fitnessfirst.com/sg/en/clubs/321-clementi',
-                'latitude'  => 1.3119864,
-                'longitude' => 103.7650332,
-                'opens'     => [
-                    [
-                        'days' => ['1', '2', '3', '4', '5'],
-                        'time' => ['06:00:00', '22:00:00']
-                    ],
-                    [
-                        'days' => ['6'],
-                        'time' => ['07:00:00', '19:00:00']
-                    ],
-                    [
-                        'days' => ['7', 'PH'],
-                        'time' => ['08:00:00', '18:00:00']
-                    ]
-                ]
-            ],
-            [
                 'club'      => 'AMK Hub (PREMIUM)',
                 'url'       => 'https://www.fitnessfirst.com/sg/en/clubs/amk-hub',
                 'latitude'  => 1.3697323,
@@ -354,6 +334,9 @@ class Health extends BaseController
             $dow = 'PH';
         }
         $result    = [];
+        $dows      = [
+            '', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'
+        ];
         foreach ($clubs as $club) {
             $distance = calculateDistance($latitude, $longitude, $club['latitude'], $club['longitude']);
             $opens    = [];
@@ -363,9 +346,11 @@ class Health extends BaseController
                     $opens['close'] = date(TIME_FORMAT_UI, strtotime('2025-01-01 ' . $group['time'][1]));
                 }
             }
-            $distance_index         = intval($distance * 1000);
+            $distance_index = intval($distance * 1000);
+            $day            = $dows[$dow] ?? 'Holiday';
             $result[$distance_index] = [
                 'club'     => $club['club'],
+                'day'      => $day,
                 'distance' => number_format($distance, 2),
                 'open'     => $opens['open'] ?? '',
                 'close'    => $opens['close'] ?? '',
