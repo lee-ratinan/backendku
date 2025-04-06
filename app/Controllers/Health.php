@@ -15,7 +15,7 @@ class Health extends BaseController
     private $fitness_first = [
         'SG' => [
             [
-                'club'      => '100 AM',
+                'club'      => '100 AM (PLATINUM)',
                 'url'       => 'https://www.fitnessfirst.com/sg/en/clubs/100-am-tanjong-pagar',
                 'latitude'  => 1.2750018,
                 'longitude' => 103.8436614,
@@ -47,7 +47,7 @@ class Health extends BaseController
                 ]
             ],
             [
-                'club'      => 'Alexandra',
+                'club'      => 'Alexandra (PLATINUM)',
                 'url'       => 'https://www.fitnessfirst.com/sg/en/clubs/alexandra-mapletree-business-city',
                 'latitude'  => 1.275215,
                 'longitude' => 103.7989239,
@@ -63,7 +63,7 @@ class Health extends BaseController
                 ]
             ],
             [
-                'club'      => 'Bugis Junction',
+                'club'      => 'Bugis Junction (PLATINUM)',
                 'url'       => 'https://www.fitnessfirst.com/sg/en/clubs/bugis-junction',
                 'latitude'  => 1.2991347,
                 'longitude' => 103.855363,
@@ -79,7 +79,7 @@ class Health extends BaseController
                 ]
             ],
             [
-                'club'      => 'Capital Tower',
+                'club'      => 'Capital Tower (PLATINUM)',
                 'url'       => 'https://www.fitnessfirst.com/sg/en/clubs/capital-tower',
                 'latitude'  => 1.278047,
                 'longitude' => 103.8474288,
@@ -95,7 +95,7 @@ class Health extends BaseController
                 ]
             ],
             [
-                'club'      => 'Fusionopolis',
+                'club'      => 'Fusionopolis (PLATINUM)',
                 'url'       => 'https://www.fitnessfirst.com/sg/en/clubs/fusionopolis',
                 'latitude'  => 1.2995647,
                 'longitude' => 103.7876738,
@@ -131,7 +131,7 @@ class Health extends BaseController
                 ]
             ],
             [
-                'club'      => 'Market Street',
+                'club'      => 'Market Street (PLATINUM)',
                 'url'       => 'https://www.fitnessfirst.com/sg/en/clubs/marketstreet',
                 'latitude'  => 1.2843755,
                 'longitude' => 103.8505206,
@@ -151,7 +151,7 @@ class Health extends BaseController
                 ]
             ],
             [
-                'club'      => 'The Metropolis',
+                'club'      => 'The Metropolis (PLATINUM)',
                 'url'       => 'https://www.fitnessfirst.com/sg/en/clubs/the-metropolis',
                 'latitude'  => 1.3055177,
                 'longitude' => 103.7919789,
@@ -167,7 +167,7 @@ class Health extends BaseController
                 ]
             ],
             [
-                'club'      => 'One George Street',
+                'club'      => 'One George Street (PLATINUM)',
                 'url'       => 'https://www.fitnessfirst.com/sg/en/clubs/one-george-street',
                 'latitude'  => 1.2843755,
                 'longitude' => 103.8505206,
@@ -187,7 +187,7 @@ class Health extends BaseController
                 ]
             ],
             [
-                'club'      => 'One Raffles Quay',
+                'club'      => 'One Raffles Quay (PLATINUM)',
                 'url'       => 'https://www.fitnessfirst.com/sg/en/clubs/one-raffles-quay',
                 'latitude'  => 1.2811658,
                 'longitude' => 103.8516453,
@@ -203,7 +203,7 @@ class Health extends BaseController
                 ]
             ],
             [
-                'club'      => 'Paragon',
+                'club'      => 'Paragon (PLATINUM)',
                 'url'       => 'https://www.fitnessfirst.com/sg/en/clubs/paragon',
                 'latitude'  => 1.303408,
                 'longitude' => 103.8353432,
@@ -223,7 +223,7 @@ class Health extends BaseController
                 ]
             ],
             [
-                'club'      => 'Payar Lebar',
+                'club'      => 'Payar Lebar (PLATINUM)',
                 'url'       => 'https://www.fitnessfirst.com/sg/en/clubs/paya-lebar-singpost-centre',
                 'latitude'  => 1.318983,
                 'longitude' => 103.8948672,
@@ -259,7 +259,7 @@ class Health extends BaseController
                 ]
             ],
             [
-                'club'      => 'Westgate',
+                'club'      => 'Westgate (PLATINUM)',
                 'url'       => 'https://www.fitnessfirst.com/sg/en/clubs/westgate',
                 'latitude'  => 1.3343179,
                 'longitude' => 103.7429477,
@@ -279,6 +279,652 @@ class Health extends BaseController
                 ]
             ]
         ],
+        'TH' => [
+            [
+                'club'      => 'Central Plaza Bang Na (PREMIUM)',
+                'url'       => 'https://www.fitnessfirst.com/th/en/clubs/centralplaza-bangna',
+                'latitude'  => 13.6688064,
+                'longitude' => 100.6340278,
+                'opens'     => [
+                    [
+                        'days' => ['1', '2', '3', '4', '5'],
+                        'time' => ['06:00:00', '22:00:00']
+                    ],
+                    [
+                        'days' => ['6', '7'],
+                        'time' => ['08:00:00', '21:00:00']
+                    ],
+                    [
+                        'days' => ['PH'],
+                        'time' => ['08:00:00', '20:00:00']
+                    ],
+                ]
+            ],
+            [
+                'club'      => 'Central Plaza Chaeng Watthana (PREMIUM)',
+                'url'       => 'https://www.fitnessfirst.com/th/en/clubs/centralplaza-chaengwattana',
+                'latitude'  => 13.903389,
+                'longitude' => 100.5275424,
+                'opens'     => [
+                    [
+                        'days' => ['1', '2', '3', '4', '5'],
+                        'time' => ['06:00:00', '22:00:00']
+                    ],
+                    [
+                        'days' => ['6', '7'],
+                        'time' => ['08:00:00', '21:00:00']
+                    ],
+                    [
+                        'days' => ['PH'],
+                        'time' => ['08:00:00', '20:00:00']
+                    ],
+                ]
+            ],
+            [
+                'club'      => 'Central Plaza Chon Buri (PREMIUM)',
+                'url'       => 'https://www.fitnessfirst.com/th/en/clubs/centralplaza-chonburi',
+                'latitude'  => 13.3365857,
+                'longitude' => 100.9694202,
+                'opens'     => [
+                    [
+                        'days' => ['1', '2', '3', '4', '5'],
+                        'time' => ['06:00:00', '22:00:00']
+                    ],
+                    [
+                        'days' => ['6', '7'],
+                        'time' => ['08:00:00', '21:00:00']
+                    ],
+                    [
+                        'days' => ['PH'],
+                        'time' => ['08:00:00', '20:00:00']
+                    ],
+                ]
+            ],
+            [
+                'club'      => 'Central Plaza Grand Rama 9 (PREMIUM)',
+                'url'       => 'https://www.fitnessfirst.com/th/en/clubs/centralplaza-grand-rama-9',
+                'latitude'  => 13.7587835,
+                'longitude' => 100.5674957,
+                'opens'     => [
+                    [
+                        'days' => ['1', '2', '3', '4', '5'],
+                        'time' => ['06:00:00', '22:00:00']
+                    ],
+                    [
+                        'days' => ['6', '7'],
+                        'time' => ['08:00:00', '21:00:00']
+                    ],
+                    [
+                        'days' => ['PH'],
+                        'time' => ['08:00:00', '20:00:00']
+                    ],
+                ]
+            ],
+            [
+                'club'      => 'Central Plaza Khon Kaen (PREMIUM)',
+                'url'       => 'https://www.fitnessfirst.com/th/en/clubs/centralplaza-khonkaen',
+                'latitude'  => 16.432771,
+                'longitude' => 102.825513,
+                'opens'     => [
+                    [
+                        'days' => ['1', '2', '3', '4', '5'],
+                        'time' => ['06:00:00', '22:00:00']
+                    ],
+                    [
+                        'days' => ['6', '7'],
+                        'time' => ['08:00:00', '21:00:00']
+                    ],
+                    [
+                        'days' => ['PH'],
+                        'time' => ['08:00:00', '20:00:00']
+                    ],
+                ]
+            ],
+            [
+                'club'      => 'Central Plaza Pin Klao (PREMIUM)',
+                'url'       => 'https://www.fitnessfirst.com/th/en/clubs/centralplaza-pinklao',
+                'latitude'  => 13.7777757,
+                'longitude' => 100.4763561,
+                'opens'     => [
+                    [
+                        'days' => ['1', '2', '3', '4', '5'],
+                        'time' => ['06:00:00', '22:00:00']
+                    ],
+                    [
+                        'days' => ['6', '7'],
+                        'time' => ['08:00:00', '21:00:00']
+                    ],
+                    [
+                        'days' => ['PH'],
+                        'time' => ['08:00:00', '20:00:00']
+                    ],
+                ]
+            ],
+            [
+                'club'      => 'Central Plaza Rama 2 (PREMIUM)',
+                'url'       => 'https://www.fitnessfirst.com/th/en/clubs/centralplaza-rama-2',
+                'latitude'  => 13.6632556,
+                'longitude' => 100.4379981,
+                'opens'     => [
+                    [
+                        'days' => ['1', '2', '3', '4', '5'],
+                        'time' => ['06:00:00', '22:00:00']
+                    ],
+                    [
+                        'days' => ['6', '7'],
+                        'time' => ['08:00:00', '21:00:00']
+                    ],
+                    [
+                        'days' => ['PH'],
+                        'time' => ['08:00:00', '20:00:00']
+                    ],
+                ]
+            ],
+            [
+                'club'      => 'Central Plaza Rama 3 (PREMIUM)',
+                'url'       => 'https://www.fitnessfirst.com/th/en/clubs/centralplaza-rama-3',
+                'latitude'  => 13.6971269,
+                'longitude' => 100.536574,
+                'opens'     => [
+                    [
+                        'days' => ['1', '2', '3', '4', '5'],
+                        'time' => ['06:00:00', '22:00:00']
+                    ],
+                    [
+                        'days' => ['6', '7'],
+                        'time' => ['08:00:00', '21:00:00']
+                    ],
+                    [
+                        'days' => ['PH'],
+                        'time' => ['08:00:00', '20:00:00']
+                    ],
+                ]
+            ],
+            [
+                'club'      => 'Central Plaza Ratthanathibet (PREMIUM)',
+                'url'       => 'https://www.fitnessfirst.com/th/en/clubs/centralplaza-rattanathibet',
+                'latitude'  => 13.8670024,
+                'longitude' => 100.495552,
+                'opens'     => [
+                    [
+                        'days' => ['1', '2', '3', '4', '5'],
+                        'time' => ['06:00:00', '22:00:00']
+                    ],
+                    [
+                        'days' => ['6', '7'],
+                        'time' => ['08:00:00', '21:00:00']
+                    ],
+                    [
+                        'days' => ['PH'],
+                        'time' => ['08:00:00', '20:00:00']
+                    ],
+                ]
+            ],
+            [
+                'club'      => 'Central Plaza Udon Thani (PREMIUM)',
+                'url'       => 'https://www.fitnessfirst.com/th/en/clubs/centralplaza-udonthani',
+                'latitude'  => 17.4061842,
+                'longitude' => 102.8000884,
+                'opens'     => [
+                    [
+                        'days' => ['1', '2', '3', '4', '5'],
+                        'time' => ['06:00:00', '22:00:00']
+                    ],
+                    [
+                        'days' => ['6', '7'],
+                        'time' => ['08:00:00', '21:00:00']
+                    ],
+                    [
+                        'days' => ['PH'],
+                        'time' => ['08:00:00', '20:00:00']
+                    ],
+                ]
+            ],
+            [
+                'club'      => 'Club 39, Sukhumvit 39 (CLUB CLASS)',
+                'url'       => 'https://www.fitnessfirst.com/th/en/clubs/club-39',
+                'latitude'  => 13.7371998,
+                'longitude' => 100.5714002,
+                'opens'     => [
+                    [
+                        'days' => ['1', '2', '3', '4', '5'],
+                        'time' => ['06:00:00', '22:00:00']
+                    ],
+                    [
+                        'days' => ['6', '7'],
+                        'time' => ['08:00:00', '21:00:00']
+                    ],
+                    [
+                        'days' => ['PH'],
+                        'time' => ['08:00:00', '20:00:00']
+                    ],
+                ]
+            ],
+            [
+                'club'      => 'Club Icon, Icon Siam (CLUB CLASS)',
+                'url'       => 'https://www.fitnessfirst.com/th/en/clubs/club-icon',
+                'latitude'  => 13.7264384,
+                'longitude' => 100.5101136,
+                'opens'     => [
+                    [
+                        'days' => ['1', '2', '3', '4', '5'],
+                        'time' => ['06:00:00', '22:00:00']
+                    ],
+                    [
+                        'days' => ['6', '7', 'PH'],
+                        'time' => ['08:00:00', '22:00:00']
+                    ]
+                ]
+            ],
+            [
+                'club'      => 'The Crystal Ram Inthra (PREMIUM)',
+                'url'       => 'https://www.fitnessfirst.com/th/en/clubs/the-crystal-ramindra',
+                'latitude'  => 13.8120374,
+                'longitude' => 100.6197958,
+                'opens'     => [
+                    [
+                        'days' => ['1', '2', '3', '4', '5'],
+                        'time' => ['06:00:00', '22:00:00']
+                    ],
+                    [
+                        'days' => ['6', '7'],
+                        'time' => ['08:00:00', '21:00:00']
+                    ],
+                    [
+                        'days' => ['PH'],
+                        'time' => ['08:00:00', '20:00:00']
+                    ],
+                ]
+            ],
+            [
+                'club'      => 'Future Park Rangsit (PREMIUM)',
+                'url'       => 'https://www.fitnessfirst.com/th/en/clubs/future-park-rangsit',
+                'latitude'  => 13.9888614,
+                'longitude' => 100.6188638,
+                'opens'     => [
+                    [
+                        'days' => ['1', '2', '3', '4', '5'],
+                        'time' => ['06:00:00', '22:00:00']
+                    ],
+                    [
+                        'days' => ['6', '7'],
+                        'time' => ['08:00:00', '21:00:00']
+                    ],
+                    [
+                        'days' => ['PH'],
+                        'time' => ['08:00:00', '20:00:00']
+                    ],
+                ]
+            ],
+            [
+                'club'      => 'Home Pro Phetkasem (PREMIUM)',
+                'url'       => 'https://www.fitnessfirst.com/th/en/clubs/home-pro-petchkasem',
+                'latitude'  => 13.7096314,
+                'longitude' => 100.3628711,
+                'opens'     => [
+                    [
+                        'days' => ['1', '2', '3', '4', '5'],
+                        'time' => ['06:00:00', '22:00:00']
+                    ],
+                    [
+                        'days' => ['6', '7'],
+                        'time' => ['08:00:00', '21:00:00']
+                    ],
+                    [
+                        'days' => ['PH'],
+                        'time' => ['08:00:00', '20:00:00']
+                    ],
+                ]
+            ],
+            [
+                'club'      => 'Mega Bang Na (PREMIUM)',
+                'url'       => 'https://www.fitnessfirst.com/th/en/clubs/mega-bangna',
+                'latitude'  => 13.6484969,
+                'longitude' => 100.6820761,
+                'opens'     => [
+                    [
+                        'days' => ['1', '2', '3', '4', '5'],
+                        'time' => ['06:00:00', '22:00:00']
+                    ],
+                    [
+                        'days' => ['6', '7'],
+                        'time' => ['08:00:00', '21:00:00']
+                    ],
+                    [
+                        'days' => ['PH'],
+                        'time' => ['08:00:00', '20:00:00']
+                    ],
+                ]
+            ],
+            [
+                'club'      => 'AIA Capital Center (PLATINUM)',
+                'url'       => 'https://www.fitnessfirst.com/th/en/clubs/platinum-aia-capital-center',
+                'latitude'  => 13.7647433,
+                'longitude' => 100.568383,
+                'opens'     => [
+                    [
+                        'days' => ['1', '2', '3', '4', '5'],
+                        'time' => ['06:00:00', '22:00:00']
+                    ],
+                    [
+                        'days' => ['6', '7'],
+                        'time' => ['08:00:00', '21:00:00']
+                    ],
+                    [
+                        'days' => ['PH'],
+                        'time' => ['08:00:00', '20:00:00']
+                    ],
+                ]
+            ],
+            [
+                'club'      => 'Landmark Plaza (PLATINUM)',
+                'url'       => 'https://www.fitnessfirst.com/th/en/clubs/platinum-landmark-plaza',
+                'latitude'  => 13.7412747,
+                'longitude' => 100.5540208,
+                'opens'     => [
+                    [
+                        'days' => ['1', '2', '3', '4', '5'],
+                        'time' => ['06:00:00', '22:00:00']
+                    ],
+                    [
+                        'days' => ['6', '7'],
+                        'time' => ['08:00:00', '21:00:00']
+                    ],
+                    [
+                        'days' => ['PH'],
+                        'time' => ['08:00:00', '20:00:00']
+                    ],
+                ]
+            ],
+            [
+                'club'      => 'Pearl Bangkok (PLATINUM)',
+                'url'       => 'https://www.fitnessfirst.com/th/en/clubs/platinum-pearl-bangkok',
+                'latitude'  => 13.7780154,
+                'longitude' => 100.5435632,
+                'opens'     => [
+                    [
+                        'days' => ['1', '2', '3', '4', '5'],
+                        'time' => ['06:00:00', '22:00:00']
+                    ],
+                    [
+                        'days' => ['6', '7'],
+                        'time' => ['08:00:00', '21:00:00']
+                    ],
+                    [
+                        'days' => ['PH'],
+                        'time' => ['08:00:00', '20:00:00']
+                    ],
+                ]
+            ],
+            [
+                'club'      => 'Q House Lumphini (PLATINUM)',
+                'url'       => 'https://www.fitnessfirst.com/th/en/clubs/platinum-q-house-lumpini',
+                'latitude'  => 13.7255793,
+                'longitude' => 100.5447215,
+                'opens'     => [
+                    [
+                        'days' => ['1', '2', '3', '4', '5', '6', '7', 'PH'],
+                        'time' => ['00:00:00', '23:59:59']
+                    ]
+                ]
+            ],
+            [
+                'club'      => 'Sathon Square (PLATINUM)',
+                'url'       => 'https://www.fitnessfirst.com/th/en/clubs/platinum-sathorn-square',
+                'latitude'  => 13.7224086,
+                'longitude' => 100.529153,
+                'opens'     => [
+                    [
+                        'days' => ['1', '2', '3', '4', '5'],
+                        'time' => ['06:00:00', '22:00:00']
+                    ],
+                    [
+                        'days' => ['6', '7'],
+                        'time' => ['08:00:00', '21:00:00']
+                    ],
+                    [
+                        'days' => ['PH'],
+                        'time' => ['08:00:00', '20:00:00']
+                    ],
+                ]
+            ],
+            [
+                'club'      => 'Siam Paragon (PLATINUM)',
+                'url'       => 'https://www.fitnessfirst.com/th/en/clubs/platinum-siam-paragon',
+                'latitude'  => 13.7458903,
+                'longitude' => 100.535419,
+                'opens'     => [
+                    [
+                        'days' => ['1', '2', '3', '4', '5'],
+                        'time' => ['06:00:00', '22:00:00']
+                    ],
+                    [
+                        'days' => ['6', '7', 'PH'],
+                        'time' => ['08:00:00', '22:00:00']
+                    ],
+                ]
+            ],
+            [
+                'club'      => 'T-One Building (PLATINUM)',
+                'url'       => 'https://www.fitnessfirst.com/th/en/clubs/platinum-t-one-building',
+                'latitude'  => 13.7222547,
+                'longitude' => 100.5806503,
+                'opens'     => [
+                    [
+                        'days' => ['1', '2', '3', '4', '5'],
+                        'time' => ['06:00:00', '22:00:00']
+                    ],
+                    [
+                        'days' => ['6', '7'],
+                        'time' => ['08:00:00', '21:00:00']
+                    ],
+                    [
+                        'days' => ['PH'],
+                        'time' => ['08:00:00', '20:00:00']
+                    ],
+                ]
+            ],
+            [
+                'club'      => 'Seacon Square (PREMIUM)',
+                'url'       => 'https://www.fitnessfirst.com/th/en/clubs/seacon-square',
+                'latitude'  => 13.6919291,
+                'longitude' => 100.6486729,
+                'opens'     => [
+                    [
+                        'days' => ['1', '2', '3', '4', '5'],
+                        'time' => ['06:00:00', '22:00:00']
+                    ],
+                    [
+                        'days' => ['6', '7'],
+                        'time' => ['08:00:00', '21:00:00']
+                    ],
+                    [
+                        'days' => ['PH'],
+                        'time' => ['08:00:00', '20:00:00']
+                    ],
+                ]
+            ],
+            [
+                'club'      => 'Terminal 21 (PREMIUM)',
+                'url'       => 'https://www.fitnessfirst.com/th/en/clubs/terminal-21',
+                'latitude'  => 13.7382945,
+                'longitude' => 100.5607511,
+                'opens'     => [
+                    [
+                        'days' => ['1', '2', '3', '4', '5'],
+                        'time' => ['06:00:00', '22:00:00']
+                    ],
+                    [
+                        'days' => ['6', '7'],
+                        'time' => ['08:00:00', '21:00:00']
+                    ],
+                    [
+                        'days' => ['PH'],
+                        'time' => ['08:00:00', '20:00:00']
+                    ],
+                ]
+            ],
+            [
+                'club'      => 'The Crystal SB Ratchaphruek (PREMIUM)',
+                'url'       => 'https://www.fitnessfirst.com/th/en/clubs/the-crystal-sb-ratchapruek',
+                'latitude'  => 13.8092757,
+                'longitude' => 100.4482291,
+                'opens'     => [
+                    [
+                        'days' => ['1', '2', '3', '4', '5'],
+                        'time' => ['06:00:00', '22:00:00']
+                    ],
+                    [
+                        'days' => ['6', '7'],
+                        'time' => ['08:00:00', '21:00:00']
+                    ],
+                    [
+                        'days' => ['PH'],
+                        'time' => ['08:00:00', '20:00:00']
+                    ],
+                ]
+            ],
+            [
+                'club'      => 'The Mall Bang Kapi (PREMIUM)',
+                'url'       => 'https://www.fitnessfirst.com/th/en/clubs/the-mall-bangkapi',
+                'latitude'  => 13.7670629,
+                'longitude' => 100.6418982,
+                'opens'     => [
+                    [
+                        'days' => ['1', '2', '3', '4', '5'],
+                        'time' => ['06:00:00', '22:00:00']
+                    ],
+                    [
+                        'days' => ['6', '7'],
+                        'time' => ['08:00:00', '21:00:00']
+                    ],
+                    [
+                        'days' => ['PH'],
+                        'time' => ['08:00:00', '20:00:00']
+                    ],
+                ]
+            ],
+            [
+                'club'      => 'The Mall Bang Khae (PREMIUM)',
+                'url'       => 'https://www.fitnessfirst.com/th/en/clubs/the-mall-bangkhae',
+                'latitude'  => 13.7116757,
+                'longitude' => 100.4085049,
+                'opens'     => [
+                    [
+                        'days' => ['1', '2', '3', '4', '5'],
+                        'time' => ['06:00:00', '22:00:00']
+                    ],
+                    [
+                        'days' => ['6', '7'],
+                        'time' => ['08:00:00', '21:00:00']
+                    ],
+                    [
+                        'days' => ['PH'],
+                        'time' => ['08:00:00', '20:00:00']
+                    ],
+                ]
+            ],
+            [
+                'club'      => 'The Mall Khorat (PREMIUM)',
+                'url'       => 'https://www.fitnessfirst.com/th/en/clubs/the-mall-korat',
+                'latitude'  => 14.9806337,
+                'longitude' => 102.0762699,
+                'opens'     => [
+                    [
+                        'days' => ['1', '2', '3', '4', '5'],
+                        'time' => ['06:00:00', '21:30:00']
+                    ],
+                    [
+                        'days' => ['6', '7'],
+                        'time' => ['08:00:00', '21:00:00']
+                    ],
+                    [
+                        'days' => ['PH'],
+                        'time' => ['08:00:00', '20:00:00']
+                    ],
+                ]
+            ],
+            [
+                'club'      => 'The Mall Ngamwongwan (PREMIUM)',
+                'url'       => 'https://www.fitnessfirst.com/th/en/clubs/the-mall-ngamwongwan',
+                'latitude'  => 13.8562219,
+                'longitude' => 100.5422515,
+                'opens'     => [
+                    [
+                        'days' => ['1', '2', '3', '4', '5'],
+                        'time' => ['06:00:00', '22:00:00']
+                    ],
+                    [
+                        'days' => ['6', '7'],
+                        'time' => ['08:00:00', '21:00:00']
+                    ],
+                    [
+                        'days' => ['PH'],
+                        'time' => ['08:00:00', '20:00:00']
+                    ],
+                ]
+            ],
+            [
+                'club'      => 'The Mall Tha Phra (PREMIUM)',
+                'url'       => 'https://www.fitnessfirst.com/th/en/clubs/the-mall-thapra',
+                'latitude'  => 13.7136819,
+                'longitude' => 100.480682,
+                'opens'     => [
+                    [
+                        'days' => ['1', '2', '3', '4', '5'],
+                        'time' => ['06:00:00', '22:00:00']
+                    ],
+                    [
+                        'days' => ['6', '7'],
+                        'time' => ['08:00:00', '21:00:00']
+                    ],
+                    [
+                        'days' => ['PH'],
+                        'time' => ['08:00:00', '20:00:00']
+                    ],
+                ]
+            ],
+            [
+                'club'      => 'The Promenade (PREMIUM)',
+                'url'       => 'https://www.fitnessfirst.com/th/en/clubs/the-promenade',
+                'latitude'  => 13.827021,
+                'longitude' => 100.676694,
+                'opens'     => [
+                    [
+                        'days' => ['1', '2', '3', '4', '5'],
+                        'time' => ['06:00:00', '22:00:00']
+                    ],
+                    [
+                        'days' => ['6', '7'],
+                        'time' => ['08:00:00', '21:00:00']
+                    ],
+                    [
+                        'days' => ['PH'],
+                        'time' => ['08:00:00', '20:00:00']
+                    ],
+                ]
+            ],
+            [
+                'club'      => 'CentralWorld (ZONE)',
+                'url'       => 'https://www.fitnessfirst.com/th/en/clubs/zone-centalworld',
+                'latitude'  => 13.7478501,
+                'longitude' => 100.539055,
+                'opens'     => [
+                    [
+                        'days' => ['1', '2', '3', '4', '5'],
+                        'time' => ['06:00:00', '22:00:00']
+                    ],
+                    [
+                        'days' => ['6', '7'],
+                        'time' => ['08:00:00', '21:00:00']
+                    ],
+                    [
+                        'days' => ['PH'],
+                        'time' => ['08:00:00', '20:00:00']
+                    ],
+                ]
+            ],
+        ]
     ];
 
     /**

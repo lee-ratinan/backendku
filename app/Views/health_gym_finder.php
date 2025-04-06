@@ -24,10 +24,10 @@ $this->extend($layout);
                         <div class="row mb-3">
                             <div class="col-12 col-lg-4">
                                 <div class="mb-3">
-                                    <label for="city_code" class="form-label">City</label><br>
+                                    <label for="city_code" class="form-label">Country</label><br>
                                     <select class="form-select form-select-sm" id="city_code">
                                         <option value="SG">Singapore</option>
-                                        <option value="BKK" disabled>Bangkok</option>
+                                        <option value="TH">Thailand</option>
                                     </select>
                                 </div>
                                 <div class="text-end">
@@ -53,8 +53,10 @@ $this->extend($layout);
                     {latitude: coords.latitude, longitude: coords.longitude, city_code: city_code},
                     function (data) {
                         $('#target').html('');
+                        let counter = 0;
                         $.each(data.data, function (index, gym) {
-                            $('#target').append('<a class="btn btn-outline-danger btn-sm float-end" href="'+gym.url+'" target="_blank">Check the website <i class="fa-solid fa-arrow-up-right-from-square"></i></a><h6>'+gym.club+'</h6><p>'+gym.distance + 'km<br>Opens ('+gym.day+'): '+gym.open+' - '+gym.close+'</p><hr />');
+                            counter++;
+                            $('#target').append('<a class="btn btn-outline-danger btn-sm float-end" href="'+gym.url+'" target="_blank">Check the website <i class="fa-solid fa-arrow-up-right-from-square"></i></a><h6>('+counter+') '+gym.club+'</h6><p>'+gym.distance + 'km<br>Opens ('+gym.day+'): '+gym.open+' - '+gym.close+'</p><hr />');
                             $('#btn-filter').prop('disabled', false);
                         });
                     }
