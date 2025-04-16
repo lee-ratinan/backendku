@@ -35,7 +35,7 @@ class Office extends BaseController
         $session = session();
         $data    = [
             'page_title'   => lang('System.dashboard.page_title'),
-            'slug'         => 'dashboard',
+            'slug'         => '/office/dashboard',
             'user_session' => $session->user,
             'roles'        => $session->roles,
             'current_role' => $session->current_role

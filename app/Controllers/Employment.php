@@ -42,7 +42,8 @@ class Employment extends BaseController
         $session = session();
         $data    = [
             'page_title'   => 'Employment',
-            'slug'         => 'company',
+            'slug_group'   => 'employment',
+            'slug'         => '/office/employment',
             'user_session' => $session->user,
             'roles'        => $session->roles,
             'current_role' => $session->current_role,
@@ -107,7 +108,8 @@ class Employment extends BaseController
         }
         $data    = [
             'page_title'   => $page_title,
-            'slug'         => 'company',
+            'slug_group'   => 'employment',
+            'slug'         => '/office/employment',
             'user_session' => $session->user,
             'roles'        => $session->roles,
             'current_role' => $session->current_role,
@@ -147,7 +149,8 @@ class Employment extends BaseController
         }
         $data         = [
             'page_title'   => 'Salary',
-            'slug'         => 'salary',
+            'slug_group'   => 'employment',
+            'slug'         => '/office/employment/salary',
             'user_session' => $session->user,
             'roles'        => $session->roles,
             'current_role' => $session->current_role,
@@ -234,7 +237,8 @@ class Employment extends BaseController
         }
         $data      = [
             'page_title'   => $page_title,
-            'slug'         => 'salary',
+            'slug_group'   => 'employment',
+            'slug'         => '/office/employment/salary',
             'user_session' => $session->user,
             'roles'        => $session->roles,
             'current_role' => $session->current_role,
@@ -266,7 +270,8 @@ class Employment extends BaseController
         $model   = new CompanyMasterModel();
         $data    = [
             'page_title'   => 'CPF',
-            'slug'         => 'cpf',
+            'slug_group'   => 'employment',
+            'slug'         => '/office/employment/cpf',
             'user_session' => $session->user,
             'roles'        => $session->roles,
             'current_role' => $session->current_role,
@@ -350,7 +355,8 @@ class Employment extends BaseController
         }
         $data = [
             'page_title'   => $page_title,
-            'slug'         => 'cpf',
+            'slug_group'   => 'employment',
+            'slug'         => '/office/employment/cpf',
             'user_session' => $session->user,
             'roles'        => $session->roles,
             'current_role' => $session->current_role,
@@ -381,7 +387,8 @@ class Employment extends BaseController
         $model   = new CompanyCPFStatementModel();
         $data    = [
             'page_title'   => 'CPF Statement',
-            'slug'         => 'cpf',
+            'slug_group'   => 'employment',
+            'slug'         => '/office/employment/cpf',
             'user_session' => $session->user,
             'roles'        => $session->roles,
             'current_role' => $session->current_role,
@@ -410,7 +417,8 @@ class Employment extends BaseController
         }
         $data    = [
             'page_title'   => $page_title,
-            'slug'         => 'cpf',
+            'slug_group'   => 'employment',
+            'slug'         => '/office/employment/cpf',
             'user_session' => $session->user,
             'roles'        => $session->roles,
             'current_role' => $session->current_role,
@@ -442,7 +450,8 @@ class Employment extends BaseController
         }
         $data          = [
             'page_title'   => 'Freelance',
-            'slug'         => 'freelance',
+            'slug_group'   => 'employment',
+            'slug'         => '/office/employment/freelance',
             'user_session' => $session->user,
             'roles'        => $session->roles,
             'current_role' => $session->current_role,
@@ -505,7 +514,8 @@ class Employment extends BaseController
         }
         $data          = [
             'page_title'   => $page_title,
-            'slug'         => 'freelance',
+            'slug_group'   => 'employment',
+            'slug'         => '/office/employment/freelance',
             'user_session' => $session->user,
             'roles'        => $session->roles,
             'current_role' => $session->current_role,
@@ -538,7 +548,8 @@ class Employment extends BaseController
         }
         $data          = [
             'page_title'   => 'Freelance Income',
-            'slug'         => 'freelance-income',
+            'slug_group'   => 'employment',
+            'slug'         => '/office/employment/freelance-income',
             'user_session' => $session->user,
             'roles'        => $session->roles,
             'current_role' => $session->current_role,
@@ -608,7 +619,8 @@ class Employment extends BaseController
         }
         $data          = [
             'page_title'   => $page_title,
-            'slug'         => 'freelance-income',
+            'slug_group'   => 'employment',
+            'slug'         => '/office/employment/freelance-income',
             'user_session' => $session->user,
             'roles'        => $session->roles,
             'current_role' => $session->current_role,
