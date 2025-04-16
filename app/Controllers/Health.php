@@ -169,8 +169,8 @@ class Health extends BaseController
             [
                 'club'      => 'One George Street (PLATINUM)',
                 'url'       => 'https://www.fitnessfirst.com/sg/en/clubs/one-george-street',
-                'latitude'  => 1.2843755,
-                'longitude' => 103.8505206,
+                'latitude'  => 1.2861074,
+                'longitude' => 103.8468682,
                 'opens'     => [
                     [
                         'days' => ['1', '2', '3', '4', '5'],
