@@ -28,6 +28,7 @@ $this->extend($layout);
                                     <select class="form-select form-select-sm" id="city_code">
                                         <option value="SG">Singapore</option>
                                         <option value="TH">Thailand</option>
+                                        <option value="MY">Malaysia</option>
                                     </select>
                                 </div>
                                 <div class="text-end">

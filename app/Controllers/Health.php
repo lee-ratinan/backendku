@@ -924,6 +924,228 @@ class Health extends BaseController
                     ],
                 ]
             ],
+        ],
+        'MY' => [
+            [
+                'club'      => '1 Mont Kiara (PLATINUM)',
+                'url'       => 'https://www.fitnessfirst.com/my/en/clubs/1-mont-kiara',
+                'latitude'  => 3.1658626,
+                'longitude' => 101.6520578,
+                'opens'     => [
+                    [
+                        'days' => ['1', '2', '3', '4', '5'],
+                        'time' => ['06:30:00', '22:00:00']
+                    ],
+                    [
+                        'days' => ['6', '7'],
+                        'time' => ['07:00:00', '20:00:00']
+                    ],
+                    [
+                        'days' => ['PH'],
+                        'time' => ['08:00:00', '20:00:00']
+                    ],
+                ]
+            ],
+            [
+                'club'      => 'Avenue K (PLATINUM)',
+                'url'       => 'https://www.fitnessfirst.com/my/en/clubs/avenue-k',
+                'latitude'  => 3.1594119,
+                'longitude' => 101.7127308,
+                'opens'     => [
+                    [
+                        'days' => ['1', '2', '3', '4', '5'],
+                        'time' => ['06:30:00', '22:00:00']
+                    ],
+                    [
+                        'days' => ['6'],
+                        'time' => ['07:00:00', '21:00:00']
+                    ],
+                    [
+                        'days' => ['7', 'PH'],
+                        'time' => ['08:00:00', '20:00:00']
+                    ],
+                ]
+            ],
+            [
+                'club'      => 'Cheras Leisure Mall (PREMIUM)',
+                'url'       => 'https://www.fitnessfirst.com/my/en/clubs/cheras-leisure-mall',
+                'latitude'  => 3.0908294,
+                'longitude' => 101.7426686,
+                'opens'     => [
+                    [
+                        'days' => ['1', '2', '3', '4', '5'],
+                        'time' => ['06:30:00', '22:00:00']
+                    ],
+                    [
+                        'days' => ['6', '7'],
+                        'time' => ['07:00:00', '21:00:00']
+                    ],
+                    [
+                        'days' => ['PH'],
+                        'time' => ['08:00:00', '20:00:00']
+                    ],
+                ]
+            ],
+            [
+                'club'      => 'IOI Mall Puchong (PREMIUM)',
+                'url'       => 'https://www.fitnessfirst.com/my/en/clubs/ioi-mall-puchong',
+                'latitude'  => 3.0442886,
+                'longitude' => 101.617636,
+                'opens'     => [
+                    [
+                        'days' => ['1', '2', '3', '4', '5'],
+                        'time' => ['06:30:00', '22:00:00']
+                    ],
+                    [
+                        'days' => ['6', '7'],
+                        'time' => ['07:00:00', '21:00:00']
+                    ],
+                    [
+                        'days' => ['PH'],
+                        'time' => ['08:00:00', '20:00:00']
+                    ],
+                ]
+            ],
+            [
+                'club'      => 'Klang Bukit Tinggi (PLATINUM)',
+                'url'       => 'https://www.fitnessfirst.com/my/en/clubs/klang-bukit-tinggi',
+                'latitude'  => 2.9928873,
+                'longitude' => 101.444852,
+                'opens'     => [
+                    [
+                        'days' => ['1', '2', '3', '4', '5'],
+                        'time' => ['07:00:00', '22:00:00']
+                    ],
+                    [
+                        'days' => ['6', '7', 'PH'],
+                        'time' => ['08:00:00', '20:00:00']
+                    ],
+                ]
+            ],
+            [
+                'club'      => 'Melawati Mall (PLATINUM)',
+                'url'       => 'https://www.fitnessfirst.com/my/en/clubs/melawati-mall',
+                'latitude'  => 3.2106722,
+                'longitude' => 101.7481247,
+                'opens'     => [
+                    [
+                        'days' => ['1', '2', '3', '4', '5'],
+                        'time' => ['07:00:00', '22:00:00']
+                    ],
+                    [
+                        'days' => ['6'],
+                        'time' => ['07:00:00', '20:00:00']
+                    ],
+                    [
+                        'days' => ['7', 'PH'],
+                        'time' => ['08:00:00', '20:00:00']
+                    ],
+                ]
+            ],
+            [
+                'club'      => 'NU Empire (PLATINUM)',
+                'url'       => 'https://www.fitnessfirst.com/my/en/clubs/nu-empire',
+                'latitude'  => 3.0819623,
+                'longitude' => 101.5824823,
+                'opens'     => [
+                    [
+                        'days' => ['1', '2', '3', '4', '5'],
+                        'time' => ['06:30:00', '22:00:00']
+                    ],
+                    [
+                        'days' => ['6', '7'],
+                        'time' => ['07:00:00', '20:00:00']
+                    ],
+                    [
+                        'days' => ['PH'],
+                        'time' => ['08:00:00', '20:00:00']
+                    ],
+                ]
+            ],
+            [
+                'club'      => 'Paradigm Mall (PREMIUM)',
+                'url'       => 'https://www.fitnessfirst.com/my/en/clubs/paradigm-mall',
+                'latitude'  => 3.1044925,
+                'longitude' => 101.5955686,
+                'opens'     => [
+                    [
+                        'days' => ['1', '2', '3', '4', '5'],
+                        'time' => ['06:30:00', '22:00:00']
+                    ],
+                    [
+                        'days' => ['6'],
+                        'time' => ['07:00:00', '20:00:00']
+                    ],
+                    [
+                        'days' => ['7', 'PH'],
+                        'time' => ['08:00:00', '20:00:00']
+                    ],
+                ]
+            ],
+            [
+                'club'      => 'Setia City Mall (PREMIUM)',
+                'url'       => 'https://www.fitnessfirst.com/my/en/clubs/setia-city-mall',
+                'latitude'  => 0,
+                'longitude' => 0,
+                'opens'     => [
+                    [
+                        'days' => ['1', '2', '3', '4', '5'],
+                        'time' => ['07:00:00', '22:00:00']
+                    ],
+                    [
+                        'days' => ['6'],
+                        'time' => ['07:00:00', '20:00:00']
+                    ],
+                    [
+                        'days' => ['7'],
+                        'time' => ['09:00:00', '20:00:00']
+                    ],
+                    [
+                        'days' => ['PH'],
+                        'time' => ['08:00:00', '20:00:00']
+                    ],
+                ]
+            ],
+            [
+                'club'      => 'The Curve (PLATINUM)',
+                'url'       => 'https://www.fitnessfirst.com/my/en/clubs/the-curve',
+                'latitude'  => 3.1576316,
+                'longitude' => 101.6102591,
+                'opens'     => [
+                    [
+                        'days' => ['1', '2', '3', '4', '5'],
+                        'time' => ['06:30:00', '22:00:00']
+                    ],
+                    [
+                        'days' => ['6'],
+                        'time' => ['07:00:00', '21:00:00']
+                    ],
+                    [
+                        'days' => ['7', 'PH'],
+                        'time' => ['08:00:00', '20:00:00']
+                    ],
+                ]
+            ],
+            [
+                'club'      => 'The Gardens Mall - Mid Valley (PLATINUM)',
+                'url'       => 'https://www.fitnessfirst.com/my/en/clubs/the-gardens-mall-mid-valley',
+                'latitude'  => 3.118219,
+                'longitude' => 101.6759963,
+                'opens'     => [
+                    [
+                        'days' => ['1', '2', '3', '4', '5'],
+                        'time' => ['06:30:00', '22:00:00']
+                    ],
+                    [
+                        'days' => ['6'],
+                        'time' => ['07:00:00', '21:00:00']
+                    ],
+                    [
+                        'days' => ['7', 'PH'],
+                        'time' => ['08:00:00', '20:00:00']
+                    ],
+                ]
+            ],
         ]
     ];
 
