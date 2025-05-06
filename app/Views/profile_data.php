@@ -27,14 +27,14 @@ $this->extend($layout);
                             $links = json_decode($row['google_drive_link'], true);
                             if (!empty($links)) {
                                 foreach ($links as $key => $link) {
-                                    echo '<a class="btn btn-outline-primary btn-sm me-3 my-2" href="' . $link . '" target="_blank">' . $key . '</a>';
+                                    echo '<a class="btn btn-outline-primary btn-sm me-3 my-1" href="' . $link . '" target="_blank">' . $key . '</a>';
                                 }
                             }
                             ?>
                             <div><?= $document_types[$row['document_type']] ?></div>
-                            <div><b>#:</b> <?= $row['document_number'] ?></div>
-                            <div><b>Issued:</b> <?= date(DATE_FORMAT_UI, strtotime($row['issued_date'])) ?></div>
-                            <div><b>Expiry:</b> <?= empty($row['expiry_date']) ? '-' : date(DATE_FORMAT_UI, strtotime($row['expiry_date'])) ?></div>
+                            <div><b>#:</b> <?= empty($row['document_number']) ? 'n/a' : $row['document_number'] ?></div>
+                            <div><b>Issued:</b> <?= empty($row['issued_date']) || '0000-00-00' == $row['issued_date'] ? '-' : date(DATE_FORMAT_UI, strtotime($row['issued_date'])) ?></div>
+                            <div><b>Expiry:</b> <?= empty($row['expiry_date']) || '0000-00-00' == $row['expiry_date'] ? '-' : date(DATE_FORMAT_UI, strtotime($row['expiry_date'])) ?></div>
                             <hr>
                             <?= $row['other_notes'] ?>
                         </div>
