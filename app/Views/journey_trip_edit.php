@@ -29,7 +29,23 @@ $this->extend($layout);
                         <div class="row">
                             <div class="col-12 col-md-6">
                                 <?php
+                                $visited_states = [];
+                                if (isset($trip_data['master_data']['visited_states']) && !empty($trip_data['master_data']['visited_states'])) {
+                                    $visited_states = explode(',', $trip_data['master_data']['visited_states']);
+                                }
+                                $all_states = [];
+                                if (isset($trip_data['master_data']['country_code']) && !empty($trip_data['master_data']['country_code'])) {
+                                    $states = lang('ListCountries.' . $trip_data['master_data']['country_code']);
+                                    if (is_array($states)) {
+                                        $all_states = $states;
+                                        asort($all_states);
+                                    }
+                                }
+                                $master_config['visited_states']['options'] = $all_states;
                                 generate_form_field('country_code', $master_config['country_code'], @$trip_data['master_data']['country_code']);
+                                if (!empty($all_states)) {
+                                    generate_form_field('visited_states', $master_config['visited_states'], $visited_states);
+                                }
                                 generate_form_field('date_entry', $master_config['date_entry'], @$trip_data['master_data']['date_entry']);
                                 generate_form_field('date_exit', $master_config['date_exit'], @$trip_data['master_data']['date_exit']);
                                 generate_form_field('day_count', $master_config['day_count'], $trip_data['master_data']['day_count'] ?? '0');
@@ -272,9 +288,14 @@ $this->extend($layout);
             });
             $('#btn-save-journey-master').click(function (e) {
                 e.preventDefault();
+                const checked_states = $('input[name="visited_states[]"]:checked').map(function() {
+                    return $(this).val();
+                }).get();
+                console.log(checked_states);
                 let id = '<?= $trip_data['master_data']['id'] ?? 0 ?>',
                     mode = '<?= $mode ?>',
                     country_code = $('#country_code').val(),
+                    visited_states = checked_states,
                     date_entry = $('#date_entry').val(),
                     date_exit = $('#date_exit').val(),
                     day_count = $('#day_count').val(),
@@ -308,6 +329,7 @@ $this->extend($layout);
                         id: id,
                         mode: mode,
                         country_code: country_code,
+                        visited_states: visited_states,
                         date_entry: date_entry,
                         date_exit: date_exit,
                         day_count: day_count,

@@ -13,6 +13,7 @@ class JourneyMasterModel extends Model
         'id',
         'trip_code',
         'country_code',
+        'visited_states',
         'date_entry',
         'date_exit',
         'day_count',
@@ -49,6 +50,13 @@ class JourneyMasterModel extends Model
             'label'       => 'Country',
             'required'    => true,
             'placeholder' => 'US',
+            'options'     => []
+        ],
+        'visited_states' => [
+            'type'        => 'multiple-checkbox',
+            'label'       => 'Visited States/Provinces/Prefectures',
+            'required'    => false,
+            'placeholder' => 'JP-01,JP-02',
             'options'     => []
         ],
         'date_entry'    => [

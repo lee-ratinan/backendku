@@ -64,6 +64,27 @@ function generate_form_field(string $id, array $configuration, int|string|array 
             echo "<small class='form-text text-muted small'>" . lang($configuration['details']) . "</small>";
         }
         echo "</div>";
+    } else if ('multiple-checkbox' == $input_type) {
+        $options = $configuration['options'];
+        $height  = 250;
+        $count   = count($options);
+        if ($count < 10) {
+            $height = 100;
+        } else if ($count < 30) {
+            $height = 150;
+        } else if ($count < 50) {
+            $height = 200;
+        }
+        echo "<div class='form-floating mb-3 px-2' style='height:{$height}px;overflow:auto;'>";
+        echo '<div class="row"><div class="col-12"><label for="' . $id . '_' . array_key_first($options) . '">' . $configuration['label'] . '</label></div>';
+        foreach ($options as $key => $value) {
+            $checked = (in_array($key, $current_value) ? 'checked' : '');
+            echo "<div class='col-6 form-check'>";
+            echo "<input class='form-check-input ms-1 me-2' type='checkbox' id='{$id}_{$key}' name='{$id}[]' value='{$key}' $checked>";
+            echo "<label class='form-check-label' for='{$id}_{$key}'>{$value}</label>";
+            echo "</div>";
+        }
+        echo '</div></div>';
     }
 }
 

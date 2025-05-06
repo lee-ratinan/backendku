@@ -178,6 +178,11 @@ class Journey extends BaseController
         if (!empty($journey_details)) {
             $data['journey_details'] = $journey_details;
         }
+        $states                 = $this->request->getPost('visited_states');
+        $data['visited_states'] = '';
+        if (is_array($states) && 0 < count($states)) {
+            $data['visited_states'] = implode(',', $states);
+        }
         try {
             if ('new' == $mode) {
                 $inserted_id = $model->insert($data);
