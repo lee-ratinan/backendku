@@ -32,7 +32,7 @@ $this->extend($layout);
                     <div id="country-name" class="text-center"><div id="country-name-label"></div><a class='btn btn-outline-success mb-3' id='btn-back-world'>Show World Map</a></div>
                     <div id="country-div"></div>
                 </div>
-                <p>Wishlist and banned countries are hardcoded, but the visited list came from the <code>trip_master</code> table.</p>
+                <p class="small">Wishlist and banned countries are hardcoded, but the visited list came from the <code>trip_master</code> table.</p>
             </div>
         </div>
     </section>

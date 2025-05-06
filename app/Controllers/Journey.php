@@ -1747,7 +1747,7 @@ class Journey extends BaseController
         $journey_model = new JourneyMasterModel();
         $countries_yr  = [];
         $states        = [];
-        $all_visited   = $journey_model->where('journey_status', 'as_planned')->whereNotIn('country_code', ['SG', 'TH'])->findAll();
+        $all_visited   = $journey_model->where('journey_status', 'as_planned')->where('country_code !=', 'SG')->findAll();
         foreach ($all_visited as $trip) {
             // Countries
             $start_year = substr($trip['date_entry'], 0, 4);
