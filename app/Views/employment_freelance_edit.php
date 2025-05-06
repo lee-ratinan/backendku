@@ -35,6 +35,9 @@ $this->extend($layout);
                             generate_form_field($field, $config[$field], @$project[$field]);
                         }
                         ?>
+                        <div class="text-end">
+                            <button class="btn btn-primary btn-sm" id="btn-save-project"><i class="fa-solid fa-save"></i> Save</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -51,10 +54,7 @@ $this->extend($layout);
                                             <?php
                                             echo match ($field) {
                                                 'company_id' => $config[$field]['options'][$project[$field]],
-//                                                'tax_country_code' => lang('ListCountries.countries.' . $salary[$field] . '.common_name'),
-                                                'project_start_date', 'project_end_date' => (empty($project[$field]) ? '-' : date(DATE_FORMAT_UI, strtotime($project[$field]))),
-//                                                'google_drive_link' => (empty($salary[$field]) ? '-' : '<a href="' . $salary[$field] . '" target="_blank">Click</a><br>'),
-//                                                'tax_year', 'payment_currency', 'payment_details' => (empty($salary[$field]) ? '-' : $salary[$field]),
+                                                'project_start_date', 'project_end_date' => (empty($project[$field]) || '0000-00-00' == $project[$field] ? '-' : date(DATE_FORMAT_UI, strtotime($project[$field]))),
                                                 default => $project[$field],
                                             };
                                             ?>
@@ -68,4 +68,52 @@ $this->extend($layout);
             <?php endif; ?>
         </div>
     </section>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            $('#project_title').change(function () {
+                let project_title = (($(this).val()).trim()).replace(/\s{2,}/g, ' '); // TRIM and REPLACE SPACES
+                $(this).val(project_title);
+                $('#project_slug').val(project_title.toLowerCase().replace(/\s/g, '-').replace(/[^a-zA-Z0-9\-]/g, ''));
+            });
+            $('#btn-save-project').click(function (e) {
+                e.preventDefault();
+                let ids = ['company_id', 'project_title', 'project_slug', 'project_start_date', 'client_name'];
+                for (let i = 0; i < ids.length; i++) {
+                    if ('' === $('#' + ids[i]).val()) {
+                        toastr.warning('Please ensure all mandatory fields are filled.');
+                        $('#' + ids[i]).focus();
+                        return;
+                    }
+                }
+                $(this).prop('disabled', true);
+                $.ajax({
+                    url: '<?= base_url('en/office/employment/freelance/edit') ?>',
+                    type: 'post',
+                    data: {
+                        mode: '<?= $mode ?>',
+                        id: <?= $project['id'] ?? '0' ?>,
+                        <?php foreach ($fields as $field) : ?>
+                        <?= $field ?>: $('#<?= $field ?>').val(),
+                        <?php endforeach; ?>
+                    },
+                    success: function (response) {
+                        if ('success' === response.status) {
+                            toastr.success(response.toast);
+                            setTimeout(function () {window.location.href = response.redirect;}, 5000);
+                        } else {
+                            let message = (response.toast ?? 'Sorry! Something went wrong. Please try again.');
+                            toastr.error(message);
+                            $('#btn-save-project').prop('disabled', false);
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        let response = JSON.parse(xhr.responseText);
+                        let error_message = (response.toast ?? 'Sorry! Something went wrong. Please try again.');
+                        $('#btn-save-project').prop('disabled', false);
+                        toastr.error(error_message);
+                    }
+                });
+            });
+        });
+    </script>
 <?php $this->endSection() ?>

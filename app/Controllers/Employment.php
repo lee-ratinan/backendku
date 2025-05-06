@@ -647,10 +647,55 @@ class Employment extends BaseController
 
     /**
      * @return ResponseInterface
+     * @throws \ReflectionException
      */
     public function freelanceSave(): ResponseInterface
     {
-        return $this->response->setJSON([]);
+        $mode          = $this->request->getPost('mode');
+        $project_model = new CompanyFreelanceProjectModel();
+        $log_model     = new LogActivityModel();
+        $session       = session();
+        $id            = $this->request->getPost('id');
+        $data          = [];
+        $fields        = [
+            'company_id',
+            'project_title',
+            'project_slug',
+            'project_start_date',
+            'project_end_date',
+            'client_name',
+            'client_organization_name',
+        ];
+        foreach ($fields as $field) {
+            $data[$field] = $this->request->getPost($field);
+        }
+        if ('edit' == $mode) {
+            if ($project_model->update($id, $data)) {
+                $log_model->insertTableUpdate('company_freelance_project', $id, $data, $session->user_id);
+                $new_id = $id * $project_model::ID_NONCE;
+                return $this->response->setJSON([
+                    'status'  => 'success',
+                    'toast'   => 'Successfully updated the company.',
+                    'redirect' => base_url($session->locale . '/office/employment/freelance/edit/' . $new_id)
+                ]);
+            }
+        } else {
+            $data['created_by'] = $session->user_id;
+            // INSERT
+            if ($id = $project_model->insert($data)) {
+                $log_model->insertTableUpdate('company_freelance_project', $id, $data, $session->user_id);
+                $new_id = $id * $project_model::ID_NONCE;
+                return $this->response->setJSON([
+                    'status'   => 'success',
+                    'toast'    => 'Successfully created new company.',
+                    'redirect' => base_url($session->locale . '/office/employment/freelance/edit/' . $new_id)
+                ]);
+            }
+        }
+        return $this->response->setJSON([
+            'status'  => 'error',
+            'toast'   => lang('System.status_message.generic_error')
+        ])->setStatusCode(HTTP_STATUS_SOMETHING_WRONG);
     }
 
     /**

@@ -137,19 +137,17 @@ $this->extend($layout);
                     success: function (response) {
                         if ('success' === response.status) {
                             toastr.success(response.toast);
-                            setTimeout(function () {
-                                window.location.href = response.redirect;
-                            }, 5000);
+                            setTimeout(function () {window.location.href = response.redirect;}, 5000);
                         } else {
                             let message = (response.toast ?? 'Sorry! Something went wrong. Please try again.');
                             toastr.error(message);
-                            $('#btn-save-user-master').prop('disabled', false);
+                            $('#btn-save-company').prop('disabled', false);
                         }
                     },
                     error: function (xhr, status, error) {
                         let response = JSON.parse(xhr.responseText);
                         let error_message = (response.toast ?? 'Sorry! Something went wrong. Please try again.');
-                        $('#btn-save-changes').prop('disabled', false);
+                        $('#btn-save-company').prop('disabled', false);
                         toastr.error(error_message);
                     }
                 });
