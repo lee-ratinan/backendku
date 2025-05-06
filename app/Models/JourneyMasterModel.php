@@ -68,7 +68,7 @@ class JourneyMasterModel extends Model
         'date_exit'     => [
             'type'        => 'date',
             'label'       => 'Exit',
-            'required'    => true,
+            'required'    => false,
             'placeholder' => '2025-01-01'
         ],
         'day_count'     => [
@@ -86,7 +86,7 @@ class JourneyMasterModel extends Model
         'exit_port_id'  => [
             'type'        => 'select',
             'label'       => 'Port of Exit',
-            'required'    => true,
+            'required'    => false,
             'options'     => []
         ],
         'visa_info'     => [
@@ -94,14 +94,16 @@ class JourneyMasterModel extends Model
             'label'       => 'Visa Information',
             'required'    => false,
             'maxlength'   => 128,
-            'placeholder' => 'Visitor Visa'
+            'placeholder' => 'Visitor Visa',
+            'details'     => 'Use: Permanent Resident, Citizen, Visitor/Tourist, or actual Visa type'
         ],
         'trip_tags'     => [
             'type'        => 'text',
             'label'       => 'Trip Tags',
             'required'    => false,
             'maxlength'   => 256,
-            'placeholder' => 'vacation, family'
+            'placeholder' => 'vacation, family, education, family, religious',
+            'details'     => 'Use comma to separate tags. Example: vacation, family, education, family, religious, etc.'
         ],
         'journey_details'     => [
             'type'        => 'text',
