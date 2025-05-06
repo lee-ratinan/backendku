@@ -308,7 +308,72 @@ class Employment extends BaseController
      */
     public function salarySave(): ResponseInterface
     {
-        return $this->response->setJSON([]);
+        $mode         = $this->request->getPost('mode');
+        $salary_model = new CompanySalaryModel();
+        $log_model    = new LogActivityModel();
+        $session      = session();
+        $id           = $this->request->getPost('id');
+        $data         = [];
+        $fields       = [
+            'company_id',
+            'pay_date',
+            'tax_year',
+            'tax_country_code',
+            'payment_method',
+            'payment_currency',
+            'pay_type',
+            'base_amount',
+            'allowance_amount',
+            'training_amount',
+            'overtime_amount',
+            'adjustment_amount',
+            'bonus_amount',
+            'subtotal_amount',
+            'social_security_amount',
+            'us_tax_fed_amount',
+            'us_tax_state_amount',
+            'us_tax_city_amount',
+            'us_tax_med_ee_amount',
+            'us_tax_oasdi_ee_amount',
+            'th_tax_amount',
+            'sg_tax_amount',
+            'au_tax_amount',
+            'claim_amount',
+            'provident_fund_amount',
+            'total_amount',
+            'payment_details',
+            'google_drive_link'
+        ];
+        foreach ($fields as $field) {
+            $data[$field] = $this->request->getPost($field);
+        }
+        if ('edit' == $mode) {
+            if ($salary_model->update($id, $data)) {
+                $log_model->insertTableUpdate('company_salary', $id, $data, $session->user_id);
+                $new_id = $id * $salary_model::ID_NONCE;
+                return $this->response->setJSON([
+                    'status'  => 'success',
+                    'toast'   => 'Successfully updated the salary.',
+                    'redirect' => base_url($session->locale . '/office/employment/salary/edit/' . $new_id)
+                ]);
+            }
+        } else {
+            $data['created_by'] = $session->user_id;
+            // INSERT
+            if ($id = $salary_model->insert($data)) {
+                $log_model->insertTableUpdate('company_salary', $id, $data, $session->user_id);
+                $new_id = $id * $salary_model::ID_NONCE;
+                return $this->response->setJSON([
+                    'status'   => 'success',
+                    'toast'    => 'Successfully created new salary.',
+                    'redirect' => base_url($session->locale . '/office/employment/salary/edit/' . $new_id)
+                ]);
+            }
+        }
+        return $this->response->setJSON([
+            'status'  => 'error',
+            'toast'   => lang('System.status_message.generic_error')
+        ])->setStatusCode(HTTP_STATUS_SOMETHING_WRONG);
     }
 
     /************************************************************************
