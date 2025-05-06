@@ -118,7 +118,7 @@ class Profile extends BaseController
             'roles'            => $session->roles,
             'current_role'     => $session->current_role,
             'document_types'   => $model->getDocumentTypes(),
-            'documents'        => $model->findAll()
+            'documents'        => $model->orderBy('country_code', 'ASC')->findAll()
         ];
         return view('profile_data', $data);
     }

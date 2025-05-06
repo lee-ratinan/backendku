@@ -38,13 +38,27 @@ $this->extend($layout);
                             <div><?= $document_types[$row['document_type']] ?></div>
                             <div><b>#:</b> <?= empty($row['document_number']) ? 'n/a' : $row['document_number'] ?></div>
                             <div><b>Issued:</b> <?= empty($row['issued_date']) || '0000-00-00' == $row['issued_date'] ? '-' : date(DATE_FORMAT_UI, strtotime($row['issued_date'])) ?></div>
-                            <div><b>Expiry:</b> <?= empty($row['expiry_date']) || '0000-00-00' == $row['expiry_date'] ? '-' : date(DATE_FORMAT_UI, strtotime($row['expiry_date'])) ?></div>
+                            <div>
+                                <b>Expiry:</b> <?= empty($row['expiry_date']) || '0000-00-00' == $row['expiry_date'] ? '-' : date(DATE_FORMAT_UI, strtotime($row['expiry_date'])) ?>
+                                <?php
+                                if (!empty($row['expiry_date'])) {
+                                    $today = strtotime('now');
+                                    $expiry = strtotime($row['expiry_date']);
+                                    if ($today >= $expiry) {
+                                        echo '<span class="badge bg-danger">Expired</span>';
+                                    }
+                                }
+                                ?>
+                            </div>
                             <hr>
                             <?= $row['other_notes'] ?>
                         </div>
                     </div>
                 </div>
             <?php endforeach; ?>
+            <div class="col-12">
+                <p class="small">Data on this page is stored in <code>profile_identity</code> table. No CRUD provided at the moment.</p>
+            </div>
         </div>
     </section>
 <?php $this->endSection() ?>
