@@ -1222,13 +1222,6 @@ return [
         'PH-ZAS' => 'Zamboanga del Sur',
         'PH-ZSI' => 'Zamboanga Sibugay',
     ],
-    'SG'        => [
-        'SG-01' => 'Central',
-        'SG-02' => 'Northeast',
-        'SG-03' => 'Southwest',
-        'SG-04' => 'Southeast',
-        'SG-05' => 'Southwest'
-    ],
     'TH'        => [
         'TH-10' => 'Bangkok กรุงเทพมหานคร',
         'TH-11' => 'Samut Prakan สมุทรปราการ',
