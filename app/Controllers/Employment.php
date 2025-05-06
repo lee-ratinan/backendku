@@ -8,6 +8,7 @@ use App\Models\CompanyFreelanceIncomeModel;
 use App\Models\CompanyFreelanceProjectModel;
 use App\Models\CompanyMasterModel;
 use App\Models\CompanySalaryModel;
+use App\Models\LogActivityModel;
 use CodeIgniter\HTTP\ResponseInterface;
 
 class Employment extends BaseController
@@ -24,6 +25,7 @@ class Employment extends BaseController
         'AU',
         'GB',
         'ID',
+        'MY',
         'SG',
         'TH',
         'TW',
@@ -125,7 +127,59 @@ class Employment extends BaseController
      */
     public function companySave(): ResponseInterface
     {
-        return $this->response->setJSON([]);
+        $mode          = $this->request->getPost('mode');
+        $company_model = new CompanyMasterModel();
+        $log_model     = new LogActivityModel();
+        $session       = session();
+        $id            = $this->request->getPost('id');
+        $data          = [];
+        $fields        = [
+            'company_legal_name',
+            'company_trade_name',
+            'company_slug',
+            'company_other_names',
+            'company_address',
+            'company_country_code',
+            'company_hq_country_code',
+            'company_currency_code',
+            'company_website',
+            'company_details',
+            'company_registration',
+            'company_color',
+            'employment_start_date',
+            'employment_end_date',
+            'position_titles'
+        ];
+        foreach ($fields as $field) {
+            $data[$field] = $this->request->getPost($field);
+        }
+        if ('edit' == $mode) {
+            if ($company_model->update($id, $data)) {
+                $log_model->insertTableUpdate('company_master', $id, $data, $session->user_id);
+                $new_id = $id * $company_model::ID_NONCE;
+                return $this->response->setJSON([
+                    'status'  => 'success',
+                    'toast'   => 'Successfully updated the company.',
+                    'redirect' => base_url($session->locale . '/office/employment/company/edit/' . $new_id)
+                ]);
+            }
+        } else {
+            $data['created_by'] = $session->user_id;
+            // INSERT
+            if ($id = $company_model->insert($data)) {
+                $log_model->insertTableUpdate('company_master', $id, $data, $session->user_id);
+                $new_id = $id * $company_model::ID_NONCE;
+                return $this->response->setJSON([
+                    'status'   => 'success',
+                    'toast'    => 'Successfully created new company.',
+                    'redirect' => base_url($session->locale . '/office/employment/company/edit/' . $new_id)
+                ]);
+            }
+        }
+        return $this->response->setJSON([
+            'status'  => 'error',
+            'toast'   => lang('System.status_message.generic_error')
+        ])->setStatusCode(HTTP_STATUS_SOMETHING_WRONG);
     }
 
     /************************************************************************
