@@ -27,7 +27,11 @@ $this->extend($layout);
                             $links = json_decode($row['google_drive_link'], true);
                             if (!empty($links)) {
                                 foreach ($links as $key => $link) {
-                                    echo '<a class="btn btn-outline-primary btn-sm me-3 my-1" href="' . $link . '" target="_blank">' . $key . '</a>';
+                                    if ('#' == $link || empty($link)) {
+                                        echo '<a class="btn btn-outline-danger btn-sm me-3 my-1" disabled>' . $key . '</a>';
+                                    } else {
+                                        echo '<a class="btn btn-outline-primary btn-sm me-3 my-1" href="' . $link . '" target="_blank">' . $key . '</a>';
+                                    }
                                 }
                             }
                             ?>
