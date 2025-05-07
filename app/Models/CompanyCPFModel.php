@@ -161,8 +161,11 @@ class CompanyCPFModel extends Model
         // company
         $company_model   = new CompanyMasterModel();
         $companies       = $company_model
+            ->where('company_country_code', 'SG')
+            ->groupStart()
             ->where('employment_end_date >=', '2020-01-01')
             ->orWhere('employment_end_date', null)
+            ->groupEnd()
             ->orderBy('company_legal_name')->findAll();
         $company_options  = [];
         foreach ($companies as $company) {

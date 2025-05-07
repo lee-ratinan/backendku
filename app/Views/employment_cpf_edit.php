@@ -33,32 +33,66 @@ $this->extend($layout);
                         $fields = [
                             'transaction_date',
                             'transaction_code',
+                            'ordinary_previous',
                             'ordinary_amount',
                             'ordinary_balance',
+                            'special_previous',
                             'special_amount',
                             'special_balance',
+                            'medisave_previous',
                             'medisave_amount',
                             'medisave_balance',
                             'transaction_amount',
                             'account_balance',
                             'contribution_month',
                             'company_id',
+                            'staff_previous',
                             'staff_contribution',
                             'staff_ytd',
+                            'company_previous',
                             'company_match',
                             'company_ytd',
                         ];
                         if ('new' == $mode) {
+                            $cpf['ordinary_previous'] = $cpf_latest['ordinary_balance'];
+                            $cpf['special_previous']  = $cpf_latest['special_balance'];
+                            $cpf['medisave_previous'] = $cpf_latest['medisave_balance'];
+                            $cpf['staff_previous']  = $cpf_last_con['staff_ytd'];
+                            $cpf['company_previous'] = $cpf_last_con['company_ytd'];
+                            $config['ordinary_previous'] = [
+                                'type'     => 'text',
+                                'label'    => '<span class="badge bg-oa rounded-pill">Previous Balance</span>',
+                                'readonly' => true,
+                            ];
+                            $config['special_previous']  = [
+                                'type'     => 'text',
+                                'label'    => '<span class="badge bg-sa rounded-pill">Previous Balance</span>',
+                                'readonly' => true,
+                            ];
+                            $config['medisave_previous'] = [
+                                'type'     => 'text',
+                                'label'    => '<span class="badge bg-ma rounded-pill">Previous Balance</span>',
+                                'readonly' => true,
+                            ];
+                            $config['staff_previous']   = [
+                                'type'     => 'text',
+                                'label'    => 'Staff Previous YTD',
+                                'readonly' => true,
+                            ];
+                            $config['company_previous'] = [
+                                'type'     => 'text',
+                                'label'    => 'Company Previous YTD',
+                                'readonly' => true,
+                            ];
                             foreach ($fields as $field) {
-                                generate_form_field($field, $config[$field], '');
+                                generate_form_field($field, $config[$field], @$cpf[$field]);
                             }
-                            echo '<pre>';
-                            print_r($cpf_latest);
-                            print_r($cpf_last_con);
-                            echo '</pre>';
                         } else {
                             echo '<table class="table table-sm table-borderless">';
                             foreach ($fields as $field) {
+                                if (in_array($field, ['ordinary_previous', 'special_previous', 'medisave_previous', 'staff_previous', 'company_previous'])) {
+                                    continue;
+                                }
                                 if ('CON' != $cpf['transaction_code'] && 'contribution_month' == $field) {
                                     break;
                                 } else if ('contribution_month' == $field) {
