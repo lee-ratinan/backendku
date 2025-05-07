@@ -165,6 +165,7 @@ class CompanyCPFModel extends Model
             ->groupStart()
             ->where('employment_end_date >=', '2020-01-01')
             ->orWhere('employment_end_date', null)
+            ->orWhere('employment_end_date', '0000-00-00')
             ->groupEnd()
             ->orderBy('company_legal_name')->findAll();
         $company_options     = [];
