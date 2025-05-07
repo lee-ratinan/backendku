@@ -40,6 +40,9 @@ $this->extend($layout);
                             generate_form_field($field, $config[$field], @$income[$field]);
                         }
                         ?>
+                        <div class="text-end">
+                            <button class="btn btn-primary btn-sm" id="btn-save-salary"><i class="fa-solid fa-save"></i> Save</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -83,4 +86,62 @@ $this->extend($layout);
             <?php endif; ?>
         </div>
     </section>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            let getFloat = function (value) {
+                const val = value.trim();
+                return val === '' ? 0 : parseFloat(val);
+            };
+            $('#base_amount, #deduction_amount, #claim_amount').change(function () {
+                let base_amount = getFloat($('#base_amount').val()),
+                    deduction_amount = getFloat($('#deduction_amount').val()),
+                    claim_amount = getFloat($('#claim_amount').val());
+                $('#subtotal_amount').val(base_amount + deduction_amount + claim_amount);
+            });
+            $('#tax_amount').change(function () {
+                let subtotal_amount = getFloat($('#subtotal_amount').val()),
+                    tax_amount = getFloat($('#tax_amount').val());
+                $('#total_amount').val(subtotal_amount + tax_amount);
+            });
+            $('#btn-save-salary').click(function (e) {
+                e.preventDefault();
+                let ids = ['project_id', 'pay_date', 'payment_method', 'payment_currency', 'base_amount', 'deduction_amount', 'claim_amount', 'subtotal_amount', 'tax_amount', 'total_amount', 'payment_details', 'google_drive_link'];
+                for (let i = 0; i < ids.length; i++) {
+                    if ('' === $('#' + ids[i]).val()) {
+                        toastr.warning('Please ensure all mandatory fields are filled.');
+                        $('#' + ids[i]).focus();
+                        return;
+                    }
+                }
+                $(this).prop('disabled', true);
+                $.ajax({
+                    url: '<?= base_url('en/office/employment/freelance-income/edit') ?>',
+                    type: 'post',
+                    data: {
+                        mode: '<?= $mode ?>',
+                        id: <?= $income['id'] ?? '0' ?>,
+                        <?php foreach ($fields as $field) : ?>
+                        <?= $field ?>: $('#<?= $field ?>').val(),
+                        <?php endforeach; ?>
+                    },
+                    success: function (response) {
+                        if ('success' === response.status) {
+                            toastr.success(response.toast);
+                            setTimeout(function () {window.location.href = response.redirect;}, 5000);
+                        } else {
+                            let message = (response.toast ?? 'Sorry! Something went wrong. Please try again.');
+                            toastr.error(message);
+                            $('#btn-save-project').prop('disabled', false);
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        let response = JSON.parse(xhr.responseText);
+                        let error_message = (response.toast ?? 'Sorry! Something went wrong. Please try again.');
+                        $('#btn-save-project').prop('disabled', false);
+                        toastr.error(error_message);
+                    }
+                });
+            });
+        });
+    </script>
 <?php $this->endSection() ?>
