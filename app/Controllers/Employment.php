@@ -797,10 +797,60 @@ class Employment extends BaseController
 
     /**
      * @return ResponseInterface
+     * @throws \ReflectionException
      */
     public function freelanceIncomeSave(): ResponseInterface
     {
-        return $this->response->setJSON([]);
+        $mode          = $this->request->getPost('mode');
+        $income_model  = new CompanyFreelanceIncomeModel();
+        $log_model     = new LogActivityModel();
+        $session       = session();
+        $id            = $this->request->getPost('id');
+        $data          = [];
+        $fields        = [
+            'project_id',
+            'pay_date',
+            'payment_method',
+            'payment_currency',
+            'base_amount',
+            'deduction_amount',
+            'claim_amount',
+            'subtotal_amount',
+            'tax_amount',
+            'total_amount',
+            'payment_details',
+            'google_drive_link',
+        ];
+        foreach ($fields as $field) {
+            $data[$field] = $this->request->getPost($field);
+        }
+        if ('edit' == $mode) {
+            if ($income_model->update($id, $data)) {
+                $log_model->insertTableUpdate('company_freelance_income', $id, $data, $session->user_id);
+                $new_id = $id * $income_model::ID_NONCE;
+                return $this->response->setJSON([
+                    'status'   => 'success',
+                    'toast'    => 'Successfully updated the income.',
+                    'redirect' => base_url($session->locale . '/office/employment/freelance-income/edit/' . $new_id)
+                ]);
+            }
+        } else {
+            $data['created_by'] = $session->user_id;
+            // INSERT
+            if ($id = $income_model->insert($data)) {
+                $log_model->insertTableUpdate('company_freelance_income', $id, $data, $session->user_id);
+                $new_id = $id * $income_model::ID_NONCE;
+                return $this->response->setJSON([
+                    'status'   => 'success',
+                    'toast'    => 'Successfully created new income.',
+                    'redirect' => base_url($session->locale . '/office/employment/freelance-income/edit/' . $new_id)
+                ]);
+            }
+        }
+        return $this->response->setJSON([
+            'status'  => 'error',
+            'toast'   => lang('System.status_message.generic_error')
+        ])->setStatusCode(HTTP_STATUS_SOMETHING_WRONG);
     }
 
 }
