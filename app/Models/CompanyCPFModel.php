@@ -167,7 +167,8 @@ class CompanyCPFModel extends Model
             ->orWhere('employment_end_date', null)
             ->groupEnd()
             ->orderBy('company_legal_name')->findAll();
-        $company_options  = [];
+        $company_options     = [];
+        $company_options[-1] = 'N/A';
         foreach ($companies as $company) {
             $company_options[$company['id']] = $company['company_legal_name'];
         }

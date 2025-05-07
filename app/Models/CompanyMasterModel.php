@@ -250,7 +250,7 @@ class CompanyMasterModel extends Model
                 '<span class="flag-icon flag-icon-' . strtolower($row['company_country_code']) . '"></span> ' . $countries[$row['company_country_code']]['common_name'],
                 '<span class="flag-icon flag-icon-' . strtolower($row['company_hq_country_code']) . '"></span> ' . $countries[$row['company_hq_country_code']]['common_name'],
                 date(DATE_FORMAT_UI, strtotime($row['employment_start_date'])),
-                (empty($row['employment_end_date']) ? 'present' : date(DATE_FORMAT_UI, strtotime($row['employment_end_date']))),
+                (empty($row['employment_end_date']) || '0000-00-00' == $row['employment_end_date'] ? 'present' : date(DATE_FORMAT_UI, strtotime($row['employment_end_date']))),
                 $position_str
             ];
         }

@@ -30,7 +30,8 @@ $this->extend($layout);
                     <div class="card-body">
                         <h5 class="card-title"><?= $page_title ?></h5>
                         <?php
-                        $fields = [
+                        $max_company_id = 0;
+                        $fields         = [
                             'transaction_date',
                             'transaction_code',
                             'ordinary_previous',
@@ -42,6 +43,7 @@ $this->extend($layout);
                             'medisave_previous',
                             'medisave_amount',
                             'medisave_balance',
+                            'account_previous',
                             'transaction_amount',
                             'account_balance',
                             'contribution_month',
@@ -57,8 +59,11 @@ $this->extend($layout);
                             $cpf['ordinary_previous'] = $cpf_latest['ordinary_balance'];
                             $cpf['special_previous']  = $cpf_latest['special_balance'];
                             $cpf['medisave_previous'] = $cpf_latest['medisave_balance'];
-                            $cpf['staff_previous']  = $cpf_last_con['staff_ytd'];
-                            $cpf['company_previous'] = $cpf_last_con['company_ytd'];
+                            $cpf['account_previous']  = $cpf_latest['account_balance'];
+                            $cpf['staff_previous']    = $cpf_last_con['staff_ytd'];
+                            $cpf['company_previous']  = $cpf_last_con['company_ytd'];
+                            $all_company_ids          = array_keys($config['company_id']['options']);
+                            $max_company_id           = max($all_company_ids);
                             $config['ordinary_previous'] = [
                                 'type'     => 'text',
                                 'label'    => '<span class="badge bg-oa rounded-pill">Previous Balance</span>',
@@ -74,23 +79,29 @@ $this->extend($layout);
                                 'label'    => '<span class="badge bg-ma rounded-pill">Previous Balance</span>',
                                 'readonly' => true,
                             ];
+                            $config['account_previous']  = [
+                                'type'     => 'text',
+                                'label'    => '<span class="badge bg-success rounded-pill">Previous Balance</span>',
+                                'readonly' => true,
+                            ];
                             $config['staff_previous']   = [
                                 'type'     => 'text',
-                                'label'    => 'Staff Previous YTD',
+                                'label'    => 'Previous Staff Contribution YTD',
                                 'readonly' => true,
                             ];
                             $config['company_previous'] = [
                                 'type'     => 'text',
-                                'label'    => 'Company Previous YTD',
+                                'label'    => 'Previous Company Match YTD',
                                 'readonly' => true,
                             ];
                             foreach ($fields as $field) {
                                 generate_form_field($field, $config[$field], @$cpf[$field]);
                             }
+                            echo '<div class="text-end"><button class="btn btn-primary btn-sm" id="btn-save-cpf"><i class="fa-solid fa-save"></i> Save</button></div>';
                         } else {
                             echo '<table class="table table-sm table-borderless">';
                             foreach ($fields as $field) {
-                                if (in_array($field, ['ordinary_previous', 'special_previous', 'medisave_previous', 'staff_previous', 'company_previous'])) {
+                                if (in_array($field, ['ordinary_previous', 'special_previous', 'medisave_previous', 'account_previous', 'staff_previous', 'company_previous'])) {
                                     continue;
                                 }
                                 if ('CON' != $cpf['transaction_code'] && 'contribution_month' == $field) {
@@ -124,4 +135,136 @@ $this->extend($layout);
             </div>
         </div>
     </section>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            $('#staff_previous').attr('data-value', $('#staff_previous').val());
+            $('#company_previous').attr('data-value', $('#company_previous').val());
+            let getFloat = function (value) {
+                const val = value.trim();
+                return val === '' ? 0 : parseFloat(val);
+            };
+            let calculateBalance = function () {
+                let ordinary_amount = getFloat($('#ordinary_amount').val()),
+                    special_amount = getFloat($('#special_amount').val()),
+                    medisave_amount = getFloat($('#medisave_amount').val()),
+                    total_amount = ordinary_amount + special_amount + medisave_amount,
+                    previous_balance = getFloat($('#account_previous').val());
+                $('#transaction_amount').val(total_amount);
+                $('#account_balance').val(previous_balance+total_amount);
+            };
+            // LISTENER
+            $('#transaction_code').change(function () {
+                let transaction_code = $(this).val();
+                if ('CON' === transaction_code) {
+                    $('#contribution_month').val('<?= date('Y-m', strtotime('previous month')) ?>').prop('readonly', false);
+                    $.each($('#company_id option'), function (index, option) {
+                        let val = $(this).val();
+                        if ('-1' === val) { // Not a company, so disable it
+                            $(this).prop('disabled', true);
+                        } else { // This is a company - enable it for CON
+                            $(this).prop('disabled', false);
+                            if ('<?= $max_company_id ?>' === val) { // This is the max company, so select it
+                                $(this).prop('selected', true);
+                            }
+                        }
+                    });
+                    $('#staff_contribution, #staff_ytd, #company_match, #company_ytd').val('').prop('readonly', false);
+                } else {
+                    $('#contribution_month').val('0000-00').prop('readonly', true);
+                    $('#company_id option[value=-1]').prop('disabled', false).prop('selected', true);
+                    $.each($('#company_id option'), function (index, option) {
+                        let val = $(this).val();
+                        if ('-1' !== val) { // It's the company, disable it because this is not CON
+                            $(this).prop('disabled', true);
+                        }
+                    });
+                    $('#staff_contribution, #company_match').val('0.00').prop('readonly', true);
+                    $('#staff_ytd').val($('#staff_previous').val()).prop('readonly', true);
+                    $('#company_ytd').val($('#company_previous').val()).prop('readonly', true);
+                }
+            });
+            $('#ordinary_amount').change(function () {
+                let ordinary_previous = getFloat($('#ordinary_previous').val()),
+                    ordinary_amount = getFloat($('#ordinary_amount').val());
+                $('#ordinary_balance').val(ordinary_amount+ordinary_previous);
+                calculateBalance();
+            });
+            $('#special_amount').change(function () {
+                let special_previous = getFloat($('#special_previous').val()),
+                    special_amount = getFloat($('#special_amount').val());
+                $('#special_balance').val(special_amount+special_previous);
+                calculateBalance();
+            });
+            $('#medisave_amount').change(function () {
+                let medisave_previous = getFloat($('#medisave_previous').val()),
+                    medisave_amount = getFloat($('#medisave_amount').val());
+                $('#medisave_balance').val(medisave_amount + medisave_previous);
+                calculateBalance();
+            });
+            $('#contribution_month').change(function () {
+                let contribution_month = $(this).val(),
+                    regex1 = /\d{4}-\d{2}/,
+                    regex2 = /20\d{2}-01/;
+                if (!regex1.test(contribution_month)) {
+                    $(this).val('');
+                    toastr.warning('The contribution month is invalid.');
+                    return;
+                }
+                if (regex2.test(contribution_month)) {
+                    $('#staff_previous').val('0.00');
+                    $('#company_previous').val('0.00');
+                } else {
+                    $('#staff_previous').val($('#staff_previous').attr('data-value'));
+                    $('#company_previous').val($('#company_previous').attr('data-value'));
+                }
+            });
+            $('#staff_contribution').change(function () {
+                let staff_contribution = getFloat($('#staff_contribution').val()),
+                    staff_previous = getFloat($('#staff_previous').val());
+                $('#staff_ytd').val(staff_contribution+staff_previous);
+            });
+            $('#company_match').change(function () {
+                let company_match = getFloat($('#company_match').val()),
+                    company_previous = getFloat($('#company_previous').val());
+                $('#company_ytd').val(company_match+company_previous);
+            });
+            $('#btn-save-cpf').click(function (e) {
+                e.preventDefault();
+                let ids = ['transaction_date', 'transaction_code', 'ordinary_amount', 'ordinary_balance', 'special_amount', 'special_balance', 'medisave_amount', 'medisave_balance', 'transaction_amount', 'account_balance', 'contribution_month', 'company_id', 'staff_contribution', 'staff_ytd', 'company_match', 'company_ytd'];
+                for (let i = 0; i < ids.length; i++) {
+                    if ('' === $('#' + ids[i]).val()) {
+                        toastr.warning('Please ensure all mandatory fields are filled.');
+                        $('#' + ids[i]).focus();
+                        return;
+                    }
+                }
+                $(this).prop('disabled', true);
+                $.ajax({
+                    url: '<?= base_url('en/office/employment/cpf/edit') ?>',
+                    type: 'post',
+                    data: {
+                        <?php foreach ($fields as $field) : ?>
+                        <?= $field ?>: $('#<?= $field ?>').val(),
+                        <?php endforeach; ?>
+                    },
+                    success: function (response) {
+                        if ('success' === response.status) {
+                            toastr.success(response.toast);
+                            setTimeout(function () {window.location.href = response.redirect;}, 5000);
+                        } else {
+                            let message = (response.toast ?? 'Sorry! Something went wrong. Please try again.');
+                            toastr.error(message);
+                            $('#btn-save-cpf').prop('disabled', false);
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        let response = JSON.parse(xhr.responseText);
+                        let error_message = (response.toast ?? 'Sorry! Something went wrong. Please try again.');
+                        $('#btn-save-cpf').prop('disabled', false);
+                        toastr.error(error_message);
+                    }
+                });
+            });
+        });
+    </script>
 <?php $this->endSection() ?>

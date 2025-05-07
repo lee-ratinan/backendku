@@ -490,10 +490,53 @@ class Employment extends BaseController
 
     /**
      * @return ResponseInterface
+     * @throws \ReflectionException
      */
     public function cpfSave(): ResponseInterface
     {
-        return $this->response->setJSON([]);
+        $cpf_model = new CompanyCPFModel();
+        $log_model = new LogActivityModel();
+        $session   = session();
+        $data      = [];
+        $fields    = [
+            'transaction_date',
+            'transaction_code',
+            'ordinary_amount',
+            'ordinary_balance',
+            'special_amount',
+            'special_balance',
+            'medisave_amount',
+            'medisave_balance',
+            'transaction_amount',
+            'account_balance',
+            'contribution_month',
+            'company_id',
+            'staff_contribution',
+            'staff_ytd',
+            'company_match',
+            'company_ytd',
+        ];
+        foreach ($fields as $field) {
+            $data[$field] = $this->request->getPost($field);
+        }
+        $data['created_by'] = $session->user_id;
+        if (0 > $data['company_id']) {
+            $data['company_id'] = null;
+        }
+        // INSERT
+        if ($id = $cpf_model->insert($data)) {
+            $log_model->insertTableUpdate('company_cpf', $id, $data, $session->user_id);
+            $new_id = $id * $cpf_model::ID_NONCE;
+            return $this->response->setJSON([
+                'status'   => 'success',
+                'toast'    => 'Successfully created new CPF record.',
+                'redirect' => base_url($session->locale . '/office/employment/cpf/edit/' . $new_id)
+            ]);
+        }
+        return $this->response->setJSON([
+            'status'  => 'error',
+            'toast'   => lang('System.status_message.generic_error')
+        ])->setStatusCode(HTTP_STATUS_SOMETHING_WRONG);
     }
 
     /**
