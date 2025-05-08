@@ -196,6 +196,13 @@ $routes->group('{locale}/office', ['filter' => 'auth'], static function ($routes
     $routes->get('health/measurement/create', 'Health::measurementEdit/new');
     $routes->get('health/measurement/edit/(:any)', 'Health::measurementEdit/$1');
     $routes->post('health/measurement/edit', 'Health::measurementSave');
+    // OOCA
+    $routes->get('health/ooca', 'Health::ooca');
+    $routes->post('health/ooca', 'Health::oocaList');
+    $routes->get('health/ooca/create', 'Health::oocaEdit');
+    $routes->post('health/ooca/create', 'Health::oocaSave');
+    $routes->get('health/ooca/view/(:any)', 'Health::oocaView/$1');
+    $routes->post('health/ooca/statistics', 'Health::oocaStatistics');
     // MBTI
     $routes->get('health/mbti', 'Health::mbti');
     $routes->post('health/mbti', 'Health::mbtiList');
