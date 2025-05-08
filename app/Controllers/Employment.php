@@ -151,7 +151,8 @@ class Employment extends BaseController
             'position_titles'
         ];
         foreach ($fields as $field) {
-            $data[$field] = $this->request->getPost($field);
+            $value        = $this->request->getPost($field);
+            $data[$field] = (!empty($value)) ? $value : null;
         }
         if ('edit' == $mode) {
             if ($company_model->update($id, $data)) {
@@ -345,7 +346,8 @@ class Employment extends BaseController
             'google_drive_link'
         ];
         foreach ($fields as $field) {
-            $data[$field] = $this->request->getPost($field);
+            $value        = $this->request->getPost($field);
+            $data[$field] = (!empty($value)) ? $value : null;
         }
         if ('edit' == $mode) {
             if ($salary_model->update($id, $data)) {
@@ -517,7 +519,8 @@ class Employment extends BaseController
             'company_ytd',
         ];
         foreach ($fields as $field) {
-            $data[$field] = $this->request->getPost($field);
+            $value        = $this->request->getPost($field);
+            $data[$field] = (!empty($value)) ? $value : null;
         }
         $data['created_by'] = $session->user_id;
         if (0 > $data['company_id']) {
@@ -710,7 +713,8 @@ class Employment extends BaseController
             'client_organization_name',
         ];
         foreach ($fields as $field) {
-            $data[$field] = $this->request->getPost($field);
+            $value        = $this->request->getPost($field);
+            $data[$field] = (!empty($value)) ? $value : null;
         }
         if ('edit' == $mode) {
             if ($project_model->update($id, $data)) {
@@ -865,7 +869,8 @@ class Employment extends BaseController
             'google_drive_link',
         ];
         foreach ($fields as $field) {
-            $data[$field] = $this->request->getPost($field);
+            $value        = $this->request->getPost($field);
+            $data[$field] = (!empty($value)) ? $value : null;
         }
         if ('edit' == $mode) {
             if ($income_model->update($id, $data)) {
