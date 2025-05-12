@@ -54,7 +54,6 @@ $this->extend($layout);
                                 <thead>
                                 <tr>
                                     <th></th>
-                                    <th>ID</th>
                                     <td style="min-width:75px"></td>
                                     <th style="min-width:250px">Company</th>
                                     <th style="min-width:120px">Country</th>
@@ -88,9 +87,9 @@ $this->extend($layout);
                         d.year = $('#year').val();
                     }
                 },
-                order: [[1, 'desc']],
+                order: [[5, 'desc']],
                 columnDefs: [{orderable: false, targets: [0,2]}],
-                fixedColumns: {start:3},
+                fixedColumns: {start:2},
                 scrollX: true,
             });
             $('#btn-filter').on('click', function () {

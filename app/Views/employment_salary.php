@@ -67,7 +67,6 @@ $this->extend($layout);
                                 <thead>
                                 <tr>
                                     <th></th>
-                                    <th>ID</th>
                                     <th style="min-width:100px">Pay Date</th>
                                     <th style="min-width:180px">Company</th>
                                     <th style="min-width:100px">Tax Year</th>
@@ -100,37 +99,7 @@ $this->extend($layout);
                                 </thead>
                                 <tbody></tbody>
                                 <tfoot>
-                                <tr>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
+                                <tr id="footer-row">
                                 </tr>
                                 </tfoot>
                             </table>
@@ -149,7 +118,7 @@ $this->extend($layout);
                 fixedHeader: true,
                 searching: false, // don't allow the search for this one
                 pageLength: 50,
-                fixedColumns: {start: 3},
+                fixedColumns: {start: 2},
                 scrollX: true,
                 ajax: {
                     url: '<?= base_url($session->locale . '/office/employment/salary') ?>',
@@ -161,14 +130,17 @@ $this->extend($layout);
                     },
                     dataSrc: function (json) {
                         serverFooter = json.footer;
+                        $.each(serverFooter, function (i, item) {
+                            $('#footer-row').append('<th class="text-end">'+item+'</th>');
+                        });
                         return json.data;
                     }
                 },
                 order: [[1, 'desc']],
                 columnDefs: [
                     {orderable: false, targets: 0},
-                    {className: 'text-end', targets: [9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27] }
-                ],
+                    {className: 'text-end', targets: [8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26] }
+                ]
             });
             $('#btn-filter').on('click', function () {
                 table.ajax.reload();

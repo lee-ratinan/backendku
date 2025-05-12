@@ -62,7 +62,6 @@ class Employment extends BaseController
         $model              = new CompanyMasterModel();
         $columns            = [
             '',
-            'id',
             '',
             'company_legal_name',
             'company_country_code',
@@ -223,7 +222,6 @@ class Employment extends BaseController
         $model              = new CompanySalaryModel();
         $columns            = [
             '',
-            'id',
             'pay_date',
             'company_legal_name',
             'tax_year',

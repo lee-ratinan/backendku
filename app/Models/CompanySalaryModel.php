@@ -306,25 +306,25 @@ class CompanySalaryModel extends Model
     public function getDataTables(int $start, int $length, string $order_column, string $order_direction, string $currency_code, int $company_id, string $year): array
     {
         $columns_to_calc = [
-            9 => 'base_amount',
-            10 => 'allowance_amount',
-            11 => 'training_amount',
-            12 => 'overtime_amount',
-            13 => 'adjustment_amount',
-            14 => 'bonus_amount',
-            15 => 'subtotal_amount',
-            16 => 'social_security_amount',
-            17 => 'us_tax_fed_amount',
-            18 => 'us_tax_state_amount',
-            19 => 'us_tax_city_amount',
-            20 => 'us_tax_med_ee_amount',
-            21 => 'us_tax_oasdi_ee_amount',
-            22 => 'th_tax_amount',
-            23 => 'sg_tax_amount',
-            24 => 'au_tax_amount',
-            25 => 'claim_amount',
-            26 => 'provident_fund_amount',
-            27 => 'total_amount'
+            8 => 'base_amount',
+            9 => 'allowance_amount',
+            10 => 'training_amount',
+            11 => 'overtime_amount',
+            12 => 'adjustment_amount',
+            13 => 'bonus_amount',
+            14 => 'subtotal_amount',
+            15 => 'social_security_amount',
+            16 => 'us_tax_fed_amount',
+            17 => 'us_tax_state_amount',
+            18 => 'us_tax_city_amount',
+            19 => 'us_tax_med_ee_amount',
+            20 => 'us_tax_oasdi_ee_amount',
+            21 => 'th_tax_amount',
+            22 => 'sg_tax_amount',
+            23 => 'au_tax_amount',
+            24 => 'claim_amount',
+            25 => 'provident_fund_amount',
+            26 => 'total_amount'
         ];
         $record_total    = $this->countAllResults();
         $record_filtered = $record_total;
@@ -345,7 +345,6 @@ class CompanySalaryModel extends Model
             $new_id       = $row['id'] * self::ID_NONCE;
             $result[]     = [
                 '<a class="btn btn-outline-primary btn-sm" href="' . base_url($locale . '/office/employment/salary/edit/' . $new_id) . '"><i class="fa-solid fa-edit"></i></a>',
-                $row['id'],
                 ('US' == $row['tax_country_code'] ? date(DATE_FORMAT_UI, strtotime($row['pay_date'])) : date(MONTH_FORMAT_UI, strtotime($row['pay_date']))),
                 $row['company_legal_name'],
                 $row['tax_year'],
@@ -382,7 +381,7 @@ class CompanySalaryModel extends Model
             }
         }
         $footer_value    = [];
-        for ($i = 0; $i <= 29; $i++) {
+        for ($i = 0; $i <= 28; $i++) {
             $footer_value[$i] = '';
             if (isset($footer[$i])) {
                 foreach ($footer[$i] as $code => $amount) {
@@ -390,7 +389,7 @@ class CompanySalaryModel extends Model
                 }
             }
         }
-        $footer_value[0] = 'Total';
+        $footer_value[7] = 'Total';
         return [
             'recordsTotal'    => $record_total,
             'recordsFiltered' => $record_filtered,
