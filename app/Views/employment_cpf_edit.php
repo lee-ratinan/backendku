@@ -34,25 +34,44 @@ $this->extend($layout);
                         $fields         = [
                             'transaction_date',
                             'transaction_code',
+                            '---',
                             'ordinary_previous',
+                            '+',
                             'ordinary_amount',
+                            '=',
                             'ordinary_balance',
+                            '---',
                             'special_previous',
+                            '+',
                             'special_amount',
+                            '=',
                             'special_balance',
+                            '---',
                             'medisave_previous',
+                            '+',
                             'medisave_amount',
+                            '=',
                             'medisave_balance',
+                            '---',
                             'account_previous',
+                            '+',
                             'transaction_amount',
+                            '=',
                             'account_balance',
+                            '---',
                             'contribution_month',
                             'company_id',
+                            '---',
                             'staff_previous',
+                            '+',
                             'staff_contribution',
+                            '=',
                             'staff_ytd',
+                            '---',
                             'company_previous',
+                            '+',
                             'company_match',
+                            '=',
                             'company_ytd',
                         ];
                         if ('new' == $mode) {
@@ -86,16 +105,24 @@ $this->extend($layout);
                             ];
                             $config['staff_previous']   = [
                                 'type'     => 'text',
-                                'label'    => 'Previous Staff Contribution YTD',
+                                'label'    => '<span class="badge bg-warning rounded-pill">Previous Staff Contribution YTD</span>',
                                 'readonly' => true,
                             ];
                             $config['company_previous'] = [
                                 'type'     => 'text',
-                                'label'    => 'Previous Company Match YTD',
+                                'label'    => '<span class="badge bg-danger rounded-pill">Previous Company Match YTD</span>',
                                 'readonly' => true,
                             ];
                             foreach ($fields as $field) {
-                                generate_form_field($field, $config[$field], @$cpf[$field]);
+                                if ('---' == $field) {
+                                    echo '<div class="text-center mb-3"><span class="badge rounded-pill text-bg-secondary w-100"><i class="fa-solid fa-star"></i></span></div>';
+                                } else if ('+' == $field) {
+                                    echo '<div class="text-center mb-3"><span class="badge rounded-pill text-bg-light w-100"><i class="fa-solid fa-plus-circle"></i></span></div>';
+                                } else if ('=' == $field) {
+                                    echo '<div class="text-center mb-3"><span class="badge rounded-pill text-bg-light w-100"><i class="fa-solid fa-equals"></i></span></div>';
+                                } else {
+                                    generate_form_field($field, $config[$field], @$cpf[$field]);
+                                }
                             }
                             echo '<div class="text-end"><button class="btn btn-primary btn-sm" id="btn-save-cpf"><i class="fa-solid fa-save"></i> Save</button></div>';
                         } else {

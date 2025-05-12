@@ -66,10 +66,10 @@ $this->extend($layout);
                             </div>
                         </div>
                         <div class="row mb-3">
-                            <div class="col-8">
-                                <small>When filtered by contribution (CON) and year, it will filter by the month the contribution was made for, otherwise, the year will be applied to the transaction date.</small>
+                            <div class="col-12">
+                                <small>Remarks: When filtered by contribution (CON) and year, it will filter by the month the contribution was made for, otherwise, the year will be applied to the transaction date.</small>
                             </div>
-                            <div class="col-4 text-end">
+                            <div class="col-12 text-end">
                                 <button id="btn-reset" class="btn btn-sm btn-outline-primary">Reset</button>
                                 <button id="btn-filter" class="btn btn-sm btn-primary">Filter</button>
                             </div>

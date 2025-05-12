@@ -28,8 +28,14 @@ $this->extend($layout);
             <div class="col-12 col-md-10 col-lg-6">
                 <div class="card">
                     <div class="card-body pt-3">
-                        <a class="btn btn-outline-primary btn-sm float-end ms-3" href="<?= base_url($session->locale . '/office/employment/cpf/statement/create') ?>"><i class="fa-solid fa-plus-circle"></i> New Statement</a>
-                        <h5 class="card-title"><i class="fa-solid fa-piggy-bank fa-fw me-3"></i> <?= $page_title ?></h5>
+                        <div class="row">
+                            <div class="col-12 text-end">
+                                <a class="btn btn-outline-primary btn-sm ms-3" href="<?= base_url($session->locale . '/office/employment/cpf/statement/create') ?>"><i class="fa-solid fa-plus-circle"></i> New Statement</a>
+                            </div>
+                            <div class="col-12">
+                                <h5 class="card-title"><i class="fa-solid fa-piggy-bank fa-fw me-3"></i> <?= $page_title ?></h5>
+                            </div>
+                        </div>
                         <table class="table table-sm table-hover table-striped">
                             <thead>
                             <tr>

@@ -23,26 +23,26 @@ $this->extend($layout);
                             <a class="btn btn-outline-primary btn-sm" href="<?= base_url($session->locale . '/office/employment/salary/create') ?>"><i class="fa-solid fa-plus-circle"></i> New Salary</a>
                         </div>
                         <h5 class="card-title"><i class="fa-solid fa-dollar-sign fa-fw me-3"></i> <?= $page_title ?></h5>
-                        <div class="row mb-3">
+                        <div class="row g-3 mb-3">
+                            <div class="col-12 col-md-4">
+                                <label for="company_id" class="form-label">Company</label><br>
+                                <select class="form-select form-select-sm" id="company_id">
+                                    <option value="">All</option>
+                                    <?php foreach ($companies as $country_code => $group): ?>
+                                        <optgroup label="<?= lang('ListCountries.countries.' . $country_code . '.common_name') ?>">
+                                            <?php foreach ($group as $company) : ?>
+                                                <option value="<?= $company['id'] ?>"><?= $company['name'] ?></option>
+                                            <?php endforeach; ?>
+                                        </optgroup>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
                             <div class="col-6 col-md-4">
                                 <label for="currency_code" class="form-label">Currency</label><br>
                                 <select class="form-select form-select-sm" id="currency_code">
                                     <option value="">All</option>
                                     <?php foreach ($currencies as $code): ?>
                                         <option value="<?= $code ?>"><?= $code ?></option>
-                                    <?php endforeach; ?>
-                                </select>
-                            </div>
-                            <div class="col-6 col-md-4">
-                                <label for="company_id" class="form-label">Company</label><br>
-                                <select class="form-select form-select-sm" id="company_id">
-                                    <option value="">All</option>
-                                    <?php foreach ($companies as $country_code => $group): ?>
-                                        <optgroup label="<?= lang('ListCountries.countries.' . $country_code . '.common_name') ?>">
-                                        <?php foreach ($group as $company) : ?>
-                                        <option value="<?= $company['id'] ?>"><?= $company['name'] ?></option>
-                                        <?php endforeach; ?>
-                                        </optgroup>
                                     <?php endforeach; ?>
                                 </select>
                             </div>
