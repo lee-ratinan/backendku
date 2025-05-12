@@ -99,7 +99,11 @@ $this->extend($layout);
                                 </thead>
                                 <tbody></tbody>
                                 <tfoot>
-                                <tr id="footer-row"></tr>
+                                <tr>
+                                    <th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th>
+                                    <th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th>
+                                    <th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th>
+                                </tr>
                                 </tfoot>
                             </table>
                         </div>
@@ -129,9 +133,6 @@ $this->extend($layout);
                     },
                     dataSrc: function (json) {
                         serverFooter = json.footer;
-                        $.each(serverFooter, function (i, item) {
-                            $('#footer-row').append('<th class="text-end">'+item+'</th>');
-                        });
                         return json.data;
                     }
                 },
@@ -139,7 +140,13 @@ $this->extend($layout);
                 columnDefs: [
                     {orderable: false, targets: 0},
                     {className: 'text-end', targets: [8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26] }
-                ]
+                ],
+                footerCallback: function () {
+                    let api = this.api();
+                    for (let i = 7; i <= 28; i++) {
+                        api.column(i).footer().innerHTML = serverFooter[i];
+                    }
+                }
             });
             $('#btn-filter').on('click', function () {
                 table.ajax.reload();

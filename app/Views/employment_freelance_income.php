@@ -80,7 +80,22 @@ $this->extend($layout);
                                 </thead>
                                 <tbody></tbody>
                                 <tfoot>
-                                <tr id="footer-row"></tr>
+                                <tr>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th>Total</th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
                                 </tfoot>
                             </table>
                         </div>
@@ -110,9 +125,6 @@ $this->extend($layout);
                     },
                     dataSrc: function (json) {
                         serverFooter = json.footer;
-                        $.each(serverFooter, function (i, item) {
-                            $('#footer-row').append('<th class="text-end">'+item+'</th>');
-                        });
                         return json.data;
                     }
                 },
@@ -121,6 +133,12 @@ $this->extend($layout);
                     {orderable: false, targets: 0},
                     {className: 'text-end', targets: [6,7,8,9,10,11] }
                 ],
+                footerCallback: function () {
+                    let api = this.api();
+                    for (let i = 6; i <= 11; i++) {
+                        api.column(i).footer().innerHTML = serverFooter[i];
+                    }
+                }
             });
             $('#btn-filter').on('click', function () {
                 table.ajax.reload();
