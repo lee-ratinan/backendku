@@ -784,8 +784,8 @@ class Employment extends BaseController
         $model              = new CompanyFreelanceIncomeModel();
         $columns            = [
             '',
-            'company_master.company_trade_name',
             'company_freelance_project.project_title',
+            'company_master.company_trade_name',
             'pay_date',
             'payment_method',
             'payment_currency',

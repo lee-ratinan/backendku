@@ -99,8 +99,7 @@ $this->extend($layout);
                                 </thead>
                                 <tbody></tbody>
                                 <tfoot>
-                                <tr id="footer-row">
-                                </tr>
+                                <tr id="footer-row"></tr>
                                 </tfoot>
                             </table>
                         </div>

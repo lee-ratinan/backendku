@@ -199,6 +199,14 @@ class CompanyFreelanceIncomeModel extends Model
      */
     public function getDataTables(int $start, int $length, string $order_column, string $order_direction, string $search_value, int $company_id, int $project_id, string $year): array
     {
+        $columns_to_calc = [
+            6  => 'base_amount',
+            7  => 'deduction_amount',
+            8  => 'claim_amount',
+            9  => 'subtotal_amount',
+            10 => 'tax_amount',
+            11 => 'total_amount',
+        ];
         $record_total    = $this->countAllResults();
         $record_filtered = $record_total;
         if (!empty($search_value) || !empty($company_id) || !empty($project_id) || !empty($year)) {
@@ -215,12 +223,13 @@ class CompanyFreelanceIncomeModel extends Model
             ->join('company_master', 'company_freelance_project.company_id = company_master.id')
             ->orderBy($order_column, $order_direction)->limit($length, $start)->findAll();
         $result     = [];
+        $footer     = [];
         foreach ($raw_result as $row) {
             $new_id       = $row['id'] * self::ID_NONCE;
             $result[]     = [
                 '<a class="btn btn-outline-primary btn-sm" href="' . base_url($locale . '/office/employment/freelance-income/edit/' . $new_id) . '"><i class="fa-solid fa-edit"></i></a>',
-                $row['company_trade_name'],
                 $row['project_title'],
+                $row['company_trade_name'],
                 (empty($row['pay_date']) ? '-' : date(DATE_FORMAT_UI, strtotime($row['pay_date']))),
                 $this->getPaymentMethod($row['payment_method']),
                 $row['payment_currency'],
@@ -233,12 +242,27 @@ class CompanyFreelanceIncomeModel extends Model
                 $row['payment_details'],
                 (empty($row['google_drive_link']) ? '-' : '<a class="btn btn-outline-primary btn-sm" href="' . $row['google_drive_link'] . '" target="_blank"><i class="fa-solid fa-file-pdf"></i></a>')
             ];
+            foreach ($columns_to_calc as $key => $column) {
+                if (isset($row[$column]) && 0 != $row[$column]) {
+                    $footer[$key][$row['payment_currency']] = (isset($footer[$key][$row['payment_currency']]) ? $footer[$key][$row['payment_currency']] + $row[$column] : $row[$column]);
+                }
+            }
         }
+        $footer_value    = [];
+        for ($i = 0; $i <= 28; $i++) {
+            $footer_value[$i] = '';
+            if (isset($footer[$i])) {
+                foreach ($footer[$i] as $code => $amount) {
+                    $footer_value[$i] .= currency_format($code, $amount) . '<br>';
+                }
+            }
+        }
+        $footer_value[5] = 'Total';
         return [
             'recordsTotal'    => $record_total,
             'recordsFiltered' => $record_filtered,
             'data'            => $result,
-            'footer'          => []
+            'footer'          => $footer_value
         ];
     }
 }

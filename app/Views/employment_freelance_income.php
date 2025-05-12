@@ -23,7 +23,7 @@ $this->extend($layout);
                             <a class="btn btn-outline-primary btn-sm" href="<?= base_url($session->locale . '/office/employment/freelance-income/create') ?>"><i class="fa-solid fa-plus-circle"></i> New Income</a>
                         </div>
                         <h5 class="card-title"><i class="fa-solid fa-dollar-sign fa-fw me-3"></i> <?= $page_title ?></h5>
-                        <div class="row mb-3">
+                        <div class="row g-3 mb-3">
                             <div class="col-6 col-md-4">
                                 <label for="company_id" class="form-label">Company</label><br>
                                 <select class="form-select form-select-sm" id="company_id">
@@ -63,11 +63,11 @@ $this->extend($layout);
                                 <thead>
                                 <tr>
                                     <th></th>
-                                    <th style="min-width:175px">Company</th>
-                                    <th style="min-width:175px">Project</th>
+                                    <th style="min-width:140px">Project</th>
+                                    <th style="min-width:100px">Company</th>
                                     <th style="min-width:100px">Pay Date</th>
                                     <th style="min-width:125px">Payment Method</th>
-                                    <th style="min-width:100px">Currency</th>
+                                    <th style="min-width:80px">Currency</th>
                                     <th style="min-width:150px">Base Amount</th>
                                     <th style="min-width:150px">Deduction</th>
                                     <th style="min-width:150px">Claim</th>
@@ -79,6 +79,9 @@ $this->extend($layout);
                                 </tr>
                                 </thead>
                                 <tbody></tbody>
+                                <tfoot>
+                                <tr id="footer-row"></tr>
+                                </tfoot>
                             </table>
                         </div>
                     </div>
@@ -95,7 +98,7 @@ $this->extend($layout);
                 fixedHeader: true,
                 searching: false, // don't allow the search for this one
                 pageLength: 50,
-                fixedColumns: {start: 3},
+                fixedColumns: {start: 2},
                 scrollX: true,
                 ajax: {
                     url: '<?= base_url($session->locale . '/office/employment/freelance-income') ?>',
@@ -107,6 +110,9 @@ $this->extend($layout);
                     },
                     dataSrc: function (json) {
                         serverFooter = json.footer;
+                        $.each(serverFooter, function (i, item) {
+                            $('#footer-row').append('<th class="text-end">'+item+'</th>');
+                        });
                         return json.data;
                     }
                 },
@@ -120,6 +126,7 @@ $this->extend($layout);
                 table.ajax.reload();
             });
             $('#btn-reset').on('click', function () {
+                $('#company_id').val('');
                 $('#project_id').val('');
                 $('#year').val('');
                 table.ajax.reload();
