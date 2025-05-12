@@ -162,16 +162,20 @@ class CompanyFreelanceIncomeModel extends Model
     }
     /**
      * @param string $search_value
+     * @param int $company_id
      * @param int $project_id
      * @param string $year
      * @return void
      */
-    private function applyFilter(string $search_value, int $project_id, string $year): void
+    private function applyFilter(string $search_value, int $company_id, int $project_id, string $year): void
     {
         if (!empty($search_value)) {
             $this->groupStart()
                 ->like('payment_details', $search_value)
                 ->groupEnd();
+        }
+        if (!empty($company_id)) {
+            $this->where('company_freelance_project.company_id', $company_id);
         }
         if (!empty($project_id)) {
             $this->where('project_id', $project_id);
@@ -188,30 +192,34 @@ class CompanyFreelanceIncomeModel extends Model
      * @param string $order_column
      * @param string $order_direction
      * @param string $search_value
+     * @param int $company_id
      * @param int $project_id
      * @param string $year
      * @return array
      */
-    public function getDataTables(int $start, int $length, string $order_column, string $order_direction, string $search_value, int $project_id, string $year): array
+    public function getDataTables(int $start, int $length, string $order_column, string $order_direction, string $search_value, int $company_id, int $project_id, string $year): array
     {
         $record_total    = $this->countAllResults();
         $record_filtered = $record_total;
-        if (!empty($search_value) || !empty($project_id) || !empty($year)) {
-            $this->applyFilter($search_value, $project_id, $year);
-            $record_filtered = $this->countAllResults();
-            $this->applyFilter($search_value, $project_id, $year);
+        if (!empty($search_value) || !empty($company_id) || !empty($project_id) || !empty($year)) {
+            $this->applyFilter($search_value, $company_id, $project_id, $year);
+            $record_filtered = $this
+                ->join('company_freelance_project', 'company_freelance_income.project_id = company_freelance_project.id')
+                ->countAllResults();
+            $this->applyFilter($search_value, $company_id, $project_id, $year);
         }
         $session    = session();
         $locale     = $session->locale;
-        $raw_result = $this->select('company_freelance_income.*, company_freelance_project.project_title')
-            ->join('company_freelance_project', 'company_freelance_income.project_id = company_freelance_project.id', 'left outer')
+        $raw_result = $this->select('company_freelance_income.*, company_freelance_project.project_title, company_master.company_trade_name')
+            ->join('company_freelance_project', 'company_freelance_income.project_id = company_freelance_project.id')
+            ->join('company_master', 'company_freelance_project.company_id = company_master.id')
             ->orderBy($order_column, $order_direction)->limit($length, $start)->findAll();
         $result     = [];
         foreach ($raw_result as $row) {
             $new_id       = $row['id'] * self::ID_NONCE;
             $result[]     = [
                 '<a class="btn btn-outline-primary btn-sm" href="' . base_url($locale . '/office/employment/freelance-income/edit/' . $new_id) . '"><i class="fa-solid fa-edit"></i></a>',
-                $row['id'],
+                $row['company_trade_name'],
                 $row['project_title'],
                 (empty($row['pay_date']) ? '-' : date(DATE_FORMAT_UI, strtotime($row['pay_date']))),
                 $this->getPaymentMethod($row['payment_method']),

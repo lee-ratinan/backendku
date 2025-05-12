@@ -25,6 +25,15 @@ $this->extend($layout);
                         <h5 class="card-title"><i class="fa-solid fa-dollar-sign fa-fw me-3"></i> <?= $page_title ?></h5>
                         <div class="row mb-3">
                             <div class="col-6 col-md-4">
+                                <label for="company_id" class="form-label">Company</label><br>
+                                <select class="form-select form-select-sm" id="company_id">
+                                    <option value="">All</option>
+                                    <?php foreach ($companies as $company_id => $company_name): ?>
+                                        <option value="<?= $company_id ?>"><?= $company_name ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                            <div class="col-6 col-md-4">
                                 <label for="project_id" class="form-label">Project</label><br>
                                 <select class="form-select form-select-sm" id="project_id">
                                     <option value="">All</option>
@@ -54,8 +63,8 @@ $this->extend($layout);
                                 <thead>
                                 <tr>
                                     <th></th>
-                                    <th>ID</th>
-                                    <th style="min-width:225px">Project</th>
+                                    <th style="min-width:175px">Company</th>
+                                    <th style="min-width:175px">Project</th>
                                     <th style="min-width:100px">Pay Date</th>
                                     <th style="min-width:125px">Payment Method</th>
                                     <th style="min-width:100px">Currency</th>
@@ -92,6 +101,7 @@ $this->extend($layout);
                     url: '<?= base_url($session->locale . '/office/employment/freelance-income') ?>',
                     type: 'POST',
                     data: function (d) {
+                        d.company_id    = $('#company_id').val();
                         d.project_id    = $('#project_id').val();
                         d.year          = $('#year').val();
                     },
@@ -100,7 +110,7 @@ $this->extend($layout);
                         return json.data;
                     }
                 },
-                order: [[1, 'desc']],
+                order: [[3, 'desc']],
                 columnDefs: [
                     {orderable: false, targets: 0},
                     {className: 'text-end', targets: [6,7,8,9,10,11] }

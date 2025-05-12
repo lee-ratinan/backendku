@@ -155,7 +155,7 @@ class CompanyFreelanceProjectModel extends Model
                 $row['client_name'],
                 $row['client_organization_name'],
                 date(DATE_FORMAT_UI, strtotime($row['project_start_date'])),
-                (empty($row['project_end_date']) ? '' : date(DATE_FORMAT_UI, strtotime($row['project_end_date']))),
+                (empty($row['project_end_date']) || '0000-00-00' == $row['project_end_date'] ? '' : date(DATE_FORMAT_UI, strtotime($row['project_end_date']))),
             ];
         }
         return [

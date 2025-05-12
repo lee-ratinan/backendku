@@ -750,10 +750,18 @@ class Employment extends BaseController
     {
         $session       = session();
         $project_model = new CompanyFreelanceProjectModel();
+        $company_model = new CompanyMasterModel();
         $project_raw   = $project_model->orderBy('project_title', 'asc')->findAll();
         $project_list  = [];
+        $company_list  = [];
+        $company_ids   = [];
         foreach ($project_raw as $row) {
             $project_list[$row['id']] = $row['project_title'];
+            $company_ids[]            = $row['company_id'];
+        }
+        $company_raw  = $company_model->whereIn('id', $company_ids)->orderBy('company_trade_name', 'asc')->findAll();
+        foreach ($company_raw as $row) {
+            $company_list[$row['id']] = $row['company_trade_name'];
         }
         $data          = [
             'page_title'   => 'Freelance Income',
@@ -762,7 +770,8 @@ class Employment extends BaseController
             'user_session' => $session->user,
             'roles'        => $session->roles,
             'current_role' => $session->current_role,
-            'projects'     => $project_list
+            'projects'     => $project_list,
+            'companies'    => $company_list
         ];
         return view('employment_freelance_income', $data);
     }
@@ -775,8 +784,8 @@ class Employment extends BaseController
         $model              = new CompanyFreelanceIncomeModel();
         $columns            = [
             '',
-            'company_freelance_income.id',
-            'project_id',
+            'company_master.company_trade_name',
+            'company_freelance_project.project_title',
             'pay_date',
             'payment_method',
             'payment_currency',
@@ -796,10 +805,11 @@ class Employment extends BaseController
         $order_column_index = $order[0]['column'] ?? 0;
         $order_column       = $columns[$order_column_index];
         $order_direction    = $order[0]['dir'] ?? 'desc';
+        $company_id         = intval($this->request->getPost('company_id'));
         $project_id         = intval($this->request->getPost('project_id'));
         $year               = $this->request->getPost('year');
         $search_value       = $search['value'];
-        $result             = $model->getDataTables($start, $length, $order_column, $order_direction, $search_value, $project_id, $year);
+        $result             = $model->getDataTables($start, $length, $order_column, $order_direction, $search_value, $company_id, $project_id, $year);
         return $this->response->setJSON([
             'draw'            => $this->request->getPost('draw'),
             'recordsTotal'    => $result['recordsTotal'],
