@@ -193,12 +193,12 @@ class Employment extends BaseController
     {
         $session      = session();
         $company      = new CompanyMasterModel();
-        $company_raw  = $company->orderBy('company_legal_name', 'asc')->findAll();
+        $company_raw  = $company->orderBy('company_trade_name', 'asc')->findAll();
         $company_list = [];
         foreach ($company_raw as $row) {
             $company_list[$row['company_country_code']][] = [
                 'id'   => $row['id'],
-                'name' => $row['company_legal_name']
+                'name' => $row['company_trade_name']
             ];
         }
         $data         = [
@@ -223,6 +223,7 @@ class Employment extends BaseController
         $columns            = [
             '',
             'pay_date',
+            'google_drive_link',
             'company_legal_name',
             'tax_year',
             'tax_country_code',
@@ -248,8 +249,7 @@ class Employment extends BaseController
             'claim_amount',
             'provident_fund_amount',
             'total_amount',
-            'payment_details',
-            'google_drive_link'
+            'payment_details'
         ];
         $order              = $this->request->getPost('order');
         $start              = $this->request->getPost('start');

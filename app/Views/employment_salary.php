@@ -67,6 +67,7 @@ $this->extend($layout);
                                 <thead>
                                 <tr>
                                     <th></th>
+                                    <th><i class="fa-solid fa-file-pdf"></i></th>
                                     <th style="min-width:100px">Pay Date</th>
                                     <th style="min-width:180px">Company</th>
                                     <th style="min-width:100px">Tax Year</th>
@@ -94,7 +95,6 @@ $this->extend($layout);
                                     <th style="min-width:150px">Provident Fund</th>
                                     <th style="min-width:150px">Total</th>
                                     <th style="min-width:225px">Details</th>
-                                    <th>Payslip</th>
                                 </tr>
                                 </thead>
                                 <tbody></tbody>
@@ -120,8 +120,8 @@ $this->extend($layout);
                 serverSide: true,
                 fixedHeader: true,
                 searching: false, // don't allow the search for this one
-                pageLength: 50,
-                fixedColumns: {start: 2},
+                pageLength: 25,
+                fixedColumns: {start: 3},
                 scrollX: true,
                 ajax: {
                     url: '<?= base_url($session->locale . '/office/employment/salary') ?>',
@@ -136,10 +136,10 @@ $this->extend($layout);
                         return json.data;
                     }
                 },
-                order: [[1, 'desc']],
+                order: [[2, 'desc']],
                 columnDefs: [
                     {orderable: false, targets: 0},
-                    {className: 'text-end', targets: [8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26] }
+                    {className: 'text-end', targets: [9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27] }
                 ],
                 footerCallback: function () {
                     let api = this.api();
