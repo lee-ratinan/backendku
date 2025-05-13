@@ -76,7 +76,7 @@ class JourneyTransportModel extends Model
             'label'       => 'Flight Number',
             'required'    => false,
             'maxlength'   => 16,
-            'placeholder' => 'SQ123'
+            'details'     => 'e.g. SQ123'
         ],
         'pnr_number'      => [
             'type'        => 'text',
@@ -84,7 +84,7 @@ class JourneyTransportModel extends Model
             'required'    => false,
             'minlength'   => 6,
             'maxlength'   => 6,
-            'placeholder' => 'ABC123'
+            'details'     => 'e.g. ABC123'
         ],
         'departure_date_time' => [
             'type'        => 'datetime-local',
@@ -128,7 +128,7 @@ class JourneyTransportModel extends Model
             'label'       => 'Craft Type',
             'required'    => false,
             'maxlength'   => 32,
-            'placeholder' => 'BOEING 777'
+            'details'     => 'e.g. BOEING 777'
         ],
         'price_amount' => [
             'type'        => 'number',
@@ -166,7 +166,7 @@ class JourneyTransportModel extends Model
             'required'    => false,
             'maxlength'   => 255,
             'placeholder' => 'Flight details, connecting flights, etc',
-            'details'     => 'Use [R] for return trip, [RI] for reimbursed trip, and [C] for connecting flight'
+            'details'     => 'Use [R] for return trip, [RI] for reimbursed trip, [C] for connecting flight, [CP] for company-paid (unknown $)'
         ],
         'journey_status' => [
             'type'        => 'select',
@@ -195,18 +195,20 @@ class JourneyTransportModel extends Model
         $configurations  = $this->configurations;
         // Operators
         $operator_model  = new JourneyOperatorModel();
-        $operators       = $operator_model->findAll();
+        $jo_modes        = $operator_model->getModeOfTransport();
+        $operators       = $operator_model->orderBy('mode_of_transport, operator_name, operator_code_1')->findAll();
         $all_operators   = [];
         foreach ($operators as $operator) {
-            $all_operators[$operator['id']] = (empty($port['operator_code_1']) ? '' : '[' . $port['port_code_1'] . '] ') . $operator['operator_name'];
+            $all_operators[$operator['id']] = $jo_modes[$operator['mode_of_transport']] . ': ' . $operator['operator_name'] . (empty($operator['operator_code_1']) ? '' : ' (' . $operator['operator_code_1'] . ')');
         }
         $configurations['operator_id']['options'] = $all_operators;
         // Ports
         $port_model      = new JourneyPortModel();
-        $ports           = $port_model->findAll();
+        $jp_modes        = $port_model->getModeOfTransport();
+        $ports           = $port_model->orderBy('mode_of_transport, port_name, port_code_1')->findAll();
         $all_ports       = [];
         foreach ($ports as $port) {
-            $all_ports[$port['id']] = (empty($port['port_code_1']) ? '' : '[' . $port['port_code_1'] . '] ') . $port['port_name'];
+            $all_ports[$port['id']] = $jp_modes[$port['mode_of_transport']] . ': ' . $port['port_name'] . (empty($port['port_code_1']) ? '' : ' (' . $port['port_code_1'] . ')');
         }
         $configurations['departure_port_id']['options'] = $all_ports;
         $configurations['arrival_port_id']['options']  = $all_ports;
@@ -368,7 +370,8 @@ class JourneyTransportModel extends Model
             }
             $journey_details = str_replace('[R]', '<span class="badge bg-success"><i class="fa-solid fa-rotate-left"></i> RETURN</span>', $row['journey_details'] ?? '');
             $journey_details = str_replace('[C]', '<span class="badge bg-success"><i class="fa-solid fa-right-left"></i> CONNECTING</span>', $journey_details);
-            $journey_details = str_replace('[RI]', '<span class="badge bg-success"><i class="fa-solid fa-hand-holding-dollar"></i> REIMBURSED</span>', $journey_details);
+            $journey_details = str_replace('[RI]', '<span class="badge bg-warning"><i class="fa-solid fa-hand-holding-dollar"></i> REIMBURSED</span>', $journey_details);
+            $journey_details = str_replace('[CP]', '<span class="badge bg-warning"><i class="fa-solid fa-hand-holding-dollar"></i> COMPANY-PAID</span>', $journey_details);
             if ('Y' == $row['is_time_known']) {
                 $departure_time  = date(DATETIME_FORMAT_UI, strtotime($row['departure_date_time']));
                 $departure_time .= '<br><small>' . lang('ListTimeZones.timezones.' . $row['departure_timezone'] . '.label') . '</small>';
