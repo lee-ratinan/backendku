@@ -141,7 +141,7 @@ class CompanyFreelanceProjectModel extends Model
         }
         $session    = session();
         $locale     = $session->locale;
-        $raw_result = $this->select('company_freelance_project.*, company_master.company_legal_name')
+        $raw_result = $this->select('company_freelance_project.*, company_master.company_trade_name')
             ->join('company_master', 'company_master.id = company_freelance_project.company_id', 'left outer')
             ->orderBy($order_column, $order_direction)->limit($length, $start)->findAll();
         $result     = [];
@@ -149,8 +149,7 @@ class CompanyFreelanceProjectModel extends Model
             $new_id       = $row['id'] * self::ID_NONCE;
             $result[]     = [
                 '<a class="btn btn-outline-primary btn-sm" href="' . base_url($locale . '/office/employment/freelance/edit/' . $new_id) . '"><i class="fa-solid fa-edit"></i></a>',
-                $row['id'],
-                $row['company_legal_name'],
+                $row['company_trade_name'],
                 $row['project_title'],
                 $row['client_name'],
                 $row['client_organization_name'],

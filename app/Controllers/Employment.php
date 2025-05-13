@@ -603,12 +603,12 @@ class Employment extends BaseController
     {
         $session       = session();
         $company      = new CompanyMasterModel();
-        $company_raw  = $company->orderBy('company_legal_name', 'asc')->findAll();
+        $company_raw  = $company->orderBy('company_trade_name', 'asc')->findAll();
         $company_list = [];
         foreach ($company_raw as $row) {
             $company_list[$row['company_country_code']][] = [
                 'id'   => $row['id'],
-                'name' => $row['company_legal_name']
+                'name' => $row['company_trade_name']
             ];
         }
         $data          = [
@@ -631,7 +631,6 @@ class Employment extends BaseController
         $model              = new CompanyFreelanceProjectModel();
         $columns            = [
             '',
-            'id',
             'company_legal_name',
             'project_title',
             'client_name',

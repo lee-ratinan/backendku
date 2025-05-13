@@ -58,8 +58,7 @@ $this->extend($layout);
                                 <thead>
                                 <tr>
                                     <th></th>
-                                    <th>ID</th>
-                                    <th style="min-width:180px;">Company</th>
+                                    <th style="min-width:125px;">Company</th>
                                     <th style="min-width:180px;">Project Title</th>
                                     <th style="min-width:150px;">Client Name</th>
                                     <th style="min-width:150px;">Client’s Organization</th>
@@ -91,7 +90,7 @@ $this->extend($layout);
                         d.year = $('#year').val();
                     }
                 },
-                order: [[2, 'asc']],
+                order: [[1, 'asc']],
                 columnDefs: [{orderable: false, targets: 0}],
                 fixedColumns: {start:2},
                 scrollX: true,
