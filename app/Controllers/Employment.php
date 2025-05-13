@@ -413,7 +413,6 @@ class Employment extends BaseController
         $model              = new CompanyCPFModel();
         $columns            = [
             '',
-            'id',
             'user_id',
             'transaction_date',
             'transaction_code',

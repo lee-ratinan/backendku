@@ -222,7 +222,7 @@ class CompanyCPFModel extends Model
         }
         $session    = session();
         $locale     = $session->locale;
-        $raw_result = $this->select('company_cpf.*, company_master.company_legal_name')
+        $raw_result = $this->select('company_cpf.*, company_master.company_trade_name')
             ->join('company_master', 'company_master.id = company_cpf.company_id', 'left outer')
             ->orderBy($order_column, $order_direction)->limit($length, $start)->findAll();
         $result     = [];
@@ -230,7 +230,6 @@ class CompanyCPFModel extends Model
             $new_id       = $row['id'] * self::ID_NONCE;
             $result[]     = [
                 '<a class="btn btn-outline-primary btn-sm" href="' . base_url($locale . '/office/employment/cpf/edit/' . $new_id) . '"><i class="fa-solid fa-eye"></i></a>',
-                $row['id'],
                 date(DATE_FORMAT_UI, strtotime($row['transaction_date'])),
                 $row['transaction_code'],
                 currency_format('SGD', $row['ordinary_amount'] ?? 0),
@@ -242,7 +241,7 @@ class CompanyCPFModel extends Model
                 currency_format('SGD', $row['transaction_amount'] ?? 0),
                 currency_format('SGD', $row['account_balance'] ?? 0),
                 ('CON' == $row['transaction_code'] ? date(MONTH_FORMAT_UI, strtotime($row['contribution_month'] . '-01')) : ''),
-                ('CON' == $row['transaction_code'] ? $row['company_legal_name'] : ''),
+                ('CON' == $row['transaction_code'] ? $row['company_trade_name'] : ''),
                 ('CON' == $row['transaction_code'] ? currency_format('SGD', $row['staff_contribution'] ?? 0) : ''),
                 ('CON' == $row['transaction_code'] ? currency_format('SGD', $row['staff_ytd'] ?? 0) : ''),
                 ('CON' == $row['transaction_code'] ? currency_format('SGD', $row['company_match'] ?? 0) : ''),

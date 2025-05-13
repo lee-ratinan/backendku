@@ -79,7 +79,6 @@ $this->extend($layout);
                                 <thead>
                                 <tr>
                                     <th rowspan="2"></th>
-                                    <th rowspan="2">ID</th>
                                     <th rowspan="2" style="min-width:100px">Date</th>
                                     <th rowspan="2" style="min-width:80px">Code</th>
                                     <th colspan="2" class="bg-oa">ORDINARY ACCOUNT</th>
@@ -99,7 +98,7 @@ $this->extend($layout);
                                     <th style="min-width:150px">Transaction Total</th>
                                     <th style="min-width:150px">CPF Balance</th>
                                     <th style="min-width:100px">Month</th>
-                                    <th style="min-width:180px">Company</th>
+                                    <th style="min-width:150px">Company</th>
                                     <th style="min-width:150px">Staff Contribution</th>
                                     <th style="min-width:150px">Staff YTD</th>
                                     <th style="min-width:150px">Company Match</th>
@@ -122,7 +121,7 @@ $this->extend($layout);
                 fixedHeader: true,
                 searching: false,
                 ordering: false,
-                pageLength: 50,
+                pageLength: 25,
                 ajax: {
                     url: '<?= base_url($session->locale . '/office/employment/cpf') ?>',
                     type: 'POST',
@@ -132,14 +131,17 @@ $this->extend($layout);
                         d.company_id = $('#company_id').val();
                     },
                 },
-                order: [[2, 'asc']],
+                order: [[1, 'asc']],
                 columnDefs: [
-                    {className: 'text-end', targets: [4,5,6,7,8,9,10,11,14,15,16,17] },
-                    {className: 'text-oa', targets: [4,5] },
-                    {className: 'text-sa', targets: [6,7] },
-                    {className: 'text-ma', targets: [8,9] }
+                    {className: 'text-end', targets: [3,4,5,6,7,8,9,10,13,14,15,16] },
+                    {className: 'text-oa', targets: [3,4] },
+                    {className: 'text-sa', targets: [5,6] },
+                    {className: 'text-ma', targets: [7,8] },
+                    {className: 'text-success', targets: [9,10]},
+                    {className: 'text-warning', targets: [13,14]},
+                    {className: 'text-danger', targets: [15,16]},
                 ],
-                fixedColumns: {start:3},
+                fixedColumns: {start:2},
                 scrollX: true,
             });
             $('#btn-filter').on('click', function () {
