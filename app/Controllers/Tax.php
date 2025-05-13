@@ -130,7 +130,8 @@ class Tax extends BaseController
         }
         $data    = [
             'page_title'   => 'Tax',
-            'slug'         => 'tax',
+            'slug_group'   => 'tax',
+            'slug'         => '/office/tax',
             'user_session' => $session->user,
             'roles'        => $session->roles,
             'current_role' => $session->current_role,
@@ -288,7 +289,8 @@ class Tax extends BaseController
         $session      = session();
         $data         = [
             'page_title'   => 'Tax Calculator',
-            'slug'         => 'tax-calculator',
+            'slug_group'   => 'tax',
+            'slug'         => '/office/tax/calculator',
             'user_session' => $session->user,
             'roles'        => $session->roles,
             'current_role' => $session->current_role
@@ -326,7 +328,8 @@ class Tax extends BaseController
         $session = session();
         $data    = [
             'page_title'   => 'Tax Projection',
-            'slug'         => 'tax-projection',
+            'slug_group'   => 'tax',
+            'slug'         => '/office/tax/projection',
             'user_session' => $session->user,
             'roles'        => $session->roles,
             'current_role' => $session->current_role
@@ -424,7 +427,8 @@ class Tax extends BaseController
         }
         $data    = [
             'page_title'   => 'Tax Comparison',
-            'slug'         => 'tax-comparison',
+            'slug_group'   => 'tax',
+            'slug'         => '/office/tax/comparison',
             'user_session' => $session->user,
             'roles'        => $session->roles,
             'current_role' => $session->current_role,
