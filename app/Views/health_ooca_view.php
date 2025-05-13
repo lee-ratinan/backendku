@@ -33,7 +33,7 @@ $this->extend($layout);
                             if ('visit_date' == $field) {
                                 echo date(DATE_FORMAT_UI, strtotime($record[$field]));
                             } else {
-                                echo nl2br($record[$field]);
+                                echo $record[$field];
                             }
                             echo '</div></div>';
                         }
