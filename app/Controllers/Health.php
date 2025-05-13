@@ -4,14 +4,15 @@ namespace App\Controllers;
 
 use App\Models\HealthActivityModel;
 use App\Models\JourneyHolidayModel;
+use App\Models\OocaLogModel;
 use CodeIgniter\Database\Exceptions\DatabaseException;
+use CodeIgniter\Exceptions\PageNotFoundException;
 use CodeIgniter\HTTP\ResponseInterface;
 use ReflectionException;
 
 class Health extends BaseController
 {
 
-    const PERMISSION_REQUIRED = 'health';
     private $fitness_first = [
         'SG' => [
             [
@@ -1450,5 +1451,75 @@ class Health extends BaseController
             'current_role' => $session->current_role
         ];
         return view('health_phq9', $data);
+    }
+
+    public function ooca(): string
+    {
+        $session    = session();
+        $data       = [
+            'page_title'   => 'OOCA Visit Log',
+            'slug_group'   => 'health-forms',
+            'slug'         => '/office/health/ooca',
+            'user_session' => $session->user,
+            'roles'        => $session->roles,
+            'current_role' => $session->current_role
+        ];
+        return view('health_ooca', $data);
+    }
+
+    public function oocaList(): ResponseInterface
+    {
+        return $this->response->setJSON([
+            'draw'            => $this->request->getPost('draw'),
+            'recordsTotal'    => 0,
+            'recordsFiltered' => 0,
+            'data'            => []
+        ]);
+    }
+
+    public function oocaEdit(): string
+    {
+        return view('health_ooca_edit');
+    }
+
+    public function oocaSave(): ResponseInterface
+    {
+        $session = session();
+        return $this->response->setJSON([
+            'status' => 'success',
+            'toast'  => 'Trip has been added',
+            'url'    => base_url($session->locale . '/office/health/ooca')
+        ]);
+    }
+
+    /**
+     * Retrieve OOCA record
+     * @param int $id ID of the OOCA record to be retrieved.
+     * @return string
+     */
+    public function oocaView(int $id): string
+    {
+        $session    = session();
+        $ooca_model = new OocaLogModel();
+        $id         = $id / $ooca_model::ID_NONCE;
+        $record     = $ooca_model->find($id);
+        if (empty($record)) {
+            throw new PageNotFoundException('Ooca record not found');
+        }
+        $data       = [
+            'page_title'   => 'OOCA Record - ' . date(DATE_FORMAT_UI, strtotime($record['visit_date'])),
+            'slug_group'   => 'health-forms',
+            'slug'         => '/office/health/ooca',
+            'record'       => $record,
+            'user_session' => $session->user,
+            'roles'        => $session->roles,
+            'current_role' => $session->current_role
+        ];
+        return view('health_ooca_view', $data);
+    }
+
+    public function oocaStatistics(): string
+    {
+        return view('health_ooca_statistics');
     }
 }

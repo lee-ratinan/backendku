@@ -154,6 +154,7 @@
                                 'items' => [
                                     '/office/health/mbti' => 'MBTI (Personality)',
                                     '/office/health/phq9' => 'PHQ-9 (Depression)',
+                                    '/office/health/ooca' => 'OOCA (Counselling)',
                                 ]
                             ],
                         ]
