@@ -45,8 +45,8 @@ $this->extend($layout);
                                 <thead>
                                 <tr>
                                     <th></th>
-                                    <td style="min-width:100px">Date</td>
-                                    <td style="min-width:150px">Psychologist/Psychiatrist</td>
+                                    <td style="min-width:100px">วันที่</td>
+                                    <td style="min-width:150px">ชื่อผู้ให้คำปรึกษา</td>
                                 </tr>
                                 </thead>
                                 <tbody></tbody>

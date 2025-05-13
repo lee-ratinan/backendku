@@ -32,27 +32,28 @@ class OocaLogModel extends Model
         ],
         'visit_date'  => [
             'type'     => 'date',
-            'label'    => 'Visit Date',
+            'label'    => 'วันที่',
             'required' => true,
         ],
         'psychologist_name'  => [
             'type'     => 'text',
-            'label'    => 'Psychologist Name',
+            'label'    => 'ชื่อผู้ให้คำปรึกษา',
             'required' => true,
+            'details'  => 'Mostly นายพรเลิศ ชุตินธรางค์กูล',
         ],
         'note_what_happened'  => [
-            'type'     => 'text',
-            'label'    => 'What Happened',
+            'type'     => 'tinymce',
+            'label'    => 'อาการสำคัญ',
             'required' => true,
         ],
         'note_what_i_said'  => [
-            'type'     => 'text',
-            'label'    => 'What I Said',
+            'type'     => 'tinymce',
+            'label'    => 'สิ่งที่คุณพูด',
             'required' => true,
         ],
         'note_what_suggested'  => [
-            'type'     => 'text',
-            'label'    => 'What Suggested',
+            'type'     => 'tinymce',
+            'label'    => 'สิ่งที่ผู้ให้คำปรึกษาแนะนำ',
             'required' => true,
         ]
     ];
@@ -114,7 +115,8 @@ class OocaLogModel extends Model
         foreach ($raw_result as $row) {
             $new_id       = $row['id'] * self::ID_NONCE;
             $result[]     = [
-                '<a class="btn btn-outline-primary btn-sm" href="' . base_url($locale . '/office/health/ooca/view/' . $new_id) . '"><i class="fa-solid fa-eye"></i></a>',
+                '<a class="btn btn-outline-primary btn-sm me-3" href="' . base_url($locale . '/office/health/ooca/view/' . $new_id) . '"><i class="fa-solid fa-eye"></i></a>' .
+                '<a class="btn btn-outline-primary btn-sm" href="' . base_url($locale . '/office/health/ooca/edit/' . $new_id) . '"><i class="fa-solid fa-file-edit"></i></a>',
                 $row['id'],
                 date(DATE_FORMAT_UI, strtotime($row['visit_date'])),
                 $row['psychologist_name'],

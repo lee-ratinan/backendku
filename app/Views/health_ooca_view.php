@@ -17,19 +17,19 @@ $this->extend($layout);
     </div>
     <section class="section">
         <div class="row">
-            <div class="col">
+            <div class="col-md-8">
                 <div class="card">
                     <div class="card-body">
                         <?php
                         $fields = [
-                            'visit_date'          => 'Visit date:',
-                            'psychologist_name'   => 'Psychology/Psychiatrist name:',
-                            'note_what_happened'  => 'What happened:',
-                            'note_what_i_said'    => 'What I said:',
-                            'note_what_suggested' => 'What I suggested:',
+                            'visit_date'          => 'วันที่',
+                            'psychologist_name'   => 'ชื่อผู้ให้คำปรึกษา',
+                            'note_what_happened'  => 'อาการสำคัญ',
+                            'note_what_i_said'    => 'สิ่งที่คุณพูด',
+                            'note_what_suggested' => 'สิ่งที่ผู้ให้คำปรึกษาแนะนำ',
                         ];
                         foreach ($fields as $field => $label) {
-                            echo '<div class="mb-3"><b>' . $label . '</b><div class="ms-3">';
+                            echo '<div class="mb-3"><b>' . $label . ':</b><div class="ms-3">';
                             if ('visit_date' == $field) {
                                 echo date(DATE_FORMAT_UI, strtotime($record[$field]));
                             } else {
@@ -38,6 +38,9 @@ $this->extend($layout);
                             echo '</div></div>';
                         }
                         ?>
+                        <div class="text-end">
+                            <a href="<?= base_url($session->locale . '/office/health/ooca/edit/' . ($record['id'] * $nonce)) ?>" class="btn btn-outline-primary btn-sm"><i class="fa-solid fa-file-edit"></i> Edit</a>
+                        </div>
                     </div>
                 </div>
             </div>

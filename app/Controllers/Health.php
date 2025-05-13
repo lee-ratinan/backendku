@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Models\HealthActivityModel;
 use App\Models\JourneyHolidayModel;
+use App\Models\LogActivityModel;
 use App\Models\OocaLogModel;
 use CodeIgniter\Database\Exceptions\DatabaseException;
 use CodeIgniter\Exceptions\PageNotFoundException;
@@ -1453,6 +1454,10 @@ class Health extends BaseController
         return view('health_phq9', $data);
     }
 
+    /**
+     * View Ooca Visit Log List
+     * @return string
+     */
     public function ooca(): string
     {
         $session    = session();
@@ -1467,6 +1472,10 @@ class Health extends BaseController
         return view('health_ooca', $data);
     }
 
+    /**
+     * List the Visit Log
+     * @return ResponseInterface
+     */
     public function oocaList(): ResponseInterface
     {
         $ooca_model = new OocaLogModel();
@@ -1493,19 +1502,81 @@ class Health extends BaseController
         ]);
     }
 
-    public function oocaEdit(int $id): string
-    {
-        return view('health_ooca_edit');
-    }
-
-    public function oocaSave(): ResponseInterface
+    public function oocaEdit(int $id = 0): string
     {
         $session = session();
+        $model   = new OocaLogModel();
+        $title   = 'New OOCA Visit Log';
+        $record  = [];
+        if ($id > 0) {
+            $title  = 'Edit OOCA Visit Log';
+            $id     = $id / $model::ID_NONCE;
+            $record = $model->find($id);
+            if (empty($record)) {
+                throw new PageNotFoundException('OOCA Visit Log not found');
+            }
+        }
+        $data = [
+            'page_title'    => $title,
+            'slug_group'    => 'health-forms',
+            'slug'          => '/office/health/ooca',
+            'record'        => $record,
+            'nonce'         => $model::ID_NONCE,
+            'configuration' => $model->getConfigurations(),
+            'user_session'  => $session->user,
+            'roles'         => $session->roles,
+            'current_role'  => $session->current_role
+        ];
+        return view('health_ooca_edit', $data);
+    }
+
+    /**
+     * @throws ReflectionException
+     */
+    public function oocaSave(): ResponseInterface
+    {
+        $ooca_model    = new OocaLogModel();
+        $log_model     = new LogActivityModel();
+        $session       = session();
+        $id            = $this->request->getPost('id');
+        $data          = [];
+        $fields        = [
+            'visit_date',
+            'psychologist_name',
+            'note_what_happened',
+            'note_what_i_said',
+            'note_what_suggested',
+        ];
+        foreach ($fields as $field) {
+            $data[$field] = $this->request->getPost($field);
+        }
+        if (0 < $id) {
+            if ($ooca_model->update($id, $data)) {
+                $log_model->insertTableUpdate('ooca_log', $id, $data, $session->user_id);
+                $new_id = $id * $ooca_model::ID_NONCE;
+                return $this->response->setJSON([
+                    'status'  => 'success',
+                    'toast'   => 'Successfully updated the Ooca log.',
+                    'redirect' => base_url($session->locale . '/office/health/ooca/edit/' . $new_id)
+                ]);
+            }
+        } else {
+            $data['created_by'] = $session->user_id;
+            // INSERT
+            if ($id = $ooca_model->insert($data)) {
+                $log_model->insertTableUpdate('ooca_log', $id, $data, $session->user_id);
+                $new_id = $id * $ooca_model::ID_NONCE;
+                return $this->response->setJSON([
+                    'status'   => 'success',
+                    'toast'    => 'Successfully created new Ooca log.',
+                    'redirect' => base_url($session->locale . '/office/health/ooca/edit/' . $new_id)
+                ]);
+            }
+        }
         return $this->response->setJSON([
-            'status' => 'success',
-            'toast'  => 'Trip has been added',
-            'url'    => base_url($session->locale . '/office/health/ooca')
-        ]);
+            'status'  => 'error',
+            'toast'   => lang('System.status_message.generic_error')
+        ])->setStatusCode(HTTP_STATUS_SOMETHING_WRONG);
     }
 
     /**
@@ -1527,6 +1598,7 @@ class Health extends BaseController
             'slug_group'   => 'health-forms',
             'slug'         => '/office/health/ooca',
             'record'       => $record,
+            'nonce'        => $ooca_model::ID_NONCE,
             'user_session' => $session->user,
             'roles'        => $session->roles,
             'current_role' => $session->current_role

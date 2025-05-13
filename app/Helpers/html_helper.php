@@ -64,6 +64,13 @@ function generate_form_field(string $id, array $configuration, int|string|array 
             echo "<small class='form-text text-muted small'>" . lang($configuration['details']) . "</small>";
         }
         echo "</div>";
+    } else if ('tinymce' == $input_type) {
+        $placeholder = @$configuration['placeholder'] ?? '';
+        echo "<div class='mb-3'><label class='mb-1' for='{$id}'>" . $label . "</label><br><textarea class='form-control tinymce' id='{$id}' name='{$id}' placeholder='{$placeholder}' $required $readonly $disabled>{$current_value}</textarea>";
+        if (!empty($configuration['details'])) {
+            echo "<small class='form-text text-muted small'>" . lang($configuration['details']) . "</small>";
+        }
+        echo "</div>";
     } else if ('multiple-checkbox' == $input_type) {
         $options = $configuration['options'];
         $height  = 250;

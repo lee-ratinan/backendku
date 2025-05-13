@@ -25,6 +25,7 @@
     <link href="<?= base_url('assets/vendor/flag-icon/css/flag-icon.min.css') ?>" rel="stylesheet">
     <link href="<?= base_url('assets/vendor/toastrjs/toastr.min.css') ?>" rel="stylesheet">
     <link href="<?= base_url('appstack/css/app.css') ?>" rel="stylesheet" />
+    <script src="<?= base_url('assets/vendor/tinymce7.8.0/js/tinymce/tinymce.min.js') ?>" defer></script>
     <style>
         h1,h2,h3,h4,h5,h6,th{font-family:"Oxanium","Noto Serif Thai",sans-serif;} .alert{padding:1rem;}  svg:not(:host).svg-inline--fa, svg:not(:root).svg-inline--fa {overflow: visible;box-sizing: content-box;margin: auto 0.25rem;}
         .sidebar-header .avatar-img, .sidebar-header .avatar-txt {width: 3rem !important;height: 3rem !important;}
