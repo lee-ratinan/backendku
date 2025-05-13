@@ -59,6 +59,7 @@ $this->extend($layout);
                             '=',
                             'account_balance',
                             '---',
+                            'previous_con',
                             'contribution_month',
                             'company_id',
                             '---',
@@ -81,6 +82,7 @@ $this->extend($layout);
                             $cpf['account_previous']  = $cpf_latest['account_balance'];
                             $cpf['staff_previous']    = $cpf_last_con['staff_ytd'];
                             $cpf['company_previous']  = $cpf_last_con['company_ytd'];
+                            $cpf['previous_con']      = substr($cpf_last_con['contribution_month'], 0, 4);
                             $all_company_ids          = array_keys($config['company_id']['options']);
                             $max_company_id           = max($all_company_ids);
                             $config['ordinary_previous'] = [
@@ -102,6 +104,11 @@ $this->extend($layout);
                                 'type'     => 'text',
                                 'label'    => '<span class="badge bg-success rounded-pill">Previous Balance</span>',
                                 'readonly' => true,
+                            ];
+                            $config['previous_con']   = [
+                                'type'     => 'text',
+                                'label'    => 'Previous Contribution Year',
+                                'readonly' => true
                             ];
                             $config['staff_previous']   = [
                                 'type'     => 'text',
@@ -230,14 +237,15 @@ $this->extend($layout);
             });
             $('#contribution_month').change(function () {
                 let contribution_month = $(this).val(),
-                    regex1 = /\d{4}-\d{2}/,
-                    regex2 = /20\d{2}-01/;
-                if (!regex1.test(contribution_month)) {
+                    regex = /\d{4}-\d{2}/;
+                if (!regex.test(contribution_month)) {
                     $(this).val('');
                     toastr.warning('The contribution month is invalid.');
                     return;
                 }
-                if (regex2.test(contribution_month)) {
+                let prev_con_yr = $('#previous_con').val(),
+                    this_con_yr = contribution_month.slice(0, 4);
+                if (prev_con_yr !== this_con_yr) { // start a new contribution year
                     $('#staff_previous').val('0.00');
                     $('#company_previous').val('0.00');
                 } else {
@@ -271,6 +279,7 @@ $this->extend($layout);
                     type: 'post',
                     data: {
                         <?php foreach ($fields as $field) : ?>
+                        <?php if (in_array($field, ['---', '+', '='])) continue; ?>
                         <?= $field ?>: $('#<?= $field ?>').val(),
                         <?php endforeach; ?>
                     },
