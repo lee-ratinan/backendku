@@ -117,12 +117,8 @@ class OocaLogModel extends Model
             $result[]     = [
                 '<a class="btn btn-outline-primary btn-sm me-3" href="' . base_url($locale . '/office/health/ooca/view/' . $new_id) . '"><i class="fa-solid fa-eye"></i></a>' .
                 '<a class="btn btn-outline-primary btn-sm" href="' . base_url($locale . '/office/health/ooca/edit/' . $new_id) . '"><i class="fa-solid fa-file-edit"></i></a>',
-                $row['id'],
                 date(DATE_FORMAT_UI, strtotime($row['visit_date'])),
                 $row['psychologist_name'],
-                $row['note_what_happened'],
-                $row['note_what_i_said'],
-                $row['note_what_suggested'],
             ];
         }
         return [
