@@ -1557,7 +1557,7 @@ class Health extends BaseController
                 return $this->response->setJSON([
                     'status'  => 'success',
                     'toast'   => 'Successfully updated the Ooca log.',
-                    'redirect' => base_url($session->locale . '/office/health/ooca/edit/' . $new_id)
+                    'redirect' => base_url($session->locale . '/office/health/ooca/view/' . $new_id)
                 ]);
             }
         } else {
@@ -1569,7 +1569,7 @@ class Health extends BaseController
                 return $this->response->setJSON([
                     'status'   => 'success',
                     'toast'    => 'Successfully created new Ooca log.',
-                    'redirect' => base_url($session->locale . '/office/health/ooca/edit/' . $new_id)
+                    'redirect' => base_url($session->locale . '/office/health/ooca/view/' . $new_id)
                 ]);
             }
         }

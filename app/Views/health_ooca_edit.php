@@ -49,7 +49,8 @@ $this->extend($layout);
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             tinymce.init({
-                selector: 'textarea.tinymce'
+                selector: 'textarea.tinymce',
+                skin: 'oxide-dark'
             });
             $('#btn-save').click(function (e) {
                 e.preventDefault();
