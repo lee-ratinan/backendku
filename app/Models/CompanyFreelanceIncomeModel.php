@@ -200,12 +200,12 @@ class CompanyFreelanceIncomeModel extends Model
     public function getDataTables(int $start, int $length, string $order_column, string $order_direction, string $search_value, int $company_id, int $project_id, string $year): array
     {
         $columns_to_calc = [
-            6  => 'base_amount',
-            7  => 'deduction_amount',
-            8  => 'claim_amount',
-            9  => 'subtotal_amount',
-            10 => 'tax_amount',
-            11 => 'total_amount',
+            7  => 'base_amount',
+            8  => 'deduction_amount',
+            9  => 'claim_amount',
+            10  => 'subtotal_amount',
+            11 => 'tax_amount',
+            12 => 'total_amount',
         ];
         $record_total    = $this->countAllResults();
         $record_filtered = $record_total;
@@ -228,6 +228,7 @@ class CompanyFreelanceIncomeModel extends Model
             $new_id       = $row['id'] * self::ID_NONCE;
             $result[]     = [
                 '<a class="btn btn-outline-primary btn-sm" href="' . base_url($locale . '/office/employment/freelance-income/edit/' . $new_id) . '"><i class="fa-solid fa-edit"></i></a>',
+                (empty($row['google_drive_link']) ? '-' : '<a class="btn btn-outline-primary btn-sm" href="' . $row['google_drive_link'] . '" target="_blank"><i class="fa-solid fa-file-pdf"></i></a>'),
                 $row['project_title'],
                 $row['company_trade_name'],
                 (empty($row['pay_date']) ? '-' : date(DATE_FORMAT_UI, strtotime($row['pay_date']))),
@@ -240,7 +241,6 @@ class CompanyFreelanceIncomeModel extends Model
                 currency_format($row['payment_currency'], $row['tax_amount']),
                 currency_format($row['payment_currency'], $row['total_amount']),
                 $row['payment_details'],
-                (empty($row['google_drive_link']) ? '-' : '<a class="btn btn-outline-primary btn-sm" href="' . $row['google_drive_link'] . '" target="_blank"><i class="fa-solid fa-file-pdf"></i></a>')
             ];
             foreach ($columns_to_calc as $key => $column) {
                 if (isset($row[$column]) && 0 != $row[$column]) {
@@ -257,7 +257,7 @@ class CompanyFreelanceIncomeModel extends Model
                 }
             }
         }
-        $footer_value[5] = 'Total';
+        $footer_value[6] = 'Total';
         return [
             'recordsTotal'    => $record_total,
             'recordsFiltered' => $record_filtered,

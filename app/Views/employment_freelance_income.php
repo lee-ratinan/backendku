@@ -63,6 +63,7 @@ $this->extend($layout);
                                 <thead>
                                 <tr>
                                     <th></th>
+                                    <th><i class="fa-solid fa-file-pdf"></i></th>
                                     <th style="min-width:140px">Project</th>
                                     <th style="min-width:100px">Company</th>
                                     <th style="min-width:100px">Pay Date</th>
@@ -75,7 +76,6 @@ $this->extend($layout);
                                     <th style="min-width:150px">Tax Deduction</th>
                                     <th style="min-width:150px">Total</th>
                                     <th style="min-width:225px">Details</th>
-                                    <th>Payslip</th>
                                 </tr>
                                 </thead>
                                 <tbody></tbody>
@@ -86,7 +86,7 @@ $this->extend($layout);
                                     <th></th>
                                     <th></th>
                                     <th></th>
-                                    <th>Total</th>
+                                    <th></th>
                                     <th></th>
                                     <th></th>
                                     <th></th>
@@ -113,7 +113,7 @@ $this->extend($layout);
                 fixedHeader: true,
                 searching: false, // don't allow the search for this one
                 pageLength: 50,
-                fixedColumns: {start: 2},
+                fixedColumns: {start: 3},
                 scrollX: true,
                 ajax: {
                     url: '<?= base_url($session->locale . '/office/employment/freelance-income') ?>',
@@ -128,14 +128,14 @@ $this->extend($layout);
                         return json.data;
                     }
                 },
-                order: [[3, 'desc']],
+                order: [[4, 'desc']],
                 columnDefs: [
                     {orderable: false, targets: 0},
-                    {className: 'text-end', targets: [6,7,8,9,10,11] }
+                    {className: 'text-end', targets: [7,8,9,10,11,12] }
                 ],
                 footerCallback: function () {
                     let api = this.api();
-                    for (let i = 6; i <= 11; i++) {
+                    for (let i = 6; i <= 12; i++) {
                         api.column(i).footer().innerHTML = serverFooter[i];
                     }
                 }

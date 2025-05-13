@@ -783,6 +783,7 @@ class Employment extends BaseController
         $model              = new CompanyFreelanceIncomeModel();
         $columns            = [
             '',
+            'google_drive_link',
             'company_freelance_project.project_title',
             'company_master.company_trade_name',
             'pay_date',
@@ -795,7 +796,6 @@ class Employment extends BaseController
             'tax_amount',
             'total_amount',
             'payment_details',
-            'google_drive_link'
         ];
         $order              = $this->request->getPost('order');
         $search             = $this->request->getPost('search');
