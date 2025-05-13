@@ -200,6 +200,7 @@ $routes->group('{locale}/office', ['filter' => 'auth'], static function ($routes
     $routes->get('health/ooca', 'Health::ooca');
     $routes->post('health/ooca', 'Health::oocaList');
     $routes->get('health/ooca/create', 'Health::oocaEdit');
+    $routes->get('health/ooca/edit/(:any)', 'Health::oocaEdit/$1');
     $routes->post('health/ooca/create', 'Health::oocaSave');
     $routes->get('health/ooca/view/(:any)', 'Health::oocaView/$1');
     $routes->post('health/ooca/statistics', 'Health::oocaStatistics');

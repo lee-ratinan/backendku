@@ -16,16 +16,71 @@ $this->extend($layout);
     </div>
     <section class="section">
         <div class="row">
-            <div class="col">
+            <div class="col-lg-6">
                 <div class="card">
-                    <div class="card-body">
-                        ...
+                    <div class="card-body pt-3">
+                        <div class="text-end">
+                            <a class="btn btn-outline-primary btn-sm" href="<?= base_url($session->locale . '/office/health/ooca/create') ?>"><i class="fa-solid fa-plus-circle"></i> New Record</a>
+                        </div>
+                        <h5 class="card-title"><i class="fa-solid fa-suitcase fa-fw me-3"></i> <?= $page_title ?></h5>
+                        <div class="row mb-3">
+                            <div class="col">
+                                <label for="year" class="form-label">Year</label><br>
+                                <select class="form-select form-select-sm" id="year">
+                                    <option value="">All</option>
+                                    <?php for ($year = date('Y'); $year > 2020; $year--): ?>
+                                        <option value="<?= $year ?>"><?= $year ?></option>
+                                    <?php endfor; ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col text-end">
+                                <button id="btn-reset" class="btn btn-sm btn-outline-primary">Reset</button>
+                                <button id="btn-filter" class="btn btn-sm btn-primary">Filter</button>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-sm table-striped table-hover">
+                                <thead>
+                                <tr>
+                                    <th></th>
+                                    <td style="min-width:100px">Date</td>
+                                    <td style="min-width:150px">Psychologist/Psychiatrist</td>
+                                </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {});
+        document.addEventListener('DOMContentLoaded', function() {
+            const table = $('table').DataTable({
+                processing: true,
+                serverSide: true,
+                fixedHeader: true,
+                searching: true,
+                pageLength: 25,
+                ajax: {
+                    url: '<?= base_url($session->locale . '/office/health/ooca') ?>',
+                    type: 'POST',
+                    data: function (d) {
+                        d.year = $('#year').val();
+                    }
+                },
+                order: [[1, 'desc']],
+            });
+            $('#btn-filter').on('click', function () {
+                table.ajax.reload();
+            });
+            $('#btn-reset').on('click', function () {
+                $('#year').val('');
+                table.ajax.reload();
+            });
+        });
     </script>
 <?php $this->endSection() ?>

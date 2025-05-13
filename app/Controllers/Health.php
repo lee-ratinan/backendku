@@ -1469,15 +1469,31 @@ class Health extends BaseController
 
     public function oocaList(): ResponseInterface
     {
+        $ooca_model = new OocaLogModel();
+        $columns    = [
+            '',
+            'visit_date',
+            'psychologist_name'
+        ];
+        $order              = $this->request->getPost('order');
+        $search             = $this->request->getPost('search');
+        $start              = $this->request->getPost('start');
+        $length             = $this->request->getPost('length');
+        $order_column_index = $order[0]['column'] ?? 0;
+        $order_column       = $columns[$order_column_index];
+        $order_direction    = $order[0]['dir'] ?? 'desc';
+        $search_value       = $search['value'];
+        $year               = $this->request->getPost('year');
+        $result             = $ooca_model->getDataTables($start, $length, $order_column, $order_direction, $search_value, $year);
         return $this->response->setJSON([
             'draw'            => $this->request->getPost('draw'),
-            'recordsTotal'    => 0,
-            'recordsFiltered' => 0,
-            'data'            => []
+            'recordsTotal'    => $result['recordsTotal'],
+            'recordsFiltered' => $result['recordsFiltered'],
+            'data'            => $result['data']
         ]);
     }
 
-    public function oocaEdit(): string
+    public function oocaEdit(int $id): string
     {
         return view('health_ooca_edit');
     }
