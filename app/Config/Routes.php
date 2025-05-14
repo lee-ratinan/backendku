@@ -73,6 +73,7 @@ $routes->group('{locale}/office', ['filter' => 'auth'], static function ($routes
     $routes->get('employment/company/create', 'Employment::companyEdit/new');
     $routes->get('employment/company/edit/(:any)', 'Employment::companyEdit/$1');
     $routes->post('employment/company/edit', 'Employment::companySave');
+    $routes->get('employment/company/stats', 'Employment::companyStats');
     // company_salary table - with filter by year, company, currency, etc
     $routes->get('employment/salary', 'Employment::salary');
     $routes->post('employment/salary', 'Employment::salaryList');

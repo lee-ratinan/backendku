@@ -78,6 +78,7 @@
                                 'group' => '<i class="fa-solid fa-suitcase fa-fw"></i> Employment',
                                 'items' => [
                                     '/office/employment'                  => 'Company',
+                                    '/office/employment/company/stats'    => '<i class="fa-solid fa-chart-bar"></i> Statistics',
                                     '/office/employment/salary'           => 'Salary',
                                     '/office/employment/freelance'        => 'Freelance',
                                     '/office/employment/freelance-income' => 'Freelance Income',

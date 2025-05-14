@@ -10,6 +10,8 @@ use App\Models\CompanyMasterModel;
 use App\Models\CompanySalaryModel;
 use App\Models\LogActivityModel;
 use CodeIgniter\HTTP\ResponseInterface;
+use DateMalformedStringException;
+use DateTime;
 
 class Employment extends BaseController
 {
@@ -123,6 +125,7 @@ class Employment extends BaseController
 
     /**
      * @return ResponseInterface
+     * @throws \ReflectionException
      */
     public function companySave(): ResponseInterface
     {
@@ -182,6 +185,56 @@ class Employment extends BaseController
         ])->setStatusCode(HTTP_STATUS_SOMETHING_WRONG);
     }
 
+    /**
+     * @return string
+     * @throws DateMalformedStringException
+     */
+    public function companyStats(): string
+    {
+        $session           = session();
+        $company_model     = new CompanyMasterModel();
+        $companies         = $company_model->orderBy('company_trade_name')->findAll();
+        $duration          = [];
+        $country_days      = [];
+        $country_companies = [];
+        $charts            = [];
+        foreach ($companies as $company) {
+            if ('0000-00-00' == $company['employment_end_date']) {
+                $company['employment_end_date'] = null;
+            }
+            $start_date = new DateTime($company['employment_start_date']);
+            $end_date   = (empty($company['employment_end_date']) ? new DateTime('now') : new DateTime($company['employment_end_date']));
+            $days       = $start_date->diff($end_date)->days;
+            $duration[] = [
+                'name'      => $company['company_trade_name'],
+                'country'   => $company['company_country_code'],
+                'days'      => $days,
+                'dates'     => [$company['employment_start_date'], $company['employment_end_date']],
+            ];
+            $country_days[$company['company_country_code']]      = (isset($country_days[$company['company_country_code']]) ? $country_days[$company['company_country_code']] + $days : $days);
+            $country_companies[$company['company_country_code']] = (isset($country_companies[$company['company_country_code']]) ? $country_companies[$company['company_country_code']] + 1 : 1);
+        }
+        foreach ($country_days as $country_code => $days) {
+            $charts[] = [
+                'country'   => lang('ListCountries.countries.' . $country_code . '.common_name'),
+                'days'      => $days,
+                'companies' => $country_companies[$country_code]
+            ];
+        }
+        $data = [
+            'page_title'        => 'Company Statistics',
+            'slug_group'        => 'employment',
+            'slug'              => '/office/employment/company/stats',
+            'user_session'      => $session->user,
+            'roles'             => $session->roles,
+            'current_role'      => $session->current_role,
+            'duration'          => $duration,
+            'country_days'      => $country_days,
+            'country_companies' => $country_companies,
+            'charts'            => $charts
+        ];
+        return view('employment_company_stats', $data);
+    }
     /************************************************************************
      * SALARY
      ************************************************************************/
