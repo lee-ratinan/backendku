@@ -32,28 +32,28 @@ class OocaLogModel extends Model
         ],
         'visit_date'  => [
             'type'     => 'date',
-            'label'    => 'วันที่',
+            'label'    => '<i class="fa-solid fa-calendar-check"></i> วันที่',
             'required' => true,
         ],
         'psychologist_name'  => [
             'type'     => 'text',
-            'label'    => 'ชื่อผู้ให้คำปรึกษา',
+            'label'    => '<i class="fa-solid fa-user"></i> ชื่อผู้ให้คำปรึกษา',
             'required' => true,
             'details'  => 'Mostly นายพรเลิศ ชุตินธรางค์กูล',
         ],
         'note_what_happened'  => [
             'type'     => 'tinymce',
-            'label'    => 'อาการสำคัญ',
+            'label'    => '<i class="fa-solid fa-question-circle"></i> อาการสำคัญ',
             'required' => true,
         ],
         'note_what_i_said'  => [
             'type'     => 'tinymce',
-            'label'    => 'สิ่งที่คุณพูด',
+            'label'    => '<i class="fa-solid fa-comment"></i> สิ่งที่คุณพูด',
             'required' => true,
         ],
         'note_what_suggested'  => [
             'type'     => 'tinymce',
-            'label'    => 'สิ่งที่ผู้ให้คำปรึกษาแนะนำ',
+            'label'    => '<i class="fa-solid fa-lightbulb"></i> สิ่งที่ผู้ให้คำปรึกษาแนะนำ',
             'required' => true,
         ]
     ];
@@ -115,8 +115,8 @@ class OocaLogModel extends Model
         foreach ($raw_result as $row) {
             $new_id       = $row['id'] * self::ID_NONCE;
             $result[]     = [
-                '<a class="btn btn-outline-primary btn-sm me-3" href="' . base_url($locale . '/office/health/ooca/view/' . $new_id) . '"><i class="fa-solid fa-eye"></i></a>' .
-                '<a class="btn btn-outline-primary btn-sm" href="' . base_url($locale . '/office/health/ooca/edit/' . $new_id) . '"><i class="fa-solid fa-file-edit"></i></a>',
+                '<a class="btn btn-outline-primary btn-sm" href="' . base_url($locale . '/office/health/ooca/view/' . $new_id) . '"><i class="fa-solid fa-eye"></i></a>',
+                '<a class="btn btn-outline-primary btn-sm" href="' . base_url($locale . '/office/health/ooca/edit/' . $new_id) . '"><i class="fa-solid fa-edit"></i></a>',
                 date(DATE_FORMAT_UI, strtotime($row['visit_date'])),
                 $row['psychologist_name'],
             ];

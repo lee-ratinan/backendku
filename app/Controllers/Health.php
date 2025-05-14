@@ -1481,6 +1481,7 @@ class Health extends BaseController
         $ooca_model = new OocaLogModel();
         $columns    = [
             '',
+            '',
             'visit_date',
             'psychologist_name'
         ];

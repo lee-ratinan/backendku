@@ -44,9 +44,10 @@ $this->extend($layout);
                             <table class="table table-sm table-striped table-hover">
                                 <thead>
                                 <tr>
-                                    <th></th>
-                                    <td style="min-width:100px">วันที่</td>
-                                    <td style="min-width:150px">ชื่อผู้ให้คำปรึกษา</td>
+                                    <th style="width:60px"></th>
+                                    <th style="width:60px"></th>
+                                    <td style="min-width:150px"><i class="fa-solid fa-calendar-check"></i> วันที่</td>
+                                    <td style="min-width:200px"><i class="fa-solid fa-user"></i> ชื่อผู้ให้คำปรึกษา</td>
                                 </tr>
                                 </thead>
                                 <tbody></tbody>

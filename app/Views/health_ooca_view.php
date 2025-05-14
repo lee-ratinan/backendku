@@ -22,11 +22,11 @@ $this->extend($layout);
                     <div class="card-body">
                         <?php
                         $fields = [
-                            'visit_date'          => 'วันที่',
-                            'psychologist_name'   => 'ชื่อผู้ให้คำปรึกษา',
-                            'note_what_happened'  => 'อาการสำคัญ',
-                            'note_what_i_said'    => 'สิ่งที่คุณพูด',
-                            'note_what_suggested' => 'สิ่งที่ผู้ให้คำปรึกษาแนะนำ',
+                            'visit_date'          => '<i class="fa-solid fa-calendar-check"></i> วันที่',
+                            'psychologist_name'   => '<i class="fa-solid fa-user"></i> ชื่อผู้ให้คำปรึกษา',
+                            'note_what_happened'  => '<i class="fa-solid fa-question-circle"></i> อาการสำคัญ',
+                            'note_what_i_said'    => '<i class="fa-solid fa-comment"></i> สิ่งที่คุณพูด',
+                            'note_what_suggested' => '<i class="fa-solid fa-lightbulb"></i> สิ่งที่ผู้ให้คำปรึกษาแนะนำ',
                         ];
                         foreach ($fields as $field => $label) {
                             echo '<div class="mb-3"><b>' . $label . ':</b><div class="ms-3">';
@@ -39,7 +39,7 @@ $this->extend($layout);
                         }
                         ?>
                         <div class="text-end">
-                            <a href="<?= base_url($session->locale . '/office/health/ooca/edit/' . ($record['id'] * $nonce)) ?>" class="btn btn-outline-primary btn-sm"><i class="fa-solid fa-file-edit"></i> Edit</a>
+                            <a href="<?= base_url($session->locale . '/office/health/ooca/edit/' . ($record['id'] * $nonce)) ?>" class="btn btn-outline-primary btn-sm"><i class="fa-solid fa-edit"></i> Edit</a>
                         </div>
                     </div>
                 </div>
