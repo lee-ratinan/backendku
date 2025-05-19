@@ -204,7 +204,7 @@ $routes->group('{locale}/office', ['filter' => 'auth'], static function ($routes
     $routes->get('health/ooca/edit/(:any)', 'Health::oocaEdit/$1');
     $routes->post('health/ooca/edit', 'Health::oocaSave');
     $routes->get('health/ooca/view/(:any)', 'Health::oocaView/$1');
-    $routes->post('health/ooca/statistics', 'Health::oocaStatistics');
+    $routes->get('health/ooca/statistics', 'Health::oocaStatistics');
     $routes->get('health/ooca/export/(:num)', 'Health::oocaExport/$1');
     // MBTI
     $routes->get('health/mbti', 'Health::mbti');

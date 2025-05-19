@@ -1626,8 +1626,31 @@ class Health extends BaseController
         return view('health_ooca_export', $data);
     }
 
+    /**
+     * Generate the statistics
+     * @return string
+     */
     public function oocaStatistics(): string
     {
-        return view('health_ooca_statistics');
+        $session    = session();
+        $ooca_model = new OocaLogModel();
+        $raw        = $ooca_model->orderBy('visit_date')->findAll();
+        $freq_data  = [];
+        foreach ($raw as $item) {
+            $date  = explode('-', $item['visit_date']);
+            $month = intval($date[1]);
+            $year  = $date[0];
+            $freq_data[$year][$month] = (isset($freq_data[$year][$month]) ? $freq_data[$year][$month] + 1 : 1);
+        }
+        $data       = [
+            'page_title'   => 'OOCA Statistics',
+            'slug_group'   => 'health-forms',
+            'slug'         => '/office/health/ooca/statistics',
+            'freq_data'    => $freq_data,
+            'user_session' => $session->user,
+            'roles'        => $session->roles,
+            'current_role' => $session->current_role
+        ];
+        return view('health_ooca_statistics', $data);
     }
 }

@@ -154,9 +154,10 @@
                                 'id'    => 'health-forms',
                                 'group' => '<i class="fa-solid fa-file fa-fw"></i> Forms',
                                 'items' => [
-                                    '/office/health/mbti' => 'MBTI (Personality)',
-                                    '/office/health/phq9' => 'PHQ-9 (Depression)',
-                                    '/office/health/ooca' => 'OOCA (Counselling)',
+                                    '/office/health/mbti'            => 'MBTI (Personality)',
+                                    '/office/health/phq9'            => 'PHQ-9 (Depression)',
+                                    '/office/health/ooca'            => 'OOCA (Counselling)',
+                                    '/office/health/ooca/statistics' => '<i class="fa-solid fa-chart-bar"></i> OOCA Statistics',
                                 ]
                             ],
                         ]
