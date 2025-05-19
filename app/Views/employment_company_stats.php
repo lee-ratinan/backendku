@@ -32,11 +32,11 @@ $this->extend($layout);
                             <table id="main-table" class="table table-sm table-striped table-hover">
                                 <thead>
                                 <tr>
-                                    <th>Country</th>
-                                    <th>Company</th>
-                                    <th>From</th>
-                                    <th>To</th>
-                                    <th class="text-end">Days</th>
+                                    <th style="min-width:100px">Country</th>
+                                    <th style="min-width:150px">Company</th>
+                                    <th style="min-width:100px">From</th>
+                                    <th style="min-width:100px">To</th>
+                                    <th style="min-width:80px" class="text-end">Days</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -44,9 +44,9 @@ $this->extend($layout);
                                     <tr>
                                         <td><?= lang('ListCountries.countries.' . $company['country'] . '.common_name') ?></td>
                                         <td><?= $company['name'] ?></td>
-                                        <td><?= date(DATE_FORMAT_UI, strtotime($company['dates'][0])) ?></td>
-                                        <td><?= (empty($company['dates'][1]) ? '-' : date(DATE_FORMAT_UI, strtotime($company['dates'][1]))) ?></td>
-                                        <td class="text-end"><?= number_format($company['days']) ?></td>
+                                        <td data-sort="<?= $company['dates'][0] ?>"><?= date(DATE_FORMAT_UI, strtotime($company['dates'][0])) ?></td>
+                                        <td data-sort="<?= @$company['dates'][1] ?>"><?= (empty($company['dates'][1]) ? '-' : date(DATE_FORMAT_UI, strtotime($company['dates'][1]))) ?></td>
+                                        <td class="text-end" data-sort="<?= $company['days'] ?>"><?= number_format($company['days']) ?></td>
                                     </tr>
                                 <?php endforeach; ?>
                                 </tbody>
