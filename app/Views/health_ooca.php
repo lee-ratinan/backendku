@@ -37,7 +37,8 @@ $this->extend($layout);
                         <div class="row mb-3">
                             <div class="col text-end">
                                 <button id="btn-reset" class="btn btn-sm btn-outline-primary">Reset</button>
-                                <button id="btn-filter" class="btn btn-sm btn-primary">Filter</button>
+                                <button id="btn-filter" class="btn btn-sm btn-primary"><i class="fa-solid fa-filter"></i> Filter</button>
+                                <button id="btn-export" class="btn btn-sm btn-primary"><i class="fa-solid fa-file-export"></i> Export</button>
                             </div>
                         </div>
                         <div class="table-responsive">
@@ -73,7 +74,7 @@ $this->extend($layout);
                         d.year = $('#year').val();
                     }
                 },
-                order: [[1, 'desc']],
+                order: [[2, 'desc']],
             });
             $('#btn-filter').on('click', function () {
                 table.ajax.reload();
@@ -81,6 +82,14 @@ $this->extend($layout);
             $('#btn-reset').on('click', function () {
                 $('#year').val('');
                 table.ajax.reload();
+            });
+            $('#btn-export').on('click', function () {
+                let year = $('#year').val();
+                if (year === '') {
+                    toastr.warning('Please select year before export.');
+                    return;
+                }
+                window.open('<?= base_url($session->locale . '/office/health/ooca/export/') ?>' + year);
             });
         });
     </script>

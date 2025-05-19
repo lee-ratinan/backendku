@@ -1607,6 +1607,25 @@ class Health extends BaseController
         return view('health_ooca_view', $data);
     }
 
+    /**
+     * Export the counseling data
+     * @param string $year
+     * @return string
+     */
+    public function oocaExport(string $year): string
+    {
+        $session    = session();
+        $ooca_model = new OocaLogModel();
+        $from       = $year . '-01-01';
+        $to         = $year . '-12-31';
+        $records    = $ooca_model->where('visit_date >=', $from)->where('visit_date <=', $to)->findAll();
+        $data       = [
+            'records' => $records,
+            'year'    => $year
+        ];
+        return view('health_ooca_export', $data);
+    }
+
     public function oocaStatistics(): string
     {
         return view('health_ooca_statistics');
