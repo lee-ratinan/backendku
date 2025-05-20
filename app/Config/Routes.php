@@ -80,6 +80,10 @@ $routes->group('{locale}/office', ['filter' => 'auth'], static function ($routes
     $routes->get('employment/salary/create', 'Employment::salaryEdit/new');
     $routes->get('employment/salary/edit/(:any)', 'Employment::salaryEdit/$1');
     $routes->post('employment/salary/edit', 'Employment::salarySave');
+    $routes->get('employment/salary/stats/currency', 'Employment::salaryStatisticsCurrencyYear');
+    $routes->get('employment/salary/stats/currency/(:any)/(:any)', 'Employment::salaryStatisticsCurrencyYear/$1/$2');
+    $routes->get('employment/salary/stats/company', 'Employment::salaryStatisticsCompanyYear');
+    $routes->get('employment/salary/stats/company/(:any)/(:any)', 'Employment::salaryStatisticsCompanyYear/$1/$2');
     // company_cpf table - with filter by year, company (contribution), transaction code, etc
     $routes->get('employment/cpf', 'Employment::cpf');
     $routes->post('employment/cpf', 'Employment::cpfList');

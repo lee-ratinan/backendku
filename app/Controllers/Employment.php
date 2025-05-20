@@ -365,6 +365,7 @@ class Employment extends BaseController
 
     /**
      * @return ResponseInterface
+     * @throws \ReflectionException
      */
     public function salarySave(): ResponseInterface
     {
@@ -435,6 +436,26 @@ class Employment extends BaseController
             'status'  => 'error',
             'toast'   => lang('System.status_message.generic_error')
         ])->setStatusCode(HTTP_STATUS_SOMETHING_WRONG);
+    }
+
+    /**
+     * @param string $currency_code
+     * @param string $year
+     * @return string
+     */
+    public function salaryStatisticsCurrencyYear(string $currency_code = '', string $year = ''): string
+    {
+        return 'U/C';
+    }
+
+    /**
+     * @param string $company_code
+     * @param string $year
+     * @return string
+     */
+    public function salaryStatisticsCompanyYear(string $company_code = '', string $year = ''): string
+    {
+        return 'U/C';
     }
 
     /************************************************************************

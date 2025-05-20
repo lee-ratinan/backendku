@@ -80,6 +80,8 @@
                                     '/office/employment'                  => 'Company',
                                     '/office/employment/company/stats'    => '<i class="fa-solid fa-chart-bar"></i> Statistics',
                                     '/office/employment/salary'           => 'Salary',
+                                    '/office/employment/salary/stats/currency/' => '<i class="fa-solid fa-chart-line"></i> By Currency',
+                                    '/office/employment/salary/stats/company/' => '<i class="fa-solid fa-chart-line"></i> By Company',
                                     '/office/employment/freelance'        => 'Freelance',
                                     '/office/employment/freelance-income' => 'Freelance Income',
                                     '/office/employment/cpf'              => 'CPF',
