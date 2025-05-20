@@ -9,6 +9,7 @@ use App\Models\CompanyFreelanceProjectModel;
 use App\Models\CompanyMasterModel;
 use App\Models\CompanySalaryModel;
 use App\Models\LogActivityModel;
+use CodeIgniter\Exceptions\PageNotFoundException;
 use CodeIgniter\HTTP\ResponseInterface;
 use DateMalformedStringException;
 use DateTime;
@@ -440,20 +441,95 @@ class Employment extends BaseController
 
     /**
      * @param string $currency_code
-     * @param string $year
      * @return string
      */
-    public function salaryStatisticsCurrencyYear(string $currency_code = '', string $year = ''): string
+    public function salaryStatisticsCurrency(string $currency_code = ''): string
     {
-        return 'U/C';
+        $session       = session();
+        $locale        = $this->request->getLocale();
+        $company_model = new CompanyMasterModel();
+        $salary_model  = new CompanySalaryModel();
+        if (empty($currency_code)) {
+            $currency_code = 'SGD';
+        }
+        $companies     = $company_model->where('company_currency_code', $currency_code)->findAll();
+        if (empty($companies)) {
+            throw new PageNotFoundException();
+        }
+        $company_list  = [];
+        $company_ids   = [];
+        foreach ($companies as $company) {
+            $company_list[$company['id']] = $company['company_trade_name'];
+            $company_ids[]                = $company['id'];
+        }
+        $currency_list  = [];
+        $dedupe_ccy     = $company_model->select('company_currency_code')->distinct()->findAll();
+        foreach ($dedupe_ccy as $ccy) {
+            $currency_list[] = $ccy['company_currency_code'];
+        }
+        $salary_records = $salary_model->whereIn('company_id', $company_ids)->whereIn('pay_type', ['salary', 'claim', 'other'])->findAll();
+        $salary_by_year = [];
+        $base_amounts   = [];
+        foreach ($salary_records as $salary_record) {
+            $year                              = substr($salary_record['tax_year'], 0, 4);
+            $base_amounts[$year][]             = $salary_record['base_amount'];
+            $salary_by_year[$year]['subtotal'] = (isset($salary_by_year[$year]['subtotal']) ? $salary_by_year[$year]['subtotal'] += $salary_record['subtotal_amount'] : $salary_record['subtotal_amount']);
+            $salary_by_year[$year]['total']    = (isset($salary_by_year[$year]['total'])    ? $salary_by_year[$year]['total']    += $salary_record['total_amount']    : $salary_record['total_amount']);
+        }
+        $chart_data     = [];
+        $max_bases      = [];
+        $chart_data_2   = [];
+        ksort($salary_by_year);
+        for ($y = 2010; $y <= date('Y'); $y++) {
+            if (isset($base_amounts[$y])) {
+                $max_base       = max($base_amounts[$y]);
+                $chart_data[]   = [
+                    'year'     => "$y",
+                    'subtotal' => round($salary_by_year[$y]['subtotal']),
+                    'total'    => round($salary_by_year[$y]['total'])
+                ];
+                $chart_data_2[] = [
+                    'year'     => "$y",
+                    'base'     => round($max_base)
+                ];
+                $max_bases[$y]  = $max_base;
+            } else {
+                $chart_data[]   = [
+                    'year'     => "$y",
+                    'subtotal' => 0,
+                    'total'    => 0
+                ];
+                $chart_data_2[] = [
+                    'year'     => "$y",
+                    'base'     => 0
+                ];
+                $max_bases[$y]  = 0.0;
+            }
+        }
+        $data           = [
+            'lang'           => $locale,
+            'page_title'     => 'Salary Statistics - by Currency',
+            'slug_group'     => 'employment',
+            'slug'           => '/office/employment/salary/stats/currency/',
+            'user_session'   => $session->user,
+            'roles'          => $session->roles,
+            'current_role'   => $session->current_role,
+            'currency_code'  => $currency_code,
+            'company_list'   => $company_list,
+            'currency_list'  => $currency_list,
+            'max_bases'      => $max_bases,
+            'salary_by_year' => $salary_by_year,
+            'chart_data'     => $chart_data,
+            'chart_data_2'   => $chart_data_2,
+        ];
+        return view('employment_salary_statistics_currency', $data);
     }
 
     /**
      * @param string $company_code
-     * @param string $year
      * @return string
      */
-    public function salaryStatisticsCompanyYear(string $company_code = '', string $year = ''): string
+    public function salaryStatisticsCompany(string $company_code = ''): string
     {
         return 'U/C';
     }
