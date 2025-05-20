@@ -13,6 +13,7 @@ use CodeIgniter\Exceptions\PageNotFoundException;
 use CodeIgniter\HTTP\ResponseInterface;
 use DateMalformedStringException;
 use DateTime;
+use ReflectionException;
 
 class Employment extends BaseController
 {
@@ -126,7 +127,7 @@ class Employment extends BaseController
 
     /**
      * @return ResponseInterface
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
     public function companySave(): ResponseInterface
     {
@@ -366,7 +367,7 @@ class Employment extends BaseController
 
     /**
      * @return ResponseInterface
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
     public function salarySave(): ResponseInterface
     {
@@ -526,12 +527,66 @@ class Employment extends BaseController
     }
 
     /**
-     * @param string $company_code
+     * @param int $company_id
      * @return string
      */
-    public function salaryStatisticsCompany(string $company_code = ''): string
+    public function salaryStatisticsCompany(int $company_id = 0): string
     {
-        return 'U/C';
+        $session        = session();
+        $locale         = $this->request->getLocale();
+        $company_model  = new CompanyMasterModel();
+        $salary_model   = new CompanySalaryModel();
+        if (0 == $company_id) {
+            $company    = $company_model->where('company_country_code', 'SG')->orderBy('employment_start_date', 'DESC')->first();
+            $company_id = $company['id'];
+        } else {
+            $company    = $company_model->find($company_id);
+        }
+        $company_list   = $company_model->findAll();
+        $salaries       = $salary_model->where('company_id', $company_id)->whereIn('pay_type', ['salary', 'claim', 'other'])->findAll();
+        $base_amount    = 0;
+        $base_amounts   = [];
+        $by_year        = [];
+        foreach ($salaries as $salary) {
+            if ($salary['base_amount'] != $base_amount && $salary['base_amount'] > 0) {
+                $base_amounts[$salary['pay_date']] = $salary['base_amount'];
+                $base_amount                       = $salary['base_amount'];
+            }
+            $year = substr($salary['pay_date'], 0, 4);
+            $by_year[$year]['subtotal'] = (isset($by_year[$year]['subtotal']) ? $by_year[$year]['subtotal'] += $salary['subtotal_amount'] : $salary['subtotal_amount']);
+            $by_year[$year]['total']    = (isset($by_year[$year]['total'])    ? $by_year[$year]['total']    += $salary['total_amount']    : $salary['total_amount']);
+        }
+        $chart_data     = [];
+        foreach ($by_year as $year => $data) {
+            $chart_data[] = [
+                'year'     => "$year",
+                'subtotal' => round($data['subtotal']),
+                'total'    => round($data['total'])
+            ];
+        }
+        $chart_data_2   = [];
+        foreach ($base_amounts as $date => $amount) {
+            $chart_data_2[] = [
+                'month' => date(MONTH_FORMAT_UI, strtotime($date)),
+                'base'  => round($amount)
+            ];
+        }
+        $data           = [
+            'lang'           => $locale,
+            'page_title'     => 'Salary Statistics - by Company',
+            'slug_group'     => 'employment',
+            'slug'           => '/office/employment/salary/stats/company/',
+            'user_session'   => $session->user,
+            'roles'          => $session->roles,
+            'current_role'   => $session->current_role,
+            'company_id'     => $company_id,
+            'company'        => $company,
+            'currency_code'  => $company['company_currency_code'],
+            'company_list'   => $company_list,
+            'chart_data'     => $chart_data,
+            'chart_data_2'   => $chart_data_2,
+        ];
+        return view('employment_salary_statistics_company', $data);
     }
 
     /************************************************************************
@@ -647,7 +702,7 @@ class Employment extends BaseController
 
     /**
      * @return ResponseInterface
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
     public function cpfSave(): ResponseInterface
     {
@@ -847,7 +902,7 @@ class Employment extends BaseController
 
     /**
      * @return ResponseInterface
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
     public function freelanceSave(): ResponseInterface
     {
@@ -1008,7 +1063,7 @@ class Employment extends BaseController
 
     /**
      * @return ResponseInterface
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
     public function freelanceIncomeSave(): ResponseInterface
     {
