@@ -204,17 +204,24 @@ class Employment extends BaseController
             }
             $start_date = new DateTime($company['employment_start_date']);
             $end_date   = (empty($company['employment_end_date']) ? new DateTime('now') : new DateTime($company['employment_end_date']));
-            $days       = $start_date->diff($end_date)->days;
+            $diff       = $start_date->diff($end_date);
+            $days       = $diff->days;
+            $length     = (0 < $diff->y ? $diff->y . 'y ' : '') . (0 < $diff->m ? $diff->m . 'm ' : '') . (0 < $diff->d ? $diff->d . 'd' : '');
             $duration[] = [
                 'name'      => $company['company_trade_name'],
                 'country'   => $company['company_country_code'],
                 'days'      => $days,
+                'length'    => $length,
                 'dates'     => [$company['employment_start_date'], $company['employment_end_date']],
             ];
             $country_days[$company['company_country_code']]      = (isset($country_days[$company['company_country_code']]) ? $country_days[$company['company_country_code']] + $days : $days);
             $country_companies[$company['company_country_code']] = (isset($country_companies[$company['company_country_code']]) ? $country_companies[$company['company_country_code']] + 1 : 1);
         }
+        $country_length = [];
         foreach ($country_days as $country_code => $days) {
+            $y        = floor($days/365);
+            $m        = round(($days % 365)/30);
+            $country_length[$country_code] = ($y > 0 ? $y . 'y ' : '') . ($m > 0 ? $m . 'm ' : '');
             $charts[] = [
                 'country'   => lang('ListCountries.countries.' . $country_code . '.common_name'),
                 'days'      => $days,
@@ -231,6 +238,7 @@ class Employment extends BaseController
             'duration'          => $duration,
             'country_days'      => $country_days,
             'country_companies' => $country_companies,
+            'country_length'    => $country_length,
             'charts'            => $charts
         ];
         return view('employment_company_stats', $data);

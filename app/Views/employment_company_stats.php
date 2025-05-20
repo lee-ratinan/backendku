@@ -35,6 +35,7 @@ $this->extend($layout);
                                     <th style="min-width:120px">Country</th>
                                     <th style="min-width:150px">Company</th>
                                     <th style="min-width:80px" class="text-end">Days</th>
+                                    <th style="min-width:120px" class="text-end">Length</th>
                                     <th style="min-width:100px">From</th>
                                     <th style="min-width:100px">To</th>
                                 </tr>
@@ -45,6 +46,7 @@ $this->extend($layout);
                                         <td><?= lang('ListCountries.countries.' . $company['country'] . '.common_name') ?></td>
                                         <td><?= $company['name'] ?></td>
                                         <td class="text-end" data-sort="<?= $company['days'] ?>"><?= number_format($company['days']) . (empty($company['dates'][1]) ? '+' : '') ?></td>
+                                        <td class="text-end" data-sort="<?= $company['days'] ?>"><?= $company['length'] ?></td>
                                         <td data-sort="<?= $company['dates'][0] ?>"><?= date(DATE_FORMAT_UI, strtotime($company['dates'][0])) ?></td>
                                         <td data-sort="<?= @$company['dates'][1] ?>"><?= (empty($company['dates'][1]) ? '-' : date(DATE_FORMAT_UI, strtotime($company['dates'][1]))) ?></td>
                                     </tr>
@@ -106,6 +108,7 @@ $this->extend($layout);
                                     <th style="min-width:120px">Country</th>
                                     <th style="min-width:90px" class="text-end">Companies</th>
                                     <th style="min-width:90px" class="text-end">Days*</th>
+                                    <th style="min-width:90px" class="text-end">Length*</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -114,6 +117,7 @@ $this->extend($layout);
                                     <td><?= lang('ListCountries.countries.' . $country_code . '.common_name') ?></td>
                                     <td class="text-end"><?= number_format($country_companies[$country_code]) ?></td>
                                     <td class="text-end"><?= number_format($days) ?></td>
+                                    <td class="text-end"><?= $country_length[$country_code] ?></td>
                                 </tr>
                                 <?php endforeach; ?>
                                 </tbody>
