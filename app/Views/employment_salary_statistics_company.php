@@ -37,6 +37,7 @@ $this->extend($layout);
                         </p>
                         <div class="row">
                             <div class="col-12 col-md-6">
+                                <h4>Total Income By Year</h4>
                                 <script>
                                     am5.ready(function() {
                                         let root = am5.Root.new("chart_1");
@@ -65,6 +66,7 @@ $this->extend($layout);
                                 <div class="chart" id="chart_1"></div>
                             </div>
                             <div class="col-12 col-md-6">
+                                <h4>Base Salaries</h4>
                                 <script>
                                     am5.ready(function() {
                                         let root = am5.Root.new("chart_2");
@@ -92,6 +94,7 @@ $this->extend($layout);
                                 <div class="chart" id="chart_2"></div>
                             </div>
                         </div>
+                        <h4 class="mt-3">Summary</h4>
                         <div class="table-responsive">
                             <table id="summary" class="table table-striped table-hover table-borderless">
                                 <thead>

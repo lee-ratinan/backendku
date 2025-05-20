@@ -138,7 +138,7 @@ $this->extend($layout);
                 },
                 order: [[2, 'desc']],
                 columnDefs: [
-                    {orderable: false, targets: 0},
+                    {orderable: false, targets: [0,1]},
                     {className: 'text-end', targets: [9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27] }
                 ],
                 footerCallback: function () {

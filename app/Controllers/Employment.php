@@ -285,8 +285,8 @@ class Employment extends BaseController
         $model              = new CompanySalaryModel();
         $columns            = [
             '',
+            '',
             'pay_date',
-            'google_drive_link',
             'company_legal_name',
             'tax_year',
             'tax_country_code',

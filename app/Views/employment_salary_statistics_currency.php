@@ -27,10 +27,11 @@ $this->extend($layout);
                 <div class="card">
                     <div class="card-body">
                         <?php foreach ($currency_list as $currency) : ?>
-                            <a class="btn btn<?= ($currency == $currency_code ? '' : '-outline') ?>-success btn-sm" href="<?= base_url($lang . '/office/employment/salary/stats/currency/' . $currency) ?>"><?= $currency ?></a>
+                            <a class="btn btn<?= ($currency == $currency_code ? '' : '-outline') ?>-success btn-sm mb-2" href="<?= base_url($lang . '/office/employment/salary/stats/currency/' . $currency) ?>"><?= $currency ?></a>
                         <?php endforeach; ?>
                         <div class="row">
                             <div class="col-12 col-md-6">
+                                <h4>Total Income By Year</h4>
                                 <script>
                                     am5.ready(function() {
                                         let root = am5.Root.new("chart_1");
@@ -59,6 +60,7 @@ $this->extend($layout);
                                 <div class="chart" id="chart_1"></div>
                             </div>
                             <div class="col-12 col-md-6">
+                                <h4>Base Salary By Year</h4>
                                 <script>
                                     am5.ready(function() {
                                         let root = am5.Root.new("chart_2");
@@ -86,6 +88,7 @@ $this->extend($layout);
                                 <div class="chart" id="chart_2"></div>
                             </div>
                         </div>
+                        <h4 class="mt-3">Summary</h4>
                         <div class="table-responsive">
                             <table id="summary" class="table table-striped table-hover table-borderless">
                                 <thead>
