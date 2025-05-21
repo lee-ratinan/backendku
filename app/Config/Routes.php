@@ -100,12 +100,14 @@ $routes->group('{locale}/office', ['filter' => 'auth'], static function ($routes
     $routes->get('employment/freelance/create', 'Employment::freelanceEdit/new');
     $routes->get('employment/freelance/edit/(:any)', 'Employment::freelanceEdit/$1');
     $routes->post('employment/freelance/edit', 'Employment::freelanceSave');
+    $routes->get('employment/freelance/stats', 'Employment::freelanceStats');
     // company_freelance_income
     $routes->get('employment/freelance-income', 'Employment::freelanceIncome');
     $routes->post('employment/freelance-income', 'Employment::freelanceIncomeList');
     $routes->get('employment/freelance-income/create', 'Employment::freelanceIncomeEdit/new');
     $routes->get('employment/freelance-income/edit/(:any)', 'Employment::freelanceIncomeEdit/$1');
     $routes->post('employment/freelance-income/edit', 'Employment::freelanceIncomeSave');
+    $routes->get('employment/freelance-income/stats', 'Employment::freelanceIncomeStats');
     // FINANCE - TAX
     // tax_master and tax_breakdown tables
     $routes->get('tax', 'Tax::index');

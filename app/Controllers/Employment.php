@@ -964,6 +964,14 @@ class Employment extends BaseController
     /**
      * @return string
      */
+    public function freelanceStats(): string
+    {
+        return '';
+    }
+
+    /**
+     * @return string
+     */
     public function freelanceIncome(): string
     {
         $session       = session();
@@ -1125,6 +1133,14 @@ class Employment extends BaseController
             'status'  => 'error',
             'toast'   => lang('System.status_message.generic_error')
         ])->setStatusCode(HTTP_STATUS_SOMETHING_WRONG);
+    }
+
+    /**
+     * @return string
+     */
+    public function freelanceIncomeStats(): string
+    {
+        return '';
     }
 
 }

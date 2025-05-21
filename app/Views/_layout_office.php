@@ -83,7 +83,9 @@
                                     '/office/employment/salary/stats/currency/' => '<i class="fa-solid fa-chart-line"></i> By Currency',
                                     '/office/employment/salary/stats/company/' => '<i class="fa-solid fa-chart-line"></i> By Company',
                                     '/office/employment/freelance'        => 'Freelance',
+                                    '/office/employment/freelance/stats'  => '<i class="fa-solid fa-chart-bar"></i> Statistics',
                                     '/office/employment/freelance-income' => 'Freelance Income',
+                                    '/office/employment/freelance-income/stats' => '<i class="fa-solid fa-chart-line"></i> Statistics',
                                     '/office/employment/cpf'              => 'CPF',
                                 ]
                             ],
