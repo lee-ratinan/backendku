@@ -79,6 +79,7 @@
                                 'items' => [
                                     '/office/employment'                  => 'Company',
                                     '/office/employment/company/stats'    => '<i class="fa-solid fa-chart-bar"></i> Statistics',
+                                    '/office/employment/company/total-income'     => '<i class="fa-solid fa-chart-line"></i> Total Income',
                                     '/office/employment/salary'           => 'Salary',
                                     '/office/employment/salary/stats/currency/' => '<i class="fa-solid fa-chart-line"></i> By Currency',
                                     '/office/employment/salary/stats/company/' => '<i class="fa-solid fa-chart-line"></i> By Company',
@@ -87,7 +88,6 @@
                                     '/office/employment/freelance-income' => 'Freelance Income',
                                     '/office/employment/freelance-income/stats' => '<i class="fa-solid fa-chart-line"></i> Statistics',
                                     '/office/employment/cpf'              => 'CPF',
-                                    '/office/employment/total-income'     => '<i class="fa-solid fa-chart-line"></i> Total Income',
                                 ]
                             ],
                             [

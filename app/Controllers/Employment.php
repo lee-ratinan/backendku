@@ -967,7 +967,18 @@ class Employment extends BaseController
      */
     public function freelanceStats(): string
     {
-        return '';
+        $lang    = $this->request->getLocale();
+        $session = session();
+        $data = [
+            'lang' => $lang,
+            'page_title'   => 'Freelance Statistics',
+            'slug_group'   => 'employment',
+            'slug'         => '/office/employment/freelance/stats',
+            'user_session' => $session->user,
+            'roles'        => $session->roles,
+            'current_role' => $session->current_role,
+        ];
+        return view('employment_freelance_stats', $data);
     }
 
     /**
@@ -1141,15 +1152,101 @@ class Employment extends BaseController
      */
     public function freelanceIncomeStats(): string
     {
-        return '';
+        $lang    = $this->request->getLocale();
+        $session = session();
+        $data = [
+            'lang' => $lang,
+            'page_title'   => 'Freelance Income Statistics',
+            'slug_group'   => 'employment',
+            'slug'         => '/office/employment/freelance-income/stats',
+            'user_session' => $session->user,
+            'roles'        => $session->roles,
+            'current_role' => $session->current_role,
+        ];
+        return view('employment_freelance_income_stats', $data);
     }
 
     /**
+     * @param string $year
      * @return string
      */
-    public function totalIncome(): string
+    public function totalIncome(string $year = ''): string
     {
-        return '';
+        $lang    = $this->request->getLocale();
+        $session = session();
+        if (empty($year)) {
+            $year = date('Y');
+        }
+        $company_model          = new CompanyMasterModel();
+        $salary_model           = new CompanySalaryModel();
+        $freelance_income_model = new CompanyFreelanceIncomeModel();
+        $company_list           = $company_model->where('employment_start_date <=', $year . '-12-31')
+            ->groupStart()
+            ->where('employment_end_date >=', $year . '-01-01')
+            ->orWhere('employment_end_date IS NULL')
+            ->groupEnd()
+            ->findAll();
+        $company_info           = [];
+        foreach ($company_list as $company) {
+            $company_info[$company['id']] = [
+                'company_name'  => $company['company_trade_name'],
+                'country_code'  => $company['company_country_code'],
+                'currency_code' => $company['company_currency_code'],
+            ];
+        }
+        $salary_records         = $salary_model->where('pay_date >=', $year . '-01-01')
+            ->whereIn('pay_type', ['salary', 'claim', 'other'])
+            ->where('pay_date <=', $year . '-12-31')
+            ->orderBy('pay_date', 'ASC')
+            ->findAll();
+        $freelance_records     = $freelance_income_model
+            ->select('company_freelance_income.*, company_freelance_project.company_id')
+            ->join('company_freelance_project', 'company_freelance_income.project_id = company_freelance_project.id')
+            ->where('pay_date >=', $year . '-01-01')
+            ->where('pay_date <=', $year . '-12-31')
+            ->orderBy('pay_date', 'ASC')
+            ->findAll();
+        $income_records        = [];
+        foreach ($salary_records as $record) {
+            $income_records[$record['payment_currency']][] = [
+                'company_name'    => $company_info[$record['company_id']]['company_name'],
+                'pay_date'        => $record['pay_date'],
+                'country_code'    => $record['tax_country_code'],
+                'base_amount'     => $record['base_amount'],
+                'other_amount'    => $record['allowance_amount'] + $record['training_amount'] + $record['overtime_amount'] + $record['adjustment_amount'] + $record['bonus_amount'],
+                'taxes'           => $record['us_tax_fed_amount'] + $record['us_tax_state_amount'] + $record['us_tax_city_amount'] + $record['us_tax_med_ee_amount'] + $record['us_tax_oasdi_ee_amount'] + $record['th_tax_amount'] + $record['sg_tax_amount'] + $record['au_tax_amount'],
+                'claim_amount'    => $record['claim_amount'],
+                'social_security' => $record['social_security_amount'],
+                'provident_fund'  => $record['provident_fund_amount'],
+                'total'           => $record['total_amount'],
+            ];
+        }
+        foreach ($freelance_records as $record) {
+            $income_records[$record['payment_currency']][] = [
+                'company_name'    => $company_info[$record['company_id']]['company_name'],
+                'pay_date'        => $record['pay_date'],
+                'country_code'    => $company_info[$record['company_id']]['country_code'],
+                'base_amount'     => $record['base_amount'],
+                'other_amount'    => $record['deduction_amount'],
+                'taxes'           => $record['tax_amount'],
+                'claim_amount'    => $record['claim_amount'],
+                'social_security' => 0,
+                'provident_fund'  => 0,
+                'total'           => $record['total_amount'],
+            ];
+        }
+        $data                  = [
+            'lang'              => $lang,
+            'page_title'        => 'Total Income',
+            'slug_group'        => 'employment',
+            'slug'              => '/office/employment/company/total-income',
+            'user_session'      => $session->user,
+            'roles'             => $session->roles,
+            'current_role'      => $session->current_role,
+            'year'              => $year,
+            'income_records'    => $income_records
+        ];
+        return view('employment_total_income', $data);
     }
 
 }
