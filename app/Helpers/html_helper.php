@@ -410,3 +410,65 @@ function get_role_icons(string $role = '', bool $show_role_name = FALSE): string
     }
     return $roles[$role][0] ?? $role;
 }
+
+/**
+ * Generate bar chart script - AmCharts5
+ * @param array $chart_data
+ * @param string $div_id
+ * @param string $category_field
+ * @param array $series_array ["field in JSON": "label"]
+ * @param string $height e.g. "500px"
+ * @param string $new_tooltip
+ * @param string $new_bar_text
+ * @param string $new_above_bar_text
+ * @return string
+ */
+function generate_bar_chart_script(array $chart_data, string $div_id, string $category_field, array $series_array, string $height = '', string $new_tooltip = '', string $new_bar_text = '', string $new_above_bar_text = ''): string
+{
+    $series = '';
+    foreach ($series_array as $key => $value) {
+        $series .= 'createSeries("' . $key . '", "' . $value . '");';
+    }
+    $tooltip = '[bold]{categoryY}[/]\n{valueX}';
+    if (!empty($new_tooltip)) {
+        $tooltip = $new_tooltip;
+    }
+    $bar_text = '{valueX}';
+    if (!empty($new_bar_text)) {
+        $bar_text = $new_bar_text;
+    }
+    $above_bar_text = '';
+    if (!empty($new_above_bar_text)) {
+        $above_bar_text = $new_above_bar_text;
+    }
+    if (empty($height)) {
+        $height = '500px';
+    }
+    return 'am5.ready(function() {
+    let root = am5.Root.new("' . $div_id . '");
+    root.dom.style.width = "100%";
+    root.dom.style.height = "'.$height.'";
+    root.setThemes([am5themes_Animated.new(root)]);
+    let chart = root.container.children.push(am5xy.XYChart.new(root, {panX: false,panY: false,wheelX: "panX",wheelY: "zoomX",paddingLeft:5, layout: root.verticalLayout}));
+    let legend = chart.children.push(am5.Legend.new(root, {centerX: am5.p50, x: am5.p50}));
+    let data = ' . json_encode($chart_data) . ';
+    let yAxis = chart.yAxes.push(am5xy.CategoryAxis.new(root, {categoryField: "'.$category_field.'",renderer: am5xy.AxisRendererY.new(root, {inversed: true,cellStartLocation: 0.1,cellEndLocation: 0.9,minorGridEnabled: true})}));
+    yAxis.data.setAll(data);
+    let xAxis = chart.xAxes.push(am5xy.ValueAxis.new(root, {renderer: am5xy.AxisRendererX.new(root, {strokeOpacity: 0.1, minGridDistance: 50}), min: 0}));
+    function createSeries(field, name) {
+        let series = chart.series.push(am5xy.ColumnSeries.new(root, {name: name,xAxis: xAxis,yAxis: yAxis,valueXField: field,categoryYField: "'.$category_field.'",sequencedInterpolation: true,tooltip: am5.Tooltip.new(root, {pointerOrientation: "horizontal",labelText: "'.$tooltip.'"})}));
+        series.columns.template.setAll({height: am5.p100, strokeOpacity: 0, cornerRadiusTR: 5, cornerRadiusBR: 5});
+        series.bullets.push(function () {return am5.Bullet.new(root, {locationX: 1,locationY: 0.5,sprite: am5.Label.new(root, {centerY: am5.p50,text: "'.$above_bar_text.'",populateText: true})});});
+        series.bullets.push(function () {return am5.Bullet.new(root, {locationX: 1,locationY: 0.5,sprite: am5.Label.new(root, {centerX: am5.p100,centerY: am5.p50,text: "'.$bar_text.'",fill: am5.color(0xffffff),populateText: true})});});
+        series.data.setAll(data);
+        series.appear();
+        return series;
+    }
+    '.$series.'
+    legend.data.setAll(chart.series.values);
+    let cursor = chart.set("cursor", am5xy.XYCursor.new(root, {behavior: "zoomY"}));
+    cursor.lineY.set("forceHidden", true);
+    cursor.lineX.set("forceHidden", true);
+    chart.appear(1000, 100);
+    });';
+}

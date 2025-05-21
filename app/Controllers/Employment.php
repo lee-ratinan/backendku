@@ -199,6 +199,7 @@ class Employment extends BaseController
         $duration          = [];
         $country_days      = [];
         $country_companies = [];
+        $main_chart        = [];
         $charts            = [];
         foreach ($companies as $company) {
             if ('0000-00-00' == $company['employment_end_date']) {
@@ -215,6 +216,11 @@ class Employment extends BaseController
                 'days'      => $days,
                 'length'    => $length,
                 'dates'     => [$company['employment_start_date'], $company['employment_end_date']],
+            ];
+            $main_chart[] = [
+                'company' => $company['company_trade_name'],
+                'days'    => $days,
+                'label'   => $length,
             ];
             $country_days[$company['company_country_code']]      = (isset($country_days[$company['company_country_code']]) ? $country_days[$company['company_country_code']] + $days : $days);
             $country_companies[$company['company_country_code']] = (isset($country_companies[$company['company_country_code']]) ? $country_companies[$company['company_country_code']] + 1 : 1);
@@ -241,7 +247,8 @@ class Employment extends BaseController
             'country_days'      => $country_days,
             'country_companies' => $country_companies,
             'country_length'    => $country_length,
-            'charts'            => $charts
+            'charts'            => $charts,
+            'main_chart'        => $main_chart,
         ];
         return view('employment_company_stats', $data);
     }

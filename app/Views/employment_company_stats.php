@@ -18,6 +18,7 @@ $this->extend($layout);
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="<?= base_url($session->locale . '/office/dashboard') ?>"><?= lang('System.dashboard.page_title') ?></a></li>
+                <li class="breadcrumb-item"><a href="<?= base_url($session->locale . '/office/employment') ?>">Employment</a></li>
                 <li class="breadcrumb-item active"><?= $page_title ?></li>
             </ol>
         </nav>
@@ -62,35 +63,8 @@ $this->extend($layout);
                     <div class="card-body">
                         <h3>Days</h3>
                         <script>
-                            am5.ready(function() {
-                                let root = am5.Root.new("main-chart");
-                                root.setThemes([am5themes_Animated.new(root)]);
-                                let chart = root.container.children.push(am5xy.XYChart.new(root, {panX: true, panY: true, wheelX: "panX", wheelY: "zoomX", pinchZoomX: true, paddingLeft:0, paddingRight:1}));
-                                let cursor = chart.set("cursor", am5xy.XYCursor.new(root, {}));
-                                cursor.lineY.set("visible", false);
-                                let xRenderer = am5xy.AxisRendererX.new(root, {minGridDistance: 30, minorGridEnabled: true});
-                                xRenderer.labels.template.setAll({rotation: -90, centerY: am5.p50, centerX: am5.p100, paddingRight: 15});
-                                xRenderer.grid.template.setAll({location: 1})
-                                let xAxis = chart.xAxes.push(am5xy.CategoryAxis.new(root, {maxDeviation: 0.3, categoryField: "name", renderer: xRenderer, tooltip: am5.Tooltip.new(root, {})}));
-                                let yRenderer = am5xy.AxisRendererY.new(root, {strokeOpacity: 0.1});
-                                let yAxis = chart.yAxes.push(am5xy.ValueAxis.new(root, {maxDeviation: 0.3, renderer: yRenderer}));
-                                let series = chart.series.push(am5xy.ColumnSeries.new(root, {
-                                    name: "Company",
-                                    xAxis: xAxis,
-                                    yAxis: yAxis,
-                                    valueYField: "days",
-                                    sequencedInterpolation: true,
-                                    categoryXField: "name",
-                                    tooltip: am5.Tooltip.new(root, {labelText: "{days} days"})
-                                }));
-                                series.columns.template.setAll({ cornerRadiusTL: 5, cornerRadiusTR: 5, strokeOpacity: 0 });
-                                series.columns.template.adapters.add("fill", function (fill, target) {return chart.get("colors").getIndex(series.columns.indexOf(target));});
-                                series.columns.template.adapters.add("stroke", function (stroke, target) {return chart.get("colors").getIndex(series.columns.indexOf(target));});
-                                let data = <?= json_encode($duration) ?>;
-                                xAxis.data.setAll(data);
-                                series.data.setAll(data);
-                                series.appear(1000);
-                                chart.appear(1000, 100);
+                            document.addEventListener('DOMContentLoaded', function () {
+                                <?php echo generate_bar_chart_script($main_chart, 'main-chart', 'company', ['days' => 'Days'], '', '{company}: {label}', '', ''); ?>
                             });
                         </script>
                         <div id="main-chart"></div>
@@ -133,6 +107,7 @@ $this->extend($layout);
                         <h3>By Country</h3>
                         <h4>Companies by country</h4>
                         <script>
+                            document.addEventListener('DOMContentLoaded', function () {
                             am5.ready(function () {
                                 let root = am5.Root.new("country-company");
                                 root.setThemes([am5themes_Animated.new(root)]);
@@ -146,11 +121,13 @@ $this->extend($layout);
                                 series.data.setAll(<?= json_encode($charts) ?>);
                                 series.appear(1000, 100);
                             });
+                            });
                         </script>
                         <div id="country-company"></div>
                         <hr />
                         <h4>Days by country</h4>
                         <script>
+                            document.addEventListener('DOMContentLoaded', function () {
                             am5.ready(function () {
                                 let root = am5.Root.new("country-day");
                                 root.setThemes([am5themes_Animated.new(root)]);
@@ -163,6 +140,7 @@ $this->extend($layout);
                                 series.states.create("hidden", {endAngle: -90});
                                 series.data.setAll(<?= json_encode($charts) ?>);
                                 series.appear(1000, 100);
+                            });
                             });
                         </script>
                         <div id="country-day"></div>
