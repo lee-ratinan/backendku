@@ -549,7 +549,6 @@ class Employment extends BaseController
         } else {
             $company    = $company_model->find($company_id);
         }
-        $company_list   = $company_model->findAll();
         $salaries       = $salary_model->where('company_id', $company_id)->whereIn('pay_type', ['salary', 'claim', 'other'])->findAll();
         $base_amount    = 0;
         $base_amounts   = [];
@@ -559,7 +558,7 @@ class Employment extends BaseController
                 $base_amounts[$salary['pay_date']] = $salary['base_amount'];
                 $base_amount                       = $salary['base_amount'];
             }
-            $year = substr($salary['pay_date'], 0, 4);
+            $year                       = substr($salary['pay_date'], 0, 4);
             $by_year[$year]['subtotal'] = (isset($by_year[$year]['subtotal']) ? $by_year[$year]['subtotal'] += $salary['subtotal_amount'] : $salary['subtotal_amount']);
             $by_year[$year]['total']    = (isset($by_year[$year]['total'])    ? $by_year[$year]['total']    += $salary['total_amount']    : $salary['total_amount']);
         }
@@ -578,6 +577,8 @@ class Employment extends BaseController
                 'base'  => round($amount)
             ];
         }
+        $company_ids    = $salary_model->select('company_id')->distinct()->findAll();
+        $company_ids    = array_column($company_ids, 'company_id');
         $data           = [
             'lang'           => $locale,
             'page_title'     => 'Salary Statistics - by Company',
@@ -589,7 +590,7 @@ class Employment extends BaseController
             'company_id'     => $company_id,
             'company'        => $company,
             'currency_code'  => $company['company_currency_code'],
-            'company_list'   => $company_list,
+            'company_list'   => $company_model->whereIn('id', $company_ids)->findAll(),
             'chart_data'     => $chart_data,
             'chart_data_2'   => $chart_data_2,
         ];
@@ -1139,6 +1140,14 @@ class Employment extends BaseController
      * @return string
      */
     public function freelanceIncomeStats(): string
+    {
+        return '';
+    }
+
+    /**
+     * @return string
+     */
+    public function totalIncome(): string
     {
         return '';
     }
