@@ -108,6 +108,8 @@ $routes->group('{locale}/office', ['filter' => 'auth'], static function ($routes
     $routes->get('employment/freelance-income/edit/(:any)', 'Employment::freelanceIncomeEdit/$1');
     $routes->post('employment/freelance-income/edit', 'Employment::freelanceIncomeSave');
     $routes->get('employment/freelance-income/stats', 'Employment::freelanceIncomeStats');
+    $routes->get('employment/total-income', 'Employment::totalIncome');
+    $routes->get('employment/total-income/(:num)', 'Employment::totalIncome/$1');
     // FINANCE - TAX
     // tax_master and tax_breakdown tables
     $routes->get('tax', 'Tax::index');
