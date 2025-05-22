@@ -6,7 +6,6 @@ $this->extend($layout);
 <?= $this->section('content') ?>
 <?php $session = session(); ?>
     <style>
-        #main-chart {width: 100%;height: 500px;}
         #country-company, #country-day {width: 100%;height: 300px;}
     </style>
     <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
@@ -63,8 +62,9 @@ $this->extend($layout);
                     <div class="card-body">
                         <h3>Days</h3>
                         <script>
+                            <?php $height = (count($duration) * 30) + 100; ?>
                             document.addEventListener('DOMContentLoaded', function () {
-                                <?php echo generate_bar_chart_script($main_chart, 'main-chart', 'company', ['days' => 'Days'], '', '{company}: {label}', '', ''); ?>
+                                <?php echo generate_bar_chart_script($main_chart, 'main-chart', 'company', ['days' => 'Days'], $height . 'px', '{company}: {label}', '', ''); ?>
                             });
                         </script>
                         <div id="main-chart"></div>

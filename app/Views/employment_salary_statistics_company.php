@@ -5,9 +5,6 @@ $this->extend($layout);
 ?>
 <?= $this->section('content') ?>
 <?php $session = session(); ?>
-    <style>
-        .chart {width: 100%; height: 500px;}
-    </style>
     <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
     <script src="https://cdn.amcharts.com/lib/5/xy.js"></script>
     <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
@@ -38,21 +35,31 @@ $this->extend($layout);
                         <div class="row">
                             <div class="col-12 col-md-6">
                                 <h4>Total Income By Year</h4>
+                                <?php if (empty($chart_data)) : ?>
+                                    <p>-</p>
+                                <?php else: ?>
                                 <script>
                                     document.addEventListener('DOMContentLoaded', function () {
-                                        <?php echo generate_bar_chart_script($chart_data, 'chart_1', 'year', ['total' => 'Total', 'subtotal' => 'Subtotal'], '200px'); ?>
+                                        <?php $height = (count($chart_data) * 30) + 100; ?>
+                                        <?php echo generate_bar_chart_script($chart_data, 'chart_1', 'year', ['total' => 'Total', 'subtotal' => 'Subtotal'], $height . 'px'); ?>
                                     });
                                 </script>
-                                <div class="chart" id="chart_1"></div>
+                                <div id="chart_1"></div>
+                                <?php endif; ?>
                             </div>
                             <div class="col-12 col-md-6">
                                 <h4>Base Salaries</h4>
+                                <?php if (empty($chart_data_2)) : ?>
+                                <p>-</p>
+                                <?php else: ?>
                                 <script>
                                     document.addEventListener('DOMContentLoaded', function () {
-                                        <?php echo generate_bar_chart_script($chart_data_2, 'chart_2', 'month', ['base' => 'Base Salary'], '200px'); ?>
+                                        <?php $height = (count($chart_data_2) * 30) + 100; ?>
+                                        <?php echo generate_bar_chart_script($chart_data_2, 'chart_2', 'month', ['base' => 'Base Salary'], $height . 'px'); ?>
                                     });
                                 </script>
-                                <div class="chart" id="chart_2"></div>
+                                <div id="chart_2"></div>
+                                <?php endif; ?>
                             </div>
                         </div>
                         <h4 class="mt-3">Summary</h4>

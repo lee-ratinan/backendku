@@ -34,7 +34,8 @@ $this->extend($layout);
                                 <h4>Total Income By Year</h4>
                                 <script>
                                     document.addEventListener('DOMContentLoaded', function () {
-                                        <?php echo generate_bar_chart_script($chart_data, 'chart_1', 'year', ['total' => 'Total', 'subtotal' => 'Subtotal'], '90vh'); ?>
+                                        <?php $height = (count($chart_data) * 40) + 100; ?>
+                                        <?php echo generate_bar_chart_script($chart_data, 'chart_1', 'year', ['total' => 'Total', 'subtotal' => 'Subtotal'], $height . 'px'); ?>
                                     });
                                 </script>
                                 <div class="chart" id="chart_1"></div>
@@ -43,7 +44,8 @@ $this->extend($layout);
                                 <h4>Base Salary By Year</h4>
                                 <script>
                                     document.addEventListener('DOMContentLoaded', function () {
-                                        <?php echo generate_bar_chart_script($chart_data_2, 'chart_2', 'year', ['base' => 'Base Salary'], '90vh'); ?>
+                                        <?php $height = (count($chart_data_2) * 40) + 100; ?>
+                                        <?php echo generate_bar_chart_script($chart_data_2, 'chart_2', 'year', ['base' => 'Base Salary'], $height . 'px'); ?>
                                     });
                                 </script>
                                 <div class="chart" id="chart_2"></div>

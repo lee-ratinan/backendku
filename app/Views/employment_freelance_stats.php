@@ -22,7 +22,7 @@ $this->extend($layout);
                     <div class="card-body">
                         <div class="table-responsive">
                             <h4>Projects By Company/Client</h4>
-                            <table class="table table-borderless table-striped table-hover">
+                            <table class="table table-borderless table-striped table-hover dttable">
                                 <thead>
                                 <tr>
                                     <th style="min-width:150px">Company</th>
@@ -52,7 +52,7 @@ $this->extend($layout);
                                 </tbody>
                             </table>
                             <h4 class="mt-3">Project By Year</h4>
-                            <table class="table table-borderless table-striped table-hover">
+                            <table class="table table-borderless table-striped table-hover dttable">
                                 <thead>
                                 <tr>
                                     <th style="min-width:80px">Year</th>
@@ -126,4 +126,14 @@ $this->extend($layout);
             </div>
         </div>
     </section>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const table = $('.dttable').DataTable({
+                searching: true,
+                pageLength: 25,
+                order: [[0, 'asc']],
+                scrollX: true,
+            });
+        });
+    </script>
 <?php $this->endSection() ?>

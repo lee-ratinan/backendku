@@ -31,7 +31,7 @@ $this->extend($layout);
                                         $currencies = [];
                                         foreach ($chart_data as $currency => $chart_for_currency) {
                                             $currencies[] = $currency;
-                                            $height       = (count($chart_for_currency) * 80) + 100;
+                                            $height       = (count($chart_for_currency) * 30) + 100;
                                             echo generate_bar_chart_script($chart_for_currency, 'main-chart-' . $currency, 'year', ['total' => 'Total', 'taxes' => 'Taxes'], $height . 'px', '{year}: {total}');
                                         }
                                         ?>
@@ -43,7 +43,7 @@ $this->extend($layout);
                             </div>
                             <div class="col-md-6">
                                 <div class="table-responsive">
-                                    <table class="table table-striped table-hover table-borderless">
+                                    <table class="table table-striped table-hover table-borderless dttable">
                                         <thead>
                                         <tr>
                                             <th style="min-width:80px">Year</th>
@@ -77,4 +77,14 @@ $this->extend($layout);
             </div>
         </div>
     </section>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const table = $('.dttable').DataTable({
+                searching: true,
+                pageLength: 25,
+                order: [[0, 'asc']],
+                scrollX: true,
+            });
+        });
+    </script>
 <?php $this->endSection() ?>
