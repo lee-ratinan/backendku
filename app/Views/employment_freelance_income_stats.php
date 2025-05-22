@@ -5,6 +5,9 @@ $this->extend($layout);
 ?>
 <?= $this->section('content') ?>
 <?php $session = session(); ?>
+    <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
+    <script src="https://cdn.amcharts.com/lib/5/xy.js"></script>
+    <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
     <div class="pagetitle">
         <h1><?= $page_title ?></h1>
         <nav>
@@ -19,7 +22,57 @@ $this->extend($layout);
         <div class="row">
             <div class="col">
                 <div class="card">
-
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <script>
+                                    document.addEventListener('DOMContentLoaded', function () {
+                                        <?php
+                                        $currencies = [];
+                                        foreach ($chart_data as $currency => $chart_for_currency) {
+                                            $currencies[] = $currency;
+                                            $height       = (count($chart_for_currency) * 80) + 100;
+                                            echo generate_bar_chart_script($chart_for_currency, 'main-chart-' . $currency, 'year', ['total' => 'Total', 'taxes' => 'Taxes'], $height . 'px', '{year}: {total}');
+                                        }
+                                        ?>
+                                    });
+                                </script>
+                                <?php foreach ($currencies as $currency) : ?>
+                                    <div id="main-chart-<?= $currency ?>"></div>
+                                <?php endforeach; ?>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-hover table-borderless">
+                                        <thead>
+                                        <tr>
+                                            <th style="min-width:80px">Year</th>
+                                            <th style="min-width:160px">Project</th>
+                                            <th style="min-width:120px">Date</th>
+                                            <th style="min-width:120px">Subtotal</th>
+                                            <th style="min-width:120px">Tax</th>
+                                            <th style="min-width:120px">Total</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <?php foreach ($by_year as $year => $projects) : ?>
+                                            <?php foreach ($projects as $data) : ?>
+                                                <tr>
+                                                    <td><?= $year ?></td>
+                                                    <td><?= $data['company_name'] ?><br><?= $data['project_title'] ?></td>
+                                                    <td><?= date(DATE_FORMAT_UI, strtotime($data['pay_date'])) ?></td>
+                                                    <td class="text-end"><?= currency_format($data['currency'], $data['subtotal_amount']) ?></td>
+                                                    <td class="text-end"><?= currency_format($data['currency'], $data['tax_amount']) ?></td>
+                                                    <td class="text-end"><?= currency_format($data['currency'], $data['total_amount']) ?></td>
+                                                </tr>
+                                            <?php endforeach; ?>
+                                        <?php endforeach; ?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

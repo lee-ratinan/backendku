@@ -1176,9 +1176,43 @@ class Employment extends BaseController
      */
     public function freelanceIncomeStats(): string
     {
-        $lang    = $this->request->getLocale();
-        $session = session();
-        $data = [
+        $lang          = $this->request->getLocale();
+        $income_model  = new CompanyFreelanceIncomeModel();
+        $income_data   = $income_model
+            ->select('company_freelance_income.*, company_master.company_trade_name, company_freelance_project.project_title')
+            ->join('company_freelance_project', 'company_freelance_project.id = company_freelance_income.project_id')
+            ->join('company_master', 'company_master.id = company_freelance_project.company_id')
+            ->findAll();
+        $by_year       = [];
+        $total_by_year = [];
+        $taxes_by_year = [];
+        foreach ($income_data as $row) {
+            $year             = substr($row['pay_date'], 0, 4);
+            $by_year[$year][] = [
+                'company_name'    => $row['company_trade_name'],
+                'project_title'   => $row['project_title'],
+                'pay_date'        => $row['pay_date'],
+                'currency'        => $row['payment_currency'],
+                'subtotal_amount' => $row['subtotal_amount'],
+                'tax_amount'      => $row['tax_amount'],
+                'total_amount'    => $row['total_amount'],
+            ];
+            $total_by_year[$row['payment_currency']][$year] = (isset($total_by_year[$row['payment_currency']][$year]) ? $total_by_year[$row['payment_currency']][$year] + $row['total_amount'] : $row['total_amount']);
+            $taxes_by_year[$row['payment_currency']][$year] = (isset($taxes_by_year[$row['payment_currency']][$year]) ? $taxes_by_year[$row['payment_currency']][$year] + $row['tax_amount']   : $row['tax_amount']);
+        }
+        $chart_data    = [];
+        foreach ($total_by_year as $currency => $years) {
+            foreach ($years as $year => $amount) {
+                $chart_data[$currency][] = [
+                    'year'  => "$year",
+                    'taxes' => round($taxes_by_year[$currency][$year]),
+                    'total' => round($amount)
+                ];
+            }
+        }
+        ksort($by_year);
+        $session       = session();
+        $data          = [
             'lang' => $lang,
             'page_title'   => 'Freelance Income Statistics',
             'slug_group'   => 'employment',
@@ -1186,6 +1220,8 @@ class Employment extends BaseController
             'user_session' => $session->user,
             'roles'        => $session->roles,
             'current_role' => $session->current_role,
+            'by_year'      => $by_year,
+            'chart_data'   => $chart_data
         ];
         return view('employment_freelance_income_stats', $data);
     }

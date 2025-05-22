@@ -217,7 +217,7 @@
                     }
                     if (!empty($group['items'])) {
                         foreach ($group['items'] as $url => $label) {
-                            echo '<li class="sidebar-item ' . ($slug == $url ? 'active' : '') . '"><a class="sidebar-link" href="' . base_url($session->locale . $url) . '">' . $label . '</a></li>';
+                            echo '<li class="sidebar-item sidebar-l1 ' . ($slug == $url ? 'active' : '') . '"><a class="sidebar-link" href="' . base_url($session->locale . $url) . '">' . $label . '</a></li>';
                         }
                     }
                 }
