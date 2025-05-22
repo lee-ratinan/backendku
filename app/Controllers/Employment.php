@@ -968,15 +968,39 @@ class Employment extends BaseController
     public function freelanceStats(): string
     {
         $lang    = $this->request->getLocale();
+        $freelance_model = new CompanyFreelanceProjectModel();
+        $freelance_projects = $freelance_model
+            ->select('company_freelance_project.*, company_master.company_trade_name')
+            ->join('company_master', 'company_master.id = company_freelance_project.company_id')
+            ->findAll();
+        $by_company = [];
+        $by_year    = [];
+        foreach ($freelance_projects as $project) {
+            $year             = substr($project['project_start_date'], 0, 4);
+            $start_date       = new DateTime($project['project_start_date']);
+            $end_date         = (empty($project['project_end_date']) ? new DateTime('now') : new DateTime($project['project_end_date']));
+            $diff             = $start_date->diff($end_date);
+            $by_year[$year][] = [
+                'company_name'  => $project['company_trade_name'],
+                'client_name'   => $project['client_organization_name'],
+                'project_title' => $project['project_title'],
+                'start_date'    => $project['project_start_date'],
+                'end_date'      => $project['project_end_date'],
+                'days'          => $diff->days,
+            ];
+            $by_company[$project['company_trade_name']][$project['client_organization_name']][] = $project['project_title'];
+        }
         $session = session();
-        $data = [
-            'lang' => $lang,
+        $data    = [
+            'lang'         => $lang,
             'page_title'   => 'Freelance Statistics',
             'slug_group'   => 'employment',
             'slug'         => '/office/employment/freelance/stats',
             'user_session' => $session->user,
             'roles'        => $session->roles,
             'current_role' => $session->current_role,
+            'by_company'   => $by_company,
+            'by_year'      => $by_year,
         ];
         return view('employment_freelance_stats', $data);
     }

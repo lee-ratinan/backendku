@@ -42,6 +42,7 @@ $this->extend($layout);
                                     $total[$field] = 0;
                                 }
                                 ?>
+                                <h4 class="mt-3"><?= $currency_code ?></h4>
                                 <table class="table table-borderless table-striped table-hover">
                                     <thead>
                                     <tr>

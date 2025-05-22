@@ -26,8 +26,8 @@ $this->extend($layout);
             <div class="col-12">
                 <div class="card">
                     <div class="card-body">
-                        <?php foreach ($company_list as $company) : ?>
-                            <a class="btn btn<?= ($company_id == $company['id'] ? '' : '-outline') ?>-success btn-sm mb-2" href="<?= base_url($lang . '/office/employment/salary/stats/company/' . $company['id']) ?>"><?= $company['company_trade_name'] ?></a>
+                        <?php foreach ($company_list as $this_company) : ?>
+                            <a class="btn btn<?= ($company_id == $this_company['id'] ? '' : '-outline') ?>-success btn-sm mb-2" href="<?= base_url($lang . '/office/employment/salary/stats/company/' . $this_company['id']) ?>"><?= $this_company['company_trade_name'] ?></a>
                         <?php endforeach; ?>
                         <h3><?= $company['company_trade_name'] ?></h3>
                         <p>
