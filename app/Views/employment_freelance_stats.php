@@ -95,12 +95,10 @@ $this->extend($layout);
                                     <?php endforeach; ?>
                                     </tbody>
                                 </table>
-                            </div>
-                            <div class="col-md-6">
-                                <h4>Count By Client</h4>
+                                <h4 class="mt-3">Count By Year</h4>
                                 <table class="table table-borderless table-striped table-hover">
                                     <tbody>
-                                    <?php foreach ($count_by_client as $key => $count) : ?>
+                                    <?php foreach ($count_by_year as $key => $count) : ?>
                                         <tr>
                                             <td style="width:150px"><?= $key ?> (<?= $count ?>)</td>
                                             <td><?= str_repeat('<i class="fa-solid fa-star text-warning"></i>', $count) ?></td>
@@ -110,10 +108,10 @@ $this->extend($layout);
                                 </table>
                             </div>
                             <div class="col-md-6">
-                                <h4>Count By Year</h4>
+                                <h4>Count By Client</h4>
                                 <table class="table table-borderless table-striped table-hover">
                                     <tbody>
-                                    <?php foreach ($count_by_year as $key => $count) : ?>
+                                    <?php foreach ($count_by_client as $key => $count) : ?>
                                         <tr>
                                             <td style="width:150px"><?= $key ?> (<?= $count ?>)</td>
                                             <td><?= str_repeat('<i class="fa-solid fa-star text-warning"></i>', $count) ?></td>
