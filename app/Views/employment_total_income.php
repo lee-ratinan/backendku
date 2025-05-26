@@ -64,13 +64,13 @@ $this->extend($layout);
                                             <td><?= $record['company_name'] ?></td>
                                             <td class="text-start" data-sort="<?= $record['pay_date'] ?>"><?= date(DATE_FORMAT_UI, strtotime($record['pay_date'])) ?></td>
                                             <td><?= lang('ListCountries.countries.' . $record['country_code'] . '.common_name') ?></td>
-                                            <td class="text-end"><?= currency_format($currency_code, $record['base_amount']) ?></td>
-                                            <td class="text-end"><?= currency_format($currency_code, $record['other_amount']) ?></td>
-                                            <td class="text-end"><?= currency_format($currency_code, $record['taxes']) ?></td>
-                                            <td class="text-end"><?= currency_format($currency_code, $record['claim_amount']) ?></td>
-                                            <td class="text-end"><?= currency_format($currency_code, $record['social_security']) ?></td>
-                                            <td class="text-end"><?= currency_format($currency_code, $record['provident_fund']) ?></td>
-                                            <td class="text-end"><?= currency_format($currency_code, $record['total']) ?></td>
+                                            <td class="text-end"><?= currency_format($currency_code, $record['base_amount'] ?? 0.0) ?></td>
+                                            <td class="text-end"><?= currency_format($currency_code, $record['other_amount'] ?? 0.0) ?></td>
+                                            <td class="text-end"><?= currency_format($currency_code, $record['taxes'] ?? 0.0) ?></td>
+                                            <td class="text-end"><?= currency_format($currency_code, $record['claim_amount'] ?? 0.0) ?></td>
+                                            <td class="text-end"><?= currency_format($currency_code, $record['social_security'] ?? 0.0) ?></td>
+                                            <td class="text-end"><?= currency_format($currency_code, $record['provident_fund'] ?? 0.0) ?></td>
+                                            <td class="text-end"><?= currency_format($currency_code, $record['total'] ?? 0.0) ?></td>
                                         </tr>
                                         <?php
                                         foreach ($fields as $field) {
