@@ -486,6 +486,8 @@ class Employment extends BaseController
         }
         $chart_data     = [];
         $max_bases      = [];
+        $max_base_d     = [];
+        $max_base_h     = [];
         $chart_data_2   = [];
         ksort($salary_by_year);
         for ($y = 2010; $y <= date('Y'); $y++) {
@@ -501,6 +503,8 @@ class Employment extends BaseController
                     'base'     => round($max_base)
                 ];
                 $max_bases[$y]  = $max_base;
+                $max_base_d[$y] = $max_base / 21;
+                $max_base_h[$y] = $max_base / 168;
             } else {
                 $chart_data[]   = [
                     'year'     => "$y",
@@ -512,6 +516,8 @@ class Employment extends BaseController
                     'base'     => 0
                 ];
                 $max_bases[$y]  = 0.0;
+                $max_base_d[$y] = 0.0;
+                $max_base_h[$y] = 0.0;
             }
         }
         $data           = [
@@ -526,6 +532,8 @@ class Employment extends BaseController
             'company_list'   => $company_list,
             'currency_list'  => $currency_list,
             'max_bases'      => $max_bases,
+            'max_base_d'     => $max_base_d,
+            'max_base_h'     => $max_base_h,
             'salary_by_year' => $salary_by_year,
             'chart_data'     => $chart_data,
             'chart_data_2'   => $chart_data_2,

@@ -54,6 +54,8 @@ $this->extend($layout);
                                 <tr>
                                     <th>Year</th>
                                     <th class="text-end">Highest Base Pay</th>
+                                    <th class="text-end">(per day*)</th>
+                                    <th class="text-end">(per hour*)</th>
                                     <th class="text-end">Subtotal</th>
                                     <th class="text-end">Total</th>
                                 </tr>
@@ -63,12 +65,15 @@ $this->extend($layout);
                                 <tr>
                                     <td><?= $year ?></td>
                                     <td class="text-end"><?= currency_format($currency_code, $max_bases[$year]) ?></td>
+                                    <td class="text-end"><?= currency_format($currency_code, $max_base_d[$year]) ?></td>
+                                    <td class="text-end"><?= currency_format($currency_code, $max_base_h[$year]) ?></td>
                                     <td class="text-end"><?= currency_format($currency_code, $salary['subtotal']) ?></td>
                                     <td class="text-end"><?= currency_format($currency_code, $salary['total']) ?></td>
                                 </tr>
                                 <?php endforeach; ?>
                                 </tbody>
                             </table>
+                            <p>* Highest base pay is the highest monthly salary in the record. Highest base pay per day and per hour is calculated by assuming that there are <b>21</b> working days, or <b>168</b> working hours in a month.</p>
                         </div>
                     </div>
                 </div>
