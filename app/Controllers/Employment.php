@@ -852,6 +852,105 @@ class Employment extends BaseController
     }
 
     /**
+     * @param string $filter_type
+     * @param string $filter_value
+     * @return string
+     */
+    public function cpfGrowth(string $filter_type = 'account', string $filter_value = 'all'): string
+    {
+        $session        = session();
+        $model          = new CompanyCPFModel();
+        $records        = [];
+        $target_column  = '';
+        $current_column = '';
+        if ('account' == $filter_type){
+            // filter by account: all, ordinary, special, medisave
+            $filter_columns = [
+                'all'      => 'transaction_amount',
+                'ordinary' => 'ordinary_amount',
+                'special'  => 'special_amount',
+                'medisave' => 'medisave_amount',
+            ];
+            if (!isset($filter_columns[$filter_value])) {
+                $filter_value = 'all';
+            }
+            $target_columns = [
+                'all'      => 'account_balance',
+                'ordinary' => 'ordinary_balance',
+                'special'  => 'special_balance',
+                'medisave' => 'medisave_balance',
+            ];
+            $current_column = $filter_columns[$filter_value];
+            $records        = $model->where($current_column . ' !=', 0)->findAll();
+            $target_column  = $target_columns[$filter_value];
+        } else if ('contributor' == $filter_type) {
+            // filter by contributor: all, company, staff | TC='CON'
+            $records = $model->where('transaction_code', 'CON')->findAll();
+            if ('all' == $filter_value) {
+                $target_column = 'total_contribution';
+            } else if ('company' == $filter_value) {
+                $target_column = 'company_match_cumulative';
+            } else {
+                $target_column = 'staff_contribution_cumulative';
+            }
+        } else if ('tc' == $filter_type) {
+            // filter by transaction code:
+            $records       = $model->where('transaction_code', $filter_value)->findAll();
+            $target_column = 'transaction_amount_cumulative';
+        }
+        $chart_data = [];
+        $cumulative = 0;
+        if (in_array($target_column, ['account_balance', 'ordinary_balance', 'special_balance', 'medisave_balance'])) {
+            foreach ($records as $record) {
+                $chart_data[] = [
+                    'date'    => intval(strtotime($record['transaction_date']) . '000'),
+                    'dt_str'  => $record['transaction_date'],
+                    'current' => floatval($record[$current_column]),
+                    'value'   => floatval($record[$target_column])
+                ];
+            }
+        } else if ('total_contribution' == $target_column) {
+            foreach ($records as $record) {
+                $current      = floatval($record['staff_contribution']) + floatval($record['company_match']);
+                $cumulative  += $current;
+                $chart_data[] = [
+                    'date'    => intval(strtotime($record['transaction_date']) . '000'),
+                    'dt_str'  => $record['transaction_date'],
+                    'current' => $current,
+                    'value'   => $cumulative
+                ];
+            }
+        } else {
+            $target_column = str_replace('_cumulative', '', $target_column);
+            foreach ($records as $record) {
+                $current      = floatval($record[$target_column]);
+                $cumulative  += $current;
+                $chart_data[] = [
+                    'date'    => intval(strtotime($record['transaction_date']) . '000'),
+                    'dt_str'  => $record['transaction_date'],
+                    'current' => $current,
+                    'value'   => $cumulative
+                ];
+            }
+        }
+        // TC
+        $tc_list    = $model->select('transaction_code')->distinct()->findAll();
+        $tc_list    = array_column($tc_list, 'transaction_code');
+        $data       = [
+            'page_title'     => 'CPF Current Balance',
+            'slug_group'     => 'employment',
+            'slug'           => '/office/employment/cpf/growth',
+            'user_session'   => $session->user,
+            'roles'          => $session->roles,
+            'current_role'   => $session->current_role,
+            'current_filter' => $filter_type . '/' . $filter_value,
+            'chart_data'     => $chart_data,
+            'tc_list'        => array_values($tc_list)
+        ];
+        return view('employment_cpf_growth', $data);
+    }
+
+    /**
      * @param string $year (optional)
      * @return string
      */
