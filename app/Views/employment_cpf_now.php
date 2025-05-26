@@ -5,6 +5,11 @@ $this->extend($layout);
 ?>
 <?= $this->section('content') ?>
 <?php $session = session(); ?>
+    <style>
+        .row-ordinary-account td{background-color:#437271!important;color:#222!important;}
+        .row-special-account td{background-color:#DFB670!important;color:#222!important;}
+        .row-medisave-account td{background-color:#7D9ADE!important;color:#222!important;}
+    </style>
     <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
     <script src="https://cdn.amcharts.com/lib/5/percent.js"></script>
     <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
@@ -29,12 +34,18 @@ $this->extend($layout);
                         </script>
                         <div id="chart_1" style="width:100%;height:500px"></div>
                         <table class="table table-striped table-hover table-borderless table-sm mt-3">
+                            <?php $total = 0; ?>
                             <?php foreach ($chart_1 as $row) : ?>
-                            <tr>
+                            <tr class="row-<?= str_replace(' ', '-', strtolower($row['account'])) ?>">
                                 <td><?= $row['account'] ?></td>
-                                <td><?= currency_format('SGD', $row['value']) ?></td>
+                                <td class="text-end"><?= currency_format('SGD', $row['value']) ?></td>
+                                <?php $total += $row['value']; ?>
                             </tr>
                             <?php endforeach; ?>
+                            <tr>
+                                <td><b>TOTAL</b></td>
+                                <td class="text-end"><?= currency_format('SGD', $total) ?></td>
+                            </tr>
                         </table>
                     </div>
                 </div>
@@ -48,12 +59,18 @@ $this->extend($layout);
                         </script>
                         <div id="chart_2" style="width:100%;height:500px"></div>
                         <table class="table table-striped table-hover table-borderless table-sm mt-3">
+                            <?php $total = 0; ?>
                             <?php foreach ($chart_2 as $row) : ?>
                                 <tr>
                                     <td><?= $row['contributor'] ?></td>
-                                    <td><?= currency_format('SGD', $row['value']) ?></td>
+                                    <td class="text-end"><?= currency_format('SGD', $row['value']) ?></td>
+                                    <?php $total += $row['value']; ?>
                                 </tr>
                             <?php endforeach; ?>
+                            <tr>
+                                <td><b>TOTAL</b></td>
+                                <td class="text-end"><?= currency_format('SGD', $total) ?></td>
+                            </tr>
                         </table>
                     </div>
                 </div>

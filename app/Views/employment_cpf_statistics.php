@@ -10,12 +10,9 @@ $this->extend($layout);
     <script src="https://cdn.amcharts.com/lib/5/percent.js"></script>
     <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
     <style>
-        .text-oa{color:#437271!important;}
-        .bg-oa{background-color:#437271!important;color:#222!important;}
-        .text-sa{color:#DFB670!important;}
-        .bg-sa{background-color:#DFB670!important;color:#222!important;}
-        .text-ma{color:#7D9ADE!important;}
-        .bg-ma{background-color:#7D9ADE!important;color:#222!important;}
+        .row-ordinary-account td{background-color:#437271!important;color:#222!important;}
+        .row-special-account td{background-color:#DFB670!important;color:#222!important;}
+        .row-medisave-account td{background-color:#7D9ADE!important;color:#222!important;}
     </style>
     <div class="pagetitle">
         <h1><?= $page_title ?></h1>
@@ -63,7 +60,7 @@ $this->extend($layout);
                         <div class="table-responsive">
                             <table class="table table-sm table-striped table-hover table-borderless">
                                 <?php foreach ($by_ac as $row) : ?>
-                                    <tr>
+                                    <tr class="row-<?= str_replace(' ', '-', strtolower($row['account'])) ?>">
                                         <td><?= $row['account'] ?></td>
                                         <td class="text-end text-success"><?= currency_format('SGD', @$row['pos']) ?></td>
                                         <td class="text-end text-danger"><?= currency_format('SGD', @$row['neg']) ?></td>

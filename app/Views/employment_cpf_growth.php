@@ -62,8 +62,8 @@ $this->extend($layout);
                                 <?php foreach ($chart_data as $row) : ?>
                                     <tr>
                                         <td class="text-start" data-sort="<?= $row['dt_str'] ?>"><?= date(DATE_FORMAT_UI, strtotime($row['dt_str'])) ?></td>
-                                        <td class="text-end"><?= currency_format('SGD', $row['current']) ?></td>
-                                        <td class="text-end"><?= currency_format('SGD', $row['value']) ?></td>
+                                        <td class="text-end" data-sort="<?= $row['current'] ?>"><?= currency_format('SGD', $row['current']) ?></td>
+                                        <td class="text-end" data-sort="<?= $row['value'] ?>"><?= currency_format('SGD', $row['value']) ?></td>
                                     </tr>
                                 <?php endforeach; ?>
                                 </tbody>
