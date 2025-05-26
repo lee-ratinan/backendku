@@ -88,6 +88,8 @@
                                     '/office/employment/freelance-income' => 'Freelance Income',
                                     '/office/employment/freelance-income/stats' => '<i class="fa-solid fa-chart-line"></i> Statistics',
                                     '/office/employment/cpf'              => 'CPF',
+                                    '/office/employment/cpf/now'          => '<i class="fa-solid fa-chart-pie"></i> CPF Now',
+                                    '/office/employment/cpf/stats'        => '<i class="fa-solid fa-chart-bar"></i> CPF Statistics',
                                 ]
                             ],
                             [

@@ -444,7 +444,8 @@ function generate_bar_chart_script(array $chart_data, string $div_id, string $ca
     if (empty($height)) {
         $height = '500px';
     }
-    return 'am5.ready(function() {
+    return 'document.addEventListener("DOMContentLoaded", function () {
+    am5.ready(function() {
     let root = am5.Root.new("' . $div_id . '");
     root.dom.style.width = "100%";
     root.dom.style.height = "'.$height.'";
@@ -470,5 +471,29 @@ function generate_bar_chart_script(array $chart_data, string $div_id, string $ca
     cursor.lineY.set("forceHidden", true);
     cursor.lineX.set("forceHidden", true);
     chart.appear(1000, 100);
+    });
+    });';
+}
+
+/**
+ * Generate pie chart script - AmCharts5
+ * @param array $chart_data
+ * @param string $div_id
+ * @param string $category_field
+ * @param string $value_field
+ * @return void
+ */
+function generate_pie_chart_script(array $chart_data, string $div_id, string $category_field, string $value_field): void
+{
+    echo 'document.addEventListener("DOMContentLoaded", function () {
+    am5.ready(function () {
+    let root = am5.Root.new("'.$div_id.'");
+    root.setThemes([am5themes_Animated.new(root)]);
+    let chart = root.container.children.push(am5percent.PieChart.new(root, {endAngle: 270}));
+    let series = chart.series.push(am5percent.PieSeries.new(root, {valueField: "'.$value_field.'",categoryField: "'.$category_field.'",endAngle: 270}));
+    series.states.create("hidden", {endAngle: -90});
+    series.data.setAll(' . json_encode($chart_data) . ');
+    series.appear(1000, 100);
+    });
     });';
 }

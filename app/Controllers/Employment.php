@@ -812,6 +812,78 @@ class Employment extends BaseController
         return view('employment_cpf_statement_edit', $data);
     }
 
+    /**
+     * @return string
+     */
+    public function cpfNow(): string
+    {
+        $session   = session();
+        $cpf_model = new CompanyCPFModel();
+        $latest    = $cpf_model->orderBy('id', 'desc')->first();
+        $fields    = ['ordinary_balance', 'special_balance', 'medisave_balance'];
+        $chart_1   = [];
+        foreach ($fields as $field) {
+            $chart_1[] = ['account' => ucwords(str_replace('_balance', '', $field) . ' account'), 'value' => $latest[$field] ?? 0];
+        }
+        $fields    = ['staff_ytd', 'company_ytd'];
+        $chart_2   = [];
+        foreach ($fields as $field) {
+            $chart_2[] = ['contributor' => ucfirst(str_replace('_ytd', '', $field)) . ' YTD', 'value' => $latest[$field] ?? 0];
+        }
+        $data      = [
+            'page_title'   => 'CPF Current Balance',
+            'slug_group'   => 'employment',
+            'slug'         => '/office/employment/cpf/now',
+            'user_session' => $session->user,
+            'roles'        => $session->roles,
+            'current_role' => $session->current_role,
+            'chart_1'      => $chart_1,
+            'chart_2'      => $chart_2,
+        ];
+        return view('employment_cpf_now', $data);
+    }
+
+    /**
+     * @param string $year (optional)
+     * @return string
+     */
+    public function cpfStatistics(string $year = ''): string
+    {
+        $session         = session();
+        $cpf_model       = new CompanyCPFModel();
+        $statement_model = new CompanyCPFStatementModel();
+        $records         = $cpf_model
+            ->where('transaction_date >=', $year . '-01-01')
+            ->where('transaction_date <=', $year . '-12-31')
+            ->findAll();
+        $chart_data      = [];
+        $by_tc           = [];
+        $contribution    = [
+            'employee'   => 0,
+            'employer'   => 0
+        ];
+        foreach ($records as $record) {
+            // by transaction code
+            $tc = $record['transaction_code'];
+
+            // contribution
+            $contribution['employee']             += $record['staff_contribution'];
+            $contribution['employer']             += $record['company_match'];
+        }
+
+        $data            = [
+            'page_title'   => 'CPF Status',
+            'slug_group'   => 'employment',
+            'slug'         => '/office/employment/cpf/now',
+            'user_session' => $session->user,
+            'roles'        => $session->roles,
+            'current_role' => $session->current_role,
+            'year'         => $year,
+            'contribution' => $contribution,
+            'statement'    => $statement_model->where('statement_year', $year)->first()
+        ];
+        return view('employment_cpf_statistics', $data);
+    }
     /************************************************************************
      * Freelance
      ************************************************************************/

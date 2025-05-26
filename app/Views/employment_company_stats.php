@@ -105,7 +105,7 @@ $this->extend($layout);
                         <h3>By Country</h3>
                         <h4>Companies by country</h4>
                         <script>
-                            document.addEventListener('DOMContentLoaded', function () {
+                            document.addEventListener("DOMContentLoaded", function () {
                                 am5.ready(function () {
                                     let root = am5.Root.new("country-company");
                                     root.setThemes([am5themes_Animated.new(root)]);
