@@ -35,11 +35,15 @@ $this->extend($layout);
                         <?php endfor; ?>
                         <h4>Contribution</h4>
                         <div class="table-responsive">
+                            <?php
+                            $contribution_sum = array_sum(array_column($contribution, 'amount'));
+                            ?>
                             <table class="table table-sm table-striped table-hover table-borderless">
-                                <?php foreach ($contribution as $row) : ?>
+                                <?php foreach ($contribution as $i => $row) : ?>
                                 <tr>
-                                    <td><?= $row['contributor'] ?></td>
-                                    <td class="text-end text-success"><?= currency_format('SGD', $row['amount']) ?></td>
+                                    <td style="width:40%"><?= $row['contributor'] ?></td>
+                                    <td style="width:30%" class="text-end text-success"><?= currency_format('SGD', $row['amount']) ?></td>
+                                    <?php if (0 == $i) : ?><td rowspan="2" class="text-end text-success"><?= currency_format('SGD', $contribution_sum) ?></td><?php endif; ?>
                                 </tr>
                                 <?php endforeach; ?>
                             </table>
@@ -47,25 +51,77 @@ $this->extend($layout);
                         <h4>Transactions</h4>
                         <div class="table-responsive">
                             <table class="table table-sm table-striped table-hover table-borderless">
+                                <thead>
+                                <tr>
+                                    <th>TC</th>
+                                    <th class="text-end text-success" style="width:30%">+</th>
+                                    <th class="text-end text-danger" style="width:30%">-</th>
+                                </tr>
+                                </thead>
+                                <?php $total = ['pos' => 0, 'neg' => 0]; ?>
+                                <tbody>
                                 <?php foreach ($by_tc as $row) : ?>
                                     <tr>
                                         <td><?= $row['transaction_code'] ?></td>
                                         <td class="text-end text-success"><?= currency_format('SGD', @$row['pos']) ?></td>
                                         <td class="text-end text-danger"><?= currency_format('SGD', @$row['neg']) ?></td>
                                     </tr>
+                                    <?php
+                                    $total['pos'] += @$row['pos'];
+                                    $total['neg'] += @$row['neg'];
+                                    ?>
                                 <?php endforeach; ?>
+                                </tbody>
+                                <tfoot>
+                                <tr>
+                                    <td><b>TOTAL</b></td>
+                                    <td class="text-end text-success"><?= currency_format('SGD', $total['pos']) ?></td>
+                                    <td class="text-end text-danger"><?= currency_format('SGD', $total['neg']) ?></td>
+                                </tr>
+                                <?php $grand_total = $total['pos'] - $total['neg']; ?>
+                                <tr>
+                                    <td></td>
+                                    <td colspan="2" class="text-end <?= ($grand_total > 0 ? 'text-success' : 'text-danger') ?>"><?= currency_format('SGD', $grand_total) ?></td>
+                                </tr>
+                                </tfoot>
                             </table>
                         </div>
                         <h4>Account Movements</h4>
                         <div class="table-responsive">
                             <table class="table table-sm table-striped table-hover table-borderless">
+                                <thead>
+                                <tr>
+                                    <th class="text-start" style="width:40%">Account</th>
+                                    <th class="text-end text-success" style="width:30%">+</th>
+                                    <th class="text-end text-danger" style="width:30%">-</th>
+                                </tr>
+                                </thead>
+                                <?php $total = ['pos' => 0, 'neg' => 0]; ?>
+                                <tbody>
                                 <?php foreach ($by_ac as $row) : ?>
                                     <tr class="row-<?= str_replace(' ', '-', strtolower($row['account'])) ?>">
                                         <td><?= $row['account'] ?></td>
                                         <td class="text-end text-success"><?= currency_format('SGD', @$row['pos']) ?></td>
                                         <td class="text-end text-danger"><?= currency_format('SGD', @$row['neg']) ?></td>
                                     </tr>
+                                    <?php
+                                    $total['pos'] += @$row['pos'];
+                                    $total['neg'] += @$row['neg'];
+                                    ?>
                                 <?php endforeach; ?>
+                                </tbody>
+                                <tfoot>
+                                <tr>
+                                    <td><b>TOTAL</b></td>
+                                    <td class="text-end text-success"><?= currency_format('SGD', $total['pos']) ?></td>
+                                    <td class="text-end text-danger"><?= currency_format('SGD', $total['neg']) ?></td>
+                                </tr>
+                                <?php $grand_total = $total['pos'] - $total['neg']; ?>
+                                <tr>
+                                    <td></td>
+                                    <td colspan="2" class="text-end <?= ($grand_total > 0 ? 'text-success' : 'text-danger') ?>"><?= currency_format('SGD', $grand_total) ?></td>
+                                </tr>
+                                </tfoot>
                             </table>
                         </div>
                         <h4>Statement</h4>
