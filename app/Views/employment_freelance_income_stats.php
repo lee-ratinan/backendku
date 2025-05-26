@@ -26,16 +26,14 @@ $this->extend($layout);
                         <div class="row">
                             <div class="col-md-6">
                                 <script>
-                                    document.addEventListener('DOMContentLoaded', function () {
-                                        <?php
-                                        $currencies = [];
-                                        foreach ($chart_data as $currency => $chart_for_currency) {
-                                            $currencies[] = $currency;
-                                            $height       = (count($chart_for_currency) * 30) + 100;
-                                            echo generate_bar_chart_script($chart_for_currency, 'main-chart-' . $currency, 'year', ['total' => 'Total', 'taxes' => 'Taxes'], $height . 'px', '{year}: {total}');
-                                        }
-                                        ?>
-                                    });
+                                    <?php
+                                    $currencies = [];
+                                    foreach ($chart_data as $currency => $chart_for_currency) {
+                                        $currencies[] = $currency;
+                                        $height       = (count($chart_for_currency) * 30) + 100;
+                                        echo generate_bar_chart_script($chart_for_currency, 'main-chart-' . $currency, 'year', ['total' => 'Total', 'taxes' => 'Taxes'], $height . 'px', '{year}: {total}');
+                                    }
+                                    ?>
                                 </script>
                                 <?php foreach ($currencies as $currency) : ?>
                                     <div id="main-chart-<?= $currency ?>"></div>

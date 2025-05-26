@@ -63,9 +63,7 @@ $this->extend($layout);
                         <h3>Days</h3>
                         <script>
                             <?php $height = (count($duration) * 30) + 100; ?>
-                            document.addEventListener('DOMContentLoaded', function () {
-                                <?php echo generate_bar_chart_script($main_chart, 'main-chart', 'company', ['days' => 'Days'], $height . 'px', '{company}: {label}', '', ''); ?>
-                            });
+                            <?php echo generate_bar_chart_script($main_chart, 'main-chart', 'company', ['days' => 'Days'], $height . 'px', '{company}: {label}', '', ''); ?>
                         </script>
                         <div id="main-chart"></div>
                     </div>
@@ -108,19 +106,19 @@ $this->extend($layout);
                         <h4>Companies by country</h4>
                         <script>
                             document.addEventListener('DOMContentLoaded', function () {
-                            am5.ready(function () {
-                                let root = am5.Root.new("country-company");
-                                root.setThemes([am5themes_Animated.new(root)]);
-                                let chart = root.container.children.push(am5percent.PieChart.new(root, {endAngle: 270}));
-                                let series = chart.series.push(am5percent.PieSeries.new(root, {
-                                    valueField: "companies",
-                                    categoryField: "country",
-                                    endAngle: 270
-                                }));
-                                series.states.create("hidden", {endAngle: -90});
-                                series.data.setAll(<?= json_encode($charts) ?>);
-                                series.appear(1000, 100);
-                            });
+                                am5.ready(function () {
+                                    let root = am5.Root.new("country-company");
+                                    root.setThemes([am5themes_Animated.new(root)]);
+                                    let chart = root.container.children.push(am5percent.PieChart.new(root, {endAngle: 270}));
+                                    let series = chart.series.push(am5percent.PieSeries.new(root, {
+                                        valueField: "companies",
+                                        categoryField: "country",
+                                        endAngle: 270
+                                    }));
+                                    series.states.create("hidden", {endAngle: -90});
+                                    series.data.setAll(<?= json_encode($charts) ?>);
+                                    series.appear(1000, 100);
+                                });
                             });
                         </script>
                         <div id="country-company"></div>

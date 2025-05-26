@@ -39,10 +39,8 @@ $this->extend($layout);
                                     <p>-</p>
                                 <?php else: ?>
                                 <script>
-                                    document.addEventListener('DOMContentLoaded', function () {
-                                        <?php $height = (count($chart_data) * 30) + 100; ?>
-                                        <?php echo generate_bar_chart_script($chart_data, 'chart_1', 'year', ['total' => 'Total', 'subtotal' => 'Subtotal'], $height . 'px'); ?>
-                                    });
+                                    <?php $height = (count($chart_data) * 30) + 100; ?>
+                                    <?php echo generate_bar_chart_script($chart_data, 'chart_1', 'year', ['total' => 'Total', 'subtotal' => 'Subtotal'], $height . 'px'); ?>
                                 </script>
                                 <div id="chart_1"></div>
                                 <?php endif; ?>
@@ -53,10 +51,8 @@ $this->extend($layout);
                                 <p>-</p>
                                 <?php else: ?>
                                 <script>
-                                    document.addEventListener('DOMContentLoaded', function () {
-                                        <?php $height = (count($chart_data_2) * 30) + 100; ?>
-                                        <?php echo generate_bar_chart_script($chart_data_2, 'chart_2', 'month', ['base' => 'Base Salary'], $height . 'px'); ?>
-                                    });
+                                    <?php $height = (count($chart_data_2) * 30) + 100; ?>
+                                    <?php echo generate_bar_chart_script($chart_data_2, 'chart_2', 'month', ['base' => 'Base Salary'], $height . 'px'); ?>
                                 </script>
                                 <div id="chart_2"></div>
                                 <?php endif; ?>
