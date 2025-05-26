@@ -105,41 +105,17 @@ $this->extend($layout);
                         <h3>By Country</h3>
                         <h4>Companies by country</h4>
                         <script>
-                            document.addEventListener("DOMContentLoaded", function () {
-                                am5.ready(function () {
-                                    let root = am5.Root.new("country-company");
-                                    root.setThemes([am5themes_Animated.new(root)]);
-                                    let chart = root.container.children.push(am5percent.PieChart.new(root, {endAngle: 270}));
-                                    let series = chart.series.push(am5percent.PieSeries.new(root, {
-                                        valueField: "companies",
-                                        categoryField: "country",
-                                        endAngle: 270
-                                    }));
-                                    series.states.create("hidden", {endAngle: -90});
-                                    series.data.setAll(<?= json_encode($charts) ?>);
-                                    series.appear(1000, 100);
-                                });
-                            });
+                            <?php
+                            echo generate_pie_chart_script($charts, 'country-company', 'country', 'companies');
+                            ?>
                         </script>
                         <div id="country-company"></div>
                         <hr />
                         <h4>Days by country</h4>
                         <script>
-                            document.addEventListener('DOMContentLoaded', function () {
-                            am5.ready(function () {
-                                let root = am5.Root.new("country-day");
-                                root.setThemes([am5themes_Animated.new(root)]);
-                                let chart = root.container.children.push(am5percent.PieChart.new(root, {endAngle: 270}));
-                                let series = chart.series.push(am5percent.PieSeries.new(root, {
-                                    valueField: "days",
-                                    categoryField: "country",
-                                    endAngle: 270
-                                }));
-                                series.states.create("hidden", {endAngle: -90});
-                                series.data.setAll(<?= json_encode($charts) ?>);
-                                series.appear(1000, 100);
-                            });
-                            });
+                            <?php
+                            echo generate_pie_chart_script($charts, 'country-day', 'country', 'days');
+                            ?>
                         </script>
                         <div id="country-day"></div>
                     </div>
