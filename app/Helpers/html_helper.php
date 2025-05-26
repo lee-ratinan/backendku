@@ -481,11 +481,11 @@ function generate_bar_chart_script(array $chart_data, string $div_id, string $ca
  * @param string $div_id
  * @param string $category_field
  * @param string $value_field
- * @return void
+ * @return string
  */
-function generate_pie_chart_script(array $chart_data, string $div_id, string $category_field, string $value_field): void
+function generate_pie_chart_script(array $chart_data, string $div_id, string $category_field, string $value_field): string
 {
-    echo 'document.addEventListener("DOMContentLoaded", function () {
+    return 'document.addEventListener("DOMContentLoaded", function () {
     am5.ready(function () {
     let root = am5.Root.new("'.$div_id.'");
     root.setThemes([am5themes_Animated.new(root)]);

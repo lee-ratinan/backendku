@@ -25,7 +25,7 @@ $this->extend($layout);
                     <div class="card-body pt-3">
                         <h2>Current Account Balance</h2>
                         <script>
-                            <?php generate_pie_chart_script($chart_1, 'chart_1', 'account', 'value');?>
+                            <?php echo generate_pie_chart_script($chart_1, 'chart_1', 'account', 'value');?>
                         </script>
                         <div id="chart_1" style="width:100%;height:500px"></div>
                         <table class="table table-striped table-hover table-borderless table-sm mt-3">
@@ -44,7 +44,7 @@ $this->extend($layout);
                     <div class="card-body pt-3">
                         <h2>YTD Contributions</h2>
                         <script>
-                            <?php generate_pie_chart_script($chart_2, 'chart_2', 'contributor', 'value');?>
+                            <?php echo generate_pie_chart_script($chart_2, 'chart_2', 'contributor', 'value');?>
                         </script>
                         <div id="chart_2" style="width:100%;height:500px"></div>
                         <table class="table table-striped table-hover table-borderless table-sm mt-3">

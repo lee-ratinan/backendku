@@ -852,35 +852,74 @@ class Employment extends BaseController
         $session         = session();
         $cpf_model       = new CompanyCPFModel();
         $statement_model = new CompanyCPFStatementModel();
+        if (empty($year)) {
+            $year = date('Y');
+        }
         $records         = $cpf_model
             ->where('transaction_date >=', $year . '-01-01')
             ->where('transaction_date <=', $year . '-12-31')
             ->findAll();
-        $chart_data      = [];
+        $summary         = [];
         $by_tc           = [];
+        $by_ac           = [];
         $contribution    = [
             'employee'   => 0,
             'employer'   => 0
         ];
+        $con_chart       = [];
         foreach ($records as $record) {
-            // by transaction code
-            $tc = $record['transaction_code'];
-
+            // by TC and ACC
+            $tc  = $record['transaction_code'];
+            $acc = ['ordinary', 'special', 'medisave'];
+            foreach ($acc as $account) {
+                if (0 > $record[$account . '_amount']) {
+                    $summary['tc'][$tc]['neg'][]      = abs($record[$account . '_amount']);
+                    $summary['ac'][$account]['neg'][] = abs($record[$account . '_amount']);
+                } else if (0 < $record[$account . '_amount']) {
+                    $summary['tc'][$tc]['pos'][]      = $record[$account . '_amount'];
+                    $summary['ac'][$account]['pos'][] = $record[$account . '_amount'];
+                }
+            }
             // contribution
             $contribution['employee']             += $record['staff_contribution'];
             $contribution['employer']             += $record['company_match'];
         }
-
+        foreach ($summary as $type => $categories) {
+            ksort($categories);
+            foreach ($categories as $category => $data) {
+                if ('tc' == $type) {
+                    $by_tc[] = [
+                        'transaction_code' => $category,
+                        'neg'              => (isset($data['neg']) ? array_sum($data['neg']) : 0),
+                        'pos'              => (isset($data['pos']) ? array_sum($data['pos']) : 0)
+                    ];
+                } else if ('ac' == $type) {
+                    $by_ac[] = [
+                        'account'          => ucfirst($category) . ' Account',
+                        'neg'              => (isset($data['neg']) ? array_sum($data['neg']) : 0),
+                        'pos'              => (isset($data['pos']) ? array_sum($data['pos']) : 0)
+                    ];
+                }
+            }
+        }
+        foreach ($contribution as $type => $amount) {
+            $con_chart[] = [
+                'contributor' => ucfirst($type),
+                'amount'      => $amount
+            ];
+        }
         $data            = [
-            'page_title'   => 'CPF Status',
+            'page_title'   => 'CPF Statistics of ' . $year,
             'slug_group'   => 'employment',
-            'slug'         => '/office/employment/cpf/now',
+            'slug'         => '/office/employment/cpf/stats',
             'user_session' => $session->user,
             'roles'        => $session->roles,
             'current_role' => $session->current_role,
             'year'         => $year,
-            'contribution' => $contribution,
-            'statement'    => $statement_model->where('statement_year', $year)->first()
+            'contribution' => $con_chart,
+            'statement'    => $statement_model->where('statement_year', $year)->first(),
+            'by_tc'        => $by_tc,
+            'by_ac'        => $by_ac,
         ];
         return view('employment_cpf_statistics', $data);
     }
