@@ -421,13 +421,18 @@ function get_role_icons(string $role = '', bool $show_role_name = FALSE): string
  * @param string $new_tooltip
  * @param string $new_bar_text
  * @param string $new_above_bar_text
+ * @param array $fill
  * @return string
  */
-function generate_bar_chart_script(array $chart_data, string $div_id, string $category_field, array $series_array, string $height = '', string $new_tooltip = '', string $new_bar_text = '', string $new_above_bar_text = ''): string
+function generate_bar_chart_script(array $chart_data, string $div_id, string $category_field, array $series_array, string $height = '', string $new_tooltip = '', string $new_bar_text = '', string $new_above_bar_text = '', array $fill = []): string
 {
     $series = '';
     foreach ($series_array as $key => $value) {
-        $series .= 'createSeries("' . $key . '", "' . $value . '");';
+        if (isset($fill[$key])) {
+            $series .= 'createSeries("' . $key . '", "' . $value . '", ' . $fill[$key] . ');';
+        } else {
+            $series .= 'createSeries("' . $key . '", "' . $value . '");';
+        }
     }
     $tooltip = '[bold]{categoryY}[/]\n{valueX}';
     if (!empty($new_tooltip)) {
@@ -456,12 +461,13 @@ function generate_bar_chart_script(array $chart_data, string $div_id, string $ca
     let yAxis = chart.yAxes.push(am5xy.CategoryAxis.new(root, {categoryField: "'.$category_field.'",renderer: am5xy.AxisRendererY.new(root, {inversed: true,cellStartLocation: 0.1,cellEndLocation: 0.9,minorGridEnabled: true})}));
     yAxis.data.setAll(data);
     let xAxis = chart.xAxes.push(am5xy.ValueAxis.new(root, {renderer: am5xy.AxisRendererX.new(root, {strokeOpacity: 0.1, minGridDistance: 50}), min: 0}));
-    function createSeries(field, name) {
+    function createSeries(field, name, fill = "") {
         let series = chart.series.push(am5xy.ColumnSeries.new(root, {name: name,xAxis: xAxis,yAxis: yAxis,valueXField: field,categoryYField: "'.$category_field.'",sequencedInterpolation: true,tooltip: am5.Tooltip.new(root, {pointerOrientation: "horizontal",labelText: "'.$tooltip.'"})}));
         series.columns.template.setAll({height: am5.p100, strokeOpacity: 0, cornerRadiusTR: 5, cornerRadiusBR: 5});
         series.bullets.push(function () {return am5.Bullet.new(root, {locationX: 1,locationY: 0.5,sprite: am5.Label.new(root, {centerY: am5.p50,text: "'.$above_bar_text.'",populateText: true})});});
         series.bullets.push(function () {return am5.Bullet.new(root, {locationX: 1,locationY: 0.5,sprite: am5.Label.new(root, {centerX: am5.p100,centerY: am5.p50,text: "'.$bar_text.'",fill: am5.color(0xffffff),populateText: true})});});
         series.data.setAll(data);
+        if (""!=fill) {series.set("fill", am5.color(fill));}
         series.appear();
         return series;
     }

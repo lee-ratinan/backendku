@@ -151,7 +151,7 @@ $this->extend($layout);
                         <script>
                             <?php
                             $height = ((count($by_tc) * 60) + 100) . 'px';
-                            echo generate_bar_chart_script($by_tc, 'summary-by-tc', 'transaction_code', ['neg' => 'Withdrawal', 'pos' => 'Deposit'], $height);
+                            echo generate_bar_chart_script($by_tc, 'summary-by-tc', 'transaction_code', ['neg' => 'Withdrawal', 'pos' => 'Deposit'], $height, '', '', '', ['neg' => '0xdc3444', 'pos' => '0x188753']);
                             ?>
                         </script>
                         <div id="summary-by-tc"></div>
@@ -165,7 +165,7 @@ $this->extend($layout);
                         <script>
                             <?php
                             $height = ((count($by_ac) * 60) + 100). 'px';
-                            echo generate_bar_chart_script($by_ac, 'summary-by-account', 'account', ['neg' => 'Withdrawal', 'pos' => 'Deposit'], $height); ?>
+                            echo generate_bar_chart_script($by_ac, 'summary-by-account', 'account', ['neg' => 'Withdrawal', 'pos' => 'Deposit'], $height, '', '', '', ['neg' => '0xdc3444', 'pos' => '0x188753']); ?>
                         </script>
                         <div id="summary-by-account"></div>
                     </div>
