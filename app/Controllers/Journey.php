@@ -11,6 +11,7 @@ use App\Models\JourneyMasterModel;
 use App\Models\JourneyOperatorModel;
 use App\Models\JourneyPortModel;
 use App\Models\JourneyTransportModel;
+use App\Models\LogActivityModel;
 use CodeIgniter\Database\Exceptions\DatabaseException;
 use CodeIgniter\Exceptions\PageNotFoundException;
 use CodeIgniter\HTTP\ResponseInterface;
@@ -1864,6 +1865,10 @@ class Journey extends BaseController
         ]);
     }
 
+    /**
+     * @param string $bucket_list_id
+     * @return string
+     */
     public function bucketListEdit(string $bucket_list_id = 'new'): string
     {
         $session       = session();
@@ -1893,6 +1898,65 @@ class Journey extends BaseController
         ];
         return view('journey_bucket_list_edit', $data);
     }
+
+    /**
+     * @return ResponseInterface
+     * @throws ReflectionException
+     */
+    public function bucketListSave(): ResponseInterface
+    {
+        $mode          = $this->request->getPost('mode');
+        $bucket_model  = new JourneyBucketListModel();
+        $log_model     = new LogActivityModel();
+        $session       = session();
+        $id            = $this->request->getPost('id');
+        $data          = [];
+        $fields        = [
+            'activity_name',
+            'activity_name_local',
+            'activity_slug',
+            'activity_location',
+            'country_code',
+            'category_code',
+            'completed_dates',
+            'description',
+            'trip_codes',
+            'building_height',
+            'building_built_year',
+        ];
+        foreach ($fields as $field) {
+            $value        = $this->request->getPost($field);
+            $data[$field] = (!empty($value)) ? $value : null;
+        }
+        if ('edit' == $mode) {
+            if ($bucket_model->update($id, $data)) {
+                $log_model->insertTableUpdate('journey_bucket_list', $id, $data, $session->user_id);
+                $new_id = $id * $bucket_model::ID_NONCE;
+                return $this->response->setJSON([
+                    'status'  => 'success',
+                    'toast'   => 'Successfully updated the bucket list item.',
+                    'redirect' => base_url($session->locale . '/office/employment/bucket-list/edit/' . $new_id)
+                ]);
+            }
+        } else {
+            $data['created_by'] = $session->user_id;
+            // INSERT
+            if ($id = $bucket_model->insert($data)) {
+                $log_model->insertTableUpdate('journey_bucket_list', $id, $data, $session->user_id);
+                $new_id = $id * $bucket_model::ID_NONCE;
+                return $this->response->setJSON([
+                    'status'   => 'success',
+                    'toast'    => 'Successfully created new bucket list item.',
+                    'redirect' => base_url($session->locale . '/office/employment/bucket-list/edit/' . $new_id)
+                ]);
+            }
+        }
+        return $this->response->setJSON([
+            'status'  => 'error',
+            'toast'   => lang('System.status_message.generic_error')
+        ])->setStatusCode(HTTP_STATUS_SOMETHING_WRONG);
+    }
+
     /************************************************************************
      * EXPORT
      ************************************************************************/

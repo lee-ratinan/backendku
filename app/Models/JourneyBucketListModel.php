@@ -205,7 +205,7 @@ class JourneyBucketListModel extends Model
             $result[]     = [
                 '<a class="btn btn-outline-primary btn-sm" href="' . base_url($locale . '/office/journey/bucket-list/edit/' . $new_id) . '"><i class="fa-solid fa-edit"></i></a>',
                 $row['activity_name'] . $local_name,
-                $this->getCategoryCode($row['category_code']),
+                $this->getCategoryCode($row['category_code'] ?? ''),
                 $row['activity_location'] . $country,
                 $this->fixDates($row['completed_dates'] ?? ''),
                 $row['trip_codes'],

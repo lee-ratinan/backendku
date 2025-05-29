@@ -82,7 +82,7 @@ $this->extend($layout);
                         d.bucket_status = $('#bucket_status').val();
                     },
                 },
-                order: [[1, 'desc']],
+                order: [[1, 'asc']],
                 columnDefs: [{orderable: false, targets: [0,5]}],
                 fixedColumns: {start:2},
                 scrollX: true,
