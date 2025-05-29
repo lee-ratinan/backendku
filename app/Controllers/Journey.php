@@ -1957,6 +1957,26 @@ class Journey extends BaseController
         ])->setStatusCode(HTTP_STATUS_SOMETHING_WRONG);
     }
 
+    /**
+     * @return string
+     */
+    public function bucketListStatistics(): string
+    {
+        $session       = session();
+        $data    = [
+            'page_title'   => 'Bucket List Statistics',
+            'slug_group'   => 'trip',
+            'slug'         => '/office/journey/bucket-list',
+            'user_session' => $session->user,
+            'roles'        => $session->roles,
+            'current_role' => $session->current_role,
+//            'mode'         => $mode,
+//            'bucket_item'  => $bucket_item,
+//            'config'       => $bucket_model->getConfigurations()
+        ];
+        return view('journey_bucket_list_statistics', $data);
+    }
+
     /************************************************************************
      * EXPORT
      ************************************************************************/
