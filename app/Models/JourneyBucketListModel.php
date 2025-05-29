@@ -16,7 +16,7 @@ class JourneyBucketListModel extends Model
         'activity_location',
         'country_code',
         'category_code',
-        'completed_date',
+        'completed_dates',
         'description',
         'trip_codes',
         'building_height',
@@ -70,7 +70,7 @@ class JourneyBucketListModel extends Model
             'label'    => 'Category',
             'required' => true,
         ],
-        'completed_date'      => [
+        'completed_dates'     => [
             'type'     => 'text',
             'label'    => 'Completed Date(s)', // optional, just YYYY, or YYYY-MM or YYYY-MM-DD, comma separated
             'required' => false,
@@ -136,6 +136,7 @@ class JourneyBucketListModel extends Model
         }, $countries);
         $configurations['country_code']['options'] = $final_countries;
         // Category Code
+        $configurations['category_code']['options'] = $this->getCategoryCode();
         return $columns ? array_intersect_key($configurations, array_flip($columns)) : $configurations;
     }
 

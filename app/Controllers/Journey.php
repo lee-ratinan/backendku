@@ -1863,6 +1863,36 @@ class Journey extends BaseController
             'data'            => $result['data']
         ]);
     }
+
+    public function bucketListEdit(string $bucket_list_id = 'new'): string
+    {
+        $session       = session();
+        $bucket_model  = new JourneyBucketListModel();
+        $bucket_item   = [];
+        $page_title    = 'New Bucket List Item';
+        $mode          = 'new';
+        if (is_numeric($bucket_list_id)) {
+            $bucket_list_id = $bucket_list_id/$bucket_model::ID_NONCE;
+            $bucket_item    = $bucket_model->find($bucket_list_id);
+            if (empty($bucket_item)) {
+                throw PageNotFoundException::forPageNotFound();
+            }
+            $page_title = 'Edit Bucket List [' . $bucket_item['activity_name'] . ']';
+            $mode       = 'edit';
+        }
+        $data    = [
+            'page_title'   => $page_title,
+            'slug_group'   => 'trip',
+            'slug'         => '/office/journey/bucket-list',
+            'user_session' => $session->user,
+            'roles'        => $session->roles,
+            'current_role' => $session->current_role,
+            'mode'         => $mode,
+            'bucket_item'  => $bucket_item,
+            'config'       => $bucket_model->getConfigurations()
+        ];
+        return view('journey_bucket_list_edit', $data);
+    }
     /************************************************************************
      * EXPORT
      ************************************************************************/

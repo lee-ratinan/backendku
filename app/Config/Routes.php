@@ -170,14 +170,14 @@ $routes->group('{locale}/office', ['filter' => 'auth'], static function ($routes
     // journey_attraction table
     $routes->get('journey/attraction', 'Journey::attraction');
     $routes->post('journey/attraction', 'Journey::attractionList');
-    $routes->get('journey/attraction/create/(:num)', 'Journey::attractionEdit/new/$1');
+    $routes->get('journey/attraction/create', 'Journey::attractionEdit/new/$1');
     $routes->get('journey/attraction/edit/(:num)', 'Journey::attractionEdit/$1');
     $routes->post('journey/attraction/edit', 'Journey::attractionSave');
     $routes->get('journey/attraction/statistics', 'Journey::attractionStatistics');
     // journey_bucket_list table
     $routes->get('journey/bucket-list', 'Journey::bucketList');
     $routes->post('journey/bucket-list', 'Journey::bucketListRetrieve');
-    $routes->get('journey/bucket-list/create/(:num)', 'Journey::bucketListEdit/new/$1');
+    $routes->get('journey/bucket-list/create', 'Journey::bucketListEdit/new/$1');
     $routes->get('journey/bucket-list/edit/(:num)', 'Journey::bucketListEdit/$1');
     $routes->post('journey/bucket-list/edit', 'Journey::bucketListSave');
     $routes->get('journey/bucket-list/statistics', 'Journey::bucketListStatistics');
