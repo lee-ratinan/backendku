@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Models\HealthActivityModel;
 use App\Models\JourneyAccommodationModel;
 use App\Models\JourneyAttractionModel;
+use App\Models\JourneyBucketListModel;
 use App\Models\JourneyHolidayModel;
 use App\Models\JourneyMasterModel;
 use App\Models\JourneyOperatorModel;
@@ -1811,6 +1812,61 @@ class Journey extends BaseController
      * EXPORT
      ************************************************************************/
 
+    /**
+     * @return string
+     */
+    public function bucketList(): string
+    {
+        $session = session();
+        $model   = new JourneyBucketListModel();
+        $data    = [
+            'page_title'   => 'Bucket List',
+            'slug_group'   => 'trip',
+            'slug'         => '/office/journey/bucket-list',
+            'user_session' => $session->user,
+            'roles'        => $session->roles,
+            'current_role' => $session->current_role,
+            'categories'   => $model->getCategoryCode()
+        ];
+        return view('journey_bucket_list', $data);
+    }
+
+    /**
+     * @return ResponseInterface
+     */
+    public function bucketListRetrieve(): ResponseInterface
+    {
+        $model              = new JourneyBucketListModel();
+        $columns            = [
+            '',
+            'activity_name',
+            'category_code',
+            'activity_location',
+            'completed_dates',
+            ''
+        ];
+        $order              = $this->request->getPost('order');
+        $search             = $this->request->getPost('search');
+        $start              = $this->request->getPost('start');
+        $length             = $this->request->getPost('length');
+        $category_code      = $this->request->getPost('category_code');
+        $bucket_status      = $this->request->getPost('bucket_status');
+        $order_column_index = $order[0]['column'] ?? 0;
+        $order_column       = $columns[$order_column_index];
+        $order_direction    = $order[0]['dir'] ?? 'desc';
+        $search_value       = $search['value'];
+        $result             = $model->getDataTables($start, $length, $order_column, $order_direction, $search_value, $category_code ?? '', $bucket_status ?? '');
+        return $this->response->setJSON([
+            'draw'            => $this->request->getPost('draw'),
+            'recordsTotal'    => $result['recordsTotal'],
+            'recordsFiltered' => $result['recordsFiltered'],
+            'data'            => $result['data']
+        ]);
+    }
+    /************************************************************************
+     * EXPORT
+     ************************************************************************/
+
     public function export(): string
     {
         $journey_master    = new JourneyMasterModel();
@@ -1845,7 +1901,7 @@ class Journey extends BaseController
         return view('journey_export', $data);
     }
 
-    public function fix(): void
+    private function fix(): void
     {
         helper('math');
         $journey_transport = new JourneyTransportModel();
@@ -1895,7 +1951,7 @@ class Journey extends BaseController
         echo '</pre>';
     }
 
-    public function fix2(): void
+    private function fix2(): void
     {
         $journey_transport = new JourneyTransportModel();
         $transport_raw     = $journey_transport->select('journey_transport.id, 
