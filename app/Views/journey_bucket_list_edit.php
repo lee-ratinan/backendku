@@ -79,7 +79,7 @@ $this->extend($layout);
                         if ('success' === response.status) {
                             toastr.success(response.toast);
                             setTimeout(function () {
-                                window.location.href = response.url;
+                                window.location.href = response.redirect;
                             }, 1000);
                         } else {
                             toastr.error(response.toast ?? 'Failed to save bucket list.');

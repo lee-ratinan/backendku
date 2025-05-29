@@ -1935,7 +1935,7 @@ class Journey extends BaseController
                 return $this->response->setJSON([
                     'status'  => 'success',
                     'toast'   => 'Successfully updated the bucket list item.',
-                    'redirect' => base_url($session->locale . '/office/employment/bucket-list/edit/' . $new_id)
+                    'redirect' => base_url($session->locale . '/office/journey/bucket-list/edit/' . $new_id)
                 ]);
             }
         } else {
@@ -1947,7 +1947,7 @@ class Journey extends BaseController
                 return $this->response->setJSON([
                     'status'   => 'success',
                     'toast'    => 'Successfully created new bucket list item.',
-                    'redirect' => base_url($session->locale . '/office/employment/bucket-list/edit/' . $new_id)
+                    'redirect' => base_url($session->locale . '/office/journey/bucket-list/edit/' . $new_id)
                 ]);
             }
         }

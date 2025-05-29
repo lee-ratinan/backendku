@@ -194,9 +194,12 @@ class JourneyBucketListModel extends Model
         $locale     = $session->locale;
         foreach ($raw_result as $row) {
             $new_id       = $row['id'] * self::ID_NONCE;
-            $country      = '';
+            $location     = [];
+            if (!empty($row['activity_location'])) {
+                $location[] = $row['activity_location'];
+            }
             if (!empty($row['country_code'])) {
-                $country  = '<br>' . $countries[$row['country_code']]['common_name'];
+                $location[] = $countries[$row['country_code']]['common_name'];
             }
             $local_name   = '';
             if (!empty($row['activity_name_local'])) {
@@ -206,7 +209,7 @@ class JourneyBucketListModel extends Model
                 '<a class="btn btn-outline-primary btn-sm" href="' . base_url($locale . '/office/journey/bucket-list/edit/' . $new_id) . '"><i class="fa-solid fa-edit"></i></a>',
                 $row['activity_name'] . $local_name,
                 $this->getCategoryCode($row['category_code'] ?? ''),
-                $row['activity_location'] . $country,
+                implode('<br>', $location),
                 $this->fixDates($row['completed_dates'] ?? ''),
                 $row['trip_codes'],
             ];
