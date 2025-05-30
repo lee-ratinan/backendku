@@ -37,10 +37,10 @@ $this->extend($layout);
             <div class="col-12 col-md-6">
                 <div class="card">
                     <div class="card-body">
-                        <h2>By Completed</h2>
+                        <h2>By Completion</h2>
                         <script>
                             <?php
-                            echo generate_pie_chart_script($completed_count, 'by-completion', 'status', 'count');
+                            echo generate_nested_pie_chart_script($completed_count, 'by-completion', 'category', 'count', 'status');
                             ?>
                         </script>
                         <div id="by-completion" style="height:500px"></div>

@@ -1962,20 +1962,20 @@ class Journey extends BaseController
      */
     public function bucketListStatistics(): string
     {
-        $session                   = session();
-        $bucket_model              = new JourneyBucketListModel();
-        $category_count            = [];
-        $completed_count           = ['Y' => 0, 'N' => 0];
+        $session         = session();
+        $bucket_model    = new JourneyBucketListModel();
+        $category_count  = [];
+        $completed_count = [];
         $year_accomplishment_count = [];
-        $all_items                 = $bucket_model->findAll();
+        $all_items = $bucket_model->findAll();
         foreach ($all_items as $item) {
-            $category                  = $item['category_code'];
+            $category = $item['category_code'];
             $category_count[$category] = (isset($category_count[$category]) ? $category_count[$category] + 1 : 1);
-            $completed                 = 'N';
+            $completed = 'N';
             if (!empty($item['completed_dates'])) {
                 $completed = 'Y';
             }
-            $completed_count[$completed]++;
+            $completed_count[$category][$completed] = (isset($completed_count[$category][$completed]) ? $completed_count[$category][$completed] + 1 : 1);
             if (!empty($item['completed_dates'])) {
                 $completed_dates = explode(',', $item['completed_dates']);
                 foreach ($completed_dates as $completed_date) {
@@ -1986,7 +1986,7 @@ class Journey extends BaseController
         }
         ksort($year_accomplishment_count);
         $category_chart = [];
-        $categories     = $bucket_model->getCategoryCode();
+        $categories = $bucket_model->getCategoryCode();
         foreach ($category_count as $category => $count) {
             $category_chart[] = [
                 'category' => $categories[$category],
@@ -1995,11 +1995,19 @@ class Journey extends BaseController
         }
         $completed_chart = [];
         $completes       = ['Y' => 'Completed', 'N' => 'Wishlisted'];
-        foreach ($completed_count as $status => $count) {
-            $completed_chart[] = [
-                'status' => $completes[$status],
-                'count'  => $count
-            ];
+        $settings        = ['Y' => '0xa6e22e', 'N' => '0xf92672'];
+        ksort($completed_count);
+        foreach ($completed_count as $category => $counts) {
+            ksort($counts);
+            foreach ($counts as $status => $count) {
+                $completed_chart[$categories[$category]][] = [
+                    'status'   => $completes[$status],
+                    'count'    => $count,
+                    'settings' => [
+                        'fill' => 'am5.color('.$settings[$status].')'
+                    ]
+                ];
+            }
         }
         $year_chart = [];
         $first_year = array_keys($year_accomplishment_count)[0];
@@ -2012,7 +2020,7 @@ class Journey extends BaseController
         $data = [
             'page_title'                => 'Bucket List Statistics',
             'slug_group'                => 'trip',
-            'slug'                      => '/office/journey/bucket-list',
+            'slug'                      => '/office/journey/bucket-list/statistics',
             'user_session'              => $session->user,
             'roles'                     => $session->roles,
             'current_role'              => $session->current_role,

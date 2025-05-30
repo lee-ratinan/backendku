@@ -450,6 +450,7 @@ function generate_bar_chart_script(array $chart_data, string $div_id, string $ca
         $height = '500px';
     }
     return 'document.addEventListener("DOMContentLoaded", function () {
+    am5.forceUseCanvas = true;
     am5.ready(function() {
     let root = am5.Root.new("' . $div_id . '");
     root.dom.style.width = "100%";
@@ -492,7 +493,8 @@ function generate_bar_chart_script(array $chart_data, string $div_id, string $ca
 function generate_pie_chart_script(array $chart_data, string $div_id, string $category_field, string $value_field): string
 {
     return 'document.addEventListener("DOMContentLoaded", function () {
-    am5.ready(function () {
+    am5.forceUseCanvas = true;
+    am5.ready(function() {
     let root = am5.Root.new("'.$div_id.'");
     root.setThemes([am5themes_Animated.new(root)]);
     let chart = root.container.children.push(am5percent.PieChart.new(root, {endAngle: 270}));
@@ -502,6 +504,50 @@ function generate_pie_chart_script(array $chart_data, string $div_id, string $ca
     series.appear(1000, 100);
     });
     });';
+}
+
+/**
+ * @param array $chart_data
+ * @param string $div_id
+ * @param string $series_0_category_field
+ * @param string $series_0_value_field
+ * @param string $series_1_category_field
+ * @return string
+ */
+function generate_nested_pie_chart_script(array $chart_data, string $div_id, string $series_0_category_field, string $series_0_value_field, string $series_1_category_field): string
+{
+    return 'document.addEventListener("DOMContentLoaded", function () {
+    function convertAm5Colors(r){if(Array.isArray(r))return r.map(convertAm5Colors);if("object"==typeof r&&null!==r){let o={};for(let t in r)o[t]=convertAm5Colors(r[t]);return o}if("string"!=typeof r)return r;{let e=r.match(/^am5\.color\((0x[0-9a-fA-F]+)\)$/);return e?am5.color(Number(e[1])):r}}
+    const parsedData = convertAm5Colors('.json_encode($chart_data).');
+    am5.forceUseCanvas = true;
+    am5.ready(function() {
+    let root = am5.Root.new("' . $div_id . '");
+    root.setThemes([am5themes_Animated.new(root)]);
+    let chart = root.container.children.push(am5percent.PieChart.new(root, {layout: root.verticalLayout,radius: am5.percent(100)}));
+    let series0 = chart.series.push(am5percent.PieSeries.new(root, {
+      valueField: "' . $series_0_value_field . '",categoryField: "' . $series_0_category_field . '",
+      alignLabels: false,radius: am5.percent(70),innerRadius: am5.percent(50)}));
+    let bgColor = root.interfaceColors.get("background");
+    series0.ticks.template.setAll({ forceHidden: true });
+    series0.labels.template.setAll({radius: -15,text: "{category}",textType: "radial",centerX: am5.percent(100)});
+    series0.slices.template.setAll({stroke: bgColor,strokeWidth: 1,tooltipText: "{category}: {valuePercentTotal.formatNumber(\'0.00\')}% ({value})"});
+    series0.slices.template.states.create("hover", { scale: 0.8 });
+    let series1 = chart.series.push(am5percent.PieSeries.new(root, {
+      valueField: "'.$series_0_value_field.'",categoryField: "'.$series_1_category_field.'",
+      alignLabels: true,innerRadius: am5.percent(70),radius: am5.percent(90)}));
+    series1.slices.template.setAll({stroke: bgColor,strokeWidth: 1,templateField: "settings"});
+    series1.labels.template.setAll({text: "{category}"});
+    let innerData = [];
+    let outerData = [];
+    am5.object.each(parsedData, function(category_value, rows) {
+      let the_value = 0;
+      am5.array.each(rows, function(row) {the_value += row.'.$series_0_value_field.';outerData.push(row);});
+      innerData.push({'.$series_0_category_field.': category_value,'.$series_0_value_field.': the_value});});
+    series0.data.setAll(innerData);
+    series1.data.setAll(outerData);
+    series0.appear(1000, 100);
+    series1.appear(1000, 100);
+    });});';
 }
 
 /**
@@ -515,6 +561,7 @@ function generate_pie_chart_script(array $chart_data, string $div_id, string $ca
 function generate_line_chart_script(array $chart_data, string $div_id, string $category_field, string $value_field): string
 {
     return 'document.addEventListener("DOMContentLoaded", function () {
+    am5.forceUseCanvas = true;
     am5.ready(function() {
     let root = am5.Root.new("' . $div_id . '");
     root.setThemes([am5themes_Animated.new(root)]);
