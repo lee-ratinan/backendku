@@ -323,6 +323,7 @@
                     <div class="col-md-6 text-md-end">
                         <p class="mb-0">
                             &copy; <?= date('Y') . ' ' . $session->organization['organization_name'] ?>
+                            <span id="webgl-support"></span>
                         </p>
                     </div>
                 </div>
@@ -335,6 +336,10 @@
 <script src="<?= base_url('assets/vendor/toastrjs/toastr.min.js') ?>"></script>
 <script src="<?= base_url('assets/vendor/Luxon/luxon.min.js') ?>"></script>
 <script src="<?= base_url('assets/vendor/DataTables/datatables.min.js') ?>"></script>
-<script> $(function () { setTimeout(() => { window.location.href = '<?= base_url('logout') ?>'; }, 1800000); }); </script>
+<script>
+    $(function () { setTimeout(() => { window.location.href = '<?= base_url('logout') ?>'; }, 1800000); });
+    let gl_support = !!window.WebGLRenderingContext && !!document.createElement('canvas').getContext('webgl');
+    if (!gl_support) { $('#webgl-support').html('WebGL is not supported!'); } else { $('#webgl-support').html('WebGL is supported!'); }
+</script>
 </body>
 </html>
