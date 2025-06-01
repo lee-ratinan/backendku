@@ -73,7 +73,7 @@ $this->extend($layout);
             tinymce.init({
                 selector: 'textarea.tinymce',
                 skin: 'oxide-dark',
-                height: 500,
+                height: 800,
                 plugins: [
                     'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
                     'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
