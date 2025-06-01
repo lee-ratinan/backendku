@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\DocumentMasterModel;
+use App\Models\DocumentVersionModel;
 use CodeIgniter\Exceptions\PageNotFoundException;
 use CodeIgniter\HTTP\ResponseInterface;
 
@@ -54,9 +55,41 @@ class Document extends BaseController
         ]);
     }
 
+    /**
+     * @param int|string $id
+     * @return string
+     */
     public function edit(int|string $id = 0): string
     {
-        return '';
+        $session       = session();
+        $doc_model     = new DocumentMasterModel();
+        $page_title    = 'New Document';
+        $mode          = 'new';
+        $published     = [];
+        if ('new' != $id && is_numeric($id)) {
+            $id         = $id/$doc_model::ID_NONCE;
+            $document   = $doc_model->find($id);
+            $page_title = 'Edit [' . $document['doc_title'] . ']';
+            $mode       = 'edit';
+            // retrieve published versions
+            $version_model = new DocumentVersionModel();
+            $published     = $version_model->getVersions($id);
+        } else {
+            $document   = [];
+        }
+        $data    = [
+            'page_title'   => $page_title,
+            'slug_group'   => 'document',
+            'slug'         => '/office/document',
+            'user_session' => $session->user,
+            'roles'        => $session->roles,
+            'current_role' => $session->current_role,
+            'mode'         => $mode,
+            'document'     => $document,
+            'published'    => $published,
+            'config'       => $doc_model->getConfigurations()
+        ];
+        return view('document_edit', $data);
     }
 
     public function save(): ResponseInterface

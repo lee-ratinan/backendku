@@ -51,11 +51,13 @@ class DocumentMasterModel extends Model
             'label'       => 'Version Number',
             'required'    => false,
             'maxlength'   => 6,
+            'details'     => 'Leave this version number empty if you don\'t want to publish the new version.',
         ],
         'version_description' => [
             'type'        => 'text',
             'label'       => 'Version Description',
             'required'    => false,
+            'details'     => 'This version description will be used only if the version number is not empty.'
         ]
     ];
 

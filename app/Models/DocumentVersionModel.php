@@ -50,4 +50,17 @@ class DocumentVersionModel extends Model
             ->orderBy('id', 'ASC')
             ->findAll();
     }
+
+    /**
+     * @param int $doc_id
+     * @return array
+     */
+    public function getVersions(int $doc_id): array
+    {
+        return $this->select('document_master.doc_slug, document_version.*')
+            ->join('document_master', 'document_master.id = document_version.doc_id')
+            ->where('document_version.doc_id', $doc_id)
+            ->orderBy('document_version.version_number', 'ASC')
+            ->findAll();
+    }
 }
