@@ -205,18 +205,20 @@ class Document extends BaseController
      */
     public function view(string $mode, string $slug, string $version = ''): string
     {
-        $doc_model = new DocumentMasterModel();
-        $document  = $doc_model->getDocumentVersion('doc_slug', $slug, $version);
+        $doc_model     = new DocumentMasterModel();
+        $version_model = new DocumentVersionModel();
+        $document      = $doc_model->getDocumentVersion('doc_slug', $slug, $version);
         if (!$document) {
             throw PageNotFoundException::forPageNotFound();
         }
-        echo '<pre>';
-        print_r($document);
-        echo '</pre>';
+        $history       = $version_model->getDocumentVersionHistory($document['doc_id']);
+        $data          = [
+            'history' => $history,
+            'document' => $document,
+        ];
         if ('public' === $mode) {
-            return '1';
+            return view('document_viewer_public', $data);
         }
-        // internal mode
-        return '0';
+        return view('document_viewer_internal', $data);
     }
 }

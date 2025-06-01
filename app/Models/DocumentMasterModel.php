@@ -132,14 +132,16 @@ class DocumentMasterModel extends Model
     {
         if ('doc_slug' == $field) {
             if (empty($version_number)) {
-                return $this->select('document_version.*')
+                return $this->select('document_version.*, user_name_first, user_name_family')
                     ->join('document_version', 'document_version.doc_id = document_master.id')
+                    ->join('user_master', 'document_version.created_by = user_master.id')
                     ->where('doc_slug', $identifier)
                     ->orderBy('document_version.version_number', 'DESC')
                     ->first();
             }
-            return $this->select('document_version.*')
+            return $this->select('document_version.*, user_name_first, user_name_family')
                 ->join('document_version', 'document_version.doc_id = document_master.id')
+                ->join('user_master', 'document_version.created_by = user_master.id')
                 ->where('doc_slug', $identifier)
                 ->where('version_number', $version_number)
                 ->first();
