@@ -15,6 +15,7 @@ class DocumentVersionModel extends Model
         'version_description',
         'doc_title',
         'doc_content',
+        'published_date',
         'created_by',
         'created_at',
         'updated_at'

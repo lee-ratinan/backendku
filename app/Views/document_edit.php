@@ -15,6 +15,7 @@ $this->extend($layout);
             </ol>
         </nav>
     </div>
+    <?php $published_version_numbers = []; ?>
     <section class="section">
         <div class="row">
             <div class="col">
@@ -41,6 +42,7 @@ $this->extend($layout);
                                     <td><?= $publish['version_description'] ?></td>
                                     <td><a class="btn btn-outline-primary btn-sm" href="<?= base_url($session->locale . '/office/document/internal-document/' . $publish['doc_slug'] . '/' . $publish['version_number']) ?>"><i class="fa-solid fa-eye"></i></a></td>
                                 </tr>
+                                <?php $published_version_numbers[] = $publish['version_number']; ?>
                                 <?php endforeach; ?>
                                 </tbody>
                             </table>
@@ -82,10 +84,19 @@ $this->extend($layout);
                     'alignright alignjustify | bullist numlist outdent indent | ' +
                     'removeformat | help'
             });
-            $('#document_title').change(function () {
+            $('#doc_title').change(function () {
                 let document_title = (($(this).val()).trim()).replace(/\s{2,}/g, ' '); // TRIM and REPLACE SPACES
                 $(this).val(document_title);
-                $('#document_slug').val(document_title.toLowerCase().replace(/\s/g, '-').replace(/[^a-zA-Z0-9\-]/g, ''));
+                $('#doc_slug').val(document_title.toLowerCase().replace(/\s/g, '-').replace(/[^a-zA-Z0-9\-]/g, ''));
+            });
+            $('#version_number').change(function (e) {
+                e.preventDefault();
+                let used_numbers = <?= json_encode($published_version_numbers) ?>,
+                    this_number  = $(this).val();
+                if (used_numbers.indexOf(this_number) > -1) {
+                    toastr.warning('The version number is not unique.');
+                    $(this).val('').focus();
+                }
             });
             $('#btn-save-document').click(function (e) {
                 e.preventDefault();
@@ -112,7 +123,7 @@ $this->extend($layout);
                         mode: '<?= $mode ?>',
                         id: <?= $document['id'] ?? '0' ?>,
                         doc_title: $('#doc_title').val(),
-                        doc_slug: $('#doc_title').val(),
+                        doc_slug: $('#doc_slug').val(),
                         doc_content: tinymce.get('doc_content').getContent(),
                         version_number: $('#version_number').val(),
                         version_description: $('#version_description').val(),
