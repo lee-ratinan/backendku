@@ -11,8 +11,8 @@ use App\Models\CompanySalaryModel;
 use App\Models\LogActivityModel;
 use CodeIgniter\Exceptions\PageNotFoundException;
 use CodeIgniter\HTTP\ResponseInterface;
-use DateMalformedStringException;
 use DateTime;
+use Exception;
 use ReflectionException;
 
 class Employment extends BaseController
@@ -189,7 +189,7 @@ class Employment extends BaseController
 
     /**
      * @return string
-     * @throws DateMalformedStringException
+     * @throws Exception
      */
     public function companyStats(): string
     {

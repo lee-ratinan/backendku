@@ -120,8 +120,9 @@ $routes->group('{locale}/office', ['filter' => 'auth'], static function ($routes
     $routes->post('document', 'Document::list');
     $routes->get('document/create', 'Document::edit/new');
     $routes->get('document/edit/(:num)', 'Document::edit/$1');
-    $routes->get('document/public-document/(:any)', 'Document::view/public/$1');
-    $routes->get('document/internal-document/(:any)', 'Document::edit/internal/$1');
+    $routes->post('document/edit', 'Document::save');
+    $routes->get('document/public-document/(:any)/(:any)', 'Document::view/public/$1/$2');
+    $routes->get('document/internal-document/(:any)/(:any)', 'Document::edit/internal/$1/$2');
     // FINANCE - TAX
     // tax_master and tax_breakdown tables
     $routes->get('tax', 'Tax::index');

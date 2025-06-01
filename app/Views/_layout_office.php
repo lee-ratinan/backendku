@@ -104,6 +104,13 @@
                                 ]
                             ],
                             [
+                                'id'    =>'document',
+                                'group' => '<i class="fa-solid fa-folder-open fa-fw"></i> Document',
+                                'items' => [
+                                    '/office/document' => 'Document',
+                                ]
+                            ],
+                            [
                                 'id'    =>'investment',
                                 'group' => '<i class="fa-solid fa-chart-line fa-fw"></i> Investment',
                                 'items' => [
