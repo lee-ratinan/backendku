@@ -2,6 +2,7 @@
 <head>
     <title>Ooca Visit Log Export</title>
     <link href="<?= base_url('appstack/css/app.css') ?>" rel="stylesheet"/>
+    <link href="<?= base_url('file/favicon.jpg') ?>" rel="icon">
     <style>
         .container { max-width: 750px; }
         div, p { color: #222!important; }
