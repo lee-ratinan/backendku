@@ -115,6 +115,13 @@ $routes->group('{locale}/office', ['filter' => 'auth'], static function ($routes
     $routes->get('employment/freelance-income/stats', 'Employment::freelanceIncomeStats');
     $routes->get('employment/company/total-income', 'Employment::totalIncome');
     $routes->get('employment/company/total-income/(:num)', 'Employment::totalIncome/$1');
+    // DOCUMENT
+    $routes->get('document', 'Document::index');
+    $routes->post('document', 'Document::list');
+    $routes->get('document/create', 'Document::edit/new');
+    $routes->get('document/edit/(:num)', 'Document::edit/$1');
+    $routes->get('document/public-document/(:any)', 'Document::view/public/$1');
+    $routes->get('document/internal-document/(:any)', 'Document::edit/internal/$1');
     // FINANCE - TAX
     // tax_master and tax_breakdown tables
     $routes->get('tax', 'Tax::index');
