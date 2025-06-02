@@ -121,6 +121,7 @@ $routes->group('{locale}/office', ['filter' => 'auth'], static function ($routes
     $routes->get('document/create', 'Document::edit/new');
     $routes->get('document/edit/(:num)', 'Document::edit/$1');
     $routes->post('document/edit', 'Document::save');
+    $routes->post('document/delete', 'Document::deleteVersion');
     $routes->get('document/public-document/(:any)', 'Document::view/public/$1');
     $routes->get('document/public-document/(:any)/(:any)', 'Document::view/public/$1/$2');
     $routes->get('document/internal-document/(:any)', 'Document::view/internal/$1');

@@ -68,6 +68,7 @@ class Document extends BaseController
     {
         $session       = session();
         $doc_model     = new DocumentMasterModel();
+        $version_model = new DocumentVersionModel();
         $page_title    = 'New Document';
         $mode          = 'new';
         $published     = [];
@@ -77,7 +78,6 @@ class Document extends BaseController
             $page_title = 'Edit [' . $document['doc_title'] . ']';
             $mode       = 'edit';
             // retrieve published versions
-            $version_model = new DocumentVersionModel();
             $published     = $version_model->getVersions($id);
         } else {
             $document   = [];
@@ -92,6 +92,7 @@ class Document extends BaseController
             'mode'         => $mode,
             'document'     => $document,
             'published'    => $published,
+            'nonce'        => $version_model::ID_NONCE,
             'config'       => $doc_model->getConfigurations()
         ];
         return view('document_edit', $data);
@@ -218,5 +219,35 @@ class Document extends BaseController
             'mode'     => $mode
         ];
         return view('document_viewer', $data);
+    }
+
+    /**
+     * @return ResponseInterface
+     */
+    public function deleteVersion(): ResponseInterface
+    {
+        $version_model = new DocumentVersionModel();
+        $id            = $this->request->getPost('id');
+        $id            = $id/$version_model::ID_NONCE;
+        $version       = $version_model->find($id);
+        if (!$version) {
+            return $this->response
+                ->setStatusCode(HTTP_STATUS_PAGE_NOT_FOUND)
+                ->setJSON([
+                    'status'  => 'error',
+                    'message' => 'id-not-found',
+                ]);
+        }
+        if ($version_model->delete($id)) {
+            return $this->response->setJSON([
+                'status'  => 'success',
+            ]);
+        }
+        return $this->response
+            ->setStatusCode(HTTP_STATUS_SOMETHING_WRONG)
+            ->setJSON([
+                'status'  => 'error',
+                'message' => 'something-wrong',
+            ]);
     }
 }

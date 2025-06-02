@@ -32,6 +32,7 @@ $this->extend($layout);
                                     <th>Title</th>
                                     <th>Description</th>
                                     <th>View</th>
+                                    <th>Delete</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -41,6 +42,11 @@ $this->extend($layout);
                                     <td><?= $publish['doc_title'] ?></td>
                                     <td><?= $publish['version_description'] ?></td>
                                     <td><a class="btn btn-outline-primary btn-sm" target="_blank" href="<?= base_url($session->locale . '/office/document/internal-document/' . $publish['doc_slug'] . '/' . $publish['version_number']) ?>"><i class="fa-solid fa-eye"></i></a></td>
+                                    <td>
+                                        <button class="btn btn-outline-danger btn-sm btn-delete" id="btn-delete-<?= $publish['id']*$nonce ?>" data-id="<?= $publish['id']*$nonce ?>"><i class="fa-solid fa-trash-can"></i></button>
+                                        <button class="btn btn-danger btn-sm btn-confirm-delete d-none" id="btn-confirm-delete-<?= $publish['id']*$nonce ?>" data-id="<?= $publish['id']*$nonce ?>"><i class="fa-solid fa-check-circle"></i></button>
+                                        <button class="btn btn-danger btn-sm btn-cancel-delete d-none" id="btn-cancel-delete-<?= $publish['id']*$nonce ?>" data-id="<?= $publish['id']*$nonce ?>"><i class="fa-solid fa-cancel"></i></button>
+                                    </td>
                                 </tr>
                                 <?php $published_version_numbers[] = $publish['version_number']; ?>
                                 <?php endforeach; ?>
@@ -70,6 +76,44 @@ $this->extend($layout);
     </section>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
+            $('.btn-delete').click(function (e) {
+                e.preventDefault();
+                let id = $(this).data('id');
+                $(this).addClass('d-none');
+                $('#btn-confirm-delete-'+id).removeClass('d-none');
+                $('#btn-cancel-delete-'+id).removeClass('d-none');
+            });
+            $('.btn-confirm-delete').click(function (e) {
+                e.preventDefault();
+                let id = $(this).data('id');
+                $(this).prop('disabled', true);
+                $.ajax({
+                    url: '<?= base_url('en/office/document/delete') ?>',
+                    type: 'post',
+                    data: {
+                        id: id,
+                    },
+                    success: function (response) {
+                        if ('success' === response.status) {
+                            toastr.success('The version has been deleted successfully.');
+                        } else {
+                            toastr.error('Something went wrong. Please try again.');
+                        }
+                        setTimeout(function () {location.reload();}, 5000);
+                    },
+                    error: function (xhr, status, error) {
+                        toastr.error('Something went wrong. Please try again.');
+                        setTimeout(function () {location.reload();}, 5000);
+                    }
+                })
+            });
+            $('.btn-cancel-delete').click(function (e) {
+                e.preventDefault();
+                let id = $(this).data('id');
+                $(this).addClass('d-none');
+                $('#btn-delete-'+id).removeClass('d-none');
+                $('#btn-confirm-delete-'+id).addClass('d-none');
+            });
             tinymce.init({
                 selector: 'textarea.tinymce',
                 skin: 'oxide-dark',
@@ -80,9 +124,8 @@ $this->extend($layout);
                     'insertdatetime', 'media', 'table', 'help', 'wordcount'
                 ],
                 toolbar: 'undo redo | blocks | ' +
-                    'bold italic backcolor | alignleft aligncenter ' +
-                    'alignright alignjustify | bullist numlist outdent indent | ' +
-                    'removeformat | help'
+                    'bold italic strikethrough | alignleft aligncenter ' +
+                    'alignright alignjustify | bullist numlist outdent indent | removeformat'
             });
             $('#doc_title').change(function () {
                 let document_title = (($(this).val()).trim()).replace(/\s{2,}/g, ' '); // TRIM and REPLACE SPACES
