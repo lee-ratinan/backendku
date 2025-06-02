@@ -27,12 +27,15 @@ $this->extend($layout);
                             <table class="table table-sm table-striped table-hover">
                                 <thead>
                                 <tr>
-                                    <th style="min-width:180px">Document Title</th>
-                                    <th style="min-width:150px">Created At</th>
-                                    <th style="min-width:150px">Updated At</th>
-                                    <th style="max-width:120px">Edit</th>
-                                    <td style="max-width:120px">Public Document</td>
-                                    <th style="max-width:120px">Internal Document</th>
+                                    <th rowspan="2" style="min-width:180px">Document Title</th>
+                                    <th rowspan="2" style="min-width:150px">Created At</th>
+                                    <th rowspan="2" style="min-width:150px">Updated At</th>
+                                    <th rowspan="2" style="max-width:120px">Edit</th>
+                                    <th colspan="2" class="text-center">View</th>
+                                </tr>
+                                <tr>
+                                    <th style="max-width:120px">Public</th>
+                                    <th style="max-width:120px">Internal</th>
                                 </tr>
                                 </thead>
                                 <tbody></tbody>

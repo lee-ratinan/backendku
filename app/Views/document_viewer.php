@@ -1,6 +1,7 @@
 <html lang="en">
 <head>
     <title><?= strip_tags($document['doc_title']) ?> | Document</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="<?= base_url('file/favicon.jpg') ?>" rel="icon">
     <link href="<?= base_url('appstack/css/app.css') ?>" rel="stylesheet"/>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -18,6 +19,12 @@
         @media print {
             body, .container { background-color:#fff; color: #000; }
             .print-page-break { page-break-before: always; break-before: page; }
+            body::before {
+                content: "CONFIDENTIAL; <?= ('internal' == $mode ? 'INTERNAL USE ONLY' : 'DO NOT DISTRIBUTE') ?>";
+                position: fixed;top: 40%;left: 5%;transform: rotate(-45deg);
+                font-size: 3em;color: rgba(0, 0, 0, 0.1);z-index: 9999;
+                pointer-events: none;width: 100%;text-align: center;
+            }
         }
     </style>
 </head>
@@ -70,7 +77,13 @@
 <script>
     $(document).ready(function () {
         $('s').each(function () {
-            $(this).replaceWith($(this).text());
+            <?php if ('internal' == $mode) : ?>
+                $(this).replaceWith($(this).text());
+            <?php else: ?>
+                const originalText = $(this).text();
+                const redacted = 'x'.repeat(originalText.length);
+                $(this).text(redacted).css({backgroundColor: 'black', color: 'black'});
+            <?php endif; ?>
         });
         $('article table').each(function () {
             $(this).css({'font-family': 'inherit', color: 'inherit'}).addClass('table table-sm table-borderless');

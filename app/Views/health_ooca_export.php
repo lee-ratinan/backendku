@@ -1,11 +1,22 @@
-<html lang="en">
+<html lang="th">
 <head>
     <title>Ooca Visit Log Export</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="<?= base_url('appstack/css/app.css') ?>" rel="stylesheet"/>
     <link href="<?= base_url('file/favicon.jpg') ?>" rel="icon">
     <style>
         .container { max-width: 750px; }
         div, p { color: #222!important; }
+        @media print {
+            body, .container { background-color:#fff; color: #000; }
+            .print-page-break { page-break-before: always; break-before: page; }
+            body::before {
+                content: "CONFIDENTIAL";
+                position: fixed;top: 40%;left: 5%;transform: rotate(-45deg);
+                font-size: 3em;color: rgba(0, 0, 0, 0.1);z-index: 9999;
+                pointer-events: none;width: 100%;text-align: center;
+            }
+        }
     </style>
 </head>
 <body>

@@ -40,7 +40,7 @@ $this->extend($layout);
                                     <td><?= $publish['version_number'] ?></td>
                                     <td><?= $publish['doc_title'] ?></td>
                                     <td><?= $publish['version_description'] ?></td>
-                                    <td><a class="btn btn-outline-primary btn-sm" href="<?= base_url($session->locale . '/office/document/internal-document/' . $publish['doc_slug'] . '/' . $publish['version_number']) ?>"><i class="fa-solid fa-eye"></i></a></td>
+                                    <td><a class="btn btn-outline-primary btn-sm" target="_blank" href="<?= base_url($session->locale . '/office/document/internal-document/' . $publish['doc_slug'] . '/' . $publish['version_number']) ?>"><i class="fa-solid fa-eye"></i></a></td>
                                 </tr>
                                 <?php $published_version_numbers[] = $publish['version_number']; ?>
                                 <?php endforeach; ?>

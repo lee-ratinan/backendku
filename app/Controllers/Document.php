@@ -213,12 +213,10 @@ class Document extends BaseController
         }
         $history       = $version_model->getDocumentVersionHistory($document['doc_id']);
         $data          = [
-            'history' => $history,
+            'history'  => $history,
             'document' => $document,
+            'mode'     => $mode
         ];
-        if ('public' === $mode) {
-            return view('document_viewer_public', $data);
-        }
-        return view('document_viewer_internal', $data);
+        return view('document_viewer', $data);
     }
 }
