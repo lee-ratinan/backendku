@@ -31,11 +31,12 @@ $this->extend($layout);
                                     <th rowspan="2" style="min-width:150px">Created At</th>
                                     <th rowspan="2" style="min-width:150px">Updated At</th>
                                     <th rowspan="2" style="max-width:120px">Edit</th>
-                                    <th colspan="2" class="text-center">View</th>
+                                    <th colspan="3" class="text-center">View</th>
                                 </tr>
                                 <tr>
                                     <th style="max-width:120px">Public</th>
                                     <th style="max-width:120px">Internal</th>
+                                    <th style="max-width:120px">Draft</th>
                                 </tr>
                                 </thead>
                                 <tbody></tbody>

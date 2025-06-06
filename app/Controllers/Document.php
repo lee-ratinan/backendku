@@ -75,7 +75,7 @@ class Document extends BaseController
         if ('new' != $id && is_numeric($id)) {
             $id         = $id/$doc_model::ID_NONCE;
             $document   = $doc_model->find($id);
-            $page_title = 'Edit [' . $document['doc_title'] . ']';
+            $page_title = 'Edit [' . strip_tags($document['doc_title']) . ']';
             $mode       = 'edit';
             // retrieve published versions
             $published     = $version_model->getVersions($id);
@@ -209,8 +209,8 @@ class Document extends BaseController
         $doc_model     = new DocumentMasterModel();
         $version_model = new DocumentVersionModel();
         $document      = $doc_model->getDocumentVersion('doc_slug', $slug, $version);
-        if (!$document) {
-            throw PageNotFoundException::forPageNotFound();
+        if ( ! $document) {
+            return $this->viewDraft($slug);
         }
         $history       = $version_model->getDocumentVersionHistory($document['doc_id']);
         $data          = [
@@ -219,6 +219,19 @@ class Document extends BaseController
             'mode'     => $mode
         ];
         return view('document_viewer', $data);
+    }
+
+    public function viewDraft(string $slug): string
+    {
+        $doc_model = new DocumentMasterModel();
+        $document  = $doc_model->where('doc_slug', $slug)->first();
+        if ( ! $document) {
+            throw PageNotFoundException::forPageNotFound();
+        }
+        $data          = [
+            'document' => $document
+        ];
+        return view('document_draft_viewer', $data);
     }
 
     /**

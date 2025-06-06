@@ -27,7 +27,7 @@
                 justify-content: flex-end;
             }
             body::before {
-                content: "CONFIDENTIAL; <?= ('internal' == $mode ? 'INTERNAL USE ONLY' : 'DO NOT DISTRIBUTE') ?>";
+                content: "CONFIDENTIAL";
                 position: fixed;top: 40%;left: 5%;transform: rotate(-45deg);
                 font-size: 3em;color: rgba(0, 0, 0, 0.1);z-index: 9999;
                 pointer-events: none;width: 100%;text-align: center;
@@ -42,36 +42,12 @@
             <div class="my-5 py-5 text-end">
                 <br><br><br><br><br>
                 <h1><?= $document['doc_title'] ?></h1>
-                <h2>by <?= $document['user_name_first'] . ' ' . $document['user_name_family'] ?></h2>
                 <br>
-                <p>V<?= $document['version_number'] ?> | <?= date(DATE_FORMAT_UI, strtotime($document['published_date'])) ?></p>
+                <p>DRAFT VERSION</p>
             </div>
             <div class="print-page-break"></div>
             <h1><?= $document['doc_title'] ?></h1>
-            <p>by <?= $document['user_name_first'] . ' ' . $document['user_name_family'] ?></p>
             <hr class="my-2" />
-            <br><br>
-            <table class="table history-table">
-                <thead>
-                <tr class="text-center">
-                    <th>Version</th>
-                    <th>Date</th>
-                    <th>By</th>
-                    <th>Detail</th>
-                </tr>
-                </thead>
-                <tbody>
-                <?php foreach ($history as $row) : ?>
-                    <tr>
-                        <td class="text-center"><?= $row['version_number'] ?></td>
-                        <td class="text-center"><?= date(DATE_FORMAT_UI, strtotime($row['published_date'])) ?></td>
-                        <td><?= ucwords($row['user_name_first'] . ' ' . $row['user_name_family']) ?></td>
-                        <td><?= $row['version_description'] ?></td>
-                    </tr>
-                <?php endforeach; ?>
-                </tbody>
-            </table>
-            <br>
             <nav id="toc"></nav>
             <br>
             <article>
@@ -82,14 +58,7 @@
             <div class="print-page-break"></div>
             <div class="print-page-wrapper">
                 <p class="mb-3 pe-5">
-                    <strong><?= $document['doc_title'] ?></strong> (version <?= $document['version_number'] ?>) is a document written by <?= $document['user_name_first'] . ' ' . $document['user_name_family'] ?> and published on <?= date(DATE_FORMAT_UI, strtotime($document['published_date'])) ?>.<br><br>
-                    <?php if ('internal' == $mode) : ?>
-                        This document contains sensitive, unfiltered, and highly confidential information intended solely for personal reference or authorized internal use. It includes real names, project specifics, proprietary knowledge, and uncensored personal commentary. Distribution, sharing, or publication of this document outside its intended audience is strictly prohibited.<br><br>
-                        By accessing this document, you acknowledge the confidentiality of its contents and agree not to reproduce, disclose, or discuss it in any public or unauthorized context. Breach of this confidentiality is a serious offense and may result in consequences, both legal and otherwise.
-                    <?php else: ?>
-                        This document has been prepared for public access and transparency. All content presented here is based on personal experiences and factual events to the best of my knowledge. Any sensitive, proprietary, or confidential information—including names, organizations, specific project data, and personal identifiers—has been redacted or anonymized for privacy and legal compliance.<br><br>
-                        This version is intended for educational, reflective, or general awareness purposes only. Unauthorized use, misrepresentation, or reproduction of this content is strictly prohibited.
-                    <?php endif; ?>
+                    <strong><?= $document['doc_title'] ?></strong>
                 </p>
             </div>
         </div>
@@ -98,15 +67,6 @@
 <script src="<?= base_url('appstack/js/app.js') ?>"></script>
 <script>
     $(document).ready(function () {
-        $('s').each(function () {
-            <?php if ('internal' == $mode) : ?>
-                $(this).replaceWith($(this).text());
-            <?php else: ?>
-                const originalText = $(this).text();
-                const redacted = 'x'.repeat(originalText.length);
-                $(this).text(redacted).css({backgroundColor: 'black', color: 'black'});
-            <?php endif; ?>
-        });
         $('article table').each(function () {
             $(this).css({'font-family': 'inherit', color: 'inherit'}).addClass('table table-sm table-borderless');
         });
