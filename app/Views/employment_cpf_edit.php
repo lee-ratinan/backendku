@@ -135,7 +135,7 @@ $this->extend($layout);
                         } else {
                             echo '<table class="table table-sm table-borderless">';
                             foreach ($fields as $field) {
-                                if (in_array($field, ['ordinary_previous', 'special_previous', 'medisave_previous', 'account_previous', 'staff_previous', 'company_previous'])) {
+                                if (in_array($field, ['ordinary_previous', 'special_previous', 'medisave_previous', 'account_previous', 'staff_previous', 'company_previous', 'previous_con', 'staff_previous', 'company_previous', '---', '+', '='])) {
                                     continue;
                                 }
                                 if ('CON' != $cpf['transaction_code'] && 'contribution_month' == $field) {
