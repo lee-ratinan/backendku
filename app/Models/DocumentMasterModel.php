@@ -108,8 +108,8 @@ class DocumentMasterModel extends Model
             $new_id       = $row['id'] * self::ID_NONCE;
             $result[]     = [
                 strip_tags($row['doc_title']),
-                date(DATETIME_FORMAT_UI, strtotime($row['created_at'])),
-                date(DATETIME_FORMAT_UI, strtotime($row['updated_at'])),
+                '<span class="utc-to-local-time">' . str_replace(' ', 'T', $row['created_at']) . '</span>',
+                '<span class="utc-to-local-time">' . str_replace(' ', 'T', $row['updated_at']) . '</span>',
                 '<a class="btn btn-outline-primary btn-sm" href="' . base_url($locale . '/office/document/edit/' . $new_id) . '"><i class="fa-solid fa-edit"></i></a>',
                 '<a class="btn btn-outline-primary btn-sm" target="_blank" href="' . base_url($locale . '/office/document/public-document/' . $row['doc_slug']) . '"><i class="fa-solid fa-globe"></i></a>',
                 '<a class="btn btn-outline-primary btn-sm" target="_blank" href="' . base_url($locale . '/office/document/internal-document/' . $row['doc_slug']) . '"><i class="fa-solid fa-eye"></i></a>',

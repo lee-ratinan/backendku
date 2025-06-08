@@ -27,7 +27,7 @@
                 justify-content: flex-end;
             }
             body::before {
-                content: "CONFIDENTIAL; <?= ('internal' == $mode ? 'INTERNAL USE ONLY' : 'DO NOT DISTRIBUTE') ?>";
+                content: "CONFIDENTIAL";
                 position: fixed;top: 40%;left: 5%;transform: rotate(-45deg);
                 font-size: 3em;color: rgba(0, 0, 0, 0.1);z-index: 9999;
                 pointer-events: none;width: 100%;text-align: center;
@@ -73,7 +73,7 @@
             </table>
             <br>
             <nav id="toc"></nav>
-            <br>
+            <div class="print-page-break"></div>
             <article>
                 <?= $document['doc_content'] ?>
             </article>
