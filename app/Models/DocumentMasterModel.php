@@ -10,9 +10,11 @@ class DocumentMasterModel extends Model
     protected $primaryKey = 'id';
     protected $allowedFields = [
         'id',
+        'company_id',
         'doc_title',
         'doc_slug',
         'doc_content',
+        'doc_status',
         'created_by',
         'created_at',
         'updated_at'
@@ -24,40 +26,55 @@ class DocumentMasterModel extends Model
     const ID_NONCE = 641;
 
     private array $configurations = [
-        'id'          => [
+        'id'                  => [
             'type'  => 'hidden',
             'label' => 'ID'
         ],
-        'doc_title'   => [
+        'company_id'          => [
+            'type'     => 'select',
+            'label'    => 'Company',
+            'required' => true,
+            'options'  => []
+        ],
+        'doc_title'           => [
             'type'        => 'text',
             'label'       => 'Document Title',
             'required'    => true,
             'placeholder' => 'Document Title'
         ],
-        'doc_slug'    => [
+        'doc_slug'            => [
             'type'        => 'text',
             'label'       => 'Document Slug',
             'required'    => true,
             'placeholder' => 'Document Slug'
         ],
-        'doc_content' => [
+        'doc_content'         => [
             'type'     => 'tinymce',
             'label'    => 'Document Content',
             'required' => true,
             'details'  => 'Use <s>strikethrough</s> for redacted content.<br>Use <code>[NEW_PAGE]</code> to split the page.',
         ],
-        'version_number' => [
-            'type'        => 'text',
-            'label'       => 'Version Number',
-            'required'    => false,
-            'maxlength'   => 6,
-            'details'     => 'Leave this version number empty if you don\'t want to publish the new version.',
+        'doc_status'          => [
+            'type'     => 'select',
+            'label'    => 'Status',
+            'required' => true,
+            'options'  => [
+                'draft'     => 'Draft',
+                'published' => 'Published',
+            ]
+        ],
+        'version_number'      => [
+            'type'      => 'text',
+            'label'     => 'Version Number',
+            'required'  => false,
+            'maxlength' => 6,
+            'details'   => 'Leave this version number empty if you don\'t want to publish the new version.',
         ],
         'version_description' => [
-            'type'        => 'text',
-            'label'       => 'Version Description',
-            'required'    => false,
-            'details'     => 'This version description will be used only if the version number is not empty.'
+            'type'     => 'text',
+            'label'    => 'Version Description',
+            'required' => false,
+            'details'  => 'This version description will be used only if the version number is not empty.'
         ]
     ];
 
@@ -69,6 +86,14 @@ class DocumentMasterModel extends Model
     public function getConfigurations(array $columns = []): array
     {
         $configurations  = $this->configurations;
+        // company
+        $company_model   = new CompanyMasterModel();
+        $companies       = $company_model->orderBy('company_legal_name')->findAll();
+        $company_options = [];
+        foreach ($companies as $company) {
+            $company_options[$company['id']] = $company['company_legal_name'];
+        }
+        $configurations['company_id']['options'] = $company_options;
         return $columns ? array_intersect_key($configurations, array_flip($columns)) : $configurations;
     }
 
