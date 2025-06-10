@@ -92,11 +92,19 @@ class CompanyFreelanceProjectModel extends Model
         // company
         $company_model   = new CompanyMasterModel();
         $companies       = $company_model->orderBy('company_legal_name')->findAll();
-        $company_options  = [];
+        $company_options = [];
         foreach ($companies as $company) {
             $company_options[$company['id']] = $company['company_legal_name'];
         }
         $configurations['company_id']['options'] = $company_options;
+        // Client
+        $client_model   = new CompanyFreelanceClientModel();
+        $clients        = $client_model->orderBy('client_company_name')->findAll();
+        $client_options = [];
+        foreach ($clients as $client) {
+            $client_options[$client['id']] = $client['client_company_name'];
+        }
+        $configurations['freelance_client_id']['options'] = $client_options;
         return $columns ? array_intersect_key($configurations, array_flip($columns)) : $configurations;
     }
 
