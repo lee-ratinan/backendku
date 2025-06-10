@@ -1072,7 +1072,7 @@ class Employment extends BaseController
             'company_legal_name',
             'project_title',
             'client_name',
-            'client_organization_name',
+            'freelance_client_id',
             'project_start_date',
             'project_end_date'
         ];
@@ -1145,7 +1145,7 @@ class Employment extends BaseController
             'project_start_date',
             'project_end_date',
             'client_name',
-            'client_organization_name',
+            'freelance_client_id',
         ];
         foreach ($fields as $field) {
             $value        = $this->request->getPost($field);
@@ -1188,8 +1188,9 @@ class Employment extends BaseController
         $lang    = $this->request->getLocale();
         $freelance_model = new CompanyFreelanceProjectModel();
         $freelance_projects = $freelance_model
-            ->select('company_freelance_project.*, company_master.company_trade_name')
+            ->select('company_freelance_project.*, company_master.company_trade_name, company_freelance_client.client_company_name')
             ->join('company_master', 'company_master.id = company_freelance_project.company_id')
+            ->join('company_freelance_client', 'company_freelance_project.freelance_client_id = company_freelance_client.id')
             ->findAll();
         $by_company = [];
         $by_year    = [];
@@ -1200,13 +1201,13 @@ class Employment extends BaseController
             $diff             = $start_date->diff($end_date);
             $by_year[$year][] = [
                 'company_name'  => $project['company_trade_name'],
-                'client_name'   => $project['client_organization_name'],
+                'client_name'   => $project['client_company_name'],
                 'project_title' => $project['project_title'],
                 'start_date'    => $project['project_start_date'],
                 'end_date'      => $project['project_end_date'],
                 'days'          => $diff->days,
             ];
-            $by_company[$project['company_trade_name']][$project['client_organization_name']][] = $project['project_title'];
+            $by_company[$project['company_trade_name']][$project['client_company_name']][] = $project['project_title'];
         }
         $session = session();
         $data    = [

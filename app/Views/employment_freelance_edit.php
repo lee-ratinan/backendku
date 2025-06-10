@@ -29,7 +29,7 @@ $this->extend($layout);
                             'project_start_date',
                             'project_end_date',
                             'client_name',
-                            'client_organization_name',
+                            'freelance_client_id',
                         ];
                         foreach ($fields as $field) {
                             generate_form_field($field, $config[$field], @$project[$field]);

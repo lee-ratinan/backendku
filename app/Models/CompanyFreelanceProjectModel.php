@@ -16,7 +16,8 @@ class CompanyFreelanceProjectModel extends Model
         'project_start_date',
         'project_end_date',
         'client_name',
-        'client_organization_name',
+        'freelance_client_id',
+        'client_organization_name', // deprecated
         'created_by',
         'created_at',
         'updated_at'
@@ -65,7 +66,14 @@ class CompanyFreelanceProjectModel extends Model
             'required'    => false,
             'placeholder' => 'Client Name',
         ],
+        'freelance_client_id'      => [
+            'type'     => 'select',
+            'label'    => 'Client Organization',
+            'required' => true,
+            'options'  => []
+        ],
         'client_organization_name' => [
+            // deprecated
             'type'        => 'text',
             'label'       => 'Client Organization Name',
             'required'    => false,
@@ -104,7 +112,7 @@ class CompanyFreelanceProjectModel extends Model
             $this->groupStart()
                 ->like('project_title', $search_value)
                 ->orLike('client_name', $search_value)
-                ->orLike('client_organization_name', $search_value)
+                ->orLike('client_company_name', $search_value)
                 ->groupEnd();
         }
         if (!empty($company_id)) {
@@ -136,15 +144,18 @@ class CompanyFreelanceProjectModel extends Model
         $record_filtered = $record_total;
         if (!empty($search_value) || !empty($company_id) || !empty($year)) {
             $this->applyFilter($search_value, $company_id, $year);
-            $record_filtered = $this->countAllResults();
+            $record_filtered = $this
+                ->join('company_freelance_client', 'company_freelance_project.freelance_client_id = company_freelance_client.id')
+                ->countAllResults();
             $this->applyFilter($search_value, $company_id, $year);
         }
         $session    = session();
         $locale     = $session->locale;
-        $raw_result = $this->select('company_freelance_project.*, company_master.company_trade_name')
+        $raw_result = $this->select('company_freelance_project.*, company_master.company_trade_name, company_freelance_client.client_company_name, company_freelance_client.client_type')
             ->join('company_master', 'company_master.id = company_freelance_project.company_id', 'left outer')
+            ->join('company_freelance_client', 'company_freelance_project.freelance_client_id = company_freelance_client.id')
             ->orderBy($order_column, $order_direction)->limit($length, $start)->findAll();
-        $result     = [];
+        $result       = [];
         foreach ($raw_result as $row) {
             $new_id       = $row['id'] * self::ID_NONCE;
             $result[]     = [
@@ -152,7 +163,7 @@ class CompanyFreelanceProjectModel extends Model
                 $row['company_trade_name'],
                 $row['project_title'],
                 $row['client_name'],
-                $row['client_organization_name'],
+                $row['client_company_name'] . ' (' . ucfirst($row['client_type']) . ')',
                 date(DATE_FORMAT_UI, strtotime($row['project_start_date'])),
                 (empty($row['project_end_date']) || '0000-00-00' == $row['project_end_date'] ? '' : date(DATE_FORMAT_UI, strtotime($row['project_end_date']))),
             ];
