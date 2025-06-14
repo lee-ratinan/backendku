@@ -1230,17 +1230,11 @@ class Employment extends BaseController
     public function freelanceIncome(): string
     {
         $session       = session();
-        $project_model = new CompanyFreelanceProjectModel();
         $company_model = new CompanyMasterModel();
-        $project_raw   = $project_model->orderBy('project_title', 'asc')->findAll();
-        $project_list  = [];
+        $company_raw   = $company_model->select('company_master.*')
+            ->join('company_freelance_project', 'company_freelance_project.company_id = company_master.id')
+            ->findAll();
         $company_list  = [];
-        $company_ids   = [];
-        foreach ($project_raw as $row) {
-            $project_list[$row['id']] = $row['project_title'];
-            $company_ids[]            = $row['company_id'];
-        }
-        $company_raw  = $company_model->whereIn('id', $company_ids)->orderBy('company_trade_name', 'asc')->findAll();
         foreach ($company_raw as $row) {
             $company_list[$row['id']] = $row['company_trade_name'];
         }
@@ -1251,7 +1245,6 @@ class Employment extends BaseController
             'user_session' => $session->user,
             'roles'        => $session->roles,
             'current_role' => $session->current_role,
-            'projects'     => $project_list,
             'companies'    => $company_list
         ];
         return view('employment_freelance_income', $data);

@@ -24,7 +24,7 @@ $this->extend($layout);
                         </div>
                         <h5 class="card-title"><i class="fa-solid fa-dollar-sign fa-fw me-3"></i> <?= $page_title ?></h5>
                         <div class="row g-3 mb-3">
-                            <div class="col-6 col-md-4">
+                            <div class="col-6">
                                 <label for="company_id" class="form-label">Company</label><br>
                                 <select class="form-select form-select-sm" id="company_id">
                                     <option value="">All</option>
@@ -33,16 +33,7 @@ $this->extend($layout);
                                     <?php endforeach; ?>
                                 </select>
                             </div>
-                            <div class="col-6 col-md-4">
-                                <label for="project_id" class="form-label">Project</label><br>
-                                <select class="form-select form-select-sm" id="project_id">
-                                    <option value="">All</option>
-                                    <?php foreach ($projects as $project_id => $project_name): ?>
-                                        <option value="<?= $project_id ?>"><?= $project_name ?></option>
-                                    <?php endforeach; ?>
-                                </select>
-                            </div>
-                            <div class="col-6 col-md-4">
+                            <div class="col-6">
                                 <label for="year" class="form-label">Year</label><br>
                                 <select class="form-select form-select-sm" id="year">
                                     <option value="">All</option>
@@ -120,7 +111,6 @@ $this->extend($layout);
                     type: 'POST',
                     data: function (d) {
                         d.company_id    = $('#company_id').val();
-                        d.project_id    = $('#project_id').val();
                         d.year          = $('#year').val();
                     },
                     dataSrc: function (json) {
