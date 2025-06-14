@@ -16,6 +16,7 @@
         li p { margin-bottom: 0!important; }
         .table>tbody>tr>td { border: none; vertical-align: top!important; }
         table { border: none; margin-bottom: 1rem; }
+        blockquote {border-left: 4px solid #008800; /* teal accent */padding: 1em 1.5em;margin: 1em 0;font-style: italic;color: #555;position: relative;}
         @media print {
             body, .container { background-color:#fff; color: #000!important; }
             strong, b, p, td, th { color: #000!important; }
@@ -106,6 +107,9 @@
                 const redacted = 'x'.repeat(originalText.length);
                 $(this).text(redacted).css({backgroundColor: 'black', color: 'black'});
             <?php endif; ?>
+        });
+        $('blockquote > p').each(function () {
+            $(this).replaceWith($(this).text());
         });
         $('article table').each(function () {
             $(this).css({'font-family': 'inherit', color: 'inherit'}).addClass('table table-sm table-borderless');
