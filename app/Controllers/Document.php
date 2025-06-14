@@ -149,6 +149,7 @@ class Document extends BaseController
             'version_number',
             'version_description'
         ];
+        $master_row['doc_status'] = 'draft';
         foreach ($master_fields as $field) {
             $value              = $this->request->getPost($field);
             $master_row[$field] = (!empty($value)) ? $value : null;
@@ -156,6 +157,10 @@ class Document extends BaseController
         foreach ($version_info as $field) {
             $value               = $this->request->getPost($field);
             $version_row[$field] = (!empty($value)) ? $value : null;
+        }
+        if (!empty($version_row['version_number']) && !empty($version_row['version_description'])) {
+            // Force published
+            $master_row['doc_status'] = 'published';
         }
         if ('edit' == $mode) {
             if ($master_model->update($id, $master_row)) {
