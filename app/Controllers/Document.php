@@ -203,6 +203,28 @@ class Document extends BaseController
     }
 
     /**
+     * @return ResponseInterface
+     * @throws ReflectionException
+     */
+    public function autosave(): ResponseInterface
+    {
+        $master_model  = new DocumentMasterModel();
+        $doc_content   = $this->request->getPost('doc_content');
+        $id            = $this->request->getPost('id');
+        $data          = [
+            'doc_content' => $doc_content,
+        ];
+        if ($master_model->update($id, $data)) {
+            return $this->response->setJSON([
+                'status' => 'success'
+            ]);
+        }
+        return $this->response->setJSON([
+            'status' => 'error',
+        ])->setStatusCode(HTTP_STATUS_SOMETHING_WRONG);
+    }
+
+    /**
      * @param string $mode
      * @param string $slug
      * @param string $version

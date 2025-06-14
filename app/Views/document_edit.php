@@ -78,6 +78,9 @@ $this->extend($layout);
     </section>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
+            let autosaveTimer;
+            const autosaveDelay = 15000; // 15 seconds
+            let lastContent = "";
             $('.btn-delete').click(function (e) {
                 e.preventDefault();
                 let id = $(this).data('id');
@@ -117,6 +120,40 @@ $this->extend($layout);
                 $('#btn-confirm-delete-'+id).addClass('d-none');
             });
             tinymce.init({
+                setup: function (editor) {
+                    <?php if ('edit' == $mode) : ?>
+                    editor.on('init', function () {
+                        lastContent = editor.getContent();
+                    });
+                    editor.on('change input', function () {
+                        $('#autosave-label').addClass('d-none');
+                        clearTimeout(autosaveTimer);
+                        autosaveTimer = setTimeout(function () {
+                            const currentContent = editor.getContent();
+                            if (currentContent !== lastContent) {
+                                $.ajax({
+                                    url: '<?= base_url($session->locale . '/office/document/autosave') ?>',
+                                    type: 'post',
+                                    data: {
+                                        id: <?= $document['id'] ?? '0' ?>,
+                                        doc_content: currentContent
+                                    },
+                                    success: function (response) {
+                                        if ('success' === response.status) {
+                                            $('#autosave-label').removeClass('d-none');
+                                        } else {
+                                            toastr.error('Autosave failed!')
+                                        }
+                                    },
+                                    error: function (xhr, status, error) {
+                                        toastr.error('Autosave failed!')
+                                    }
+                                });
+                            }
+                        }, autosaveDelay);
+                    });
+                    <?php endif; ?>
+                },
                 selector: 'textarea.tinymce',
                 skin: 'oxide-dark',
                 height: 800,

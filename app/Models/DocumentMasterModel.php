@@ -50,7 +50,7 @@ class DocumentMasterModel extends Model
         ],
         'doc_content'         => [
             'type'     => 'tinymce',
-            'label'    => 'Document Content',
+            'label'    => 'Document Content <span id="autosave-label" class="badge bg-danger d-none">AUTOSAVED</span>',
             'required' => true,
             'details'  => 'Use <s>strikethrough</s> for redacted content.<br>Use <code>[NEW_PAGE]</code> to split the page.',
         ],
