@@ -27,7 +27,9 @@ $this->extend($layout);
                             <table class="table table-sm table-striped table-hover">
                                 <thead>
                                 <tr>
+                                    <th rowspan="2" style="min-width:180px">Company</th>
                                     <th rowspan="2" style="min-width:180px">Document Title</th>
+                                    <th rowspan="2" style="min-width:100px">Status</th>
                                     <th rowspan="2" style="min-width:150px">Created At</th>
                                     <th rowspan="2" style="min-width:150px">Updated At</th>
                                     <th rowspan="2" style="max-width:120px">Edit</th>

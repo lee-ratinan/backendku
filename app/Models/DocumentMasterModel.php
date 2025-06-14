@@ -127,17 +127,25 @@ class DocumentMasterModel extends Model
         }
         $session    = session();
         $locale     = $session->locale;
-        $raw_result = $this->orderBy($order_column, $order_direction)->limit($length, $start)->findAll();
+        $raw_result = $this->select('document_master.*, company_master.company_trade_name')
+            ->join('company_master', 'company_master.id = document_master.company_id', 'left outer')
+            ->orderBy($order_column, $order_direction)->limit($length, $start)->findAll();
         $result     = [];
+        $doc_status = [
+            'draft'     => '<span class="badge bg-warning">Draft</span>',
+            'published' => '<span class="badge bg-success">Published</span>',
+        ];
         foreach ($raw_result as $row) {
             $new_id       = $row['id'] * self::ID_NONCE;
             $result[]     = [
+                $row['company_trade_name'],
                 strip_tags($row['doc_title']),
+                $doc_status[$row['doc_status']],
                 '<span class="utc-to-local-time">' . str_replace(' ', 'T', $row['created_at']) . '</span>',
                 '<span class="utc-to-local-time">' . str_replace(' ', 'T', $row['updated_at']) . '</span>',
                 '<a class="btn btn-outline-primary btn-sm" href="' . base_url($locale . '/office/document/edit/' . $new_id) . '"><i class="fa-solid fa-edit"></i></a>',
-                '<a class="btn btn-outline-primary btn-sm" target="_blank" href="' . base_url($locale . '/office/document/public-document/' . $row['doc_slug']) . '"><i class="fa-solid fa-globe"></i></a>',
-                '<a class="btn btn-outline-primary btn-sm" target="_blank" href="' . base_url($locale . '/office/document/internal-document/' . $row['doc_slug']) . '"><i class="fa-solid fa-eye"></i></a>',
+                ('published' === $row['doc_status'] ? '<a class="btn btn-outline-primary btn-sm" target="_blank" href="' . base_url($locale . '/office/document/public-document/' . $row['doc_slug']) . '"><i class="fa-solid fa-globe"></i></a>' : '-'),
+                ('published' === $row['doc_status'] ? '<a class="btn btn-outline-primary btn-sm" target="_blank" href="' . base_url($locale . '/office/document/internal-document/' . $row['doc_slug']) . '"><i class="fa-solid fa-eye"></i></a>' : '-'),
                 '<a class="btn btn-outline-primary btn-sm" target="_blank" href="' . base_url($locale . '/office/document/draft-document/' . $row['doc_slug']) . '"><i class="fa-solid fa-eye"></i></a>',
             ];
         }

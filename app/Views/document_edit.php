@@ -58,6 +58,8 @@ $this->extend($layout);
                         $fields = [
                             'doc_title',
                             'doc_slug',
+                            'company_id',
+                            'doc_status',
                             'doc_content',
                             'version_number',
                             'version_description',
@@ -167,6 +169,8 @@ $this->extend($layout);
                         id: <?= $document['id'] ?? '0' ?>,
                         doc_title: $('#doc_title').val(),
                         doc_slug: $('#doc_slug').val(),
+                        company_id: $('#company_id').val(),
+                        doc_status: $('#doc_status').val(),
                         doc_content: tinymce.get('doc_content').getContent(),
                         version_number: $('#version_number').val(),
                         version_description: $('#version_description').val(),

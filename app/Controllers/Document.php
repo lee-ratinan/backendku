@@ -36,9 +36,11 @@ class Document extends BaseController
     {
         $model              = new DocumentMasterModel();
         $columns            = [
+            'company_trade_name',
             'doc_title',
-            'created_at',
-            'updated_at',
+            'doc_status',
+            'document_master.created_at',
+            'document_master.updated_at',
             '',
             '',
             '',
@@ -139,6 +141,8 @@ class Document extends BaseController
         $master_fields = [
             'doc_title',
             'doc_slug',
+            'company_id',
+            'doc_status',
             'doc_content'
         ];
         $version_info  = [
