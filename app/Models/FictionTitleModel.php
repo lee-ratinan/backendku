@@ -11,6 +11,7 @@ class FictionTitleModel extends Model
     protected $allowedFields = [
         'id',
         'fiction_title',
+        'fiction_slug',
         'fiction_genre',
         'pen_name',
         'created_by',

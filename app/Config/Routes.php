@@ -143,12 +143,12 @@ $routes->group('{locale}/office', ['filter' => 'auth'], static function ($routes
     $routes->get('tax/comparison', 'Tax::comparison');
     /////////////////////////////////////////////////////////////////////////////
     // FICTION
-    $routes->get('fiction', 'Fiction::index'); // all titles, mainly only 1, no AJAX
+    $routes->get('fiction', 'Fiction::index'); // done
     $routes->get('fiction/create', 'Fiction::edit/new');
     $routes->get('fiction/edit/(:num)', 'Fiction::edit/$1');
     $routes->post('fiction/edit', 'Fiction::save');
     $routes->get('fiction/view-entries/(:any)', 'Fiction::viewContents/$1'); // all entries by title_id, no AJAX
-    $routes->get('fiction/edit-entry/(:any)', 'Fiction::editContents/$1'); // edit fiction_entry
+    $routes->get('fiction/edit-entry/(:any)', 'Fiction::editContent/$1'); // edit fiction_entry
     $routes->post('fiction/edit-entry', 'Fiction::saveContents');
     $routes->post('fiction/autosave-entry', 'Fiction::autosaveEntry');
     /////////////////////////////////////////////////////////////////////////////
