@@ -148,7 +148,8 @@ $routes->group('{locale}/office', ['filter' => 'auth'], static function ($routes
     $routes->get('fiction/edit/(:num)', 'Fiction::edit/$1');
     $routes->post('fiction/edit', 'Fiction::save');
     $routes->get('fiction/view-entries/(:any)', 'Fiction::viewContents/$1'); // all entries by title_id, no AJAX
-    $routes->get('fiction/edit-entry/(:any)', 'Fiction::editContent/$1'); // edit fiction_entry
+    $routes->get('fiction/new-entry/(:any)', 'Fiction::editContent/new/$1');
+    $routes->get('fiction/edit-entry/(:any)', 'Fiction::editContent/edit/$1'); // edit fiction_entry
     $routes->post('fiction/edit-entry', 'Fiction::saveContents');
     $routes->post('fiction/autosave-entry', 'Fiction::autosaveEntry');
     /////////////////////////////////////////////////////////////////////////////

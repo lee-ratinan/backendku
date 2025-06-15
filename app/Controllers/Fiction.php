@@ -97,7 +97,41 @@ class Fiction extends BaseController
             'statuses'     => $entry_model->getEntryStatus(),
             'types'        => $entry_model->getEntryType(),
             'nonce'        => $entry_model::ID_NONCE,
+            'title_id'     => $title_id * $title_model::ID_NONCE,
         ];
         return view('fiction_entries', $data);
+    }
+
+    public function editContent(string $mode, int $entry_id): string
+    {
+        $session     = session();
+        $title_model = new FictionTitleModel();
+        $entry_model = new FictionEntryModel();
+        $entry_row   = [];
+        $page_title  = 'New Entry';
+        if ('edit' == $mode) {
+            $entry_id    = $entry_id / $entry_model::ID_NONCE;
+            $entry_row   = $entry_model->find($entry_id);
+            if (empty($entry_row)) {
+                throw new PageNotFoundException();
+            }
+            $title_row   = $title_model->find($entry_row['fiction_title_id']);
+            $page_title  = 'Edit: ' . $entry_row['entry_title'];
+        } else {
+            $title_id    = $entry_id / $title_model::ID_NONCE;
+            $title_row   = $title_model->find($title_id);
+        }
+        $data     = [
+            'page_title'   => $page_title,
+            'slug_group'   => 'fiction',
+            'slug'         => '/office/fiction',
+            'user_session' => $session->user,
+            'roles'        => $session->roles,
+            'current_role' => $session->current_role,
+            'mode'         => $mode,
+            'entry_row'    => $entry_row,
+            'title_row'    => $title_row,
+        ];
+        return view('fiction_edit_entry', $data);
     }
 }
