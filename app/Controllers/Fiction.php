@@ -41,18 +41,20 @@ class Fiction extends BaseController
         $session = session();
         $model   = new FictionTitleModel();
         $mode    = 'edit';
+        $title   = 'New Fiction Title';
         $row     = [];
         if ('new' == $id) {
             $mode   = 'new';
         } else {
-            $id  = $id / $model::ID_NONCE;
-            $row = $model->find($id);
+            $id    = $id / $model::ID_NONCE;
+            $row   = $model->find($id);
             if (empty($row)) {
                 throw new PageNotFoundException();
             }
+            $title = 'Edit Fiction: ' . $row['fiction_title'];
         }
         $data    = [
-            'page_title'   => 'Edit Fiction',
+            'page_title'   => $title,
             'slug_group'   => 'fiction',
             'slug'         => '/office/fiction',
             'user_session' => $session->user,
@@ -61,7 +63,7 @@ class Fiction extends BaseController
             'mode'         => $mode,
             'row'          => $row,
         ];
-        return view('fiction', $data);
+        return view('fiction_edit', $data);
     }
 
     /**
@@ -83,7 +85,7 @@ class Fiction extends BaseController
         }
         $title_id = $title['id'];
         $entries  = $entry_model->getEntriesOfTitle($title_id);
-        $data    = [
+        $data     = [
             'page_title'   => $title['fiction_title'],
             'slug_group'   => 'fiction',
             'slug'         => '/office/fiction',
@@ -92,6 +94,9 @@ class Fiction extends BaseController
             'current_role' => $session->current_role,
             'title'        => $title,
             'entries'      => $entries,
+            'statuses'     => $entry_model->getEntryStatus(),
+            'types'        => $entry_model->getEntryType(),
+            'nonce'        => $entry_model::ID_NONCE,
         ];
         return view('fiction_entries', $data);
     }
