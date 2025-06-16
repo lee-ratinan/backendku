@@ -579,3 +579,34 @@ function generate_line_chart_script(array $chart_data, string $div_id, string $c
     });
     });';
 }
+
+/**
+ * @param string $text
+ * @return int
+ */
+function smart_multilang_word_count(string $text): int
+{
+    // Match Thai word chunks
+    preg_match_all('/[\x{0E00}-\x{0E7F}]+/u', $text, $thaiMatches);
+
+    // Match words with accents and non-English Latin (like café, façade, naïve)
+    preg_match_all('/[\p{L}\p{M}]+(?:[-\']?[\p{L}\p{M}]+)*/u', $text, $latinMatches);
+
+    // Match Chinese characters (each ≈ word)
+    preg_match_all('/[\x{4E00}-\x{9FFF}]/u', $text, $chineseMatches);
+
+    // Match Japanese kana (hiragana + katakana)
+    preg_match_all('/[\x{3040}-\x{30FF}]/u', $text, $japaneseMatches);
+
+    // Optionally add Hangul (Korean)
+    preg_match_all('/[\x{AC00}-\x{D7AF}]/u', $text, $koreanMatches); // each syllable ≈ 1 word
+
+    // Count & estimate
+    $thaiWords     = count($thaiMatches[0]);                    // Already chunks of Thai
+    $latinWords    = count($latinMatches[0]);                   // Any Latin-alphabet language
+    $chineseWords  = round(count($chineseMatches[0]) / 1.5);    // Chinese characters → words
+    $japaneseWords = round(count($japaneseMatches[0]) / 2);     // Kana characters → words
+    $koreanWords   = round(count($koreanMatches[0]) / 2);       // Korean syllables → words
+
+    return $thaiWords + $latinWords + $chineseWords + $japaneseWords + $koreanWords;
+}

@@ -6,6 +6,7 @@ use App\Models\FictionEntryModel;
 use App\Models\FictionTitleModel;
 use CodeIgniter\Exceptions\PageNotFoundException;
 use CodeIgniter\HTTP\ResponseInterface;
+use ReflectionException;
 
 class Fiction extends BaseController
 {
@@ -139,5 +140,32 @@ class Fiction extends BaseController
             'configurations' => $entry_model->getConfigurations($mode, $real_title_id),
         ];
         return view('fiction_edit_entry', $data);
+    }
+
+    public function saveContent()
+    {
+
+    }
+
+    /**
+     * @return ResponseInterface
+     * @throws ReflectionException
+     */
+    public function autosaveContent(): ResponseInterface
+    {
+        $master_model  = new FictionEntryModel();
+        $entry_content = $this->request->getPost('entry_content');
+        $id            = $this->request->getPost('id');
+        $data          = [
+            'entry_content' => $entry_content,
+        ];
+        if ($master_model->update($id, $data)) {
+            return $this->response->setJSON([
+                'status' => 'success'
+            ]);
+        }
+        return $this->response->setJSON([
+            'status' => 'error',
+        ])->setStatusCode(HTTP_STATUS_SOMETHING_WRONG);
     }
 }

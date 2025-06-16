@@ -73,7 +73,7 @@ $this->extend($layout);
                                     type: 'post',
                                     data: {
                                         id: <?= $real_entry_id ?>,
-                                        doc_content: currentContent
+                                        entry_content: currentContent
                                     },
                                     success: function (response) {
                                         if ('success' === response.status) {
