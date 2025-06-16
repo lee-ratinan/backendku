@@ -98,22 +98,19 @@ class FictionEntryModel extends Model
 
     /**
      * Get configurations for generating forms
-     * @param string $mode
      * @param int $parent_id
      * @return array
      */
-    public function getConfigurations(string $mode = 'edit', int $parent_id = 0): array
+    public function getConfigurations(int $parent_id = 0): array
     {
         $configurations  = $this->configurations;
-        if ('edit' == $mode) {
-            // parent_entry_id
-            $raw_options = $this->where('fiction_title_id', $parent_id)->where('parent_entry_id IS NULL')->findAll();
-            $options     = [];
-            foreach ($raw_options as $option) {
-                $options[$option['id']] = $option['entry_title'];
-            }
-            $configurations['parent_entry_id']['options'] = $options;
+        // parent_entry_id
+        $raw_options     = $this->where('fiction_title_id', $parent_id)->where('parent_entry_id IS NULL')->findAll();
+        $options         = [];
+        foreach ($raw_options as $option) {
+            $options[$option['id']] = $option['entry_title'];
         }
+        $configurations['parent_entry_id']['options'] = $options;
         return $configurations;
     }
 
@@ -140,7 +137,7 @@ class FictionEntryModel extends Model
         $types = [
             'chapter'   => '<i class="fa-solid fa-folder-open"></i> Chapter',
             'scene'     => '<i class="fa-solid fa-file-lines"></i> Scene',
-            'chapter'   => '<i class="fa-solid fa-folder-open"></i> Folder',
+            'folder'   => '<i class="fa-solid fa-folder-open"></i> Folder',
             'character' => '<i class="fa-solid fa-person"></i> Character',
             'location'  => '<i class="fa-solid fa-location-dot"></i> Location',
             'song'      => '<i class="fa-solid fa-music"></i> Song',

@@ -26,7 +26,7 @@ $this->extend($layout);
                         <p>By <?= $title_row['pen_name'] ?> | <?= $title_row['fiction_genre'] ?></p>
                         <?php
                         $fields = [
-                            ('edit' == $mode ? 'parent_entry_id' : ''),
+                            'parent_entry_id',
                             'entry_position',
                             'entry_title',
                             'entry_type',
@@ -103,7 +103,7 @@ $this->extend($layout);
                     'bold italic | alignleft aligncenter ' +
                     ' | bullist numlist | removeformat'
             });
-            $('#btn-save-document').click(function (e) {
+            $('#btn-save').click(function (e) {
                 e.preventDefault();
                 let ids = ['entry_position', 'entry_title', 'entry_type', 'entry_short_note', 'entry_status'];
                 for (let i = 0; i < ids.length; i++) {

@@ -138,7 +138,7 @@ class Fiction extends BaseController
             'title_row'      => $title_row,
             'real_entry_id'  => $real_entry_id,
             'real_title_id'  => $real_title_id,
-            'configurations' => $entry_model->getConfigurations($mode, $real_title_id),
+            'configurations' => $entry_model->getConfigurations($real_title_id),
         ];
         return view('fiction_edit_entry', $data);
     }
