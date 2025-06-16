@@ -95,7 +95,8 @@ class Fiction extends BaseController
             'roles'        => $session->roles,
             'current_role' => $session->current_role,
             'title'        => $title,
-            'entries'      => $entries,
+            'entries'      => $entries['entries'],
+            'word_count'   => $entries['word_count'],
             'statuses'     => $entry_model->getEntryStatus(),
             'types'        => $entry_model->getEntryType(),
             'nonce'        => $entry_model::ID_NONCE,
@@ -227,5 +228,27 @@ class Fiction extends BaseController
         return $this->response->setJSON([
             'status' => 'error',
         ])->setStatusCode(HTTP_STATUS_SOMETHING_WRONG);
+    }
+
+    /**
+     * @param string $slug
+     * @return string
+     */
+    public function exportPdf(string $slug): string
+    {
+        $title_model = new FictionTitleModel();
+        $entry_model = new FictionEntryModel();
+        $title       = $title_model->where('fiction_slug', $slug)->first();
+        if (empty($title)) {
+            throw new PageNotFoundException();
+        }
+        $title_id = $title['id'];
+        $entries  = $entry_model->getEntriesOfTitle($title_id, false);
+        $data     = [
+            'title'      => $title,
+            'entries'    => $entries['entries'],
+            'word_count' => $entries['word_count']
+        ];
+        return view('fiction_export_pdf', $data);
     }
 }

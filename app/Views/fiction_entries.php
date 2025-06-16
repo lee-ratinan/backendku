@@ -23,9 +23,17 @@ $this->extend($layout);
                         <div class="row">
                             <div class="col-md-8 col-xl-9">
                                 <h2><?= $title['fiction_title'] ?></h2>
-                                <p>by <?= $title['pen_name'] ?> | <?= $title['fiction_genre'] ?> | Last updated: <span class="utc-to-local"><?= $title['updated_at'] ?></span></p>
+                                <p>
+                                    by <?= $title['pen_name'] ?> |
+                                    <?= $title['fiction_genre'] ?> |
+                                    Last updated: <span class="utc-to-local"><?= $title['updated_at'] ?></span> |
+                                    Word count: <?= number_format($word_count) ?>
+                                </p>
                                 <hr />
-                                <a class="btn btn-outline-primary btn-sm" href="<?= base_url($session->locale . '/office/fiction/new-entry/' . $title_id) ?>"><i class="fa-solid fa-circle-plus"></i> New Entry</a>
+                                <div class="row">
+                                    <div class="col"><a class="btn btn-outline-primary btn-sm" href="<?= base_url($session->locale . '/office/fiction/new-entry/' . $title_id) ?>"><i class="fa-solid fa-circle-plus"></i> New Entry</a></div>
+                                    <div class="col text-end"><a class="btn btn-outline-primary btn-sm" href="<?= base_url($session->locale . '/office/fiction/export-pdf/' . $title['fiction_slug']) ?>" target="_blank"><i class="fa-solid fa-file-pdf"></i> Export Manuscript</a></div>
+                                </div>
                                 <div class="table-responsive">
                                     <table class="table table-sm table-hover table-striped">
                                         <thead>
