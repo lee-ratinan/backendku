@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Models\FictionEntryModel;
 use App\Models\FictionTitleModel;
+use App\Models\LogActivityModel;
 use CodeIgniter\Exceptions\PageNotFoundException;
 use CodeIgniter\HTTP\ResponseInterface;
 use ReflectionException;
@@ -142,9 +143,65 @@ class Fiction extends BaseController
         return view('fiction_edit_entry', $data);
     }
 
+    /**
+     * @throws ReflectionException
+     */
     public function saveContent()
     {
-
+        $mode          = $this->request->getPost('mode');
+        $entry_model   = new FictionEntryModel();
+        $log_model     = new LogActivityModel();
+        $session       = session();
+        $id            = $this->request->getPost('id');
+        $data          = [];
+        $fields        = [
+            'fiction_title_id',
+            'entry_content',
+            'entry_position',
+            'entry_title',
+            'entry_type',
+            'entry_note',
+            'entry_short_note',
+            'entry_status',
+            'footnote_section'
+        ];
+        $data['word_count'] = 0;
+        foreach ($fields as $field) {
+            $value        = $this->request->getPost($field);
+            $data[$field] = (!empty($value)) ? $value : null;
+        }
+        if (!empty($data['entry_content'])) {
+            $data['word_count'] = smart_multilang_word_count($data['entry_content']);
+        }
+        if ('edit' == $mode) {
+            if ($entry_model->update($id, $data)) {
+                $data['entry_content'] = '...';
+                $log_model->insertTableUpdate('fiction_entry', $id, $data, $session->user_id);
+                $new_id = $id * $entry_model::ID_NONCE;
+                return $this->response->setJSON([
+                    'status'  => 'success',
+                    'toast'   => 'Successfully updated the entry.',
+                    'redirect' => base_url($session->locale . '/office/fiction/edit-entry/' . $new_id)
+                ]);
+            }
+        } else {
+            $data['created_by'] = $session->user_id;
+            // INSERT
+            if ($id = $entry_model->insert($data)) {
+                $data['entry_content'] = '...';
+                $log_model->insertTableUpdate('fiction_entry', $id, $data, $session->user_id);
+                $new_id = $id * $entry_model::ID_NONCE;
+                return $this->response->setJSON([
+                    'status'   => 'success',
+                    'toast'    => 'Successfully created the new entry for the fiction.',
+                    'redirect' => base_url($session->locale . '/office/fiction/edit-entry/' . $new_id)
+                ]);
+            }
+        }
+        return $this->response->setJSON([
+            'status'  => 'error',
+            'toast'   => lang('System.status_message.generic_error')
+        ])->setStatusCode(HTTP_STATUS_SOMETHING_WRONG);
     }
 
     /**
