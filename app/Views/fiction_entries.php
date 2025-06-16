@@ -30,12 +30,15 @@ $this->extend($layout);
                                     <table class="table table-sm table-hover table-striped">
                                         <thead>
                                         <tr>
-                                            <th>Type</th>
-                                            <th>Title</th>
-                                            <th>Word Count</th>
-                                            <th>Char Count</th>
-                                            <th>Status</th>
-                                            <th>Short Note</th>
+                                            <th rowspan="2" style="min-width:100px" class="text-center">Type</th>
+                                            <th rowspan="2" style="min-width:225px" class="text-center">Title</th>
+                                            <th colspan="2" style="min-width:200px" class="text-center">Count</th>
+                                            <th rowspan="2" style="min-width:120px" class="text-center">Status</th>
+                                            <th rowspan="2" style="min-width:250px" class="text-center">Short Note</th>
+                                        </tr>
+                                        <tr>
+                                            <th class="text-end">Word</th>
+                                            <th class="text-end">Character</th>
                                         </tr>
                                         </thead>
                                         <tbody>
