@@ -28,9 +28,7 @@ $this->extend($layout);
                                 <h2><?= $title['fiction_title'] ?></h2>
                                 <p>by <?= $title['pen_name'] ?> | <?= $title['fiction_genre'] ?> | Last updated: <span class="utc-to-local"><?= $title['updated_at'] ?></span></p>
                                 <hr />
-                                <div class="text-end">
-                                    <a href="<?= base_url($session->locale . '/office/fiction/new-entry/' . $title_id) ?>"><i class="fa-solid fa-circle-plus"></i> New Entry</a>
-                                </div>
+                                <a class="btn btn-outline-primary btn-sm" href="<?= base_url($session->locale . '/office/fiction/new-entry/' . $title_id) ?>"><i class="fa-solid fa-circle-plus"></i> New Entry</a>
                                 <div class="table-responsive">
                                     <table class="table table-sm table-hover table-striped">
                                         <thead>
@@ -71,6 +69,7 @@ $this->extend($layout);
                                         </tbody>
                                     </table>
                                 </div>
+                                <a class="btn btn-outline-primary btn-sm" href="<?= base_url($session->locale . '/office/fiction/new-entry/' . $title_id) ?>"><i class="fa-solid fa-circle-plus"></i> New Entry</a>
                             </div>
                         </div>
                     </div>

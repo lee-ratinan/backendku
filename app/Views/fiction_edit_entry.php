@@ -21,16 +21,133 @@ $this->extend($layout);
             <div class="col">
                 <div class="card">
                     <div class="card-body pt-3">
-                        <?= $mode ?>
-                        <pre>
+                        <h5 class="card-title"><?= $page_title ?></h5>
+                        <h6>Title: <?= $title_row['fiction_title'] ?></h6>
+                        <p>By <?= $title_row['pen_name'] ?> | <?= $title_row['fiction_genre'] ?></p>
                         <?php
-                        print_r($title_row);
-                        print_r($entry_row);
+                        $fields = [
+                            ('edit' == $mode ? 'parent_entry_id' : ''),
+                            'entry_position',
+                            'entry_title',
+                            'entry_type',
+                            'entry_note',
+                            'entry_short_note',
+                            'entry_content',
+                            'entry_status',
+                            'footnote_section'
+                        ];
+                        foreach ($fields as $field) {
+                            if (!empty($field)) {
+                                generate_form_field($field, $configurations[$field], @$entry_row[$field]);
+                            }
+                        }
                         ?>
-                    </pre>
+                        <div class="text-end">
+                            <button class="btn btn-primary btn-sm" id="btn-save"><i class="fa-solid fa-save"></i> Save</button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            let autosaveTimer;
+            const autosaveDelay = 15000; // 15 seconds
+            let lastContent = "";
+            // INIT
+            tinymce.init({
+                setup: function (editor) {
+                    <?php if ('edit' == $mode) : ?>
+                    editor.on('init', function () {
+                        lastContent = editor.getContent();
+                    });
+                    editor.on('change input', function () {
+                        $('#autosave-label').addClass('d-none');
+                        clearTimeout(autosaveTimer);
+                        autosaveTimer = setTimeout(function () {
+                            const currentContent = editor.getContent();
+                            if (currentContent !== lastContent) {
+                                $.ajax({
+                                    url: '<?= base_url($session->locale . '/office/fiction/autosave-entry') ?>',
+                                    type: 'post',
+                                    data: {
+                                        id: <?= $real_entry_id ?>,
+                                        doc_content: currentContent
+                                    },
+                                    success: function (response) {
+                                        if ('success' === response.status) {
+                                            $('#autosave-label').removeClass('d-none');
+                                        } else {
+                                            toastr.error('Autosave failed!')
+                                        }
+                                    },
+                                    error: function (xhr, status, error) {
+                                        toastr.error('Autosave failed!')
+                                    }
+                                });
+                            }
+                        }, autosaveDelay);
+                    });
+                    <?php endif; ?>
+                },
+                selector: 'textarea.tinymce',
+                skin: 'oxide-dark',
+                height: 800,
+                plugins: [
+                    'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
+                    'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
+                    'insertdatetime', 'media', 'table', 'help', 'wordcount'
+                ],
+                toolbar: 'undo redo | blocks | ' +
+                    'bold italic | alignleft aligncenter ' +
+                    ' | bullist numlist | removeformat'
+            });
+            $('#btn-save-document').click(function (e) {
+                e.preventDefault();
+                let ids = ['entry_position', 'entry_title', 'entry_type', 'entry_short_note', 'entry_status'];
+                for (let i = 0; i < ids.length; i++) {
+                    if ('' === $('#' + ids[i]).val()) {
+                        toastr.warning('Please ensure all mandatory fields are filled.');
+                        $('#' + ids[i]).focus();
+                        return;
+                    }
+                }
+                $(this).prop('disabled', true);
+                $.ajax({
+                    url: '<?= base_url('en/office/fiction/edit-entry') ?>',
+                    type: 'post',
+                    data: {
+                        mode: '<?= $mode ?>',
+                        id: <?= $real_entry_id ?>,
+                        fiction_title_id: <?= $real_title_id ?>,
+                        entry_content: tinymce.get('entry_content').getContent(),
+                        entry_position: $('#entry_position').val(),
+                        entry_title: $('#entry_title').val(),
+                        entry_type: $('#entry_type').val(),
+                        entry_note: $('#entry_note').val(),
+                        entry_short_note: $('#entry_short_note').val(),
+                        entry_status: $('#entry_status').val(),
+                        footnote_section: $('#footnote_section').val(),
+                    },
+                    success: function (response) {
+                        if ('success' === response.status) {
+                            toastr.success(response.toast);
+                            setTimeout(function () {window.location.href = response.redirect;}, 5000);
+                        } else {
+                            let message = (response.toast ?? 'Sorry! Something went wrong. Please try again.');
+                            toastr.error(message);
+                            $('#btn-save-document').prop('disabled', false);
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        let response = JSON.parse(xhr.responseText);
+                        let error_message = (response.toast ?? 'Sorry! Something went wrong. Please try again.');
+                        $('#btn-save-document').prop('disabled', false);
+                        toastr.error(error_message);
+                    }
+                });
+            });
+        });
+    </script>
 <?php $this->endSection() ?>

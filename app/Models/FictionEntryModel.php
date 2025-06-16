@@ -20,6 +20,7 @@ class FictionEntryModel extends Model
         'entry_status',
         'entry_content',
         'footnote_section',
+        'word_count',
         'created_by',
         'created_at',
         'updated_at'
@@ -29,6 +30,92 @@ class FictionEntryModel extends Model
     protected $createdField = 'created_at';
     protected $updatedField = 'updated_at';
     const ID_NONCE = 727;
+
+    private array $configurations = [
+        'id'               => [
+            'type'  => 'hidden',
+            'label' => 'ID'
+        ],
+        'parent_entry_id'  => [
+            'type'     => 'select',
+            'label'    => 'Parent Entry',
+            'required' => true,
+            'options'  => []
+        ],
+        'entry_position'   => [
+            'type'     => 'text',
+            'label'    => 'Position #',
+            'required' => true
+        ],
+        'entry_title'      => [
+            'type'     => 'text',
+            'label'    => 'Entry Title',
+            'required' => true,
+        ],
+        'entry_type'       => [
+            'type'    => 'select',
+            'label'   => 'Entry Type',
+            'options' => [
+                'chapter'   => 'Chapter',
+                'scene'     => 'Scene',
+                'folder'    => 'Folder',
+                'character' => 'Character',
+                'location'  => 'Location',
+                'song'      => 'Song',
+            ]
+        ],
+        'entry_note'       => [
+            'type'     => 'text',
+            'label'    => 'Entry Note',
+            'required' => false,
+        ],
+        'entry_short_note' => [
+            'type'     => 'text',
+            'label'    => 'Entry Short Note',
+            'required' => false,
+        ],
+        'entry_content'    => [
+            'type'     => 'tinymce',
+            'label'    => 'Entry Content <span id="entry-content-word-count"></span> <span id="autosave-label" class="badge bg-danger d-none">AUTOSAVED</span>',
+            'required' => true,
+        ],
+        'entry_status'     => [
+            'type'     => 'select',
+            'label'    => 'Entry Status',
+            'required' => true,
+            'options'  => [
+                'in_progress'   => 'In Progress',
+                'revised_draft' => 'Revised Draft',
+                'final_draft'   => 'Final Draft',
+            ]
+        ],
+        'footnote_section' => [
+            'type'     => 'textarea',
+            'label'    => 'Footnote Section',
+            'required' => false,
+        ],
+    ];
+
+    /**
+     * Get configurations for generating forms
+     * @param string $mode
+     * @param int $parent_id
+     * @return array
+     */
+    public function getConfigurations(string $mode = 'edit', int $parent_id = 0): array
+    {
+        $configurations  = $this->configurations;
+        if ('edit' == $mode) {
+            // parent_entry_id
+            $raw_options = $this->where('fiction_title_id', $parent_id)->where('parent_entry_id IS NULL')->findAll();
+            $options     = [];
+            foreach ($raw_options as $option) {
+                $options[$option['id']] = $option['entry_title'];
+            }
+            $configurations['parent_entry_id']['options'] = $options;
+        }
+        return $configurations;
+    }
 
     /**
      * @param string $status
@@ -53,8 +140,10 @@ class FictionEntryModel extends Model
         $types = [
             'chapter'   => '<i class="fa-solid fa-folder-open"></i> Chapter',
             'scene'     => '<i class="fa-solid fa-file-lines"></i> Scene',
+            'chapter'   => '<i class="fa-solid fa-folder-open"></i> Folder',
             'character' => '<i class="fa-solid fa-person"></i> Character',
             'location'  => '<i class="fa-solid fa-location-dot"></i> Location',
+            'song'      => '<i class="fa-solid fa-music"></i> Song',
         ];
         return $types[$type] ?? $types;
     }

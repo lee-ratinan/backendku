@@ -33,10 +33,10 @@ $this->extend($layout);
                                     <img class="img-fluid mb-2" src="<?= base_url('file/fiction_' . $fiction['fiction_slug'] . '.png') ?>" alt="<?= $fiction['fiction_title'] ?>" />
                                 </a>
                                 <div class="input-group mb-3 w-100">
-                                    <a class="btn btn-outline-primary" href="<?= $view_link ?>" style="width: 80%">
+                                    <a class="btn btn-primary" href="<?= $view_link ?>" style="width: 80%">
                                         <b><?= $fiction['fiction_title'] ?></b><br><?= $fiction['pen_name'] ?>
                                     </a>
-                                    <a class="btn btn-outline-danger" href="<?= $edit_link ?>" style="width: 20%">
+                                    <a class="btn btn-danger" href="<?= $edit_link ?>" style="width: 20%">
                                         <i class="fa-solid fa-edit"></i><br>Edit
                                     </a>
                                 </div>

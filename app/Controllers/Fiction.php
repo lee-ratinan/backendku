@@ -115,22 +115,28 @@ class Fiction extends BaseController
             if (empty($entry_row)) {
                 throw new PageNotFoundException();
             }
-            $title_row   = $title_model->find($entry_row['fiction_title_id']);
-            $page_title  = 'Edit: ' . $entry_row['entry_title'];
+            $title_row     = $title_model->find($entry_row['fiction_title_id']);
+            $page_title    = 'Edit: ' . $entry_row['entry_title'];
+            $real_entry_id = $entry_id;
+            $real_title_id = $entry_row['fiction_title_id'];
         } else {
-            $title_id    = $entry_id / $title_model::ID_NONCE;
-            $title_row   = $title_model->find($title_id);
+            $real_entry_id = 0;
+            $real_title_id = $entry_id / $title_model::ID_NONCE;
+            $title_row     = $title_model->find($real_title_id);
         }
-        $data     = [
-            'page_title'   => $page_title,
-            'slug_group'   => 'fiction',
-            'slug'         => '/office/fiction',
-            'user_session' => $session->user,
-            'roles'        => $session->roles,
-            'current_role' => $session->current_role,
-            'mode'         => $mode,
-            'entry_row'    => $entry_row,
-            'title_row'    => $title_row,
+        $data = [
+            'page_title'     => $page_title,
+            'slug_group'     => 'fiction',
+            'slug'           => '/office/fiction',
+            'user_session'   => $session->user,
+            'roles'          => $session->roles,
+            'current_role'   => $session->current_role,
+            'mode'           => $mode,
+            'entry_row'      => $entry_row,
+            'title_row'      => $title_row,
+            'real_entry_id'  => $real_entry_id,
+            'real_title_id'  => $real_title_id,
+            'configurations' => $entry_model->getConfigurations($mode, $real_title_id),
         ];
         return view('fiction_edit_entry', $data);
     }
