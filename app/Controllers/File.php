@@ -40,7 +40,7 @@ class File extends BaseController
         if (in_array($file_name_sections[0], $internal_folders)) {
             $session = session();
             if (!isset($session->user_id)) {
-                throw throw new BadRequestException('Unauthorized access');
+                throw new BadRequestException('Unauthorized access');
             }
         }
         // 3. CHECK FILE EXISTS
