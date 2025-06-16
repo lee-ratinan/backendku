@@ -30,7 +30,7 @@ $this->extend($layout);
                                 $view_link = base_url($session->locale . '/office/fiction/view-entries/' . $fiction['fiction_slug']);
                                 ?>
                                 <a class="text-decoration-none" href="<?= $view_link ?>">
-                                    <img class="img-fluid mb-2" src="<?= base_url('file/fiction_' . $fiction['fiction_slug'] . '.png') ?>" alt="<?= $fiction['fiction_title'] ?>" />
+                                    <img class="img-fluid mb-2" src="<?= base_url('file/fiction_' . $fiction['fiction_slug'] . '.jpg') ?>" alt="<?= $fiction['fiction_title'] ?>" />
                                 </a>
                                 <div class="input-group mb-3 w-100">
                                     <a class="btn btn-primary" href="<?= $view_link ?>" style="width: 70%">

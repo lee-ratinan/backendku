@@ -21,9 +21,6 @@ $this->extend($layout);
                 <div class="card">
                     <div class="card-body pt-3">
                         <div class="row">
-                            <div class="col-md-4 col-xl-3">
-                                <img class="img-fluid mb-2" src="<?= base_url('file/fiction_' . $title['fiction_slug'] . '.png') ?>" alt="<?= $title['fiction_title'] ?>" />
-                            </div>
                             <div class="col-md-8 col-xl-9">
                                 <h2><?= $title['fiction_title'] ?></h2>
                                 <p>by <?= $title['pen_name'] ?> | <?= $title['fiction_genre'] ?> | Last updated: <span class="utc-to-local"><?= $title['updated_at'] ?></span></p>
@@ -76,6 +73,9 @@ $this->extend($layout);
                                     </table>
                                 </div>
                                 <a class="btn btn-outline-primary btn-sm" href="<?= base_url($session->locale . '/office/fiction/new-entry/' . $title_id) ?>"><i class="fa-solid fa-circle-plus"></i> New Entry</a>
+                            </div>
+                            <div class="col-md-4 col-xl-3">
+                                <img class="img-fluid mb-2" src="<?= base_url('file/fiction_' . $title['fiction_slug'] . '.jpg') ?>" alt="<?= $title['fiction_title'] ?>" />
                             </div>
                         </div>
                     </div>

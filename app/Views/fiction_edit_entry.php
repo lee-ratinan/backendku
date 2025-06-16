@@ -5,6 +5,7 @@ $this->extend($layout);
 ?>
 <?= $this->section('content') ?>
 <?php $session = session(); ?>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400..700&family=Noto+Sans+Thai&family=Noto+Sans:ital,wght@0,400..700;1,400..700&family=Noto+Serif+Thai:wght@400..700&family=Noto+Serif:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
     <div class="pagetitle">
         <h1><?= $page_title ?></h1>
         <nav>
@@ -99,9 +100,9 @@ $this->extend($layout);
                     'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
                     'insertdatetime', 'media', 'table', 'help', 'wordcount'
                 ],
-                toolbar: 'undo redo | blocks | ' +
-                    'bold italic | alignleft aligncenter ' +
-                    ' | bullist numlist | removeformat'
+                content_style: "body { font-family: 'Noto Serif Thai'; }",
+                font_formats: "Noto Sans; Noto Serif; Noto Sans Thai; Noto Serif Thai; Noto Sans JP",
+                toolbar: 'undo redo | bold italic | alignleft aligncenter | bullist numlist | removeformat'
             });
             $('#btn-save').click(function (e) {
                 e.preventDefault();
