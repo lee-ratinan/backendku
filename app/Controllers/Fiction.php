@@ -172,7 +172,8 @@ class Fiction extends BaseController
             $data[$field] = (!empty($value)) ? $value : null;
         }
         if (!empty($data['entry_content'])) {
-            $data['word_count'] = smart_multilang_word_count($data['entry_content']);
+            $stripped           = strip_tags($data['entry_content']);
+            $data['word_count'] = smart_multilang_word_count($stripped);
         }
         if ('edit' == $mode) {
             if ($entry_model->update($id, $data)) {
