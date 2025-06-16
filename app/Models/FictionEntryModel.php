@@ -167,6 +167,7 @@ class FictionEntryModel extends Model
                 $structure[$entry['parent_entry_id']]['children'][$entry['id']] = $entry;
             }
         }
+        ksort($structure);
         $word_cnt = round($word_cnt/100)*100;
         return [
             'entries'    => $structure,
