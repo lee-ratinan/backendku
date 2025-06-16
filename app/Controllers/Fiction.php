@@ -155,6 +155,7 @@ class Fiction extends BaseController
         $id            = $this->request->getPost('id');
         $data          = [];
         $fields        = [
+            'parent_entry_id',
             'fiction_title_id',
             'entry_content',
             'entry_position',

@@ -121,6 +121,7 @@ $this->extend($layout);
                         mode: '<?= $mode ?>',
                         id: <?= $real_entry_id ?>,
                         fiction_title_id: <?= $real_title_id ?>,
+                        parent_entry_id: $('#parent_entry_id').val(),
                         entry_content: tinymce.get('entry_content').getContent(),
                         entry_position: $('#entry_position').val(),
                         entry_title: $('#entry_title').val(),
