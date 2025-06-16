@@ -21,6 +21,7 @@ class FictionEntryModel extends Model
         'entry_content',
         'footnote_section',
         'word_count',
+        'char_count',
         'created_by',
         'created_at',
         'updated_at'
@@ -137,7 +138,7 @@ class FictionEntryModel extends Model
         $types = [
             'chapter'   => '<i class="fa-solid fa-folder-open"></i> Chapter',
             'scene'     => '<i class="fa-solid fa-file-lines"></i> Scene',
-            'folder'   => '<i class="fa-solid fa-folder-open"></i> Folder',
+            'folder'    => '<i class="fa-solid fa-folder-open"></i> Folder',
             'character' => '<i class="fa-solid fa-person"></i> Character',
             'location'  => '<i class="fa-solid fa-location-dot"></i> Location',
             'song'      => '<i class="fa-solid fa-music"></i> Song',

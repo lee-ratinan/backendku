@@ -582,31 +582,28 @@ function generate_line_chart_script(array $chart_data, string $div_id, string $c
 
 /**
  * @param string $text
- * @return int
+ * @return array
  */
-function smart_multilang_word_count(string $text): int
+function smart_multilang_word_count(string $text): array
 {
-    // Match Thai word chunks
-    preg_match_all('/[\x{0E00}-\x{0E7F}]+/u', $text, $thaiMatches);
-
-    // Match words with accents and non-English Latin (like café, façade, naïve)
-    preg_match_all('/[\p{L}\p{M}]+(?:[-\']?[\p{L}\p{M}]+)*/u', $text, $latinMatches);
-
-    // Match Chinese characters (each ≈ word)
-    preg_match_all('/[\x{4E00}-\x{9FFF}]/u', $text, $chineseMatches);
-
-    // Match Japanese kana (hiragana + katakana)
-    preg_match_all('/[\x{3040}-\x{30FF}]/u', $text, $japaneseMatches);
-
-    // Optionally add Hangul (Korean)
-    preg_match_all('/[\x{AC00}-\x{D7AF}]/u', $text, $koreanMatches); // each syllable ≈ 1 word
-
-    // Count & estimate
-    $thaiWords     = count($thaiMatches[0]);                    // Already chunks of Thai
-    $latinWords    = count($latinMatches[0]);                   // Any Latin-alphabet language
-    $chineseWords  = round(count($chineseMatches[0]) / 1.5);    // Chinese characters → words
-    $japaneseWords = round(count($japaneseMatches[0]) / 2);     // Kana characters → words
-    $koreanWords   = round(count($koreanMatches[0]) / 2);       // Korean syllables → words
-
-    return $thaiWords + $latinWords + $chineseWords + $japaneseWords + $koreanWords;
+    $text = strip_tags($text);
+    // Thai characters
+    preg_match_all('/[\x{0E00}-\x{0E7F}]/u', $text, $thaiChars);
+    $thaiWords = count($thaiChars[0]) / 4.5;
+    // Accented Latin + basic words (café, façade, etc.)
+    preg_match_all('/[\p{L}\p{M}]+(?:[-\']?[\p{L}\p{M}]+)*/u', $text, $latinWords);
+    $latinWordCount = count($latinWords[0]);
+    // Chinese characters
+    preg_match_all('/[\x{4E00}-\x{9FFF}]/u', $text, $chineseChars);
+    $chineseWords = count($chineseChars[0]) / 1.5;
+    // Japanese kana
+    preg_match_all('/[\x{3040}-\x{30FF}]/u', $text, $japaneseKana);
+    $japaneseWords = count($japaneseKana[0]) / 2;
+    // Korean Hangul (optional, if used)
+    preg_match_all('/[\x{AC00}-\x{D7AF}]/u', $text, $koreanSyllables);
+    $koreanWords = count($koreanSyllables[0]) / 2;
+    return [
+        'word_count' => round($thaiWords + $latinWordCount + $chineseWords + $japaneseWords + $koreanWords),
+        'char_count' => mb_strlen($text, 'UTF-8')
+    ];
 }

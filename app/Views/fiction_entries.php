@@ -35,8 +35,10 @@ $this->extend($layout);
                                         <tr>
                                             <th>Type</th>
                                             <th>Title</th>
-                                            <th>Short Note</th>
+                                            <th>Word Count</th>
+                                            <th>Char Count</th>
                                             <th>Status</th>
+                                            <th>Short Note</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -48,8 +50,10 @@ $this->extend($layout);
                                                         [<?= $entry['entry_position'] ?>] <?= $entry['entry_title'] ?>
                                                     </a>
                                                 </td>
-                                                <td><?= $entry['entry_short_note'] ?></td>
+                                                <td class="text-end"><?= (0 < $entry['word_count'] ? number_format($entry['word_count']) : '-') ?></td>
+                                                <td class="text-end"><?= (0 < $entry['char_count'] ? number_format($entry['char_count']) : '-') ?></td>
                                                 <td><?= $statuses[$entry['entry_status']] ?></td>
+                                                <td><?= $entry['entry_short_note'] ?></td>
                                             </tr>
                                             <?php if (isset($entry['children'])) : ?>
                                                 <?php foreach ($entry['children'] as $child) : ?>
@@ -60,8 +64,10 @@ $this->extend($layout);
                                                                 [<?= $entry['entry_position'] ?>.<?= $child['entry_position'] ?>] <?= $child['entry_title'] ?>
                                                             </a>
                                                         </td>
-                                                        <td><?= $child['entry_short_note'] ?></td>
+                                                        <td class="text-end"><?= (0 < $child['word_count'] ? number_format($child['word_count']) : '-') ?></td>
+                                                        <td class="text-end"><?= (0 < $child['char_count'] ? number_format($child['char_count']) : '-') ?></td>
                                                         <td><?= $statuses[$child['entry_status']] ?></td>
+                                                        <td><?= $child['entry_short_note'] ?></td>
                                                     </tr>
                                                 <?php endforeach; ?>
                                             <?php endif; ?>

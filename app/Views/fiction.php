@@ -23,7 +23,7 @@ $this->extend($layout);
                         <h5 class="card-title"><i class="fa-solid fa-location-dot fa-fw me-3"></i> <?= $page_title ?></h5>
                         <div class="row">
                             <?php foreach ($titles as $fiction) : ?>
-                            <div class="col-6 col-lg-4 col-xl-3">
+                            <div class="col-lg-4 col-xl-3">
                                 <?php
                                 $id = $fiction['id'] * $nonce;
                                 $edit_link = base_url($session->locale . '/office/fiction/edit/' . $id);
@@ -33,10 +33,10 @@ $this->extend($layout);
                                     <img class="img-fluid mb-2" src="<?= base_url('file/fiction_' . $fiction['fiction_slug'] . '.png') ?>" alt="<?= $fiction['fiction_title'] ?>" />
                                 </a>
                                 <div class="input-group mb-3 w-100">
-                                    <a class="btn btn-primary" href="<?= $view_link ?>" style="width: 80%">
+                                    <a class="btn btn-primary" href="<?= $view_link ?>" style="width: 70%">
                                         <b><?= $fiction['fiction_title'] ?></b><br><?= $fiction['pen_name'] ?>
                                     </a>
-                                    <a class="btn btn-danger" href="<?= $edit_link ?>" style="width: 20%">
+                                    <a class="btn btn-danger" href="<?= $edit_link ?>" style="width: 30%">
                                         <i class="fa-solid fa-edit"></i><br>Edit
                                     </a>
                                 </div>
