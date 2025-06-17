@@ -57,12 +57,11 @@ class FictionEntryModel extends Model
             'type'    => 'select',
             'label'   => 'Entry Type',
             'options' => [
-                'chapter'   => 'Chapter',
-                'scene'     => 'Scene',
-                'folder'    => 'Folder',
-                'character' => 'Character',
-                'location'  => 'Location',
-                'song'      => 'Song',
+                'front-matter' => 'Front Matter',
+                'chapter'      => 'Chapter',
+                'scene'        => 'Scene',
+                'folder'       => 'Folder',
+                'research'     => 'Research'
             ]
         ],
         'entry_note'       => [
@@ -136,12 +135,11 @@ class FictionEntryModel extends Model
     public function getEntryType(string $type = ''): array|string
     {
         $types = [
-            'chapter'   => '<i class="fa-solid fa-folder-open"></i> Chapter',
-            'scene'     => '<i class="fa-solid fa-file-lines"></i> Scene',
-            'folder'    => '<i class="fa-solid fa-folder-open"></i> Folder',
-            'character' => '<i class="fa-solid fa-person"></i> Character',
-            'location'  => '<i class="fa-solid fa-location-dot"></i> Location',
-            'song'      => '<i class="fa-solid fa-music"></i> Song',
+            'front-matter' => '<i class="fa-solid fa-book"></i> Front Matter',
+            'chapter'      => '<i class="fa-solid fa-book-open"></i> Chapter',
+            'scene'        => '<i class="fa-solid fa-file-lines"></i> Scene',
+            'folder'       => '<i class="fa-solid fa-folder-open"></i> Folder',
+            'research'     => '<i class="fa-solid fa-folder-tree"></i> Research'
         ];
         return $types[$type] ?? $types;
     }
@@ -160,11 +158,13 @@ class FictionEntryModel extends Model
         $entries   = $this->where('fiction_title_id', $title_id)->orderBy('entry_position ASC')->findAll();
         $structure = [];
         $word_cnt  = 0;
+        $char_cnt  = 0;
         foreach ($entries as $entry) {
             if ($exclude_content) {
                 unset($entry['entry_content']);
             }
             $word_cnt += $entry['word_count'];
+            $char_cnt += $entry['char_count'];
             if (empty($entry['parent_entry_id'])) {
                 $structure[$entry['id']]['data'] = $entry;
             } else {
@@ -173,9 +173,11 @@ class FictionEntryModel extends Model
         }
         ksort($structure);
         $word_cnt = round($word_cnt/100)*100;
+        $char_cnt = round($char_cnt/100)*100;
         return [
             'entries'    => $structure,
-            'word_count' => $word_cnt
+            'word_count' => $word_cnt,
+            'char_count' => $char_cnt
         ];
     }
 }

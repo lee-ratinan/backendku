@@ -97,6 +97,7 @@ class Fiction extends BaseController
             'title'        => $title,
             'entries'      => $entries['entries'],
             'word_count'   => $entries['word_count'],
+            'char_count'   => $entries['char_count'],
             'statuses'     => $entry_model->getEntryStatus(),
             'types'        => $entry_model->getEntryType(),
             'nonce'        => $entry_model::ID_NONCE,
@@ -243,11 +244,12 @@ class Fiction extends BaseController
             throw new PageNotFoundException();
         }
         $title_id = $title['id'];
-        $entries  = $entry_model->getEntriesOfTitle($title_id, false);
+        $entries  = $entry_model->getEntriesOfTitle($title_id, false, ['front-matter', 'chapter', 'scene']);
         $data     = [
             'title'      => $title,
             'entries'    => $entries['entries'],
-            'word_count' => $entries['word_count']
+            'word_count' => $entries['word_count'],
+            'char_count' => $entries['char_count'],
         ];
         return view('fiction_export_pdf', $data);
     }

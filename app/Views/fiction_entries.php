@@ -27,7 +27,8 @@ $this->extend($layout);
                                     by <?= $title['pen_name'] ?> |
                                     <?= $title['fiction_genre'] ?> |
                                     Last updated: <span class="utc-to-local"><?= $title['updated_at'] ?></span> |
-                                    Word count: <?= number_format($word_count) ?>
+                                    Word count: <?= number_format($word_count) ?> |
+                                    Character count: <?= number_format($char_count) ?>
                                 </p>
                                 <hr />
                                 <div class="row">
@@ -39,6 +40,7 @@ $this->extend($layout);
                                         <thead>
                                         <tr>
                                             <th rowspan="2" style="min-width:100px" class="text-center">Type</th>
+                                            <th rowspan="2" style="min-width:50px" class="text-center">#</th>
                                             <th rowspan="2" style="min-width:225px" class="text-center">Title</th>
                                             <th colspan="2" style="min-width:200px" class="text-center">Count</th>
                                             <th rowspan="2" style="min-width:120px" class="text-center">Status</th>
@@ -53,13 +55,10 @@ $this->extend($layout);
                                         <?php foreach ($entries as $entry) : ?>
                                             <tr>
                                                 <td><?= $types[$entry['data']['entry_type']] ?></td>
-                                                <td>
-                                                    <a href="<?= base_url($session->locale . '/office/fiction/edit-entry/' . ($entry['data']['id']*$nonce)) ?>">
-                                                        [<?= $entry['data']['entry_position'] ?>] <?= $entry['data']['entry_title'] ?>
-                                                    </a>
-                                                </td>
-                                                <td class="text-end"><?= (0 < $entry['data']['word_count'] ? number_format($entry['data']['word_count']) : '-') ?></td>
-                                                <td class="text-end"><?= (0 < $entry['data']['char_count'] ? number_format($entry['data']['char_count']) : '-') ?></td>
+                                                <td><?= $entry['data']['entry_position'] ?>.0</td>
+                                                <td><a href="<?= base_url($session->locale . '/office/fiction/edit-entry/' . ($entry['data']['id']*$nonce)) ?>"><?= $entry['data']['entry_title'] ?></a></td>
+                                                <td><?= (0 < $entry['data']['word_count'] ? number_format($entry['data']['word_count']) : '-') ?></td>
+                                                <td><?= (0 < $entry['data']['char_count'] ? number_format($entry['data']['char_count']) : '-') ?></td>
                                                 <td><?= $statuses[$entry['data']['entry_status']] ?></td>
                                                 <td><?= $entry['data']['entry_short_note'] ?></td>
                                             </tr>
@@ -67,13 +66,10 @@ $this->extend($layout);
                                                 <?php foreach ($entry['children'] as $child) : ?>
                                                     <tr>
                                                         <td><?= $types[$child['entry_type']] ?></td>
-                                                        <td class="ps-4">
-                                                            <a href="<?= base_url($session->locale . '/office/fiction/edit-entry/' . ($child['id']*$nonce)) ?>">
-                                                                [<?= $entry['data']['entry_position'] ?>.<?= $child['entry_position'] ?>] <?= $child['entry_title'] ?>
-                                                            </a>
-                                                        </td>
-                                                        <td class="text-end"><?= (0 < $child['word_count'] ? number_format($child['word_count']) : '-') ?></td>
-                                                        <td class="text-end"><?= (0 < $child['char_count'] ? number_format($child['char_count']) : '-') ?></td>
+                                                        <td><?= $entry['data']['entry_position'] ?>.<?= $child['entry_position'] ?></td>
+                                                        <td class="ps-2"><i class="fa-solid fa-angles-right"></i> &nbsp; <a href="<?= base_url($session->locale . '/office/fiction/edit-entry/' . ($child['id']*$nonce)) ?>"><?= $child['entry_title'] ?></a></td>
+                                                        <td><?= (0 < $child['word_count'] ? number_format($child['word_count']) : '-') ?></td>
+                                                        <td><?= (0 < $child['char_count'] ? number_format($child['char_count']) : '-') ?></td>
                                                         <td><?= $statuses[$child['entry_status']] ?></td>
                                                         <td><?= $child['entry_short_note'] ?></td>
                                                     </tr>
@@ -83,7 +79,7 @@ $this->extend($layout);
                                         </tbody>
                                     </table>
                                 </div>
-                                <a class="btn btn-outline-primary btn-sm" href="<?= base_url($session->locale . '/office/fiction/new-entry/' . $title_id) ?>"><i class="fa-solid fa-circle-plus"></i> New Entry</a>
+                                <a class="btn btn-outline-primary btn-sm mb-3" href="<?= base_url($session->locale . '/office/fiction/new-entry/' . $title_id) ?>"><i class="fa-solid fa-circle-plus"></i> New Entry</a>
                             </div>
                             <div class="col-md-4 col-xl-3">
                                 <img class="img-fluid mb-2" src="<?= base_url('file/fiction_' . $title['fiction_slug'] . '.jpg') ?>" alt="<?= $title['fiction_title'] ?>" />
@@ -94,4 +90,14 @@ $this->extend($layout);
             </div>
         </div>
     </section>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            $('table').DataTable({
+                fixedHeader: true,
+                searching: true,
+                paging: false,
+                order: [[1, 'asc']],
+            });
+        });
+    </script>
 <?php $this->endSection() ?>

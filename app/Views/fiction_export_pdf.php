@@ -14,7 +14,7 @@
         strong { font-weight: 700!important; }
         .container { max-width: 750px; font-family: 'Noto Serif', 'Noto Serif Thai', 'Noto Sans JP', serif; }
         div, p { color: #000!important; }
-        p { text-indent: 0.3in;line-height: 2.5em; }
+        .chapter-content p { text-indent: 0.3in;line-height: 2.5em; }
         h1, h2, h3, h4, h5, h6 { margin: 1rem 0; font-family: 'Noto Sans', 'Noto Sans Thai', 'Noto Sans JP', sans-serif; page-break-after: avoid; }
         img.full-page {
             width: 100vw;
@@ -50,7 +50,7 @@
                     +65 9775 4577<br>
                 </div>
                 <div class="col text-end">
-                    ประมาณ <?= number_format($word_count) ?> คำ
+                    ประมาณ <?= number_format($word_count) ?> คำ (<?= number_format($char_count) ?> ตัวอักษร)
                 </div>
             </div>
             <br><br><br>
@@ -66,7 +66,7 @@
                     <br><br>
                     <?php if (isset($entry['children'])) : ?>
                         <?php foreach ($entry['children'] as $child) : ?>
-                            <?= $child['entry_content'] ?>
+                            <div class="chapter-content"><?= $child['entry_content'] ?></div>
                             <br><br>
                             <p class="text-center">* * *</p>
                             <br><br>

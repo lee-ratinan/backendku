@@ -68,7 +68,7 @@ function generate_form_field(string $id, array $configuration, int|string|array 
         $placeholder = @$configuration['placeholder'] ?? '';
         echo "<div class='mb-3' id='{$id}-block'><label class='mb-1' for='{$id}'>" . $label . "</label>";
         echo "<button class='btn btn-link' id='{$id}-expand-btn' onclick='expandTinyMceArea(\"{$id}\")'><i class='fa-solid fa-up-right-and-down-left-from-center'></i> Expand</button>";
-        echo "<button class='btn btn-link' id='{$id}-shrink-btn' onclick='shrinkTinyMceArea(\"{$id}\")'style='display:none'><i class='fa-solid fa-up-right-and-down-left-from-center'></i> Shrink</button>";
+        echo "<button class='btn btn-link' id='{$id}-shrink-btn' onclick='shrinkTinyMceArea(\"{$id}\")'style='display:none'><i class='fa-solid fa-down-left-and-up-right-to-center'></i> Shrink</button>";
         echo "<br><textarea class='form-control tinymce' id='{$id}' name='{$id}' placeholder='{$placeholder}' $required $readonly $disabled>{$current_value}</textarea>";
         if (!empty($configuration['details'])) {
             echo "<small class='form-text text-muted small'>" . lang($configuration['details']) . "</small>";
