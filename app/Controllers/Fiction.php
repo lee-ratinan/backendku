@@ -345,7 +345,7 @@ class Fiction extends BaseController
             throw new PageNotFoundException();
         }
         $title_id = $title['id'];
-        $entries  = $entry_model->getEntriesOfTitle($title_id, false, ['front-matter', 'chapter', 'scene']);
+        $entries  = $entry_model->getEntriesOfTitle($title_id, false);
         $data     = [
             'title'      => $title,
             'entries'    => $entries['entries'],
