@@ -38,6 +38,20 @@ $this->extend($layout);
                         <?php if (isset($row['fiction_slug'])) : ?>
                             <hr />
                             <a class="btn btn-outline-primary w-100" href="<?= base_url($session->locale . '/office/fiction/view-entries/' . $row['fiction_slug']) ?>">Start Writing</a>
+                            <hr />
+                            <h6><i class="fa-solid fa-cloud-arrow-up"></i> Upload Cover</h6>
+                            <form id="form-upload-cover" action="<?= base_url($session->locale . '/office/fiction/upload-cover') ?>" method="post" enctype="multipart/form-data">
+                                <input type="hidden" name="script_action" value="upload-cover"/>
+                                <input type="hidden" name="fiction_slug" value="<?= $row['fiction_slug'] ?>"/>
+                                <input type="file" id="fiction_cover" name="fiction_cover" class="form-control my-3" accept=".jpg,.png" />
+                                <p class="small">Only .jpg file is acceptable, around 636x900px, max 300kb.</p>
+                                <div class="text-end">
+                                    <button id="btn-upload-cover" type="submit" class="btn btn-primary"><i class="fa-solid fa-cloud-arrow-up"></i> Upload</button>
+                                </div>
+                            </form>
+                            <hr />
+                            <h6>Current Cover:</h6>
+                            <img class="img-fluid mb-2" src="<?= base_url('file/fiction_' . $row['fiction_slug'] . '.jpg') ?>" alt="<?= $row['fiction_title'] ?>" />
                         <?php endif; ?>
                     </div>
                 </div>
@@ -86,6 +100,43 @@ $this->extend($layout);
                         let response = JSON.parse(xhr.responseText);
                         let error_message = (response.toast ?? 'Sorry! Something went wrong. Please try again.');
                         $('#btn-save').prop('disabled', false);
+                        toastr.error(error_message);
+                    }
+                });
+            });
+            // upload
+            $('#btn-upload-cover').on('click', function (e) {
+                e.preventDefault();
+                // check if the file is selected
+                if ($('#fiction_cover').val() === '') {
+                    toastr.warning('Please select an the cover file to upload.');
+                    $('#fiction_cover').focus();
+                    return;
+                }
+                $('#btn-upload-cover').prop('disabled', true);
+                // submit form in AJAX
+                $.ajax({
+                    url: '<?= base_url($session->locale . '/office/fiction/upload-cover') ?>',
+                    type: 'POST',
+                    data: new FormData($('#form-upload-cover')[0]),
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                    success: function (response) {
+                        $('#btn-upload-cover').prop('disabled', false);
+                        if (response.status === 'success') {
+                            toastr.success(response.toast);
+                            setTimeout(function () {
+                                window.location.reload();
+                            }, 5000);
+                        } else {
+                            toastr.error(response.toast);
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        let response = JSON.parse(xhr.responseText);
+                        let error_message = (response.toast ?? 'Sorry! Something went wrong. Please try again.');
+                        $('#btn-upload-cover').prop('disabled', false);
                         toastr.error(error_message);
                     }
                 });

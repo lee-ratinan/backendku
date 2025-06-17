@@ -153,6 +153,7 @@ $routes->group('{locale}/office', ['filter' => 'auth'], static function ($routes
     $routes->get('fiction/edit-entry/(:any)', 'Fiction::editContent/edit/$1'); // edit fiction_entry
     $routes->post('fiction/edit-entry', 'Fiction::saveContent');
     $routes->post('fiction/autosave-entry', 'Fiction::autosaveContent');
+    $routes->post('fiction/upload-cover', 'Fiction::uploadCover');
     /////////////////////////////////////////////////////////////////////////////
     // JOURNEY
     // journey_port table

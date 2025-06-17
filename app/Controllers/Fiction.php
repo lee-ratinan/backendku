@@ -119,6 +119,64 @@ class Fiction extends BaseController
         ])->setStatusCode(HTTP_STATUS_SOMETHING_WRONG);
     }
 
+    public function uploadCover(): ResponseInterface
+    {
+        helper(['form']);
+        $session        = session();
+        $log_model      = new LogActivityModel();
+        $validationRule = [
+            'fiction_cover' => [
+                'label' => 'Cover File',
+                'rules' => [
+                    'uploaded[fiction_cover]',
+                    'is_image[fiction_cover]',
+                    'mime_in[fiction_cover,image/jpg,image/jpeg]',
+                    'max_size[fiction_cover,300]',
+                    'max_dims[fiction_cover,1024,1024]',
+                ],
+            ],
+        ];
+        if (! $this->validateData([], $validationRule)) {
+            $errors = $this->validator->getErrors();
+            $toast  = 'Sorry, there is the error uploading your file:';
+            foreach ($errors as $error) {
+                $toast .= '<br>- ' . $error;
+            }
+            return $this->response->setJSON([
+                'status'  => 'error',
+                'message' => 'failed-validation',
+                'toast'   => $toast
+            ])->setStatusCode(HTTP_STATUS_SOMETHING_WRONG);
+        }
+        try {
+            $img                  = $this->request->getFile('fiction_cover');
+            list($width, $height) = getimagesize($img->getPathname());
+            $file_name            = $this->request->getPost('fiction_slug') . '.jpg';
+            $source               = imagecreatefromjpeg($img->getPathname());
+            $destination          = imagecreatetruecolor($width, $height);
+            imagecopyresampled($destination, $source, 0, 0, 0, 0, $width, $height, $width, $height);
+            imagejpeg($destination, WRITEPATH . 'uploads/fiction/' . $file_name, 90);
+            imagedestroy($source);
+            imagedestroy($destination);
+            $log_model->insertTableUpdate('fiction_title', $session->user_id, ['cover-image' => $file_name], $session->user_id, 'update-logo');
+            return $this->response->setJSON([
+                'status'   => 'success',
+                'message'  => 'cover-uploaded',
+                'toast'    => 'Successfully uploaded the cover.',
+            ]);
+        } catch (\Exception $e) {
+            return $this->response->setJSON([
+                'status'  => 'error',
+                'message' => 'generic-error',
+                'toast'   => lang('System.status_message.generic_error')
+            ])->setStatusCode(HTTP_STATUS_SOMETHING_WRONG);
+        }
+    }
+
+    /**
+     * @param string $slug
+     * @return string
+     */
     public function viewContents(string $slug): string
     {
         $session     = session();
