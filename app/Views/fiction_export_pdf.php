@@ -16,6 +16,7 @@
         div, p { color: #000!important; }
         .chapter-content p { text-indent: 0.3in;line-height: 2.5em; }
         h1, h2, h3, h4, h5, h6 { margin: 1rem 0; font-family: 'Noto Sans', 'Noto Sans Thai', 'Noto Sans JP', sans-serif; page-break-after: avoid; }
+        blockquote { border-left: 5px solid #aaa; }
         img.full-page {
             width: 100vw;
             height: 100vh;
@@ -67,7 +68,9 @@
                     <?php if (isset($entry['children'])) : ?>
                         <?php foreach ($entry['children'] as $child) : ?>
                             <div class="chapter-content"><?= $child['entry_content'] ?></div>
-                            <br><br>
+                            <br>
+                            <div class="footnote-section"><?= $child['footnote_section'] ?></div>
+                            <br>
                             <p class="text-center">* * *</p>
                             <br><br>
                         <?php endforeach; ?>
