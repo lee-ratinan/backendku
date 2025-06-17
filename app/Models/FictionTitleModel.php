@@ -24,47 +24,46 @@ class FictionTitleModel extends Model
     protected $updatedField = 'updated_at';
     const ID_NONCE = 743;
 
-//    /**
-//     * @param int $doc_id
-//     * @param string $version_number
-//     * @return array
-//     */
-//    public function getDocumentVersion(int $doc_id, string $version_number = ''): array
-//    {
-//        if (empty($version_number)) {
-//            return $this->select('document_version.*, user_name_first, user_name_family')
-//                ->join('user_master', 'document_version.created_by = user_master.id')
-//                ->where('doc_id', $doc_id)->orderBy('version_number', 'DESC')->first();
-//        }
-//        return $this->select('document_version.*, user_name_first, user_name_family')
-//            ->join('user_master', 'document_version.created_by = user_master.id')
-//            ->where('doc_id', $doc_id)->where('version_number', $version_number)->first();
-//    }
-//
-//    /**
-//     * Retrieve all version history
-//     * @param int $doc_id
-//     * @return array
-//     */
-//    public function getDocumentVersionHistory(int $doc_id): array
-//    {
-//        return $this->select('version_number, version_description, published_date, user_name_first, user_name_family')
-//            ->join('user_master', 'user_master.id = document_version.created_by')
-//            ->where('doc_id', $doc_id)
-//            ->orderBy('document_version.id', 'ASC')
-//            ->findAll();
-//    }
-//
-//    /**
-//     * @param int $doc_id
-//     * @return array
-//     */
-//    public function getVersions(int $doc_id): array
-//    {
-//        return $this->select('document_master.doc_slug, document_version.*')
-//            ->join('document_master', 'document_master.id = document_version.doc_id')
-//            ->where('document_version.doc_id', $doc_id)
-//            ->orderBy('document_version.version_number', 'ASC')
-//            ->findAll();
-//    }
+    private array $configurations = [
+        'id'            => [
+            'type'  => 'hidden',
+            'label' => 'ID'
+        ],
+        'fiction_title' => [
+            'type'      => 'text',
+            'label'     => 'Title',
+            'required'  => true,
+            'maxlength' => 128
+        ],
+        'fiction_slug'  => [
+            'type'      => 'text',
+            'label'     => 'Slug',
+            'required'  => true,
+            'maxlength' => 128
+        ],
+        'fiction_genre' => [
+            'type'      => 'text',
+            'label'     => 'Genre',
+            'required'  => true,
+            'maxlength' => 64
+        ],
+        'pen_name'      => [
+            'type'      => 'text',
+            'label'     => 'Pen Name',
+            'required'  => true,
+            'maxlength' => 64
+        ]
+    ];
+
+    /**
+     * Get configurations for generating forms
+     * @param array $columns
+     * @return array
+     */
+    public function getConfigurations(array $columns = []): array
+    {
+        $configurations  = $this->configurations;
+        return $columns ? array_intersect_key($configurations, array_flip($columns)) : $configurations;
+    }
+
 }

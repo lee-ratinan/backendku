@@ -49,9 +49,10 @@ class FictionEntryModel extends Model
             'required' => true
         ],
         'entry_title'      => [
-            'type'     => 'text',
-            'label'    => 'Entry Title',
-            'required' => true,
+            'type'      => 'text',
+            'label'     => 'Entry Title',
+            'required'  => true,
+            'maxlength' => 128
         ],
         'entry_type'       => [
             'type'    => 'select',
