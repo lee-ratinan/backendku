@@ -83,6 +83,8 @@ $this->extend($layout);
                             </div>
                             <div class="col-md-4 col-xl-3">
                                 <img class="img-fluid mb-2" src="<?= base_url('file/fiction_' . $title['fiction_slug'] . '.jpg') ?>" alt="<?= $title['fiction_title'] ?>" />
+                                <hr />
+                                <a class="btn btn-outline-primary w-100" href="<?= base_url($session->locale . '/office/fiction/edit/' . $title_id) ?>">Edit</a>
                             </div>
                         </div>
                     </div>

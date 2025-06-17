@@ -5,30 +5,91 @@ $this->extend($layout);
 ?>
 <?= $this->section('content') ?>
 <?php $session = session(); ?>
-<div class="pagetitle">
-    <h1><?= $page_title ?></h1>
-    <nav>
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="<?= base_url($session->locale . '/office/dashboard') ?>"><?= lang('System.dashboard.page_title') ?></a></li>
-            <li class="breadcrumb-item"><a href="<?= base_url($session->locale . '/office/fiction') ?>">Fiction</a></li>
-            <li class="breadcrumb-item active"><?= $page_title ?></li>
-        </ol>
-    </nav>
-</div>
-<section class="section">
-    <div class="row">
-        <div class="col">
-            <div class="card">
-                <div class="card-body pt-3">
-                    <?= $mode ?>
-                    <pre>
+    <div class="pagetitle">
+        <h1><?= $page_title ?></h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="<?= base_url($session->locale . '/office/dashboard') ?>"><?= lang('System.dashboard.page_title') ?></a></li>
+                <li class="breadcrumb-item"><a href="<?= base_url($session->locale . '/office/fiction') ?>">Fiction</a></li>
+                <li class="breadcrumb-item active"><?= $page_title ?></li>
+            </ol>
+        </nav>
+    </div>
+    <section class="section">
+        <div class="row">
+            <div class="col-12 col-lg-6">
+                <div class="card">
+                    <div class="card-body pt-3">
+                        <h5 class="card-title"><?= $page_title ?></h5>
                         <?php
-                        print_r($row);
+                        $fields = [
+                            'fiction_title',
+                            'fiction_slug',
+                            'fiction_genre',
+                            'pen_name'
+                        ];
+                        foreach ($fields as $field) {
+                            generate_form_field($field, $config[$field], @$row[$field]);
+                        }
                         ?>
-                    </pre>
+                        <div class="text-end">
+                            <button class="btn btn-primary btn-sm" id="btn-save"><i class="fa-solid fa-save"></i> Save</button>
+                        </div>
+                        <?php if (isset($row['fiction_slug'])) : ?>
+                            <hr />
+                            <a class="btn btn-outline-primary w-100" href="<?= base_url($session->locale . '/office/fiction/view-entries/' . $row['fiction_slug']) ?>">Start Writing</a>
+                        <?php endif; ?>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            $('#fiction_title').change(function () {
+                let fiction_title = (($(this).val()).trim()).replace(/\s{2,}/g, ' '); // TRIM and REPLACE SPACES
+                $(this).val(fiction_title);
+                $('#fiction_slug').val(fiction_title.toLowerCase().replace(/\s/g, '-').replace(/[^a-zA-Z0-9\-]/g, ''));
+            });
+            $('#btn-save').click(function (e) {
+                e.preventDefault();
+                let ids = ['fiction_title', 'fiction_slug', 'fiction_genre', 'pen_name'];
+                for (let i = 0; i < ids.length; i++) {
+                    if ('' === $('#' + ids[i]).val()) {
+                        toastr.warning('Please ensure all mandatory fields are filled.');
+                        $('#' + ids[i]).focus();
+                        return;
+                    }
+                }
+                $(this).prop('disabled', true);
+                $.ajax({
+                    url: '<?= base_url('en/office/fiction/edit') ?>',
+                    type: 'post',
+                    data: {
+                        mode: '<?= $mode ?>',
+                        id: <?= $row['id'] ?? '0' ?>,
+                        <?php foreach ($fields as $field) : ?>
+                        <?= $field ?>: $('#<?= $field ?>').val(),
+                        <?php endforeach; ?>
+                    },
+                    success: function (response) {
+                        if ('success' === response.status) {
+                            toastr.success(response.toast);
+                            setTimeout(function () {window.location.href = response.redirect;}, 5000);
+                        } else {
+                            let message = (response.toast ?? 'Sorry! Something went wrong. Please try again.');
+                            toastr.error(message);
+                            $('#btn-save').prop('disabled', false);
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        let response = JSON.parse(xhr.responseText);
+                        let error_message = (response.toast ?? 'Sorry! Something went wrong. Please try again.');
+                        $('#btn-save').prop('disabled', false);
+                        toastr.error(error_message);
+                    }
+                });
+            });
+        });
+    </script>
 <?php $this->endSection() ?>

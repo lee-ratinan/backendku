@@ -42,17 +42,16 @@ class Fiction extends BaseController
     {
         $session = session();
         $model   = new FictionTitleModel();
-        $mode    = 'edit';
+        $mode    = 'new';
         $title   = 'New Fiction Title';
         $row     = [];
-        if ('new' == $id) {
-            $mode   = 'new';
-        } else {
+        if ('new' != $id) {
             $id    = $id / $model::ID_NONCE;
             $row   = $model->find($id);
             if (empty($row)) {
                 throw new PageNotFoundException();
             }
+            $mode  = 'edit';
             $title = 'Edit Fiction: ' . $row['fiction_title'];
         }
         $data    = [
@@ -64,16 +63,60 @@ class Fiction extends BaseController
             'current_role' => $session->current_role,
             'mode'         => $mode,
             'row'          => $row,
+            'config'       => $model->getConfigurations()
         ];
         return view('fiction_edit', $data);
     }
 
     /**
      * @return ResponseInterface
+     * @throws ReflectionException
      */
     public function save(): ResponseInterface
     {
-        return $this->response->setJSON([]);
+        $mode        = $this->request->getPost('mode');
+        $title_model = new FictionTitleModel();
+        $log_model   = new LogActivityModel();
+        $session     = session();
+        $id          = $this->request->getPost('id');
+        $data        = [];
+        $fields      = [
+            'fiction_title',
+            'fiction_slug',
+            'fiction_genre',
+            'pen_name'
+        ];
+        foreach ($fields as $field) {
+            $value        = $this->request->getPost($field);
+            $data[$field] = (!empty($value)) ? $value : null;
+        }
+        if ('edit' == $mode) {
+            if ($title_model->update($id, $data)) {
+                $log_model->insertTableUpdate('fiction_title', $id, $data, $session->user_id);
+                $new_id = $id * $title_model::ID_NONCE;
+                return $this->response->setJSON([
+                    'status'  => 'success',
+                    'toast'   => 'Successfully updated the fiction title.',
+                    'redirect' => base_url($session->locale . '/office/fiction/edit/' . $new_id)
+                ]);
+            }
+        } else {
+            $data['created_by'] = $session->user_id;
+            // INSERT
+            if ($id = $title_model->insert($data)) {
+                $log_model->insertTableUpdate('fiction_title', $id, $data, $session->user_id);
+                $new_id = $id * $title_model::ID_NONCE;
+                return $this->response->setJSON([
+                    'status'   => 'success',
+                    'toast'    => 'Successfully created new fiction title.',
+                    'redirect' => base_url($session->locale . '/office/fiction/edit/' . $new_id)
+                ]);
+            }
+        }
+        return $this->response->setJSON([
+            'status'  => 'error',
+            'toast'   => lang('System.status_message.generic_error')
+        ])->setStatusCode(HTTP_STATUS_SOMETHING_WRONG);
     }
 
     public function viewContents(string $slug): string
