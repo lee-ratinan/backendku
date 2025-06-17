@@ -149,10 +149,14 @@ class FictionEntryModel extends Model
     /**
      * @param int $title_id
      * @param bool $exclude_content
+     * @param array $entry_types
      * @return array
      */
-    public function getEntriesOfTitle(int $title_id, $exclude_content = true): array
+    public function getEntriesOfTitle(int $title_id, bool $exclude_content = true, array $entry_types = []): array
     {
+        if (!empty($entry_types)) {
+            $this->whereIn('entry_type', $entry_types);
+        }
         $entries   = $this->where('fiction_title_id', $title_id)->orderBy('entry_position ASC')->findAll();
         $structure = [];
         $word_cnt  = 0;
@@ -167,6 +171,7 @@ class FictionEntryModel extends Model
                 $structure[$entry['parent_entry_id']]['children'][$entry['id']] = $entry;
             }
         }
+        ksort($structure);
         $word_cnt = round($word_cnt/100)*100;
         return [
             'entries'    => $structure,

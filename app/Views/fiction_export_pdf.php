@@ -14,6 +14,7 @@
         strong { font-weight: 700!important; }
         .container { max-width: 750px; font-family: 'Noto Serif', 'Noto Serif Thai', 'Noto Sans JP', serif; }
         div, p { color: #000!important; }
+        p { text-indent: 0.3in;line-height: 2.5em; }
         h1, h2, h3, h4, h5, h6 { margin: 1rem 0; font-family: 'Noto Sans', 'Noto Sans Thai', 'Noto Sans JP', sans-serif; page-break-after: avoid; }
         img.full-page {
             width: 100vw;
@@ -59,9 +60,9 @@
             <p class="text-center">&copy; <?= date('Y') . ' ' . $title['pen_name'] ?></p>
             <div class="print-page-break"></div>
             <?php foreach ($entries as $entry) : ?>
-                <?php if ('chapter' == $entry['entry_type'] || 'folder' == $entry['entry_type']) : ?>
+                <?php if ('chapter' == $entry['data']['entry_type'] || 'folder' == $entry['data']['entry_type']) : ?>
                     <br><br><br><br><br>
-                    <h2 class="text-center"><?= $entry['entry_title'] ?></h2>
+                    <h2 class="text-center"><?= $entry['data']['entry_title'] ?></h2>
                     <br><br>
                     <?php if (isset($entry['children'])) : ?>
                         <?php foreach ($entry['children'] as $child) : ?>
@@ -73,7 +74,7 @@
                     <?php endif; ?>
                     <div class="print-page-break"></div>
                 <?php else : ?>
-                    <?= $entry['entry_content'] ?>
+                    <?= $entry['data']['entry_content'] ?>
                     <div class="print-page-break"></div>
                 <?php endif; ?>
             <?php endforeach; ?>
