@@ -35,6 +35,7 @@
         .bg-red {background-color: #740001 !important;} .bg-gold {background-color: #D3A625 !important;color:#000!important;} .bg-yellow {background-color: #FFD800 !important;color:#000!important;} .bg-black {background-color: #000000 !important;} .bg-blue {background-color: #0E1A40 !important;} .bg-bronze {background-color: #946B2D !important;} .bg-green {background-color: #1A472A !important;} .bg-silver {background-color: #5D5D5D !important;}
         .text-red {color: #740001 !important;} .text-gold {color: #D3A625 !important} .text-yellow {color: #FFD800 !important} .text-black {color: #000000 !important;} .text-blue {color: #0E1A40 !important;} .text-bronze {color: #946B2D !important;} .text-green {color: #1A472A !important;} .text-silver {color: #5D5D5D !important;}
         .tox-promotion {display:none!important;}
+        .full-page {background-color: #232f3f;padding:10px;position: fixed;width:100vw;height:100vh;top:0;left:0;z-index: 1000;}
     </style>
 </head>
 <body>
@@ -360,6 +361,8 @@
     $(function () { setTimeout(() => { window.location.href = '<?= base_url('logout') ?>'; }, 1800000); });
     let gl_support = !!window.WebGLRenderingContext && !!document.createElement('canvas').getContext('webgl');
     if (!gl_support) { $('#webgl-support').html('WebGL is not supported!'); } else { $('#webgl-support').html('WebGL is supported!'); }
+    let expandTinyMceArea = function (div_id) {$('#'+div_id+'-block').addClass('full-page');$('#'+div_id+'-expand-btn').hide();$('#'+div_id+'-shrink-btn').show();}
+    let shrinkTinyMceArea = function (div_id) {$('#'+div_id+'-block').removeClass('full-page');$('#'+div_id+'-shrink-btn').hide();$('#'+div_id+'-expand-btn').show();}
 </script>
 </body>
 </html>

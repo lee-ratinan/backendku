@@ -156,7 +156,7 @@ $this->extend($layout);
                 },
                 selector: 'textarea.tinymce',
                 skin: 'oxide-dark',
-                height: 800,
+                height: '90vh',
                 plugins: [
                     'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
                     'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
