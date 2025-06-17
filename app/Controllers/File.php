@@ -62,9 +62,15 @@ class File extends BaseController
         $mime_type = $mime_types[$file_extension] ?? 'text/plain';
         // RETURN FILE
         if (0 == $download) {
+            $this->response->removeHeader('Cache-Control')
+                ->removeHeader('Pragma')
+                ->removeHeader('Expires');
             $this->response->setHeader('Content-Type', $mime_type)
                 ->setHeader('Content-Disposition', 'inline')
                 ->setHeader('Content-Length', filesize($file))
+                ->setHeader('Cache-Control', 'public, max-age=86400')
+                ->setHeader('Expires', gmdate('D, d M Y H:i:s', time() + 86400) . ' GMT')
+                ->setHeader('Pragma', 'public')
                 ->setBody(file_get_contents($file))
                 ->send();
         } else {
