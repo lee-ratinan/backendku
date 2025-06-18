@@ -104,6 +104,21 @@ $this->extend($layout);
                 font_formats: "Noto Sans; Noto Serif; Noto Sans Thai; Noto Serif Thai; Noto Sans JP",
                 toolbar: 'undo redo | bold italic | alignleft aligncenter | bullist numlist | removeformat'
             });
+            // LISTENER
+            $('#entry_type').change(function (e) {
+                e.preventDefault();
+                let entry_type = $(this).val();
+                if ('chapter' === entry_type || 'folder' === entry_type) {
+                    $('#entry_content-block').hide();
+                } else {
+                    $('#entry_content-block').show();
+                }
+            });
+            if ('chapter' === $('#entry_type').val() || 'folder' === $('#entry_type').val()) {
+                $('#entry_content-block').hide();
+            } else {
+                $('#entry_content-block').show();
+            }
             $('#btn-save').click(function (e) {
                 e.preventDefault();
                 let ids = ['entry_position', 'entry_title', 'entry_type', 'entry_short_note', 'entry_status'];
