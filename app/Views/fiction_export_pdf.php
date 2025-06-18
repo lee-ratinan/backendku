@@ -16,7 +16,7 @@
         div, p { color: #000!important; }
         .chapter-content p { text-indent: 0.3in;line-height: 2.5em; }
         h1, h2, h3, h4, h5, h6 { margin: 1rem 0; font-family: 'Noto Sans', 'Noto Sans Thai', 'Noto Sans JP', sans-serif; page-break-after: avoid; }
-        blockquote { border-left: 5px solid #aaa; }
+        blockquote { border-left: 5px solid #aaa; padding-left: 10px; }
         img.full-page {
             width: 100vw;
             height: 100vh;
@@ -59,30 +59,32 @@
             <p class="text-center">โดย <?= $title['pen_name'] ?></p>
             <br><br><br><br><br><br><br>
             <p class="text-center">&copy; <?= date('Y') . ' ' . $title['pen_name'] ?></p>
-            <div class="print-page-break"></div>
             <?php foreach ($entries as $entry) : ?>
                 <?php if (in_array($entry['entry_type'], ['front-matter', 'research'])) : ?>
-                    <div class="<?= $entry['entry_type'] ?>">
+                    <?php if ('front-matter' == $entry['entry_type']) : ?>
+                        <div class="print-page-break"></div>
+                    <?php endif; ?>
+                    <div class="<?= $entry['entry_type'] ?> my-5">
                         <?= $entry['entry_content'] ?>
                     </div>
-                    <?php if (!empty($entry['footer_section'])) : ?>
+                    <?php if (!empty($entry['footnote_section'])) : ?>
                         <hr />
-                        <div><?= $entry['footer_section'] ?></div>
+                        <div><?= $entry['footnote_section'] ?></div>
                     <?php endif; ?>
                 <?php elseif (in_array($entry['entry_type'], ['chapter', 'folder'])) : ?>
+                    <div class="print-page-break"></div>
                     <br><br><br><br><br>
                     <h2 class="text-center"><?= $entry['entry_title'] ?></h2>
                     <br><br>
                 <?php elseif ('scene' == $entry['entry_type']) : ?>
-                    <br>
-                    <div class="chapter-content">
+                    <div class="chapter-content" class="my-5">
                         <?= $entry['entry_content'] ?>
+                        <?php if (!empty($entry['footnote_section'])) : ?>
+                            <hr />
+                            <div><?= $entry['footnote_section'] ?></div>
+                        <?php endif; ?>
                     </div>
-                    <?php if (!empty($entry['footer_section'])) : ?>
-                        <hr />
-                        <div><?= $entry['footer_section'] ?></div>
-                    <?php endif; ?>
-                    <br>
+                    <div class="text-center">* * *</div>
                 <?php endif; ?>
             <?php endforeach; ?>
         </div>
