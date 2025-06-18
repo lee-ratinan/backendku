@@ -61,24 +61,28 @@
             <p class="text-center">&copy; <?= date('Y') . ' ' . $title['pen_name'] ?></p>
             <div class="print-page-break"></div>
             <?php foreach ($entries as $entry) : ?>
-                <?php if ('chapter' == $entry['data']['entry_type'] || 'folder' == $entry['data']['entry_type']) : ?>
-                    <br><br><br><br><br>
-                    <h2 class="text-center"><?= $entry['data']['entry_title'] ?></h2>
-                    <br><br>
-                    <?php if (isset($entry['children'])) : ?>
-                        <?php foreach ($entry['children'] as $child) : ?>
-                            <div class="chapter-content"><?= $child['entry_content'] ?></div>
-                            <br>
-                            <div class="footnote-section"><?= $child['footnote_section'] ?></div>
-                            <br>
-                            <p class="text-center">* * *</p>
-                            <br><br>
-                        <?php endforeach; ?>
+                <?php if (in_array($entry['entry_type'], ['front-matter', 'research'])) : ?>
+                    <div class="<?= $entry['entry_type'] ?>">
+                        <?= $entry['entry_content'] ?>
+                    </div>
+                    <?php if (!empty($entry['footer_section'])) : ?>
+                        <hr />
+                        <div><?= $entry['footer_section'] ?></div>
                     <?php endif; ?>
-                    <div class="print-page-break"></div>
-                <?php else : ?>
-                    <?= $entry['data']['entry_content'] ?>
-                    <div class="print-page-break"></div>
+                <?php elseif (in_array($entry['entry_type'], ['chapter', 'folder'])) : ?>
+                    <br><br><br><br><br>
+                    <h2 class="text-center"><?= $entry['entry_title'] ?></h2>
+                    <br><br>
+                <?php elseif ('scene' == $entry['entry_type']) : ?>
+                    <br>
+                    <div class="chapter-content">
+                        <?= $entry['entry_content'] ?>
+                    </div>
+                    <?php if (!empty($entry['footer_section'])) : ?>
+                        <hr />
+                        <div><?= $entry['footer_section'] ?></div>
+                    <?php endif; ?>
+                    <br>
                 <?php endif; ?>
             <?php endforeach; ?>
         </div>

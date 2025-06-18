@@ -157,19 +157,27 @@ class FictionEntryModel extends Model
             $this->whereIn('entry_type', $entry_types);
         }
         $entries   = $this->where('fiction_title_id', $title_id)->orderBy('entry_position ASC')->findAll();
+        $parents   = [];
+        $children  = [];
         $structure = [];
         $word_cnt  = 0;
         $char_cnt  = 0;
         foreach ($entries as $entry) {
-            if ($exclude_content) {
-                unset($entry['entry_content']);
-            }
-            $word_cnt += $entry['word_count'];
-            $char_cnt += $entry['char_count'];
-            if (empty($entry['parent_entry_id'])) {
-                $structure[$entry['id']]['data'] = $entry;
+            if (!empty($entry['parent_entry_id'])) {
+                $children[$entry['id']] = $entry;
             } else {
-                $structure[$entry['parent_entry_id']]['children'][$entry['id']] = $entry;
+                $parents[$entry['id']] = $entry;
+            }
+        }
+        foreach ($parents as $parent) {
+            $structure[$parent['entry_position'] . '.00'] = $parent;
+        }
+        foreach ($children as $child) {
+            $position = $parents[$child['parent_entry_id']]['entry_position'] . '.' . sprintf('%02d', $child['entry_position']);
+            $structure[$position] = $child;
+            if ('scene' == $child['entry_type']) {
+                $word_cnt += $child['word_count'];
+                $char_cnt += $child['char_count'];
             }
         }
         ksort($structure);

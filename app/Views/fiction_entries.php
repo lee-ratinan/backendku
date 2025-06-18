@@ -21,15 +21,16 @@ $this->extend($layout);
                 <div class="card">
                     <div class="card-body pt-3">
                         <div class="row">
-                            <div class="col-md-8 col-xl-9">
+                            <div class="col">
                                 <h2><?= $title['fiction_title'] ?></h2>
                                 <p>
                                     by <?= $title['pen_name'] ?> |
                                     <?= $title['fiction_genre'] ?> |
-                                    Last updated: <span class="utc-to-local"><?= $title['updated_at'] ?></span> |
+                                    Last updated: <span class="utc-to-local"><?= $title['updated_at'] ?></span><br>
                                     Word count: <?= number_format($word_count) ?> |
                                     Character count: <?= number_format($char_count) ?>
                                 </p>
+                                <a class="btn btn-outline-primary" href="<?= base_url($session->locale . '/office/fiction/edit/' . $title_id) ?>">Edit</a>
                                 <hr />
                                 <div class="row">
                                     <div class="col"><a class="btn btn-outline-primary btn-sm" href="<?= base_url($session->locale . '/office/fiction/new-entry/' . $title_id) ?>"><i class="fa-solid fa-circle-plus"></i> New Entry</a></div>
@@ -39,7 +40,7 @@ $this->extend($layout);
                                     <table class="table table-sm table-hover table-striped">
                                         <thead>
                                         <tr>
-                                            <th rowspan="2" style="min-width:100px" class="text-center">Type</th>
+                                            <th rowspan="2" style="min-width:120px" class="text-center">Type</th>
                                             <th rowspan="2" style="min-width:50px" class="text-center">#</th>
                                             <th rowspan="2" style="min-width:225px" class="text-center">Title</th>
                                             <th colspan="2" style="min-width:200px" class="text-center">Count</th>
@@ -52,39 +53,21 @@ $this->extend($layout);
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <?php foreach ($entries as $entry) : ?>
+                                        <?php foreach ($entries as $position => $entry) : ?>
                                             <tr>
-                                                <td><?= $types[$entry['data']['entry_type']] ?></td>
-                                                <td><?= $entry['data']['entry_position'] ?>.0</td>
-                                                <td><a href="<?= base_url($session->locale . '/office/fiction/edit-entry/' . ($entry['data']['id']*$nonce)) ?>"><?= $entry['data']['entry_title'] ?></a></td>
-                                                <td><?= (0 < $entry['data']['word_count'] ? number_format($entry['data']['word_count']) : '-') ?></td>
-                                                <td><?= (0 < $entry['data']['char_count'] ? number_format($entry['data']['char_count']) : '-') ?></td>
-                                                <td><?= $statuses[$entry['data']['entry_status']] ?></td>
-                                                <td><?= $entry['data']['entry_short_note'] ?></td>
+                                                <td><?= $types[$entry['entry_type']] ?></td>
+                                                <td><?= $position ?></td>
+                                                <td><?= (in_array($entry['entry_type'], ['scene', 'research']) ? '<i class="fa-solid fa-angles-right"></i> &nbsp; ' : '') ?><a href="<?= base_url($session->locale . '/office/fiction/edit-entry/' . ($entry['id']*$nonce)) ?>"><?= $entry['entry_title'] ?></a></td>
+                                                <td><?= (0 < $entry['word_count'] ? number_format($entry['word_count']) : '-') ?></td>
+                                                <td><?= (0 < $entry['char_count'] ? number_format($entry['char_count']) : '-') ?></td>
+                                                <td><?= $statuses[$entry['entry_status']] ?></td>
+                                                <td><?= $entry['entry_short_note'] ?></td>
                                             </tr>
-                                            <?php if (isset($entry['children'])) : ?>
-                                                <?php foreach ($entry['children'] as $child) : ?>
-                                                    <tr>
-                                                        <td><?= $types[$child['entry_type']] ?></td>
-                                                        <td><?= $entry['data']['entry_position'] ?>.<?= $child['entry_position'] ?></td>
-                                                        <td class="ps-2"><i class="fa-solid fa-angles-right"></i> &nbsp; <a href="<?= base_url($session->locale . '/office/fiction/edit-entry/' . ($child['id']*$nonce)) ?>"><?= $child['entry_title'] ?></a></td>
-                                                        <td><?= (0 < $child['word_count'] ? number_format($child['word_count']) : '-') ?></td>
-                                                        <td><?= (0 < $child['char_count'] ? number_format($child['char_count']) : '-') ?></td>
-                                                        <td><?= $statuses[$child['entry_status']] ?></td>
-                                                        <td><?= $child['entry_short_note'] ?></td>
-                                                    </tr>
-                                                <?php endforeach; ?>
-                                            <?php endif; ?>
                                         <?php endforeach; ?>
                                         </tbody>
                                     </table>
                                 </div>
                                 <a class="btn btn-outline-primary btn-sm mb-3" href="<?= base_url($session->locale . '/office/fiction/new-entry/' . $title_id) ?>"><i class="fa-solid fa-circle-plus"></i> New Entry</a>
-                            </div>
-                            <div class="col-md-4 col-xl-3">
-                                <img class="img-fluid mb-2" src="<?= base_url('file/fiction_' . $title['fiction_slug'] . '.jpg') ?>" alt="<?= $title['fiction_title'] ?>" />
-                                <hr />
-                                <a class="btn btn-outline-primary w-100" href="<?= base_url($session->locale . '/office/fiction/edit/' . $title_id) ?>">Edit</a>
                             </div>
                         </div>
                     </div>
