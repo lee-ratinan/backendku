@@ -95,7 +95,8 @@ class Document extends BaseController
             'document'     => $document,
             'published'    => $published,
             'nonce'        => $version_model::ID_NONCE,
-            'config'       => $doc_model->getConfigurations()
+            'config'       => $doc_model->getConfigurations(),
+            'skip_logout'  => TRUE
         ];
         return view('document_edit', $data);
     }

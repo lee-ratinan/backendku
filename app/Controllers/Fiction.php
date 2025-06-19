@@ -244,6 +244,7 @@ class Fiction extends BaseController
             'configurations' => $entry_model->getConfigurations($real_title_id),
             'toc'            => $entry_model->getEntriesOfTitle($real_title_id),
             'toc_nonce'      => $entry_model::ID_NONCE,
+            'skip_logout'    => TRUE
         ];
         return view('fiction_edit_entry', $data);
     }
