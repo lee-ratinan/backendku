@@ -64,7 +64,7 @@
                     <?php if ('front-matter' == $entry['entry_type']) : ?>
                         <div class="print-page-break"></div>
                     <?php else: ?>
-                        <p>[Title: <?= $entry['entry_title'] ?>]</p>
+                        <p class="mt-5">[Title: <?= $entry['entry_title'] ?>]</p>
                     <?php endif; ?>
                     <div class="<?= $entry['entry_type'] ?> my-5">
                         <?= $entry['entry_content'] ?>
