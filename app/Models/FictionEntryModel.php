@@ -163,6 +163,9 @@ class FictionEntryModel extends Model
         $word_cnt  = 0;
         $char_cnt  = 0;
         foreach ($entries as $entry) {
+            if ($exclude_content) {
+                unset($entry['entry_content']);
+            }
             if (!empty($entry['parent_entry_id'])) {
                 $children[$entry['id']] = $entry;
             } else {

@@ -242,6 +242,7 @@ class Fiction extends BaseController
             'real_entry_id'  => $real_entry_id,
             'real_title_id'  => $real_title_id,
             'configurations' => $entry_model->getConfigurations($real_title_id),
+            'toc'            => $entry_model->getEntriesOfTitle($real_title_id),
         ];
         return view('fiction_edit_entry', $data);
     }
