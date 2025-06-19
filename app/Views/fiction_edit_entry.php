@@ -19,16 +19,11 @@ $this->extend($layout);
     </div>
     <section class="section">
         <div class="row">
-            <div id="toc-panel" class="col-md-4 col-lg-3 col-xl-2">
-                <pre>
-                    <?php print_r($toc) ?>
-                </pre>
-            </div>
-            <div id="main-panel" class="col-md-8 col-lg-9 col-xl-10">
+            <div id="main-panel" class="col-md-8 col-lg-9">
                 <div class="card">
                     <div class="card-body pt-3">
-                        <a id="toc-btn-show"><i class="fa-solid fa-chevron-right"></i> Table of Contents</a>
-                        <a id="toc-btn-hide"><i class="fa-solid fa-chevron-left"></i> Table of Contents</a>
+                        <a id="toc-btn-show"><i class="fa-solid fa-chevron-left"></i> Table of Contents</a>
+                        <a id="toc-btn-hide"><i class="fa-solid fa-chevron-right"></i> Table of Contents</a>
                         <h5 class="card-title"><?= $page_title ?></h5>
                         <h6>Title: <?= $title_row['fiction_title'] ?></h6>
                         <p>By <?= $title_row['pen_name'] ?> | <?= $title_row['fiction_genre'] ?></p>
@@ -55,6 +50,17 @@ $this->extend($layout);
                         </div>
                     </div>
                 </div>
+            </div>
+            <div id="toc-panel" class="col-md-4 col-lg-3">
+                <ul style="padding-left: 0.5rem;">
+                <?php foreach ($toc['entries'] as $key => $value) : ?>
+                    <?php if ($entry_row['id'] == $value['id']) : ?>
+                        <li><?= $key ?> - <?= @$value['entry_title'] ?></li>
+                    <?php else: ?>
+                        <li><a href="<?= base_url($session->locale . '/office/fiction/edit-entry/' . ($value['id']*$toc_nonce)) ?>"><?= $key ?> - <?= @$value['entry_title'] ?></a></li>
+                    <?php endif; ?>
+                <?php endforeach; ?>
+                </ul>
             </div>
         </div>
     </section>
@@ -174,13 +180,13 @@ $this->extend($layout);
             });
             $('#toc-btn-show').on('click', function () {
                 $('#toc-panel').fadeIn();
-                $('#main-panel').removeClass('col-12').addClass('col-md-8 col-lg-9 col-xl-10');
+                $('#main-panel').removeClass('col-12').addClass('col-md-8 col-lg-9');
                 $('#toc-btn-show').hide();
                 $('#toc-btn-hide').show();
             }).hide();
             $('#toc-btn-hide').on('click', function () {
                 $('#toc-panel').fadeOut();
-                $('#main-panel').removeClass('col-md-8 col-lg-9 col-xl-10').addClass('col-12');
+                $('#main-panel').removeClass('col-md-8 col-lg-9').addClass('col-12');
                 $('#toc-btn-hide').hide();
                 $('#toc-btn-show').show();
             });
