@@ -368,6 +368,8 @@
     if (!gl_support) { $('#webgl-support').html('WebGL is not supported!'); } else { $('#webgl-support').html('WebGL is supported!'); }
     let expandTinyMceArea = function (div_id) {$('#'+div_id+'-block').addClass('full-page');$('#'+div_id+'-expand-btn').hide();$('#'+div_id+'-shrink-btn').show();}
     let shrinkTinyMceArea = function (div_id) {$('#'+div_id+'-block').removeClass('full-page');$('#'+div_id+'-shrink-btn').hide();$('#'+div_id+'-expand-btn').show();}
+    let DateTime = luxon.DateTime;
+    function utcToLocal(utc) {if ('' !== utc) {return DateTime.fromISO(utc).toLocaleString(DateTime.DATETIME_MED);} else {return '-';}}
 </script>
 </body>
 </html>

@@ -26,7 +26,7 @@ $this->extend($layout);
                                 <p>
                                     by <?= $title['pen_name'] ?> |
                                     <?= $title['fiction_genre'] ?> |
-                                    Last updated: <span class="utc-to-local"><?= $title['updated_at'] ?></span><br>
+                                    Last updated: <span class="utc-to-local"><?= date(DATETIME_FORMAT_LUXON, strtotime($title['updated_at'])) ?></span><br>
                                     Word count: <?= number_format($word_count) ?> |
                                     Character count: <?= number_format($char_count) ?>
                                 </p>
@@ -83,6 +83,7 @@ $this->extend($layout);
                 paging: false,
                 order: [[1, 'asc']],
             });
+            $('.utc-to-local').each(function (i, e) {let utc = $(this).text();$(this).text(utcToLocal(utc));});
         });
     </script>
 <?php $this->endSection() ?>
