@@ -53,13 +53,28 @@ $this->extend($layout);
             </div>
             <div id="toc-panel" class="col-md-4 col-lg-3">
                 <ul style="padding-left: 0.5rem;">
-                <?php foreach ($toc['entries'] as $key => $value) : ?>
-                    <?php if (@$entry_row['id'] == $value['id']) : ?>
-                        <li><?= $key ?> - <?= @$value['entry_title'] ?></li>
-                    <?php else: ?>
-                        <li><a href="<?= base_url($session->locale . '/office/fiction/edit-entry/' . ($value['id']*$toc_nonce)) ?>"><?= $key ?> - <?= @$value['entry_title'] ?></a></li>
-                    <?php endif; ?>
-                <?php endforeach; ?>
+                    <?php
+                    function renderKey($key, $type): string
+                    {
+                        $pieces = explode('.', $key);
+                        if ('00' == $pieces[1]) {
+                            if ('front-matter' == $type) {
+                                return '';
+                            } else if ('chapter' == $type) {
+                                return '<i class="fa-solid fa-book-open"></i>';
+                            }
+                            return '<i class="fa-solid fa-folder-open"></i>';
+                        }
+                        return '<i class="fa-solid fa-folder-tree"></i>';
+                    }
+                    ?>
+                    <?php foreach ($toc['entries'] as $key => $value) : ?>
+                        <?php if (@$entry_row['id'] == $value['id']) : ?>
+                            <li><?= renderKey($key, $value['entry_type']) ?> <?= @$value['entry_title'] ?></li>
+                        <?php else: ?>
+                            <li><a href="<?= base_url($session->locale . '/office/fiction/edit-entry/' . ($value['id'] * $toc_nonce)) ?>"><?= renderKey($key, $value['entry_type']) ?> <?= @$value['entry_title'] ?></a></li>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
                 </ul>
             </div>
         </div>
