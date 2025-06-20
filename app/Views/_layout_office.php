@@ -344,8 +344,7 @@
                     <div class="col-md-6 text-md-end">
                         <p class="mb-0">
                             &copy; <?= date('Y') . ' ' . $session->organization['organization_name'] ?>
-                            <span id="webgl-support"></span>
-                            <span id="tiny-mce-logout-skip"></span>
+                            <span id="webgl-support"></span> <span id="logout-countdown"></span> <span id="tiny-mce-logout-skip"></span>
                         </p>
                     </div>
                 </div>
@@ -362,7 +361,12 @@
     <?php if (isset($skip_logout) && $skip_logout) : ?>
     $('#tiny-mce-logout-skip').text('- NO LOGOUT SCRIPT');
     <?php else : ?>
-    $(function () { setTimeout(() => { window.location.href = '<?= base_url('logout') ?>'; }, 1800000); });
+    let remainingTime = 1800;
+    function formatTime(seconds) {const m = String(Math.floor(seconds / 60)).padStart(2, '0');const s = String(seconds % 60).padStart(2, '0');return `LOGOUT IN ${m}:${s}`;}
+    function updateCountdown() {
+        if (remainingTime >= 0) {$('#logout-countdown').text(formatTime(remainingTime));remainingTime--;}
+        else {clearInterval(countdownInterval);window.location.href = '<?= base_url('logout') ?>';}
+    } updateCountdown(); const countdownInterval = setInterval(updateCountdown, 1000);
     <?php endif; ?>
     let gl_support = !!window.WebGLRenderingContext && !!document.createElement('canvas').getContext('webgl');
     if (!gl_support) { $('#webgl-support').html('WebGL is not supported!'); } else { $('#webgl-support').html('WebGL is supported!'); }
