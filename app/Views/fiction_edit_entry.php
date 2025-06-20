@@ -54,7 +54,7 @@ $this->extend($layout);
             <div id="toc-panel" class="col-md-4 col-lg-3">
                 <ul style="padding-left: 0.5rem;">
                 <?php foreach ($toc['entries'] as $key => $value) : ?>
-                    <?php if ($entry_row['id'] == $value['id']) : ?>
+                    <?php if (@$entry_row['id'] == $value['id']) : ?>
                         <li><?= $key ?> - <?= @$value['entry_title'] ?></li>
                     <?php else: ?>
                         <li><a href="<?= base_url($session->locale . '/office/fiction/edit-entry/' . ($value['id']*$toc_nonce)) ?>"><?= $key ?> - <?= @$value['entry_title'] ?></a></li>
