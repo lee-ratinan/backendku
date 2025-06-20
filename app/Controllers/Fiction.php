@@ -337,9 +337,10 @@ class Fiction extends BaseController
 
     /**
      * @param string $slug
+     * @param string $type
      * @return string
      */
-    public function exportPdf(string $slug): string
+    public function exportPdf(string $slug, string $type): string
     {
         $title_model = new FictionTitleModel();
         $entry_model = new FictionEntryModel();
@@ -347,13 +348,15 @@ class Fiction extends BaseController
         if (empty($title)) {
             throw new PageNotFoundException();
         }
-        $title_id = $title['id'];
-        $entries  = $entry_model->getEntriesOfTitle($title_id, false);
-        $data     = [
+        $title_id    = $title['id'];
+        $entry_types = ('research' == $type ? ['folder', 'research'] : ['front-matter', 'chapter', 'scene']);
+        $entries     = $entry_model->getEntriesOfTitle($title_id, false, $entry_types);
+        $data        = [
             'title'      => $title,
             'entries'    => $entries['entries'],
             'word_count' => $entries['word_count'],
             'char_count' => $entries['char_count'],
+            'type'       => $type,
         ];
         return view('fiction_export_pdf', $data);
     }

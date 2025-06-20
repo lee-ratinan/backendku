@@ -37,28 +37,38 @@
     </style>
 </head>
 <body>
+<?php if ('content' == $type) : ?>
 <img class="full-page" src="<?= base_url('file/fiction_' . $title['fiction_slug'] . '.jpg') ?>" alt="<?= $title['fiction_title'] ?>" />
 <div class="print-page-break"></div>
+<?php endif; ?>
 <div class="container">
     <div class="row">
         <div class="col-12">
-            <div class="row mt-3 mb-5">
-                <div class="col">
-                    รตินันท์ ลีลางามวงศา<br>
-                    19 Punggol Field Walk #02-12 Waterwoods<br>
-                    Singapore 828748<br>
-                    lee@ratinan.com<br>
-                    +65 9775 4577<br>
+            <?php if ('content' == $type) : ?>
+                <div class="row mt-3 mb-5">
+                    <div class="col">
+                        รตินันท์ ลีลางามวงศา<br>
+                        19 Punggol Field Walk #02-12 Waterwoods<br>
+                        Singapore 828748<br>
+                        lee@ratinan.com<br>
+                        +65 9775 4577<br>
+                    </div>
+                    <div class="col text-end">
+                        ประมาณ <?= number_format($word_count) ?> คำ (<?= number_format($char_count) ?> ตัวอักษร)
+                    </div>
                 </div>
-                <div class="col text-end">
-                    ประมาณ <?= number_format($word_count) ?> คำ (<?= number_format($char_count) ?> ตัวอักษร)
-                </div>
-            </div>
-            <br><br><br>
-            <h1 class="text-center"><?= strtoupper($title['fiction_title']) ?></h1>
-            <p class="text-center">โดย <?= $title['pen_name'] ?></p>
-            <br><br><br><br><br><br><br>
-            <p class="text-center">&copy; <?= date('Y') . ' ' . $title['pen_name'] ?></p>
+                <br><br><br>
+                <h1 class="text-center"><?= strtoupper($title['fiction_title']) ?></h1>
+                <p class="text-center">โดย <?= $title['pen_name'] ?></p>
+                <br><br><br><br><br><br><br>
+                <p class="text-center">&copy; <?= date('Y') . ' ' . $title['pen_name'] ?></p>
+            <?php else : ?>
+                <br><br><br><br><br><br><br>
+                <h1 class="text-center"><?= strtoupper($title['fiction_title']) ?></h1>
+                <p class="text-center">โดย <?= $title['pen_name'] ?></p>
+                <br><br>
+                <h2 class="text-center">Research</h2>
+            <?php endif; ?>
             <?php foreach ($entries as $entry) : ?>
                 <?php if (in_array($entry['entry_type'], ['front-matter', 'research'])) : ?>
                     <?php if ('front-matter' == $entry['entry_type']) : ?>
