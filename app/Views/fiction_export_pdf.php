@@ -9,7 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400..700&family=Noto+Sans+Thai&family=Noto+Sans:ital,wght@0,400..700;1,400..700&family=Noto+Serif+Thai:wght@400..700&family=Noto+Serif:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
     <style>
         @page:first { size: A4 portrait; margin: 0; }
-        @page { size: A4 portrait; margin: 0.75in; }
+        @page { size: A4 portrait; margin: 1in;@top-right { content: "<?= $title['pen_name'] ?> / <?= ucwords($title['fiction_title']) ?> / " counter(page); font-size: 1rem; color: #888; } }
         html, body {margin: 0;padding: 0;}
         strong { font-weight: 700!important; }
         .container { max-width: 750px; font-family: 'Noto Serif', 'Noto Serif Thai', 'Noto Sans JP', serif; }
