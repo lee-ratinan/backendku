@@ -96,7 +96,7 @@
                             <div><?= $entry['footnote_section'] ?></div>
                         <?php endif; ?>
                     </div>
-                    <div class="text-center">* * *</div>
+                    <div class="text-center my-5">* * *</div>
                 <?php endif; ?>
             <?php endforeach; ?>
         </div>
