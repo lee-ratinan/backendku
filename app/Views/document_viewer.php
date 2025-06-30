@@ -1,5 +1,6 @@
 <html lang="en">
 <head>
+    <?php use Config\Services; $session = Services::session(); ?>
     <title><?= strip_tags($document['doc_title']) ?> | Document</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="<?= base_url('file/favicon.jpg') ?>" rel="icon">
@@ -118,6 +119,15 @@
             if ($(this).text().trim() === '[NEW_PAGE]') {
                 $(this).replaceWith('<div class="print-page-break"></div>');
             }
+        });
+        $('article').each(function () {
+            const $article = $(this);
+            let html = $article.html();
+            html = html.replace(/\[link:([^\]]+)\](.*?)\[\/link\]/g, function (match, slug, label) {
+                const url = '<?= base_url($session->locale . '/office/document/' . $mode . '-document/') ?>' + slug;
+                return `<a href="${url}">${label}</a>`;
+            });
+            $article.html(html);
         });
         const $toc = $('#toc');
         const $headings = $('article h2, article h3, article h4');
