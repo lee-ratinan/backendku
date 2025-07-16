@@ -124,6 +124,23 @@ class Profile extends BaseController
     }
 
     /**
+     * @param int $year
+     * @return string
+     */
+    public function plan(int $year = 0): string
+    {
+        $session = session();
+        $data    = [
+            'page_title'       => 'Plan',
+            'slug'             => '/office/profile/plan',
+            'user_session'     => $session->user,
+            'roles'            => $session->roles,
+            'current_role'     => $session->current_role,
+            'year'             => $year
+        ];
+        return view('profile_plan', $data);
+    }
+    /**
      * @return string
      */
     public function resume(): string

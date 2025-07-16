@@ -197,6 +197,7 @@
                         'header' => 'Profile',
                         'items'  => [
                             '/office/profile/data'   => '<i class="fa-solid fa-user-cog fa-fw"></i> Profile',
+                            '/office/profile/plan'   => '<i class="fa-solid fa-list-check fa-fw"></i> Plan',
                             '/office/profile/resume' => '<i class="fa-regular fa-file-lines fa-fw"></i> Resume',
                         ]
                     ],
