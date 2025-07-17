@@ -160,40 +160,110 @@ $japanese_courses = [
 </div>
 <h3 id="AGSM">Master of Business Administration (MBA)</h3>
 <p>Australian Graduate School of Management (AGSM)<br>University of New South Wales (UNSW)</p>
+<?php
+$mba_costs = [
+    'AUD' => 0,
+    'THB' => 0
+];
+?>
 <div class="table-responsive">
     <h4>Entry Requirements</h4>
-    ✅ An undergraduate degree			I even got another Master Degree
-    ✅ Demonstrated academic excellence	I did it at NTU, Singapore
-    ✅ Minimum 2 years experience		Already have 10 years
-    Take the letters from some companies, like Secretlab or Moolahgo
-    ✅ English language requirements		Apply for an English waiver
-    ❓ At least 2 years of working experience in Singapore (need company’s letter - hard)
-    ❌ BSc and MSc were completed in English (failed, more then 2 years ago)
-    ✅ Residency in English speaking country (use Singapore PR to apply)
-    [  ] GMAT or GRE				May not be needed
-    [  ] Resume					to be updated
-    [  ] Essay					to be written
-    [  ] Letter of recommendation			1 or 2, to be asked for
-    [  ] Visa						Need Subclass 500 Student Visa
-    Eligible for Temporary Graduate Visa (Subclass 485)
-    [  ] Aim for scholarship!
+    <table class="table table-sm table-striped table-hover">
+        <tbody>
+        <tr>
+            <td>✅</td>
+            <td>An undergraduate degree</td>
+            <td>I even got another Master Degree</td>
+        </tr>
+        <tr>
+            <td>✅</td>
+            <td>Demonstrated academic excellence</td>
+            <td>I got BSc and MSc already (AQF9)</td>
+        </tr>
+        <tr>
+            <td>✅</td>
+            <td>Minimum 2 years experience<br>Take the letters from some companies, like Secretlab or Moolahgo</td>
+            <td>Already have 10 years (Leading a team since 2018; 2018 - 2027 = 10 years)</td>
+        </tr>
+        <tr>
+            <td>✅</td>
+            <td>English language requirements<br>- Residency in English speaking country (use Singapore PR to apply)</td>
+            <td>Apply for an English waiver</td>
+        </tr>
+        <tr>
+            <td>❓</td>
+            <td>GMAT or GRE</td>
+            <td>May not be needed</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>Resume</td>
+            <td>to be updated</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>Essay</td>
+            <td>to be written</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>Letter of recommendation</td>
+            <td>1 or 2, to be asked for (Clifford and ?)</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>Visa<br><em>Eligible for Temporary Graduate Visa (Subclass 485)</em></td>
+            <td>Need Subclass 500 Student Visa</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>Aim for scholarship!</td>
+            <td></td>
+        </tr>
+        </tbody>
+    </table>
+    <h4>Costs</h4>
+    <table class="table table-sm table-striped table-hover">
+        <thead>
+        <tr>
+            <th>Item</th>
+            <th>Amount</th>
+            <th>Notes</th>
+        </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Full-time MBA at AGSM</td>
+                <td class="text-end"><?= add_amount(100000, 'AUD', $mba_costs) ?></td>
+                <td>A$88,000 in 2025, fees adjusted yearly</td>
+            </tr>
+            <tr>
+                <td>Student Visa (Subclass 500)</td>
+                <td class="text-end"><?= add_amount(710, 'AUD', $mba_costs) ?></td>
+                <td>price as of 2025</td>
+            </tr>
+            <tr>
+                <td>Overseas Student Health Cover (OSHC)</td>
+                <td class="text-end"><?= add_amount(1200, 'AUD', $mba_costs) ?></td>
+                <td>Estimated A$1,000-1,300 as of 2025</td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td class="text-end>TOTAL</th>
+                <th class="text-end"><?= print_total($mba_costs) ?></th>
+                <th></th>
+            </tr>
+        </tfoot>
+    </table>
+    <p><a href="https://www.unsw.edu.au/business/our-schools/agsm/learn-with-us/agsm-programs/program-fees" target="_blank">See more</a></p>
     <h4>Budget</h4>
+    <p>TBC</p>
 </div>
-
-
-
-
-
-
-
-<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras bibendum pellentesque dictum. Maecenas sed volutpat est, id sagittis lectus. Praesent eu dui porta, lobortis mi nec, tempus turpis. Sed egestas velit id tristique rutrum. Praesent viverra gravida scelerisque. Nam vitae ornare urna, at sagittis est. Suspendisse at laoreet erat, eu tincidunt dolor. Ut luctus lobortis mi sed lobortis.
-    Etiam tristique, magna sit amet elementum venenatis, justo purus auctor ligula, sit amet faucibus urna felis at nisl. Praesent molestie, sapien at malesuada condimentum, lorem lacus porttitor nulla, nec dictum turpis augue ut dui. Proin laoreet ornare elementum. Sed ultricies efficitur neque, in tincidunt quam imperdiet et. Pellentesque id semper erat, nec pharetra nibh. Mauris id rutrum purus. Nunc pharetra sapien a sodales convallis. Aenean vulputate arcu leo, vitae maximus magna varius ac.
-    Proin et volutpat orci. Aliquam tellus turpis, interdum sit amet nibh non, egestas lobortis eros. Curabitur vitae velit semper, euismod erat quis, condimentum felis. Etiam vestibulum commodo cursus. Proin semper orci ac neque mollis, eu fringilla nulla varius. Mauris venenatis facilisis odio, vestibulum laoreet libero. Sed in porta ligula, nec sodales magna. Ut luctus, ipsum a vehicula pretium, nunc turpis placerat odio, ac rutrum risus mauris ornare nisi. Nulla auctor tellus id velit mattis, et feugiat ligula scelerisque. Maecenas congue ut nisi nec rutrum. Etiam ut erat id lacus pellentesque ullamcorper. Aenean a malesuada tellus. Donec laoreet, diam vitae condimentum blandit, nisl leo tincidunt mi, id ultricies neque risus ac ipsum.
-    Sed eget semper nisi. Integer id nunc finibus, dapibus felis posuere, blandit tortor. Maecenas porta erat vel feugiat pulvinar. In sollicitudin auctor turpis, vel fermentum ante tincidunt vel. Praesent quis imperdiet arcu. Maecenas sed felis eleifend, semper lacus quis, commodo mi. Nullam justo mauris, aliquam ut felis non, faucibus posuere urna. Curabitur varius ante imperdiet justo tincidunt ullamcorper quis non arcu. Duis justo libero, posuere in auctor quis, aliquam sed dui. Sed euismod turpis sed augue dapibus commodo. Vivamus sagittis placerat libero eu imperdiet. Ut sit amet nunc congue est lobortis consequat vel ac lectus. Nunc non ultricies metus.
-    Cras finibus urna ac leo vulputate posuere. Morbi viverra ultrices arcu, eu lobortis turpis interdum at. Etiam a augue at lorem pellentesque luctus sit amet ut metus. Suspendisse luctus est et felis laoreet, et auctor tellus convallis. Praesent tincidunt ligula ac lacus pretium ultricies a nec nunc. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Sed eu turpis et nisl consectetur facilisis. In in aliquam neque. Fusce eu lectus vel sem dignissim ornare vitae at est. Pellentesque in imperdiet turpis. Praesent finibus leo nec arcu congue sagittis nec et mauris.</p>
 <h3 id="Otternaut">Otternaut</h3>
 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras bibendum pellentesque dictum. Maecenas sed volutpat est, id sagittis lectus. Praesent eu dui porta, lobortis mi nec, tempus turpis. Sed egestas velit id tristique rutrum. Praesent viverra gravida scelerisque. Nam vitae ornare urna, at sagittis est. Suspendisse at laoreet erat, eu tincidunt dolor. Ut luctus lobortis mi sed lobortis.
     Etiam tristique, magna sit amet elementum venenatis, justo purus auctor ligula, sit amet faucibus urna felis at nisl. Praesent molestie, sapien at malesuada condimentum, lorem lacus porttitor nulla, nec dictum turpis augue ut dui. Proin laoreet ornare elementum. Sed ultricies efficitur neque, in tincidunt quam imperdiet et. Pellentesque id semper erat, nec pharetra nibh. Mauris id rutrum purus. Nunc pharetra sapien a sodales convallis. Aenean vulputate arcu leo, vitae maximus magna varius ac.
     Proin et volutpat orci. Aliquam tellus turpis, interdum sit amet nibh non, egestas lobortis eros. Curabitur vitae velit semper, euismod erat quis, condimentum felis. Etiam vestibulum commodo cursus. Proin semper orci ac neque mollis, eu fringilla nulla varius. Mauris venenatis facilisis odio, vestibulum laoreet libero. Sed in porta ligula, nec sodales magna. Ut luctus, ipsum a vehicula pretium, nunc turpis placerat odio, ac rutrum risus mauris ornare nisi. Nulla auctor tellus id velit mattis, et feugiat ligula scelerisque. Maecenas congue ut nisi nec rutrum. Etiam ut erat id lacus pellentesque ullamcorper. Aenean a malesuada tellus. Donec laoreet, diam vitae condimentum blandit, nisl leo tincidunt mi, id ultricies neque risus ac ipsum.
     Sed eget semper nisi. Integer id nunc finibus, dapibus felis posuere, blandit tortor. Maecenas porta erat vel feugiat pulvinar. In sollicitudin auctor turpis, vel fermentum ante tincidunt vel. Praesent quis imperdiet arcu. Maecenas sed felis eleifend, semper lacus quis, commodo mi. Nullam justo mauris, aliquam ut felis non, faucibus posuere urna. Curabitur varius ante imperdiet justo tincidunt ullamcorper quis non arcu. Duis justo libero, posuere in auctor quis, aliquam sed dui. Sed euismod turpis sed augue dapibus commodo. Vivamus sagittis placerat libero eu imperdiet. Ut sit amet nunc congue est lobortis consequat vel ac lectus. Nunc non ultricies metus.
     Cras finibus urna ac leo vulputate posuere. Morbi viverra ultrices arcu, eu lobortis turpis interdum at. Etiam a augue at lorem pellentesque luctus sit amet ut metus. Suspendisse luctus est et felis laoreet, et auctor tellus convallis. Praesent tincidunt ligula ac lacus pretium ultricies a nec nunc. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Sed eu turpis et nisl consectetur facilisis. In in aliquam neque. Fusce eu lectus vel sem dignissim ornare vitae at est. Pellentesque in imperdiet turpis. Praesent finibus leo nec arcu congue sagittis nec et mauris.</p>
+
