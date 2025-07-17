@@ -28,7 +28,11 @@ $this->extend($layout);
         <div class="row mt-5">
             <div class="col">
                 <?php if (0 != $year) : ?>
-                    <?php include 'profile_plan_' . $year . '.php'; ?>
+                    <div class="card">
+                        <div class="card-body">
+                            <?php include 'profile_plan_' . $year . '.php'; ?>
+                        </div>
+                    </div>
                 <?php endif; ?>
             </div>
         </div>

@@ -127,7 +127,7 @@ class Profile extends BaseController
      * @param int $year
      * @return string
      */
-    public function plan(int $year = 0): string
+    public function plan(int $year = 2030): string
     {
         $session = session();
         $data    = [
