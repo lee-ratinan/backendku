@@ -266,7 +266,7 @@
     </nav>
     <div class="main">
         <!-- HEADER NAV -->
-        <nav class="navbar navbar-expand navbar-bg">
+        <nav class="navbar navbar-expand navbar-bg d-print-none">
             <a class="sidebar-toggle"><i class="hamburger align-self-center"></i></a>
             <!-- SEARCH BAR -->
             <form class="d-none d-sm-inline-block">

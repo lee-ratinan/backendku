@@ -5,7 +5,7 @@ $this->extend($layout);
 ?>
 <?= $this->section('content') ?>
 <?php $session = session(); ?>
-    <div class="pagetitle">
+    <div class="pagetitle d-print-none">
         <h1><?= $page_title ?></h1>
         <nav>
             <ol class="breadcrumb">
@@ -20,7 +20,7 @@ $this->extend($layout);
         </nav>
     </div>
     <section class="section">
-        <div class="row">
+        <div class="row d-print-none">
             <div class="col">
                 <a class="btn btn-<?= (2030 == $year ? '' : 'outline-') ?>primary" href="<?= base_url($session->locale . '/office/profile/plan/2030') ?>">2030</a>
             </div>
@@ -28,11 +28,7 @@ $this->extend($layout);
         <div class="row mt-5">
             <div class="col">
                 <?php if (0 != $year) : ?>
-                    <div class="card">
-                        <div class="card-body">
-                            <?php include 'profile_plan_' . $year . '.php'; ?>
-                        </div>
-                    </div>
+                    <?php include 'profile_plan_' . $year . '.php'; ?>
                 <?php endif; ?>
             </div>
         </div>
