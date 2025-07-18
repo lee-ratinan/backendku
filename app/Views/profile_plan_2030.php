@@ -33,17 +33,25 @@ function print_total($totals): string
     <li><a href="#Otternaut">Otternaut</a></li>
 </ul>
 <hr class="my-5">
-<img class="float-end" src="<?= base_url('assets/img/plan_jlpt.png') ?>" alt="JLPT" style="height:80px;background-color:#fff"/>
-<h2 id="JLPT">🇯🇵 <ruby>日本<rt>にほん</rt>語<rt>ご</rt>能力<rt>のうりょく</rt>試験<rt>しけん</rt></ruby></h2>
-<p>Japanese Language Proficiency Test (JLPT)<br>A plan to get some JLPT up to N3 or N2 level.</p>
+<div class="row mb-3">
+    <div class="col-12 col-md-6">
+        <h2 id="JLPT">🇯🇵 <ruby>日本<rt>にほん</rt>語<rt>ご</rt>能力<rt>のうりょく</rt>試験<rt>しけん</rt></ruby></h2>
+        <p>Japanese Language Proficiency Test (JLPT)<br>A plan to get some JLPT up to N3 or N2 level.</p>
+    </div>
+    <div class="col-12 col-md-6 text-md-end">
+        <img class="p-1" src="<?= base_url('assets/img/plan_jlpt.png') ?>" alt="JLPT" style="height:80px;background-color:#fff"/>
+    </div>
+</div>
 <?php
-$japanese_courses = [
-    'SGD' => 0,
-    'THB' => 0
-];
+$japanese_courses = ['SGD' => 0, 'THB' => 0];
+$mba_costs = ['AUD' => 0, 'THB' => 0];
+$otternaut_pre_incorporation = ['IDR' => 0, 'MYR' => 0, 'SGD' => 0, 'THB' => 0, 'USD' => 0];
+$otternaut_deferred = ['IDR' => 0, 'MYR' => 0, 'SGD' => 0, 'THB' => 0, 'USD' => 0];
+$otternaut_annual_budget = ['IDR' => 0, 'MYR' => 0, 'SGD' => 0, 'THB' => 0, 'USD' => 0];
+$otternaut_annual_salary = ['IDR' => 0, 'THB' => 0, 'USD' => 0];
 ?>
+<h3>Schedule</h3>
 <div class="table-responsive">
-    <h3>Schedule</h3>
     <table class="table table-sm table-striped table-hover">
         <tbody>
         <tr>
@@ -128,7 +136,9 @@ $japanese_courses = [
         </tr>
         </tfoot>
     </table>
-    <h3>JLPT Levels</h3>
+</div>
+<h3>JLPT Levels</h3>
+<div class="table-responsive">
     <table class="table table-sm table-striped table-hover">
         <thead>
         <tr>
@@ -176,18 +186,18 @@ $japanese_courses = [
         </tbody>
     </table>
 </div>
-<hr class="my-5">
-<img class="float-end p-1" src="<?= base_url('assets/img/plan_unsw.png') ?>" alt="UNSW" style="height:80px;background-color:#fff"/>
-<h2 id="AGSM">📚 Master of Business Administration (MBA)</h2>
-<p>Australian Graduate School of Management (AGSM)<br>University of New South Wales (UNSW)<br><b>2028</b></p>
-<?php
-$mba_costs = [
-    'AUD' => 0,
-    'THB' => 0
-];
-?>
+<hr class="my-5 page-break-after">
+<div class="row mb-3">
+    <div class="col-12 col-md-6">
+        <h2 id="AGSM">📚 Master of Business Administration (MBA)</h2>
+        <p>Australian Graduate School of Management (AGSM)<br>University of New South Wales (UNSW)<br><b>2028</b></p>
+    </div>
+    <div class="col-12 col-md-6 text-md-end">
+        <img class="p-1" src="<?= base_url('assets/img/plan_unsw.png') ?>" alt="UNSW" style="height:80px;background-color:#fff"/>
+    </div>
+</div>
+<h3>Entry Requirements</h3>
 <div class="table-responsive">
-    <h3>Entry Requirements</h3>
     <table class="table table-sm table-striped table-hover">
         <tbody>
         <tr>
@@ -242,7 +252,9 @@ $mba_costs = [
         </tr>
         </tbody>
     </table>
-    <h3>Costs</h3>
+</div>
+<h3>Costs</h3>
+<div class="table-responsive">
     <table class="table table-sm table-striped table-hover">
         <thead>
         <tr>
@@ -322,58 +334,63 @@ $mba_costs = [
         </tr>
         </tfoot>
     </table>
-    <h3>Scholarship</h3>
-    <p>There are many scholarships to grab, as a new startup, I should be highly eligible. <a href="https://www.unsw.edu.au/business/our-schools/agsm/agsm-scholarships/full-time-mba-scholarships" target="_blank">See more about the scholarship.</a></p>
-    <p>AGSM Global Reach Scholarship:</p>
-    <ul>
-        <li>Automatically considered once applied for the MBA program</li>
-        <li>Selection criteria
+</div>
+<h3>Scholarship</h3>
+<p>There are many scholarships to grab, as a new startup, I should be highly eligible. <a href="https://www.unsw.edu.au/business/our-schools/agsm/agsm-scholarships/full-time-mba-scholarships" target="_blank">See more about the scholarship.</a></p>
+<p>AGSM Global Reach Scholarship:</p>
+<ul>
+    <li>Automatically considered once applied for the MBA program</li>
+    <li>Selection criteria
         <ul>
             <li>GMAT or other academic results</li>
             <li>Leadership potential</li>
             <li>Career progression</li>
             <li>Global citizenship</li>
         </ul>
-        </li>
-    </ul>
-    <h3>Flights</h3>
-    <p>Price is estimated, searched from SkyScanner as of 2025 in A$.</p>
+    </li>
+</ul>
+<h3>Flights</h3>
+<p>Price is estimated, searched from SkyScanner as of 2025 in A$.</p>
+<div class="table-responsive">
     <table class="table table-sm table-striped table-hover">
         <thead>
         <tr>
-            <th colspan="2">Routes</th>
+            <th>Routes</th>
             <th>One-Way</th>
             <th>Return</th>
         </tr>
         </thead>
         <tbody>
         <tr>
-            <td style="min-width:100px;">BKK ↔️ SYD</td>
-            <td style="min-width:400px;">Bangkok Suvarnabhumi to/from Sydney Kingsford Smith</td>
+            <td style="min-width:100px;">🇹🇭 BKK ↔️ 🇦🇺 SYD</td>
             <td style="min-width:100px;">200 - 800</td>
             <td style="min-width:100px;">600 - 1,400</td>
         </tr>
         <tr>
-            <td>SIN ↔️ SYD</td>
-            <td>Singapore Changi to/from Sydney Kingsford Smith</td>
+            <td>🇸🇬 SIN ↔️ 🇦🇺 SYD</td>
             <td>200 - 600</td>
             <td>600 - 1,200</td>
         </tr>
         </tbody>
     </table>
 </div>
-<hr class="my-5">
-<img class="float-end p-1" src="<?= base_url('assets/img/plan_otternaut.png') ?>" alt="Otternaut" style="height:80px;background-color:#fff"/>
-<h2 id="Otternaut">💼 Otternaut</h2>
-<p>Plan for the SaaS platform startup.<br>RULES: No CHINA/CHINESE, must be International-focused, seriously no-toxic folks around.</p>
+<hr class="my-5 page-break-after">
+<div class="row mb-3">
+    <div class="col-12 col-md-6">
+        <h2 id="Otternaut">💼 Otternaut</h2>
+        <p>Plan for the SaaS platform startup.<br>RULES: No CHINA/CHINESE, must be International-focused, seriously no-toxic folks around.</p>
+    </div>
+    <div class="col-12 col-md-6 text-md-end">
+        <img class="p-1" src="<?= base_url('assets/img/plan_otternaut.png') ?>" alt="Otternaut" style="height:80px;background-color:#fff"/>
+    </div>
+</div>
+<h3>Pre-Incorporation (Upfront Payments)</h3>
 <div class="table-responsive">
-    <h3>Pre-Incorporation (Upfront Payments)</h3>
-    <?php $otternaut_pre_incorporation = ['IDR' => 0, 'MYR' => 0, 'SGD' => 0, 'THB' => 0, 'USD' => 0]; ?>
     <table class="table table-sm table-striped table-hover">
         <thead>
         <tr>
-            <th style="min-width:240px">Description</th>
-            <th style="min-width:120px" class="text-end">Amount</th>
+            <th style="width:300px">Description</th>
+            <th style="width:180px" class="text-end">Amount</th>
             <th style="min-width:240px">Notes</th>
         </tr>
         </thead>
@@ -397,9 +414,10 @@ $mba_costs = [
         </tr>
         <tr>
             <td>Internal emails: Nat and Jate</td>
-            <td class="text-end"><?= add_amount(3300, 'THB', $otternaut_pre_incorporation) ?></td>
+            <td class="text-end"><?= add_amount(3531, 'THB', $otternaut_pre_incorporation) ?></td>
             <td>HostAtom’s new user package offers it at ฿1,650/user/year for the first year (฿3,300 second year onwards)</td>
-        </tr><tr>
+        </tr>
+        <tr>
             <td>Atlassian systems:<br>
                 - Bitbucket (hosting source code)<br>
                 - JIRA (managing tasks)<br>
@@ -416,25 +434,35 @@ $mba_costs = [
         </tr>
         </tfoot>
     </table>
-    <?php $otternaut_deferred = ['IDR' => 0, 'MYR' => 0, 'SGD' => 0, 'THB' => 0, 'USD' => 0]; ?>
-    <h3>Deferred Payment - Pre-Incorporation</h3>
+</div>
+<h3>One-time Pay during the Incorporation</h3>
+<div class="table-responsive">
     <table class="table table-sm table-striped table-hover">
         <thead>
         <tr>
-            <th style="min-width:240px">Description</th>
-            <th style="min-width:120px" class="text-end">Amount</th>
+            <th style="width:300px">Description</th>
+            <th style="width:180px" class="text-end">Amount</th>
             <th style="min-width:240px">Notes</th>
         </tr>
         </thead>
         <tbody>
         <tr>
-            <td>Fauzi</td>
+            <td>Fauzi - deferred payment</td>
             <td class="text-end"><?= add_amount(60000000, 'IDR', $otternaut_deferred) ?></td>
             <td rowspan="2">Budget allocated for developers who work before the incorporation. The payment will be deferred until cash is ready.</td>
         </tr>
         <tr>
-            <td>Pajar</td>
+            <td>Pajar - deferred payment</td>
             <td class="text-end"><?= add_amount(60000000, 'IDR', $otternaut_deferred) ?></td>
+        </tr>
+        <tr>
+            <td>Theme for website’s frontend</td>
+            <td class="text-end"><?= add_amount(400, 'USD', $otternaut_deferred) ?></td>
+            <td rowspan="2">Upgrade from the standard license ($49) to extended license ($449) - approximate price</td>
+        </tr>
+        <tr>
+            <td>Theme for generic website’s backend</td>
+            <td class="text-end"><?= add_amount(400, 'USD', $otternaut_deferred) ?></td>
         </tr>
         </tbody>
         <tfoot>
@@ -445,22 +473,105 @@ $mba_costs = [
         </tr>
         </tfoot>
     </table>
-    <?php $otternaut_annual_budget = ['IDR' => 0, 'MYR' => 0, 'SGD' => 0, 'THB' => 0, 'USD' => 0]; ?>
-    <h3>Annual Company’s Spending</h3>
+</div>
+<h3>Annual Company’s Spending</h3>
+<div class="table-responsive">
     <table class="table table-sm table-striped table-hover">
         <thead>
         <tr>
-            <th style="min-width:240px">Description</th>
-            <th style="min-width:120px" class="text-end">Amount</th>
+            <th style="width:300px">Description</th>
+            <th style="width:180px" class="text-end">Amount</th>
             <th style="min-width:240px">Notes</th>
         </tr>
         </thead>
         <tbody>
+        <tr>
+            <td>Hosting (VPS at HostAtom)</td>
+            <td class="text-end"><?= add_amount(7575.60, 'THB', $otternaut_annual_budget) ?></td>
+            <td>
+                <div class="row">
+                    <div class="col">
+                        <b>40GB SSD</b><br>
+                        ฿ 590/m = ฿ 7,080.00/y<br>
+                        +7% VAT = ฿ 7,575.60/y<br>
+                    </div>
+                    <div class="col">
+                        <b>80GB SSD</b><br>
+                        ฿ 1,190/m = ฿ 14,280.00/y<br>
+                        +7% VAT = ฿ 15,279.60/y<br>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>Domain name: otternaut.com</td>
+            <td class="text-end"><?= add_amount(481.50, 'THB', $otternaut_annual_budget) ?></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>Internal emails (Nat, Jate, 2 more employees maybe)</td>
+            <td class="text-end"><?= add_amount(14124, 'THB', $otternaut_annual_budget) ?></td>
+            <td>฿ 3,300/user/year second year onwards; 4 users and 2 forwarders, will they charge forwarder address, sales/support?</td>
+        </tr>
+        <tr>
+            <td>Atlassian systems:<br>
+                - Bitbucket (hosting source code)<br>
+                - JIRA (managing tasks)<br>
+                - Confluence (storing documents)</td>
+            <td class="text-end"><?= add_amount(0, 'USD', $otternaut_pre_incorporation) ?></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>Office and business address (co-working space)</td>
+            <td class="text-end"><?= add_amount(120000, 'THB', $otternaut_annual_budget) ?></td>
+            <td>฿ 10,000/m budget for on-demand access</td>
+        </tr>
         </tbody>
         <tfoot>
         <tr>
             <th class="text-end">TOTAL</th>
             <th class="text-end"><?= print_total($otternaut_annual_budget) ?></th>
+            <th></th>
+        </tr>
+        </tfoot>
+    </table>
+</div>
+<h3>Annual Company’s Salary</h3>
+<div class="table-responsive">
+    <table class="table table-sm table-striped table-hover">
+        <thead>
+        <tr>
+            <th style="width:300px">Description</th>
+            <th style="width:180px" class="text-end">Amount</th>
+            <th style="min-width:240px">Notes</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>Nat’s annual salary</td>
+            <td class="text-end"><?= add_amount(1200000, 'THB', $otternaut_annual_salary) ?></td>
+            <td>฿ 100,000/m</td>
+        </tr>
+        <tr>
+            <td>Jate’s annual salary</td>
+            <td class="text-end"><?= add_amount(1200000, 'THB', $otternaut_annual_salary) ?></td>
+            <td>฿ 100,000/m</td>
+        </tr>
+        <tr>
+            <td>Developer annual salary - hopefully Fauzi</td>
+            <td class="text-end"><?= add_amount(720000, 'THB', $otternaut_annual_salary) ?></td>
+            <td>฿ 60,000/m</td>
+        </tr>
+        <tr>
+            <td>Marketing specialist</td>
+            <td class="text-end"><?= add_amount(720000, 'THB', $otternaut_annual_salary) ?></td>
+            <td>฿ 60,000/m</td>
+        </tr>
+        </tbody>
+        <tfoot>
+        <tr>
+            <th class="text-end">TOTAL</th>
+            <th class="text-end"><?= print_total($otternaut_annual_salary) ?></th>
             <th></th>
         </tr>
         </tfoot>

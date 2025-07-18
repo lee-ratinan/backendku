@@ -5,6 +5,7 @@ $this->extend($layout);
 ?>
 <?= $this->section('content') ?>
 <?php $session = session(); ?>
+    <style>@media print {  .page-break-after {page-break-after: always;}  }</style>
     <div class="pagetitle d-print-none">
         <h1><?= $page_title ?></h1>
         <nav>
