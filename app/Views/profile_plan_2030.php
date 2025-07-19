@@ -61,6 +61,7 @@ $otternaut_deferred = ['IDR' => 0, 'MYR' => 0, 'SGD' => 0, 'THB' => 0, 'USD' => 
 $otternaut_annual_budget = ['IDR' => 0, 'MYR' => 0, 'SGD' => 0, 'THB' => 0, 'USD' => 0];
 $otternaut_annual_salary = ['IDR' => 0, 'THB' => 0, 'USD' => 0];
 ?>
+<h1>My 2030 Goal</h1>
 <h2>Contents</h2>
 <ul>
     <li><a href="#JLPT">日本語能力試験</a></li>
@@ -120,7 +121,7 @@ $otternaut_annual_salary = ['IDR' => 0, 'THB' => 0, 'USD' => 0];
         <tr>
             <td><a href="https://waseda.ac.th/" target="_blank">WASEDA</a></td>
             <td>２０２７年</td>
-            <td>Consider moving to Upper-elementary course at WASEDA</td>
+            <td>Consider moving to Upper-elementary course at WASEDA<br>🇯🇵 Upper Elementary Course １〜６</td>
             <td>฿7,000.00x6 *</td>
             <td class="text-end"><?= add_amount(42000, 'THB', $japanese_courses) ?></td>
         </tr>
@@ -140,7 +141,7 @@ $otternaut_annual_salary = ['IDR' => 0, 'THB' => 0, 'USD' => 0];
         <tr>
             <td>-</td>
             <td>２０２８年</td>
-            <td colspan="3">Skip for MBA</td>
+            <td colspan="3">Skip for <a href="#AGSM">MBA</a></td>
         </tr>
         <tr>
             <td><h3>N3</h3></td>
