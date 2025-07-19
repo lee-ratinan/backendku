@@ -25,13 +25,50 @@ function print_total($totals): string
     }
     return implode('<br>', $str);
 }
+function to_thb(string $currency, float $amount): float
+{
+    $rates = [
+        'AUD' => 21.1,
+        'IDR' => 0.002,
+        'JPY' => 0.22,
+        'MYR' => 7.62,
+        'SGD' => 25.3,
+        'THB' => 1.0,
+        'USD' => 32.4,
+    ];
+    return $amount * $rates[$currency];
+}
+function print_total_row(string $title, array $totals): float
+{
+    $thb  = 0.0;
+    $rows = [];
+    echo '<tr><td>' . $title . '</td><td class="text-end">';
+    foreach ($totals as $currency => $total) {
+        if (0 < $total) {
+            $rows[] = get_ccy($currency) . ' ' . number_format($total, 2);
+            $thb += to_thb($currency, $total);
+        }
+    }
+    echo implode('<br>', $rows);
+    echo '</td>';
+    echo '<td class="text-end">฿ ' . number_format($thb, 2) . '</td></tr>';
+    return $thb;
+}
+$japanese_courses = ['SGD' => 0, 'THB' => 0];
+$mba_costs = ['AUD' => 0, 'THB' => 0];
+$otternaut_pre_incorporation = ['IDR' => 0, 'MYR' => 0, 'SGD' => 0, 'THB' => 0, 'USD' => 0];
+$otternaut_deferred = ['IDR' => 0, 'MYR' => 0, 'SGD' => 0, 'THB' => 0, 'USD' => 0];
+$otternaut_annual_budget = ['IDR' => 0, 'MYR' => 0, 'SGD' => 0, 'THB' => 0, 'USD' => 0];
+$otternaut_annual_salary = ['IDR' => 0, 'THB' => 0, 'USD' => 0];
 ?>
 <h2>Contents</h2>
 <ul>
     <li><a href="#JLPT">日本語能力試験</a></li>
     <li><a href="#AGSM">MBA @ AGSM (UNSW)</a></li>
     <li><a href="#Otternaut">Otternaut</a></li>
+    <li><a href="#total">Total</a></li>
 </ul>
+<!-- #################### JLPT #################### -->
 <hr class="my-5">
 <div class="row mb-3">
     <div class="col-12 col-md-6">
@@ -42,14 +79,6 @@ function print_total($totals): string
         <img class="p-1" src="<?= base_url('assets/img/plan_jlpt.png') ?>" alt="JLPT" style="height:80px;background-color:#fff"/>
     </div>
 </div>
-<?php
-$japanese_courses = ['SGD' => 0, 'THB' => 0];
-$mba_costs = ['AUD' => 0, 'THB' => 0];
-$otternaut_pre_incorporation = ['IDR' => 0, 'MYR' => 0, 'SGD' => 0, 'THB' => 0, 'USD' => 0];
-$otternaut_deferred = ['IDR' => 0, 'MYR' => 0, 'SGD' => 0, 'THB' => 0, 'USD' => 0];
-$otternaut_annual_budget = ['IDR' => 0, 'MYR' => 0, 'SGD' => 0, 'THB' => 0, 'USD' => 0];
-$otternaut_annual_salary = ['IDR' => 0, 'THB' => 0, 'USD' => 0];
-?>
 <h3>Schedule</h3>
 <div class="table-responsive">
     <table class="table table-sm table-striped table-hover">
@@ -186,6 +215,7 @@ $otternaut_annual_salary = ['IDR' => 0, 'THB' => 0, 'USD' => 0];
         </tbody>
     </table>
 </div>
+<!-- #################### MBA #################### -->
 <hr class="my-5 page-break-after">
 <div class="row mb-3">
     <div class="col-12 col-md-6">
@@ -374,6 +404,7 @@ $otternaut_annual_salary = ['IDR' => 0, 'THB' => 0, 'USD' => 0];
         </tbody>
     </table>
 </div>
+<!-- #################### OTTERNAUT #################### -->
 <hr class="my-5 page-break-after">
 <div class="row mb-3">
     <div class="col-12 col-md-6">
@@ -573,6 +604,195 @@ $otternaut_annual_salary = ['IDR' => 0, 'THB' => 0, 'USD' => 0];
             <th class="text-end">TOTAL</th>
             <th class="text-end"><?= print_total($otternaut_annual_salary) ?></th>
             <th></th>
+        </tr>
+        </tfoot>
+    </table>
+</div>
+<h3>Business Model Canvas</h3>
+<div class="table-responsive">
+    <table class="table table-sm table-hover">
+        <tr>
+            <td rowspan="2" style="width:20%;min-width:200px">
+                <b>KEY PARTNERS (KP)</b>
+                <p>Strategic partnerships that support operational efficiency and product delivery:</p>
+                <ul>
+                    <li>Hosting: HostAtom</li>
+                    <li>Email & Productivity Suite: Google Workspace</li>
+                    <li>Marketing & Advertising: Google Ads</li>
+                    <li>Analytics & Tracking: Google Analytics</li>
+                    <li>Ads Platform: Google AdSense</li>
+                    <li>Customer Support Tools: Freshchat</li>
+                    <li>Email Delivery: Mailgun</li>
+                    <li>SMS Notifications: Twilio</li>
+                    <li>Code Repository: GitHub or BitBucket</li>
+                    <li>Project Management: Jira or YouTrack / Others as needed</li>
+                    <li>(Optional Future): Integration Partners (for 3rd-party APIs)</li>
+                </ul>
+            </td>
+            <td style="width:20%;min-width:200px">
+                <b>KEY ACTIVITIES (KA)</b>
+                <p>Core tasks to deliver your value proposition:</p>
+                <ul>
+                    <li>Product Development: Build modular SaaS platforms to automate core business tasks (accounting, CRM, procurement, etc.)</li>
+                    <li>Platform Integration: Enable plug-and-play API integrations for common tools used by SMEs</li>
+                    <li>UX/UI Design: Prioritize intuitive workflows with minimal learning curve</li>
+                    <li>Marketing: Digital marketing and social ads to acquire users</li>
+                    <li>Customer Onboarding & Retention: Simple onboarding flows and minimal but effective self-service support</li>
+                    <li>Monitoring & Analytics: Track usage and performance for continuous improvement</li>
+                </ul>
+            </td>
+            <td colspan="2" rowspan="2" style="width:20%;min-width:200px">
+                <b>VALUE PROPOSITIONS (VP)</b>
+                <p>What makes your product attractive:</p>
+                <ul>
+                    <li>“AI Ready, Easy AF”: Business automation made dead simple</li>
+                    <li>No Learning Curve: Just select what you want – system handles the rest</li>
+                    <li>Ready-Made Use Cases: Pre-built flows for accounting, CRM, orders, etc.</li>
+                    <li>Accessible & Affordable: Ideal for SMEs with low technical capacity</li>
+                    <li>Free to Try: Low barrier to entry via freemium access</li>
+                    <li>Integrates Easily: Compatible with commonly used business tools</li>
+                </ul>
+            </td>
+            <td style="width:20%;min-width:200px">
+                <b>CUSTOMER RELATIONSHIPS (CR)</b>
+                <p>Type and intensity of customer interaction:</p>
+                <ul>
+                    <li>Self-Service Model: Built-in tutorials and smart onboarding</li>
+                    <li>Minimal Support: Live chat and email for critical issues only</li>
+                    <li>Community or FAQ Portal: For recurring issues and peer discussions</li>
+                    <li>Automated Guidance: Use chatbots or AI-driven hints where possible</li>
+                </ul>
+            </td>
+            <td rowspan="2" style="width:20%;min-width:200px">
+                <b>CUSTOMER SEGMENTS (CS)</b>
+                <p>Ideal customer profiles:</p>
+                <ul>
+                    <li>
+                        Small & Medium Businesses (SMEs)
+                        <ul>
+                            <li>Need affordable, automated tools</li>
+                            <li>Lack in-house tech teams</li>
+                            <li>
+                                Want simple tools for:
+                                <ul>
+                                    <li>Accounting</li>
+                                    <li>CRM / Sales Management</li>
+                                    <li>Order & Inventory Tracking</li>
+                                    <li>Supplier Management</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>Startups & Freelancers (possibly later stage)</li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <b>KEY RESOURCES (KR)</b>
+                <p>Critical assets:</p>
+                <ul>
+                    <li>Founding Team & Developers</li>
+                    <li>SaaS Platform Codebase</li>
+                    <li>Cloud Infrastructure & Hosting</li>
+                    <li>Marketing Channels</li>
+                    <li>Knowledgebase & Onboarding Material</li>
+                    <li>AI/Automation Engine</li>
+                </ul>
+            </td>
+            <td>
+                <b>CHANNELS (CH)</b>
+                <p>How customers find and use your product:</p>
+                <ul>
+                    <li>Website (Primary Entry Point)</li>
+                    <li>Social Media (For Ads & Updates)</li>
+                    <li>Email Campaigns</li>
+                    <li>Search Ads (Google Ads)</li>
+                    <li>Content Marketing (Blog/SEO)</li>
+                    <li>In-Platform Referrals or Viral Sharing (encourage via free tier)</li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3">
+                <b>COST STRUCTURE (C$)</b>
+                <p>Main expenses:</p>
+                <ul>
+                    <li>Infrastructure & Hosting Costs (HostAtom, cloud APIs, SMS, email, etc.)</li>
+                    <li>Founding Team Salaries (Initially lean)</li>
+                    <li>Third-Party Services (Mailgun, Twilio, Freshchat, Ads)</li>
+                    <li>Marketing Spend (Performance ads, content creation)</li>
+                    <li>Tool Subscriptions (Jira, GitHub, Google Workspace)</li>
+                </ul>
+            </td>
+            <td colspan="3">
+                <b>REVENUE STREAMS (R$)</b>
+                <p>How the business make money:</p>
+                <ul>
+                    <li>
+                        Freemium SaaS Model:
+                        <ul>
+                            <li>Free plan with limited features and ad placement</li>
+                            <li>Tiered pricing for advanced modules, integrations, or usage</li>
+                        </ul>
+                    </li>
+                    <li>Ads Revenue: Google AdSense on free accounts</li>
+                    <li>Optional Add-ons: Pay-per-use for premium APIs (SMS, bulk emails, etc.)</li>
+                </ul>
+            </td>
+        </tr>
+    </table>
+</div>
+<!-- #################### TOTAL #################### -->
+<hr class="my-5 page-break-after">
+<h2 id="total">TOTAL</h2>
+<div class="table-responsive">
+    <table class="table table-sm table-striped table-hover">
+        <thead>
+        <tr>
+            <th style="min-width:300px;">Description</th>
+            <th class="text-end" style="width:180px;">Amounts</th>
+            <th class="text-end" style="width:180px;">Amounts in THB</th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php
+        $total_in_thb = 0.0;
+        $total_in_thb += print_total_row('日本語能力試験', $japanese_courses);
+        $total_in_thb += print_total_row('MGA@AGSM', $mba_costs);
+        $total_in_thb += print_total_row('Otternaut Pre-incorporation', $otternaut_pre_incorporation);
+        $total_in_thb += print_total_row('Otternaut Deferred Payments', $otternaut_deferred);
+        ?>
+        </tbody>
+        <tfoot>
+        <tr>
+            <th class="text-end" colspan="2"><b>TOTAL</b></th>
+            <th class="text-end">฿ <?= number_format($total_in_thb, 2) ?></th>
+        </tr>
+        </tfoot>
+    </table>
+</div>
+<h3>Annual Budget for Otternaut</h3>
+<div class="table-responsive">
+    <table class="table table-sm table-striped table-hover">
+        <thead>
+        <tr>
+            <th style="min-width:300px;">Description</th>
+            <th class="text-end" style="width:180px;">Amounts</th>
+            <th class="text-end" style="width:180px;">Amounts in THB</th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php
+        $total_in_thb = 0.0;
+        $total_in_thb += print_total_row('Annual Budget', $otternaut_annual_budget);
+        $total_in_thb += print_total_row('Salary', $otternaut_annual_salary);
+        ?>
+        </tbody>
+        <tfoot>
+        <tr>
+            <th class="text-end" colspan="2"><b>TOTAL</b></th>
+            <th class="text-end">฿ <?= number_format($total_in_thb, 2) ?></th>
         </tr>
         </tfoot>
     </table>
