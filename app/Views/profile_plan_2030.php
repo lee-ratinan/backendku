@@ -797,3 +797,4 @@ $otternaut_annual_salary = ['IDR' => 0, 'THB' => 0, 'USD' => 0];
         </tfoot>
     </table>
 </div>
+<hr class="my-5">

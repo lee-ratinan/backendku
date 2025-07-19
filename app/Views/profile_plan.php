@@ -23,6 +23,7 @@ $this->extend($layout);
     <section class="section">
         <div class="row d-print-none">
             <div class="col">
+                <a class="btn btn-outline-primary" href="<?= base_url($session->locale . '/office/profile/plan-export/' . $year) ?>" target="_blank"><i class="fa-solid fa-print"></i></a>
                 <a class="btn btn-<?= (2030 == $year ? '' : 'outline-') ?>primary" href="<?= base_url($session->locale . '/office/profile/plan/2030') ?>">2030</a>
             </div>
         </div>

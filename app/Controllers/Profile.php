@@ -140,6 +140,25 @@ class Profile extends BaseController
         ];
         return view('profile_plan', $data);
     }
+
+    /**
+     * @param int $year
+     * @return string
+     */
+    public function planExport(int $year = 2030): string
+    {
+        $session = session();
+        $data    = [
+            'page_title'       => 'Plan',
+            'slug'             => '/office/profile/plan_export',
+            'user_session'     => $session->user,
+            'roles'            => $session->roles,
+            'current_role'     => $session->current_role,
+            'year'             => $year
+        ];
+        return view('profile_plan_export', $data);
+    }
+
     /**
      * @return string
      */

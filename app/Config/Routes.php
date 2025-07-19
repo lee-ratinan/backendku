@@ -225,6 +225,7 @@ $routes->group('{locale}/office', ['filter' => 'auth'], static function ($routes
     $routes->get('profile/data', 'Profile::index');
     $routes->get('profile/plan', 'Profile::plan');
     $routes->get('profile/plan/(:num)', 'Profile::plan/$1');
+    $routes->get('profile/plan-export/(:num)', 'Profile::planExport/$1');
     // Resume
     $routes->get('profile/resume', 'Profile::resume');
     $routes->post('profile/resume/builder', 'Profile::resumeBuilder');
