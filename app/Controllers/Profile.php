@@ -123,41 +123,41 @@ class Profile extends BaseController
         return view('profile_data', $data);
     }
 
-    /**
-     * @param int $year
-     * @return string
-     */
-    public function plan(int $year = 2030): string
-    {
-        $session = session();
-        $data    = [
-            'page_title'       => 'Plan',
-            'slug'             => '/office/profile/plan',
-            'user_session'     => $session->user,
-            'roles'            => $session->roles,
-            'current_role'     => $session->current_role,
-            'year'             => $year
-        ];
-        return view('profile_plan', $data);
-    }
-
-    /**
-     * @param int $year
-     * @return string
-     */
-    public function planExport(int $year = 2030): string
-    {
-        $session = session();
-        $data    = [
-            'page_title'       => 'Plan',
-            'slug'             => '/office/profile/plan_export',
-            'user_session'     => $session->user,
-            'roles'            => $session->roles,
-            'current_role'     => $session->current_role,
-            'year'             => $year
-        ];
-        return view('profile_plan_export', $data);
-    }
+//    /**
+//     * @param int $year
+//     * @return string
+//     */
+//    public function plan(int $year = 2030): string
+//    {
+//        $session = session();
+//        $data    = [
+//            'page_title'       => 'Plan',
+//            'slug'             => '/office/profile/plan',
+//            'user_session'     => $session->user,
+//            'roles'            => $session->roles,
+//            'current_role'     => $session->current_role,
+//            'year'             => $year
+//        ];
+//        return view('profile_plan', $data);
+//    }
+//
+//    /**
+//     * @param int $year
+//     * @return string
+//     */
+//    public function planExport(int $year = 2030): string
+//    {
+//        $session = session();
+//        $data    = [
+//            'page_title'       => 'Plan',
+//            'slug'             => '/office/profile/plan_export',
+//            'user_session'     => $session->user,
+//            'roles'            => $session->roles,
+//            'current_role'     => $session->current_role,
+//            'year'             => $year
+//        ];
+//        return view('profile_plan_export', $data);
+//    }
 
     /**
      * @return string
@@ -181,21 +181,21 @@ class Profile extends BaseController
      */
     public function resumeBuilder()
     {
-        $return   = $this->request->getPost('return');
+        $return   = $this->request->getPost('return') ?? 'html';
         $data = [
-            'job_title'              => $this->request->getPost('job_title'),
-            'summary'                => $this->request->getPost('summary'),
-            'skills'                 => $this->request->getPost('skills'),
-            'skill_head'             => $this->request->getPost('skill_head'),
-            'experiences'            => $this->request->getPost('experiences'),
-            'education'              => $this->request->getPost('education'),
-            'certifications'         => $this->request->getPost('certifications'),
-            'awards'                 => $this->request->getPost('awards'),
-            'languages'              => $this->request->getPost('languages'),
-            'additional_information' => $this->request->getPost('additional_information'),
+            'job_title'              => $this->request->getPost('job_title') ?? 'Scrum Master/Product Owner',
+//            'summary'                => $this->request->getPost('summary'),
+//            'skills'                 => $this->request->getPost('skills'),
+//            'skill_head'             => $this->request->getPost('skill_head'),
+//            'experiences'            => $this->request->getPost('experiences'),
+//            'education'              => $this->request->getPost('education'),
+//            'certifications'         => $this->request->getPost('certifications'),
+//            'awards'                 => $this->request->getPost('awards'),
+//            'languages'              => $this->request->getPost('languages'),
+//            'additional_information' => $this->request->getPost('additional_information'),
         ];
-        $file_name   = 'Ratinan_Lee-' . str_replace(' ', '_', $data['job_title']) . '.pdf';
-        $resume_html = view('profile_resume_builder_generic', $data);
+        $file_name   = 'Ratinan_Lee-resume.pdf';
+        $resume_html = view('profile_resume_builder_2025', $data);
         if ('html' == $return) {
             return $resume_html;
         }
