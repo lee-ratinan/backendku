@@ -53,6 +53,8 @@
         <a href="https://lee.ratinan.com" target="_blank">lee.ratinan.com</a> &middot;
         <a href="https://www.linkedin.com/in/ratinanlee/" target="_blank">LinkedIn</a>
     </p>
+    <h3>CORE STRENGTHS</h3>
+    <p>Strong Agile/Scrum Leadership · AI Applications · FinTech Development · Full-Stack Engineering · Bilingual Communication (English/Thai)</p>
     <h3>EXPERIENCE</h3>
     <?php
     function build_experience($experience): void
