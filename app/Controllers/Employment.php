@@ -1352,7 +1352,7 @@ class Employment extends BaseController
         ];
         foreach ($fields as $field) {
             $value        = $this->request->getPost($field);
-            $data[$field] = (!empty($value)) ? $value : null;
+            $data[$field] = ($value !== null && $value !== '') ? $value : null;
         }
         if ('edit' == $mode) {
             if ($income_model->update($id, $data)) {
