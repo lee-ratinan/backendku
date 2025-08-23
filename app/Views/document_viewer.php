@@ -13,7 +13,7 @@
         .container { max-width: 750px; font-family: 'Noto Serif', 'Noto Sans Thai', serif; }
         div, p { color: #111!important; }
         h1, h2, h3, h4, h5, h6 { margin: 1rem 0; font-family: 'Noto Sans', sans-serif; page-break-after: avoid; }
-        .history-table td, .history-table th { padding: 1px!important; }
+        .history-table td, .history-table th { padding: 1px!important; font-family: 'Noto Sans', sans-serif; font-size:0.8em; text-align: left; }
         li p { margin-bottom: 0!important; }
         .table>tbody>tr>td { border: none; vertical-align: top!important; }
         table { border: none; margin-bottom: 1rem; }
@@ -53,9 +53,10 @@
             <p>by <?= $document['user_name_first'] . ' ' . $document['user_name_family'] ?></p>
             <hr class="my-2" />
             <br><br>
+            <?php if ('internal' == $mode) : ?>
             <table class="table history-table">
                 <thead>
-                <tr class="text-center">
+                <tr>
                     <th>Version</th>
                     <th>Date</th>
                     <th>By</th>
@@ -65,14 +66,15 @@
                 <tbody>
                 <?php foreach ($history as $row) : ?>
                     <tr>
-                        <td class="text-center"><?= $row['version_number'] ?></td>
-                        <td class="text-center"><?= date(DATE_FORMAT_UI, strtotime($row['published_date'])) ?></td>
+                        <td><?= $row['version_number'] ?></td>
+                        <td><?= date(DATE_FORMAT_UI, strtotime($row['published_date'])) ?></td>
                         <td><?= ucwords($row['user_name_first'] . ' ' . $row['user_name_family']) ?></td>
                         <td><?= $row['version_description'] ?></td>
                     </tr>
                 <?php endforeach; ?>
                 </tbody>
             </table>
+            <?php endif; ?>
             <br>
             <nav id="toc"></nav>
             <div class="print-page-break"></div>
