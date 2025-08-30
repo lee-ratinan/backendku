@@ -13,6 +13,7 @@ $this->extend($layout);
                 <li class="breadcrumb-item active"><?= $page_title ?></li>
             </ol>
         </nav>
+        <a class="btn btn-outline-primary mb-4" href="<?= base_url($session->locale . '/office/document/public-document/compiled-work') ?>" target="_blank">Compiled Work Experience</a>
     </div>
     <section class="section">
         <div class="row">

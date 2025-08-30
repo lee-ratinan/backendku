@@ -186,4 +186,34 @@ class DocumentMasterModel extends Model
         return false;
     }
 
+    /**
+     * retrieve
+     * BH24 (DSTWS)
+     * SH27 (BuzzCity + MobAds) + SH29A
+     * SH28 (CommonTown)
+     * SH29B (IClick Media)
+     * SH30 (Secretlab)
+     * SR2 (Irvins)
+     * SR3 (Moolahgo)
+     * SR7 (Silverlake)
+     * @return array
+     */
+    public function getLatestWorkDocuments(): array
+    {
+        $work_slug = [
+            'workbh24',
+            'worksh27',
+            'worksh28',
+            'worksh29b',
+            'worksh30',
+            'worksr2',
+            'worksr3',
+            'worksr7'
+        ];
+        $documents = $this->select('id')->whereIn('doc_slug', $work_slug)->findAll();
+        $doc_ids   = array_map(fn($document) => $document['id'], $documents);
+        $doc_version_model = new DocumentVersionModel();
+        return $doc_version_model->getLatestVersions($doc_ids);
+    }
+
 }

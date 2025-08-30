@@ -44,6 +44,33 @@ class DocumentVersionModel extends Model
     }
 
     /**
+     * @param int|array $doc_ids
+     * @return array
+     */
+    public function getLatestVersions(int|array $doc_ids): array
+    {
+        if (is_int($doc_ids)) {
+            $doc_ids = [$doc_ids];
+        }
+        if (empty($doc_ids)) {
+            return [];
+        }
+        $subquery = $this->db->table('document_version')
+            ->select('doc_id, MAX(version_number) AS max_version')
+            ->whereIn('doc_id', $doc_ids)
+            ->groupBy('doc_id')
+            ->getCompiledSelect();
+        return $this->db->table('document_version')
+            ->select('document_version.*, user_master.user_name_first, user_master.user_name_family')
+            ->join("($subquery) AS latest", 'latest.doc_id = document_version.doc_id AND latest.max_version = document_version.version_number', 'inner')
+            ->join('user_master', 'user_master.id = document_version.created_by', 'inner')
+            ->whereIn('document_version.doc_id', $doc_ids)
+            ->orderBy('document_version.doc_title', 'ASC')
+            ->get()
+            ->getResult();
+    }
+
+    /**
      * Retrieve all version history
      * @param int $doc_id
      * @return array

@@ -240,6 +240,14 @@ class Document extends BaseController
     {
         $doc_model     = new DocumentMasterModel();
         $version_model = new DocumentVersionModel();
+        if ('compiled-work' == $slug) {
+            $documents = $doc_model->getLatestWorkDocuments();
+            $data      = [
+                'mode'      => $mode,
+                'documents' => $documents,
+            ];
+            return view('document_viewer_compiled', $data);
+        }
         $document      = $doc_model->getDocumentVersion('doc_slug', $slug, $version);
         if ( ! $document) {
             return $this->viewDraft($slug);

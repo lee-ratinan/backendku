@@ -124,6 +124,7 @@ $routes->group('{locale}/office', ['filter' => 'auth'], static function ($routes
     $routes->post('document/delete', 'Document::deleteVersion');
     $routes->post('document/autosave', 'Document::autosave');
     $routes->get('document/draft-document/(:any)', 'Document::viewDraft/$1');
+    $routes->get('document/public-document/compiled-work', 'Document::view/public/compiled-work');
     $routes->get('document/public-document/(:any)', 'Document::view/public/$1');
     $routes->get('document/public-document/(:any)/(:any)', 'Document::view/public/$1/$2');
     $routes->get('document/internal-document/(:any)', 'Document::view/internal/$1');
