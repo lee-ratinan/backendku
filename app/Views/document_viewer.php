@@ -76,19 +76,16 @@
             </article>
             <hr class="my-3" />
             <div class="text-center my-5 py-5">*** END OF DOCUMENT ***</div>
-            <div class="print-page-break"></div>
-            <div class="print-page-wrapper">
-                <p class="mb-3 pe-5">
-                    <strong><?= $document['doc_title'] ?></strong> (version <?= $document['version_number'] ?>) is a document written by <?= $document['user_name_first'] . ' ' . $document['user_name_family'] ?> and published on <?= date(DATE_FORMAT_UI, strtotime($document['published_date'])) ?>.<br><br>
-                    <?php if ('internal' == $mode) : ?>
-                        This document contains sensitive, unfiltered, and highly confidential information intended solely for personal reference or authorized internal use. It includes real names, project specifics, proprietary knowledge, and uncensored personal commentary. Distribution, sharing, or publication of this document outside its intended audience is strictly prohibited.<br><br>
-                        By accessing this document, you acknowledge the confidentiality of its contents and agree not to reproduce, disclose, or discuss it in any public or unauthorized context. Breach of this confidentiality is a serious offense and may result in consequences, both legal and otherwise.
-                    <?php else: ?>
-                        This document has been prepared for public access and transparency. All content presented here is based on personal experiences and factual events to the best of my knowledge. Any sensitive, proprietary, or confidential information—including names, organizations, specific project data, and personal identifiers—has been redacted or anonymized for privacy and legal compliance.<br><br>
-                        This version is intended for educational, reflective, or general awareness purposes only. Unauthorized use, misrepresentation, or reproduction of this content is strictly prohibited.
-                    <?php endif; ?>
-                </p>
-            </div>
+            <p class="mb-3 pe-5">
+                <strong><?= $document['doc_title'] ?></strong> (version <?= $document['version_number'] ?>) is a document written by <?= $document['user_name_first'] . ' ' . $document['user_name_family'] ?> and published on <?= date(DATE_FORMAT_UI, strtotime($document['published_date'])) ?>.<br><br>
+                <?php if ('internal' == $mode) : ?>
+                    This document contains sensitive, unfiltered, and highly confidential information intended solely for personal reference or authorized internal use. It includes real names, project specifics, proprietary knowledge, and uncensored personal commentary. Distribution, sharing, or publication of this document outside its intended audience is strictly prohibited.<br><br>
+                    By accessing this document, you acknowledge the confidentiality of its contents and agree not to reproduce, disclose, or discuss it in any public or unauthorized context. Breach of this confidentiality is a serious offense and may result in consequences, both legal and otherwise.
+                <?php else: ?>
+                    This document has been prepared for public access and transparency. All content presented here is based on personal experiences and factual events to the best of my knowledge. Any sensitive, proprietary, or confidential information—including names, organizations, specific project data, and personal identifiers—has been redacted or anonymized for privacy and legal compliance.<br><br>
+                    This version is intended for educational, reflective, or general awareness purposes only. Unauthorized use, misrepresentation, or reproduction of this content is strictly prohibited.
+                <?php endif; ?>
+            </p>
         </div>
     </div>
 </div>
