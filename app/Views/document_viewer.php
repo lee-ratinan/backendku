@@ -18,6 +18,7 @@
         .table>tbody>tr>td { border: none; vertical-align: top!important; }
         table { border: none; margin-bottom: 1rem; }
         blockquote {border-left: 4px solid #008800;padding: 1em 1.5em;margin: 1em 0;font-style: italic;color: #555;position: relative;}
+        .table>:not(:first-child) { border-top-width: 0 !important; }
         @media print {
             body, .container { background-color:#fff; color: #000!important; }
             strong, b, p, td, th { color: #000!important; }
@@ -41,43 +42,35 @@
 <div class="container">
     <div class="row">
         <div class="col">
-            <div class="my-5 py-5 text-end">
-                <br><br><br><br><br>
-                <h1><?= $document['doc_title'] ?></h1>
-                <h2>by <?= $document['user_name_first'] . ' ' . $document['user_name_family'] ?></h2>
-                <br>
-                <p>V<?= $document['version_number'] ?> | <?= date(DATE_FORMAT_UI, strtotime($document['published_date'])) ?></p>
-            </div>
-            <div class="print-page-break"></div>
             <h1><?= $document['doc_title'] ?></h1>
+            <hr class="my-0" />
             <p>by <?= $document['user_name_first'] . ' ' . $document['user_name_family'] ?></p>
-            <hr class="my-2" />
             <br><br>
             <?php if ('internal' == $mode) : ?>
-            <table class="table history-table">
-                <thead>
-                <tr>
-                    <th>Version</th>
-                    <th>Date</th>
-                    <th>By</th>
-                    <th>Detail</th>
-                </tr>
-                </thead>
-                <tbody>
-                <?php foreach ($history as $row) : ?>
+                <table class="table history-table">
+                    <thead>
                     <tr>
-                        <td><?= $row['version_number'] ?></td>
-                        <td><?= date(DATE_FORMAT_UI, strtotime($row['published_date'])) ?></td>
-                        <td><?= ucwords($row['user_name_first'] . ' ' . $row['user_name_family']) ?></td>
-                        <td><?= $row['version_description'] ?></td>
+                        <th>Version</th>
+                        <th>Date</th>
+                        <th>By</th>
+                        <th>Detail</th>
                     </tr>
-                <?php endforeach; ?>
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                    <?php foreach ($history as $row) : ?>
+                        <tr>
+                            <td><?= $row['version_number'] ?></td>
+                            <td><?= date(DATE_FORMAT_UI, strtotime($row['published_date'])) ?></td>
+                            <td><?= ucwords($row['user_name_first'] . ' ' . $row['user_name_family']) ?></td>
+                            <td><?= $row['version_description'] ?></td>
+                        </tr>
+                    <?php endforeach; ?>
+                    </tbody>
+                </table>
+                <br>
+                <nav id="toc"></nav>
+                <div class="print-page-break"></div>
             <?php endif; ?>
-            <br>
-            <nav id="toc"></nav>
-            <div class="print-page-break"></div>
             <article>
                 <?= $document['doc_content'] ?>
             </article>
