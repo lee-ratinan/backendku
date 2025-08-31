@@ -112,12 +112,12 @@ class JourneyOperatorModel extends Model
     /**
      * Print operator code(s))
      * @param string $mode_of_transport
-     * @param string $code_1
-     * @param string $code_2
-     * @param string $callsign
+     * @param $code_1
+     * @param $code_2
+     * @param $callsign
      * @return string
      */
-    private function printOperatorCode(string $mode_of_transport, string $code_1, string $code_2, string $callsign): string
+    private function printOperatorCode(string $mode_of_transport, $code_1 = '', $code_2 = '', $callsign = ''): string
     {
         $return = $code_1;
         if ('airplane' == $mode_of_transport) {
