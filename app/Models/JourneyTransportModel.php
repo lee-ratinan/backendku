@@ -199,7 +199,7 @@ class JourneyTransportModel extends Model
         $operators       = $operator_model->orderBy('mode_of_transport, operator_name, operator_code_1')->findAll();
         $all_operators   = [];
         foreach ($operators as $operator) {
-            $all_operators[$operator['id']] = $jo_modes[$operator['mode_of_transport']] . ': ' . $operator['operator_name'] . (empty($operator['operator_code_1']) ? '' : ' (' . $operator['operator_code_1'] . ')');
+            $all_operators[$operator['id']] = $operator['operator_name'] . (empty($operator['operator_code_1']) ? '' : ' (' . $operator['operator_code_1'] . ')') . ' - ' . $jo_modes[$operator['mode_of_transport']];
         }
         $configurations['operator_id']['options'] = $all_operators;
         // Ports
@@ -208,7 +208,7 @@ class JourneyTransportModel extends Model
         $ports           = $port_model->orderBy('mode_of_transport, port_name, port_code_1')->findAll();
         $all_ports       = [];
         foreach ($ports as $port) {
-            $all_ports[$port['id']] = $jp_modes[$port['mode_of_transport']] . ': ' . $port['port_name'] . (empty($port['port_code_1']) ? '' : ' (' . $port['port_code_1'] . ')');
+            $all_ports[$port['id']] = (empty($port['port_code_1']) ? '' : $port['port_code_1'] . ' - ') . $port['port_name'] . ', ' . $jp_modes[$port['mode_of_transport']];
         }
         $configurations['departure_port_id']['options'] = $all_ports;
         $configurations['arrival_port_id']['options']  = $all_ports;
@@ -227,7 +227,7 @@ class JourneyTransportModel extends Model
         $currencies     = lang('ListCurrencies.currencies');
         $all_currencies = [];
         foreach ($currencies as $key => $currency) {
-            $all_currencies[$key] = '[' . $key . '] ' . $currency['currency_name'];
+            $all_currencies[$key] = $key . ' - ' . $currency['currency_name'];
         }
         $configurations['price_currency_code']['options']    = $all_currencies;
         $configurations['charged_currency_code']['options']  = $all_currencies;

@@ -100,7 +100,8 @@ class JourneyAccommodationModel extends Model
             'label' => 'Booking Channel',
             'maxlength' => 24,
             'required' => true,
-            'placeholder' => 'AGODA'
+            'placeholder' => 'AGODA',
+            'details'     => 'e.g. AGODA'
         ],
         'room_type' => [
             'type' => 'text',
@@ -198,7 +199,7 @@ class JourneyAccommodationModel extends Model
         $currencies     = lang('ListCurrencies.currencies');
         $all_currencies = [];
         foreach ($currencies as $key => $currency) {
-            $all_currencies[$key] = '[' . $key . '] ' . $currency['currency_name'];
+            $all_currencies[$key] = $key . ' - ' . $currency['currency_name'];
         }
         $configurations['price_currency_code']['options']    = $all_currencies;
         $configurations['charged_currency_code']['options']  = $all_currencies;

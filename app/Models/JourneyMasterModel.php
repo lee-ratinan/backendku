@@ -150,7 +150,7 @@ class JourneyMasterModel extends Model
         $modes           = $port_model->getModeOfTransport();
         $all_ports       = [];
         foreach ($ports as $port) {
-            $all_ports[$port['id']] = (!empty($port['port_code_1']) ? '[' . $port['port_code_1'] . '] ' : '') . $port['port_name'] . ', ' . $modes[$port['mode_of_transport']];
+            $all_ports[$port['id']] = (!empty($port['port_code_1']) ? $port['port_code_1'] . ' - ' : '') . $port['port_name'] . ', ' . $modes[$port['mode_of_transport']];
         }
         $configurations['entry_port_id']['options'] = $all_ports;
         $configurations['exit_port_id']['options']  = $all_ports;
