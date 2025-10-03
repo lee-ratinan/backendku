@@ -5,9 +5,9 @@ $this->extend($layout);
 ?>
 <?= $this->section('content') ?>
 <?php $session = session(); ?>
-    <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
-    <script src="https://cdn.amcharts.com/lib/5/xy.js"></script>
-    <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
+    <script src="<?= base_url('assets/vendor/amcharts5/index.js') ?>"></script>
+    <script src="<?= base_url('assets/vendor/amcharts5/xy.js') ?>"></script>
+    <script src="<?= base_url('assets/vendor/amcharts5/themes/Animated.js') ?>"></script>
     <div class="pagetitle">
         <h1><?= $page_title ?></h1>
         <nav>

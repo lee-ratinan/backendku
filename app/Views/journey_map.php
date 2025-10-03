@@ -8,11 +8,11 @@ $this->extend($layout);
     <style>
         #world-div, #country-div { width:90%;height:80vh;margin:10px auto; }
     </style>
-    <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
-    <script src="https://cdn.amcharts.com/lib/5/map.js"></script>
-    <script src="https://cdn.amcharts.com/lib/5/geodata/worldLow.js"></script>
-    <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
-    <script src="https://cdn.amcharts.com/lib/5/geodata/data/countries2.js"></script>
+    <script src="<?= base_url('assets/vendor/amcharts5/index.js') ?>"></script>
+    <script src="<?= base_url('assets/vendor/amcharts5/map.js') ?>"></script>
+    <script src="<?= base_url('assets/vendor/amcharts5/geodata/worldLow.js') ?>"></script>
+    <script src="<?= base_url('assets/vendor/amcharts5/geodata/countries2.js') ?>"></script>
+    <script src="<?= base_url('assets/vendor/amcharts5/themes/Animated.js') ?>"></script>
     <div class="pagetitle">
         <h1><?= $page_title ?></h1>
         <nav>
@@ -125,7 +125,9 @@ $this->extend($layout);
                     }
                 }
                 $('#country-name-label').html("<h3 class='text-center my-3'>"+title+"</h3>");
-                am5.net.load("https://cdn.amcharts.com/lib/5/geodata/json/" + currentMap + ".json", chart).then(function (result) {
+                let chart_data_url = "<?= base_url('assets/vendor/amcharts5/geodata/json/') ?>" + currentMap + ".json";
+                console.log(chart_data_url);
+                am5.net.load(chart_data_url, chart).then(function (result) {
                     let geodata = am5.JSONParser.parse(result.response);
                     let polygonSeries = chart.series.push(am5map.MapPolygonSeries.new(root, {geoJSON: geodata}));
                     polygonSeries.mapPolygons.template.setAll({

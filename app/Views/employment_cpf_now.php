@@ -10,9 +10,9 @@ $this->extend($layout);
         .row-special-account td{background-color:#DFB670!important;color:#222!important;}
         .row-medisave-account td{background-color:#7D9ADE!important;color:#222!important;}
     </style>
-    <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
-    <script src="https://cdn.amcharts.com/lib/5/percent.js"></script>
-    <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
+    <script src="<?= base_url('assets/vendor/amcharts5/index.js') ?>"></script>
+    <script src="<?= base_url('assets/vendor/amcharts5/percent.js') ?>"></script>
+    <script src="<?= base_url('assets/vendor/amcharts5/themes/Animated.js') ?>"></script>
     <div class="pagetitle">
         <h1><?= $page_title ?></h1>
         <nav>

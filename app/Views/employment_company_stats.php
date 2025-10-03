@@ -8,10 +8,10 @@ $this->extend($layout);
     <style>
         #country-company, #country-day {width: 100%;height: 300px;}
     </style>
-    <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
-    <script src="https://cdn.amcharts.com/lib/5/xy.js"></script>
-    <script src="https://cdn.amcharts.com/lib/5/percent.js"></script>
-    <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
+    <script src="<?= base_url('assets/vendor/amcharts5/index.js') ?>"></script>
+    <script src="<?= base_url('assets/vendor/amcharts5/xy.js') ?>"></script>
+    <script src="<?= base_url('assets/vendor/amcharts5/percent.js') ?>"></script>
+    <script src="<?= base_url('assets/vendor/amcharts5/themes/Animated.js') ?>"></script>
     <div class="pagetitle">
         <h1><?= $page_title ?></h1>
         <nav>

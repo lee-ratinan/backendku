@@ -5,10 +5,10 @@ $this->extend($layout);
 ?>
 <?= $this->section('content') ?>
 <?php $session = session(); ?>
-    <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
-    <script src="https://cdn.amcharts.com/lib/5/xy.js"></script>
-    <script src="https://cdn.amcharts.com/lib/5/percent.js"></script>
-    <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
+    <script src="<?= base_url('assets/vendor/amcharts5/index.js') ?>"></script>
+    <script src="<?= base_url('assets/vendor/amcharts5/xy.js') ?>"></script>
+    <script src="<?= base_url('assets/vendor/amcharts5/percent.js') ?>"></script>
+    <script src="<?= base_url('assets/vendor/amcharts5/themes/Animated.js') ?>"></script>
     <style>
         .row-ordinary-account td{background-color:#437271!important;color:#222!important;}
         .row-special-account td{background-color:#DFB670!important;color:#222!important;}
