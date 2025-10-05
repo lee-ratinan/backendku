@@ -129,6 +129,8 @@ $routes->group('{locale}/office', ['filter' => 'auth'], static function ($routes
     $routes->get('document/public-document/(:any)/(:any)', 'Document::view/public/$1/$2');
     $routes->get('document/internal-document/(:any)', 'Document::view/internal/$1');
     $routes->get('document/internal-document/(:any)/(:any)', 'Document::view/internal/$1/$2');
+    $routes->get('document/fake-name-document/(:any)', 'Document::view/fake-name/$1');
+    $routes->get('document/fake-name-document/(:any)/(:any)', 'Document::view/fake-name/$1/$2');
     // FINANCE - TAX
     // tax_master and tax_breakdown tables
     $routes->get('tax', 'Tax::index');

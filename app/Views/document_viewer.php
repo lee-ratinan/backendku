@@ -81,8 +81,12 @@
                 <?php if ('internal' == $mode) : ?>
                     This document contains sensitive, unfiltered, and highly confidential information intended solely for personal reference or authorized internal use. It includes real names, project specifics, proprietary knowledge, and uncensored personal commentary. Distribution, sharing, or publication of this document outside its intended audience is strictly prohibited.<br><br>
                     By accessing this document, you acknowledge the confidentiality of its contents and agree not to reproduce, disclose, or discuss it in any public or unauthorized context. Breach of this confidentiality is a serious offense and may result in consequences, both legal and otherwise.
-                <?php else: ?>
+                <?php elseif ('public' == $mode) : ?>
                     This document has been prepared for public access and transparency. All content presented here is based on personal experiences and factual events to the best of my knowledge. Any sensitive, proprietary, or confidential information—including names, organizations, specific project data, and personal identifiers—has been redacted or anonymized for privacy and legal compliance.<br><br>
+                    This version is intended for educational, reflective, or general awareness purposes only. Unauthorized use, misrepresentation, or reproduction of this content is strictly prohibited.
+                <?php else: ?>
+                    <b>Fake-name Mode</b><br>
+                    This document has been prepared for public access and transparency. All content presented here is based on personal experiences and factual events to the best of my knowledge. Any sensitive, proprietary, or confidential information—including names, organizations, specific project data, and personal identifiers—has been completely changed, altered for privacy and legal compliance.<br><br>
                     This version is intended for educational, reflective, or general awareness purposes only. Unauthorized use, misrepresentation, or reproduction of this content is strictly prohibited.
                 <?php endif; ?>
             </p>
@@ -95,13 +99,43 @@
         $('blockquote > p').each(function () {
             $(this).replaceWith($(this).html());
         });
+        let names_to_replace = {
+            'David': 'Dylan',
+            'Dioni': 'Diego',
+            'Chandra': 'Chirayu',
+            'Vernice': 'Vivien',
+            'Kanitta': 'Karla',
+            'John': 'Jim',
+            'Andy': 'Anson',
+            'Eugene': 'Elliot',
+            'Raymond': 'Rick',
+            'Ben': 'Brooks',
+            'Felicia': 'Fleur',
+            'Juliani': 'Jolie',
+            'Jay': 'Jack',
+            'Jeremiah': 'Joel',
+            'Alex': 'Adrian',
+            'Terrence': 'Tim',
+            'Cindy': 'Clarice',
+            'Joel': 'Jake',
+            'Evelyn': 'Emily'
+        };
+        let originalText = '', redacted = '';
         $('s').each(function () {
             <?php if ('internal' == $mode) : ?>
                 $(this).replaceWith($(this).text());
-            <?php else: ?>
-                const originalText = $(this).text();
-                const redacted = 'x'.repeat(originalText.length);
+            <?php elseif ('public' == $mode) : ?>
+                originalText = $(this).text();
+                redacted = 'x'.repeat(originalText.length);
                 $(this).text(redacted).css({backgroundColor: 'black', color: 'black'});
+            <?php else: ?>
+                originalText = $(this).text();
+                if (names_to_replace[originalText]) {
+                    redacted = names_to_replace[originalText];
+                } else {
+                    redacted = '#'.repeat(originalText.length);
+                }
+                $(this).replaceWith(redacted);
             <?php endif; ?>
         });
         $('article table').each(function () {
@@ -121,6 +155,7 @@
             });
             $article.html(html);
         });
+        <?php if ('internal' == $mode) : ?>
         const $toc = $('#toc');
         const $headings = $('article h2, article h3, article h4');
         let tocHtml = '<ul>';
@@ -145,6 +180,7 @@
         tocHtml += '</ul>'.repeat(prevLevel - 2); // close remaining tags
         tocHtml += '</ul>';
         $toc.html(tocHtml);
+        <?php endif; ?>
     });
 </script>
 </body>

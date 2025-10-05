@@ -145,6 +145,7 @@ class DocumentMasterModel extends Model
                 '<span class="utc-to-local-time">' . str_replace(' ', 'T', $row['updated_at']) . '</span>',
                 '<a class="btn btn-outline-primary btn-sm" href="' . base_url($locale . '/office/document/edit/' . $new_id) . '"><i class="fa-solid fa-edit"></i></a>',
                 ('published' === $row['doc_status'] ? '<a class="btn btn-outline-primary btn-sm" target="_blank" href="' . base_url($locale . '/office/document/public-document/' . $row['doc_slug']) . '"><i class="fa-solid fa-globe"></i></a>' : '-'),
+                ('published' === $row['doc_status'] ? '<a class="btn btn-outline-primary btn-sm" target="_blank" href="' . base_url($locale . '/office/document/fake-name-document/' . $row['doc_slug']) . '"><i class="fa-solid fa-globe"></i></a>' : '-'),
                 ('published' === $row['doc_status'] ? '<a class="btn btn-outline-primary btn-sm" target="_blank" href="' . base_url($locale . '/office/document/internal-document/' . $row['doc_slug']) . '"><i class="fa-solid fa-eye"></i></a>' : '-'),
                 '<a class="btn btn-outline-primary btn-sm" target="_blank" href="' . base_url($locale . '/office/document/draft-document/' . $row['doc_slug']) . '"><i class="fa-solid fa-eye"></i></a>',
             ];
