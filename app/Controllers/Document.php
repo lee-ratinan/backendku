@@ -256,6 +256,7 @@ class Document extends BaseController
         $data          = [
             'history'  => $history,
             'document' => $document,
+            'slug'     => $slug,
             'mode'     => $mode
         ];
         return view('document_viewer', $data);

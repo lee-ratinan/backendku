@@ -45,6 +45,9 @@
             <h1><?= $document['doc_title'] ?></h1>
             <hr class="my-0" />
             <p>by <?= $document['user_name_first'] . ' ' . $document['user_name_family'] ?></p>
+            <?php if ('fake-name' == $mode) : ?>
+            <p>Anonymized version, all names are either censored or changed.</p>
+            <?php endif; ?>
             <br><br>
             <?php if ('internal' == $mode) : ?>
                 <table class="table history-table">
@@ -85,8 +88,8 @@
                     This document has been prepared for public access and transparency. All content presented here is based on personal experiences and factual events to the best of my knowledge. Any sensitive, proprietary, or confidential information—including names, organizations, specific project data, and personal identifiers—has been redacted or anonymized for privacy and legal compliance.<br><br>
                     This version is intended for educational, reflective, or general awareness purposes only. Unauthorized use, misrepresentation, or reproduction of this content is strictly prohibited.
                 <?php else: ?>
-                    <b>Fake-name Mode</b><br>
-                    This document has been prepared for public access and transparency. All content presented here is based on personal experiences and factual events to the best of my knowledge. Any sensitive, proprietary, or confidential information—including names, organizations, specific project data, and personal identifiers—has been completely changed, altered for privacy and legal compliance.<br><br>
+                    <b>Anonymized Mode</b><br>
+                    This document has been prepared for public access and transparency. All content presented here is based on personal experiences and factual events to the best of my knowledge. Any sensitive, proprietary, or confidential information—including names, organizations, specific project data, and personal identifiers—has been anonymized (completely changed) or redacted for privacy and legal compliance.<br><br>
                     This version is intended for educational, reflective, or general awareness purposes only. Unauthorized use, misrepresentation, or reproduction of this content is strictly prohibited.
                 <?php endif; ?>
             </p>
@@ -100,25 +103,53 @@
             $(this).replaceWith($(this).html());
         });
         let names_to_replace = {
+            <?php if ('worksr7' == $slug) : ?>
+            // Silverlake
             'David': 'Dylan',
             'Dioni': 'Diego',
             'Chandra': 'Chirayu',
             'Vernice': 'Vivien',
             'Kanitta': 'Karla',
+            'Gus': 'George',
+            'Meng Teck': 'Michael',
+            'Felix': 'Fred',
+            <?php elseif ('worksr3' == $slug) : ?>
+            // Moolahgo
             'John': 'Jim',
+            'Jerry': 'Gabby',
             'Andy': 'Anson',
             'Eugene': 'Elliot',
             'Raymond': 'Rick',
             'Ben': 'Brooks',
             'Felicia': 'Fleur',
+            'Abyan': 'Alan',
+            'Samsul': 'Sugiarto',
+            'Pajar': 'Prakoso',
+            'Fauzi': 'Fahmi',
+            'Malik': 'Max',
             'Juliani': 'Jolie',
+            <?php elseif ('worksh30' == $slug) : ?>
+            // Secretlab
             'Jay': 'Jack',
             'Jeremiah': 'Joel',
             'Alex': 'Adrian',
+            'Jeremy': 'Roy',
+            'Jerome': 'Tony',
+            'Alfred': 'Eddie',
+            'Ian': 'Aaron',
+            'Andy': 'Austin',
+            <?php elseif ('worksh29' == $slug) : ?>
+            // iClick
             'Terrence': 'Tim',
             'Cindy': 'Clarice',
+            <?php elseif ('worksh28' == $slug) : ?>
+            // commontown
             'Joel': 'Jake',
-            'Evelyn': 'Emily'
+            'Evelyn': 'Emily',
+            <?php endif; ?>
+            'Kuala Lumpur': '(another city)',
+            'KL': '(another city)',
+            'Jakarta': '(another country)'
         };
         let originalText = '', redacted = '';
         $('s').each(function () {
@@ -132,10 +163,12 @@
                 originalText = $(this).text();
                 if (names_to_replace[originalText]) {
                     redacted = names_to_replace[originalText];
+                    $(this).replaceWith(redacted);
                 } else {
                     redacted = '#'.repeat(originalText.length);
+                    redacted = 'x'.repeat(originalText.length);
+                    $(this).text(redacted).css({backgroundColor: 'black', color: 'black'});
                 }
-                $(this).replaceWith(redacted);
             <?php endif; ?>
         });
         $('article table').each(function () {
