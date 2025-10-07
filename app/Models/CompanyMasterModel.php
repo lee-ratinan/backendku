@@ -243,7 +243,7 @@ class CompanyMasterModel extends Model
                 }
             }
             $result[]     = [
-                '<a class="btn btn-outline-primary btn-sm" href="' . base_url($locale . '/office/employment/company/edit/' . $new_id) . '"><i class="fa-solid fa-edit"></i></a>',
+                '<a class="btn btn-outline-primary" style="background-color:' . $row['company_color'] . ';color:#fff;border-color:#fff;" href="' . base_url($locale . '/office/employment/company/edit/' . $new_id) . '"><i class="fa-solid fa-edit"></i></a>',
                 '<img class="img-thumbnail" src="' . base_url('file/company-' . $row['company_slug'] . '.png') . '" alt="' . $row['company_legal_name'] . '" />',
                 '<b>' . $row['company_legal_name'] . '</b>' . ($row['company_trade_name'] == $row['company_legal_name'] ? '' : '<br>' . $row['company_trade_name']),
                 '<span class="flag-icon flag-icon-' . strtolower($row['company_country_code']) . '"></span> ' . $countries[$row['company_country_code']]['common_name'],

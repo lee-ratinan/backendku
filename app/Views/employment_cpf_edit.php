@@ -76,15 +76,27 @@ $this->extend($layout);
                             'company_ytd',
                         ];
                         if ('new' == $mode) {
-                            $cpf['ordinary_previous'] = $cpf_latest['ordinary_balance'];
-                            $cpf['special_previous']  = $cpf_latest['special_balance'];
-                            $cpf['medisave_previous'] = $cpf_latest['medisave_balance'];
-                            $cpf['account_previous']  = $cpf_latest['account_balance'];
-                            $cpf['staff_previous']    = $cpf_last_con['staff_ytd'];
-                            $cpf['company_previous']  = $cpf_last_con['company_ytd'];
-                            $cpf['previous_con']      = substr($cpf_last_con['contribution_month'], 0, 4);
-                            $all_company_ids          = array_keys($config['company_id']['options']);
-                            $max_company_id           = max($all_company_ids);
+                            $cpf['ordinary_previous']  = $cpf_latest['ordinary_balance'];
+                            $cpf['ordinary_amount']    = '0.0';
+                            $cpf['ordinary_balance']   = $cpf_latest['ordinary_balance'];
+                            $cpf['special_previous']   = $cpf_latest['special_balance'];
+                            $cpf['special_amount']     = '0.0';
+                            $cpf['special_balance']    = $cpf_latest['special_balance'];
+                            $cpf['medisave_previous']  = $cpf_latest['medisave_balance'];
+                            $cpf['medisave_amount']    = '0.0';
+                            $cpf['medisave_balance']   = $cpf_latest['medisave_balance'];
+                            $cpf['account_previous']   = $cpf_latest['account_balance'];
+                            $cpf['transaction_amount'] = '0.0';
+                            $cpf['account_balance']    = $cpf_latest['account_balance'];
+                            $cpf['staff_previous']     = $cpf_last_con['staff_ytd'];
+                            $cpf['staff_contribution'] = '0.0';
+                            $cpf['staff_ytd']          = $cpf_last_con['staff_ytd'];
+                            $cpf['company_previous']   = $cpf_last_con['company_ytd'];
+                            $cpf['company_match']      = '0.0';
+                            $cpf['company_ytd']        = $cpf_last_con['company_ytd'];
+                            $cpf['previous_con']       = substr($cpf_last_con['contribution_month'], 0, 4);
+                            $all_company_ids           = array_keys($config['company_id']['options']);
+                            $max_company_id            = max($all_company_ids);
                             $config['ordinary_previous'] = [
                                 'type'     => 'text',
                                 'label'    => '<span class="badge bg-oa rounded-pill">Previous Balance</span>',
@@ -202,7 +214,7 @@ $this->extend($layout);
                             }
                         }
                     });
-                    $('#staff_contribution, #staff_ytd, #company_match, #company_ytd').val('').prop('readonly', false);
+                    $('#staff_contribution, #staff_ytd, #company_match, #company_ytd').prop('readonly', false);
                 } else {
                     $('#contribution_month').val('0000-00').prop('readonly', true);
                     $('#company_id option[value=-1]').prop('disabled', false).prop('selected', true);
@@ -212,9 +224,7 @@ $this->extend($layout);
                             $(this).prop('disabled', true);
                         }
                     });
-                    $('#staff_contribution, #company_match').val('0.00').prop('readonly', true);
-                    $('#staff_ytd').val($('#staff_previous').val()).prop('readonly', true);
-                    $('#company_ytd').val($('#company_previous').val()).prop('readonly', true);
+                    $('#staff_contribution, #staff_ytd, #company_match, #company_ytd').prop('readonly', true);
                 }
             });
             $('#ordinary_amount').change(function () {

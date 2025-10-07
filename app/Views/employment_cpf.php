@@ -59,7 +59,8 @@ $this->extend($layout);
                                 <label for="year" class="form-label">Year</label><br>
                                 <select class="form-select form-select-sm" id="year">
                                     <option value="">All</option>
-                                    <?php for ($year = date('Y'); $year > 2019; $year--): ?>
+                                    <option value="<?= date('Y') ?>" selected><?= date('Y') ?></option>
+                                    <?php for ($year = date('Y')-1; $year > 2019; $year--): ?>
                                         <option value="<?= $year ?>"><?= $year ?></option>
                                     <?php endfor; ?>
                                 </select>

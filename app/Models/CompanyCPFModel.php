@@ -114,7 +114,7 @@ class CompanyCPFModel extends Model
             'label'       => 'Contribution Month',
             'maxlength'   => 7,
             'placeholder' => '####-##',
-            'details'     => 'YYYY-MM'
+            'details'     => 'YYYY-MM - CAUTION! If the month is January, the YTD field must equal to the contribution of this month.'
         ],
         'company_id' => [
             'type'        => 'select',
