@@ -24,7 +24,7 @@ function generate_form_field(string $id, array $configuration, int|string|array 
     $max        = (is_numeric(@$configuration['max']) ? "max='{$configuration['max']}'" : '');
     $minlength  = (@$configuration['minlength'] ? "minlength='{$configuration['minlength']}'" : '');
     $maxlength  = (@$configuration['maxlength'] ? "maxlength='{$configuration['maxlength']}'" : '');
-    $label      = (isset($configuration['label_key']) ? lang($configuration['label_key']) : (empty($configuration['label']) ? '' : $configuration['label']));
+    $label      = (isset($configuration['label_key']) ? lang($configuration['label_key']) : @$configuration['label']);
     if (in_array($input_type, ['text', 'email', 'password', 'number', 'date', 'time', 'datetime-local', 'month', 'week', 'url', 'search', 'color'])) {
         $placeholder = @$configuration['placeholder'] ?? '';
         $value = (!is_null($current_value) && '0000-00-00' != $current_value ? "value='{$current_value}'" : (!empty($configuration['default']) ? "value='{$configuration['default']}'" : ''));

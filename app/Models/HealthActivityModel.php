@@ -36,6 +36,137 @@ class HealthActivityModel extends Model
     protected $updatedField = 'updated_at';
     const ID_NONCE = 691;
 
+    private array $configurations = [
+        'id'                      => [
+            'type'  => 'hidden',
+            'label' => 'ID'
+        ],
+        'journey_id'              => [
+            'type'    => 'select',
+            'label'   => 'Journey',
+            'options' => []
+        ],
+        'time_start_utc'          => [
+            'type'  => 'datetime-local',
+            'label' => 'Start Time'
+        ],
+        'time_end_utc'            => [
+            'type'  => 'datetime-local',
+            'label' => 'End Time'
+        ],
+        'event_timezone'          => [
+            'type'     => 'select',
+            'label'    => 'Timezone',
+            'required' => true,
+            'options'  => []
+        ],
+        'event_duration'          => [
+            'type'  => 'number',
+            'label' => 'Duration (min.)',
+        ],
+        'duration_from_prev_ejac' => [
+            'type'  => 'number',
+            'label' => 'Duration From Previous Time (min.)'
+        ],
+        'record_type'             => [
+            'type'     => 'select',
+            'label'    => 'Record Type',
+            'required' => true,
+            'options'  => []
+        ],
+        'event_type'              => [
+            'type'     => 'select',
+            'label'    => 'Event Type',
+            'required' => true,
+            'options'  => []
+        ],
+        'is_ejac'                 => [
+            'type'    => 'select',
+            'label'   => 'Reached?',
+            'options' => ['Y' => 'Yes', 'N' => 'No']
+        ],
+        'spa_name'                => [
+            'type'  => 'text',
+            'label' => 'Spa Name'
+        ],
+        'spa_type'                => [
+            'type'  => 'text',
+            'label' => 'Spa Type'
+        ],
+        'currency_code'           => [
+            'type'     => 'select',
+            'label'    => 'Currency',
+            'required' => true,
+            'options'  => []
+        ],
+        'price_amount'            => [
+            'type'  => 'number',
+            'label' => 'Price',
+        ],
+        'price_tip'               => [
+            'type'  => 'number',
+            'label' => 'Tip'
+        ],
+        'event_notes'             => [
+            'type'  => 'text',
+            'label' => 'Notes'
+        ],
+        'event_location'          => [
+            'type'  => 'text',
+            'label' => 'Location'
+        ]
+    ];
+
+    /**
+     * Get configurations for generating forms
+     * @param array $columns
+     * @return array
+     */
+    public function getConfigurations(array $columns = []): array
+    {
+        $configurations     = $this->configurations;
+        // Record Types
+        $record_event_types = $this->getRecordTypes();
+        $flat_record_types  = [];
+        $flat_event_types   = [];
+        foreach ($record_event_types as $record_type_key => $all_event_types) {
+            $record_type_label = '';
+            foreach ($all_event_types as $event_type_key => $event_type_label) {
+                $flat_event_types[$event_type_key] = $event_type_label;
+                if (empty($record_type_label)) {
+                    $label = explode('/', $event_type_label);
+                    $record_type_label = trim($label[0]);
+                }
+            }
+            $flat_record_types[$record_type_key] = $record_type_label;
+        }
+        $configurations['event_type']['options']  = $flat_event_types;
+        $configurations['record_type']['options'] = $flat_record_types;
+        // Timezones
+        $timezones      = lang('ListTimeZones.timezones');
+        $all_timezones  = array_map(function ($timezone) {
+            return $timezone['label'];
+        }, $timezones);
+        asort($all_timezones);
+        $configurations['event_timezone']['options'] = $all_timezones;
+        // Currencies
+        $currencies     = lang('ListCurrencies.currencies');
+        $all_currencies = [];
+        foreach ($currencies as $key => $currency) {
+            $all_currencies[$key] = $key . ' - ' . $currency['currency_name'];
+        }
+        $configurations['currency_code']['options']    = $all_currencies;
+        // Journeys
+        $journey_model   = new JourneyMasterModel();
+        $journeys        = $journey_model->where('date_entry >=', '2022-05-01')->orderBy('date_entry', 'DESC')->findAll();
+        $journey_options = [];
+        foreach ($journeys as $journey) {
+            $journey_options[$journey['id']] = date(DATE_FORMAT_UI, strtotime($journey['date_entry'])) . ': ' . lang('ListCountries.countries.' . $journey['country_code'] . '.common_name');
+        }
+        $configurations['journey_id']['options'] = $journey_options;
+        return $columns ? array_intersect_key($configurations, array_flip($columns)) : $configurations;
+    }
+
     /**
      * @return array
      */
@@ -69,7 +200,9 @@ class HealthActivityModel extends Model
                 'flat'            => 'Chastity / Trumpet (Flat) Cage',
                 'prison'          => 'Chastity / Prison Bird Cage',
             ],
-            'enlarge'  => [], // event_type is mm
+            'enlarge'  => [
+                'mm' => 'Enlargement / mm'
+            ],
             'spa'      => [
                 'hand-job' => 'Massage Spa / Hand Job',
                 'b2b'      => 'Massage Spa / Body-2-Body',
@@ -155,7 +288,6 @@ class HealthActivityModel extends Model
         foreach ($raw_result as $row) {
             $new_id       = $row['id'] * self::ID_NONCE;
             $result[]     = [
-                '<a class="btn btn-outline-primary btn-sm" href="' . base_url($locale . '/office/health/activity/edit/' . $new_id) . '"><i class="fa-solid fa-edit"></i></a>',
                 $row['id'],
                 '<span class="utc-to-local-time">' . str_replace(' ', 'T', $row['time_start_utc']) . 'Z</span>' . ($row['time_start_utc'] != $row['time_end_utc'] ? ' - <span class="utc-to-local-time">' . str_replace(' ', 'T', $row['time_end_utc']) . 'Z</span>' : '') . '<br><span class="smal">' . $row['event_timezone'] . '</span>',
                 minute_format($row['event_duration']),
