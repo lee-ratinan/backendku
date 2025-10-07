@@ -241,8 +241,7 @@ $routes->group('{locale}/office', ['filter' => 'auth'], static function ($routes
     // Activity
     $routes->get('health/activity', 'Health::activity');
     $routes->post('health/activity', 'Health::activityList');
-    $routes->get('health/activity/create', 'Health::activityEdit/new');
-    $routes->get('health/activity/edit/(:any)', 'Health::activityEdit/$1');
+    $routes->get('health/activity/new/(:any)', 'Health::activityEdit/new/$1');
     $routes->post('health/activity/edit', 'Health::activitySave');
     // Measurement
     $routes->get('health/measurement', 'Health::measurement');

@@ -19,16 +19,25 @@ $this->extend($layout);
             <div class="col">
                 <div class="card">
                     <div class="card-body pt-3">
-                        <a class="btn btn-outline-primary btn-sm float-end ms-3" href="<?= base_url($session->locale . '/office/health/activity/create') ?>"><i class="fa-solid fa-plus-circle"></i> New Activity</a>
-                        <h5 class="card-title"><i class="fa-solid fa-spa fa-fw me-3"></i> <?= $page_title ?></h5>
+                        <div class="row">
+                            <div class="col-4">
+                                <h5 class="card-title"><i class="fa-solid fa-spa fa-fw me-3"></i> <?= $page_title ?></h5>
+                            </div>
+                            <div class="col-8">
+                                <a class="btn btn-outline-primary btn-sm float-end ms-3 mb-3" href="<?= base_url($session->locale . '/office/health/activity/new/ejac') ?>"><i class="fa-solid fa-plus-circle"></i> New Ejac</a>
+                                <a class="btn btn-outline-primary btn-sm float-end ms-3 mb-3" href="<?= base_url($session->locale . '/office/health/activity/new/spa') ?>"><i class="fa-solid fa-plus-circle"></i> New Spa</a>
+                                <a class="btn btn-outline-primary btn-sm float-end ms-3 mb-3" href="<?= base_url($session->locale . '/office/health/activity/new/chastity') ?>"><i class="fa-solid fa-plus-circle"></i> New Chastity</a>
+                                <a class="btn btn-outline-primary btn-sm float-end ms-3 mb-3" href="<?= base_url($session->locale . '/office/health/activity/new/enlarge') ?>"><i class="fa-solid fa-plus-circle"></i> New Enlarge</a>
+                            </div>
+                        </div>
                         <div class="row mb-3">
                             <div class="col">
                                 <label for="from" class="form-label">From</label><br>
-                                <input type="date" class="form-control form-control-sm" id="from" value="<?= date('Y-m-01') ?>" min="2022-05-01" max="<?= date(DATE_FORMAT_DB) ?>">
+                                <input type="date" class="form-control form-control-sm" id="from" value="<?= date(DATE_FORMAT_DB, strtotime('-60day')) ?>" min="2022-05-01" max="<?= date(DATE_FORMAT_DB, strtotime('+1day')) ?>">
                             </div>
                             <div class="col">
                                 <label for="to" class="form-label">To</label><br>
-                                <input type="date" class="form-control form-control-sm" id="to" value="<?= date(DATE_FORMAT_DB) ?>" min="2022-05-01" max="<?= date(DATE_FORMAT_DB) ?>">
+                                <input type="date" class="form-control form-control-sm" id="to" value="<?= date(DATE_FORMAT_DB, strtotime('+1day')) ?>" min="2022-05-01" max="<?= date(DATE_FORMAT_DB, strtotime('+1day')) ?>">
                             </div>
                             <div class="col">
                                 <label for="record_type" class="form-label">Record Type</label><br>
@@ -76,7 +85,6 @@ $this->extend($layout);
                             <table class="table table-sm table-striped table-hover">
                                 <thead>
                                 <tr>
-                                    <th></th>
                                     <th>ID</th>
                                     <th style="min-width:200px">Time</th>
                                     <th style="min-width:100px">Duration</th>
@@ -116,7 +124,7 @@ $this->extend($layout);
                         d.event_location = $('#event_location').val();
                     }
                 },
-                order: [[2, 'desc']],
+                order: [[1, 'desc']],
                 columnDefs: [{orderable: false, targets: 0}],
                 drawCallback: function () {
                     let DateTime = luxon.DateTime;

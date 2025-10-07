@@ -1278,7 +1278,6 @@ class Health extends BaseController
     {
         $model              = new HealthActivityModel();
         $columns            = [
-            '',
             'id',
             'time_start_utc',
             'event_duration',
@@ -1313,21 +1312,37 @@ class Health extends BaseController
     }
 
     /**
-     * @param string $activity_id
+     * @param string $mode
+     * @param string $record_type
      * @return string
      */
-    public function activityEdit(string $activity_id): string
+    public function activityEdit(string $mode, string $record_type): string
     {
-        $session = session();
-        $data    = [
-            'page_title'   => 'Edit Activity',
-            'slug_group'   => 'health',
-            'slug'         => '/office/health/activity',
-            'user_session' => $session->user,
-            'roles'        => $session->roles,
-            'current_role' => $session->current_role,
-            'record_cate'  => (new HealthActivityModel())->getRecordCategories(),
-            'record_types' => (new HealthActivityModel())->getRecordTypes()
+        $session     = session();
+        $model       = new HealthActivityModel();
+        $types       = $model->getRecordCategories();
+        $page_title  = 'New ' . $types[$record_type];
+        $record      = [
+            'event_duration'          => '0',
+            'duration_from_prev_ejac' => '0',
+            'price_amount'            => '0.0',
+            'price_tip'               => '0.0'
+        ];
+        $prev        = $model->where('is_ejac', 'Y')->orderBy('time_start_utc', 'DESC')->first();
+        $data = [
+            'page_title'    => $page_title,
+            'mode'          => $mode,
+            'slug_group'    => 'health',
+            'slug'          => '/office/health/activity',
+            'record'        => $record,
+            'prev'          => $prev,
+            'record_type'   => $record_type,
+            'user_session'  => $session->user,
+            'roles'         => $session->roles,
+            'current_role'  => $session->current_role,
+            'configuration' => $model->getConfigurations(),
+            'record_cate'   => $model->getRecordCategories(),
+            'record_types'  => $model->getRecordTypes()
         ];
         return view('health_activity_edit', $data);
     }

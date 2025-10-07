@@ -17,11 +17,44 @@ $this->extend($layout);
     </div>
     <section class="section">
         <div class="row">
-            <div class="col">
+            <div class="col-md-8">
                 <div class="card">
-
+                    <div class="card-body pt-3">
+                        <?php
+//                        $fields = [
+//                            'id',
+//                            'record_type',
+//                            'event_type',
+//                            'journey_id',
+//                            'time_start_utc',
+//                            'time_end_utc',
+//                            'event_timezone',
+//                            'event_duration',
+//                            'duration_from_prev_ejac',
+//                            'is_ejac',
+//                            'spa_name',
+//                            'spa_type',
+//                            'currency_code',
+//                            'price_amount',
+//                            'price_tip',
+//                            'event_notes',
+//                            'event_location',
+//                        ];
+//                        foreach ($fields as $field) {
+//                            generate_form_field($field, $configuration[$field], @$record[$field]);
+//                        }
+                        ?>
+                        <div class="text-end">
+                            <button class="btn btn-primary btn-sm" id="btn-save"><i class="fa-solid fa-save"></i> Save</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+
+        });
+    </script>
 <?php $this->endSection() ?>
