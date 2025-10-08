@@ -20,6 +20,30 @@ $this->extend($layout);
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-body pt-3">
+                        <pre>
+                            <?php print_r($record_cate); ?>
+                            <?php print_r($record_types); ?>
+                        </pre>
+                        <?php if ('ejac' == $record_type) : ?>
+
+                        <?php endif; ?>
+
+
+
+
+                        'page_title'    => $page_title,
+                        'mode'          => $mode,
+                        'slug_group'    => 'health',
+                        'slug'          => '/office/health/activity',
+                        'record'        => $record,
+                        'prev'          => $prev,
+                        'record_type'   => $record_type,
+                        'user_session'  => $session->user,
+                        'roles'         => $session->roles,
+                        'current_role'  => $session->current_role,
+                        'configuration' => $model->getConfigurations(),
+                        'record_cate'   => $model->getRecordCategories(),
+                        'record_types'  => $model->getRecordTypes()
                         <?php
 //                        $fields = [
 //                            'id',

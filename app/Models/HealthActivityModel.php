@@ -125,23 +125,7 @@ class HealthActivityModel extends Model
     public function getConfigurations(array $columns = []): array
     {
         $configurations     = $this->configurations;
-        // Record Types
-        $record_event_types = $this->getRecordTypes();
-        $flat_record_types  = [];
-        $flat_event_types   = [];
-        foreach ($record_event_types as $record_type_key => $all_event_types) {
-            $record_type_label = '';
-            foreach ($all_event_types as $event_type_key => $event_type_label) {
-                $flat_event_types[$event_type_key] = $event_type_label;
-                if (empty($record_type_label)) {
-                    $label = explode('/', $event_type_label);
-                    $record_type_label = trim($label[0]);
-                }
-            }
-            $flat_record_types[$record_type_key] = $record_type_label;
-        }
-        $configurations['event_type']['options']  = $flat_event_types;
-        $configurations['record_type']['options'] = $flat_record_types;
+        $configurations['event_types'] = $this->getRecordCategories();
         // Timezones
         $timezones      = lang('ListTimeZones.timezones');
         $all_timezones  = array_map(function ($timezone) {
