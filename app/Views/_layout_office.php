@@ -155,18 +155,18 @@
                             ]
                         ]
                     ],
-                    [
-                        'header' => 'Fiction',
-                        'menu'   => [
-                            [
-                                'id'    => 'fiction',
-                                'group' => '<i class="fa-solid fa-book fa-fw"></i> Fiction',
-                                'items' => [
-                                    '/office/fiction'            => 'Fiction',
-                                ]
-                            ]
-                        ]
-                    ],
+//                    [
+//                        'header' => 'Fiction',
+//                        'menu'   => [
+//                            [
+//                                'id'    => 'fiction',
+//                                'group' => '<i class="fa-solid fa-book fa-fw"></i> Fiction',
+//                                'items' => [
+//                                    '/office/fiction'            => 'Fiction',
+//                                ]
+//                            ]
+//                        ]
+//                    ],
                     [
                         'header' => 'Health',
                         'menu'   => [
