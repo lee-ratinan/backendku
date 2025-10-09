@@ -83,7 +83,7 @@ class CompanyMasterModel extends Model
         ],
         'company_hq_country_code' => [
             'type'        => 'select',
-            'label'       => 'HQ Country',
+            'label'       => 'Home Country',
             'required'    => true,
             'options'     => []
         ],

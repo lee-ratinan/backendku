@@ -57,7 +57,7 @@ $this->extend($layout);
                                     <td style="min-width:75px"></td>
                                     <th style="min-width:250px">Company</th>
                                     <th style="min-width:120px">Country</th>
-                                    <th style="min-width:120px">HQ</th>
+                                    <th style="min-width:120px">Home Country</th>
                                     <th style="min-width:120px">Start</th>
                                     <th style="min-width:120px">Termination</th>
                                     <th style="min-width:200px">Positions</th>
