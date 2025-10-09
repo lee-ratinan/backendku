@@ -6,7 +6,7 @@ $this->extend($layout);
 <?= $this->section('content') ?>
 <?php $session = session(); ?>
     <style>
-        #country-company, #country-day {width: 100%;height: 300px;}
+        #country-company, #country-day, #home-country-chart {width: 100%;height: 300px;}
     </style>
     <script src="<?= base_url('assets/vendor/amcharts5/index.js') ?>"></script>
     <script src="<?= base_url('assets/vendor/amcharts5/xy.js') ?>"></script>
@@ -121,15 +121,59 @@ $this->extend($layout);
                     </div>
                 </div>
             </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h3>By Home Country</h3>
+                        <div class="table-responsive">
+                            <table id="home-country-table" class="table table-sm table-striped table-hover">
+                                <thead>
+                                <tr>
+                                    <th style="min-width:120px">Home Country</th>
+                                    <th style="min-width:120px" class="text-end">Companies</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <?php foreach ($home_chart as $row) : ?>
+                                    <tr>
+                                        <td><?= $row['country'] ?></td>
+                                        <td class="text-end"><?= number_format($row['count']) ?></td>
+                                    </tr>
+                                <?php endforeach; ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h3>By Home Country</h3>
+                        <script>
+                            <?php
+                            echo generate_pie_chart_script($home_chart, 'home-country-chart', 'country', 'count');
+                            ?>
+                        </script>
+                        <div id="home-country-chart"></div>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            $('#main-table, #country-table').DataTable({
+            $('#main-table').DataTable({
                 searching: false,
                 paging: false,
                 info: false,
                 order: [2, 'desc'],
+            });
+            $('#country-table, #home-country-table').DataTable({
+                searching: false,
+                paging: false,
+                info: false,
+                order: [1, 'desc'],
             });
         });
     </script>

@@ -201,6 +201,8 @@ class Employment extends BaseController
         $country_companies = [];
         $main_chart        = [];
         $charts            = [];
+        $home_count        = [];
+        $home_chart        = [];
         foreach ($companies as $company) {
             if ('0000-00-00' == $company['employment_end_date']) {
                 $company['employment_end_date'] = null;
@@ -222,6 +224,7 @@ class Employment extends BaseController
                 'days'    => $days,
                 'label'   => $length,
             ];
+            $home_count[$company['company_hq_country_code']]     = (isset($home_count[$company['company_hq_country_code']]) ? $home_count[$company['company_hq_country_code']] + 1 : 1);
             $country_days[$company['company_country_code']]      = (isset($country_days[$company['company_country_code']]) ? $country_days[$company['company_country_code']] + $days : $days);
             $country_companies[$company['company_country_code']] = (isset($country_companies[$company['company_country_code']]) ? $country_companies[$company['company_country_code']] + 1 : 1);
         }
@@ -234,6 +237,12 @@ class Employment extends BaseController
                 'country'   => lang('ListCountries.countries.' . $country_code . '.common_name'),
                 'days'      => $days,
                 'companies' => $country_companies[$country_code]
+            ];
+        }
+        foreach ($home_count as $country_code => $count) {
+            $home_chart[] = [
+                'country'   => lang('ListCountries.countries.' . $country_code . '.common_name'),
+                'count'     => $count
             ];
         }
         $data = [
@@ -249,6 +258,7 @@ class Employment extends BaseController
             'country_length'    => $country_length,
             'charts'            => $charts,
             'main_chart'        => $main_chart,
+            'home_chart'        => $home_chart,
         ];
         return view('employment_company_stats', $data);
     }
