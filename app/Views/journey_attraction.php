@@ -95,7 +95,7 @@ $this->extend($layout);
                         d.journey_status = $('#journey_status').val();
                     },
                 },
-                order: [[1, 'desc']],
+                order: [[3, 'desc']],
                 columnDefs: [{orderable: false, targets: 0}],
                 fixedColumns: {start:3},
                 scrollX: true,

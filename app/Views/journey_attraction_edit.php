@@ -42,7 +42,7 @@ $this->extend($layout);
                         ?>
                         <div class="text-end">
                             <hr>
-                            <button class="btn btn-sm btn-outline-primary" id="btn-save-journey-attraction"><i class="fa-solid fa-save fa-fw me-2"></i> Save Accommodation</button>
+                            <button class="btn btn-sm btn-outline-primary" id="btn-save-journey-attraction"><i class="fa-solid fa-save fa-fw me-2"></i> Save Attraction</button>
                         </div>
                     </div>
                 </div>

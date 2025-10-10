@@ -265,14 +265,13 @@ class Journey extends BaseController
         $attraction_model       = new JourneyAttractionModel();
         $financial_data         = [];
         $all_currencies         = [];
-        $end_today              = date(DATE_FORMAT_DB) . ' 23:59:59';
-        $raw_transport_data     = $transport_model->where('journey_status', 'as_planned')->where('departure_date_time <=', $end_today)
+        $raw_transport_data     = $transport_model->where('journey_status', 'as_planned')
             ->groupStart()->where('price_amount >', 0)->orWhere('charged_amount >', 0)->groupEnd()
             ->orderBy('departure_date_time', 'asc')->findAll();
-        $raw_accommodation_data = $accommodation_model->where('journey_status', 'as_planned')->where('check_in_date <=', date(DATE_FORMAT_DB))
+        $raw_accommodation_data = $accommodation_model->where('journey_status', 'as_planned')
             ->groupStart()->where('price_amount >', 0)->orWhere('charged_amount >', 0)->groupEnd()
             ->orderBy('check_in_date', 'asc')->findAll();
-        $raw_attraction_data    = $attraction_model->where('journey_status', 'as_planned')->where('attraction_date <=', date(DATE_FORMAT_DB))
+        $raw_attraction_data    = $attraction_model->where('journey_status', 'as_planned')
             ->groupStart()->where('price_amount >', 0)->orWhere('charged_amount >', 0)->groupEnd()
             ->orderBy('attraction_date', 'asc')->findAll();
         foreach ($raw_transport_data as $row) {
@@ -691,7 +690,7 @@ class Journey extends BaseController
     }
 
     /**
-     * This page edit the accommodation data
+     * This page edits the accommodation data
      * @param string $accommodation_id
      * @param int $journey_id
      * @return string
