@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Models\CompanyCPFModel;
 use App\Models\CompanyCPFStatementModel;
+use App\Models\CompanyFreelanceClientModel;
 use App\Models\CompanyFreelanceIncomeModel;
 use App\Models\CompanyFreelanceProjectModel;
 use App\Models\CompanyMasterModel;
@@ -1192,6 +1193,54 @@ class Employment extends BaseController
 
     /**
      * @return string
+     */
+    public function freelanceClient(): string
+    {
+        $session       = session();
+        $data          = [
+            'page_title'   => 'Freelance Clients',
+            'slug_group'   => 'employment',
+            'slug'         => '/office/employment/freelance-client',
+            'user_session' => $session->user,
+            'roles'        => $session->roles,
+            'current_role' => $session->current_role
+        ];
+        return view('employment_freelance_client', $data);
+    }
+
+    /**
+     * @return ResponseInterface
+     */
+    public function freelanceClientList(): ResponseInterface
+    {
+        $model              = new CompanyFreelanceClientModel();
+        $columns            = [
+            '',
+            'client_company_name',
+            'client_type',
+            'country_code'
+        ];
+        $order              = $this->request->getPost('order');
+        $search             = $this->request->getPost('search');
+        $start              = $this->request->getPost('start');
+        $length             = $this->request->getPost('length');
+        $order_column_index = $order[0]['column'] ?? 0;
+        $order_column       = $columns[$order_column_index];
+        $order_direction    = $order[0]['dir'] ?? 'desc';
+        $search_value       = $search['value'];
+        $result             = $model->getDataTables($start, $length, $order_column, $order_direction, $search_value);
+        return $this->response->setJSON([
+            'draw'            => $this->request->getPost('draw'),
+            'recordsTotal'    => $result['recordsTotal'],
+            'recordsFiltered' => $result['recordsFiltered'],
+            'data'            => $result['data'],
+            'footer'          => $result['footer']
+        ]);
+    }
+
+    /**
+     * @return string
+     * @throws Exception
      */
     public function freelanceStats(): string
     {

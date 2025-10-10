@@ -106,6 +106,12 @@ $routes->group('{locale}/office', ['filter' => 'auth'], static function ($routes
     $routes->get('employment/freelance/edit/(:any)', 'Employment::freelanceEdit/$1');
     $routes->post('employment/freelance/edit', 'Employment::freelanceSave');
     $routes->get('employment/freelance/stats', 'Employment::freelanceStats');
+    // company_freelance_client
+    $routes->get('employment/freelance-client', 'Employment::freelanceClient');
+    $routes->post('employment/freelance-client', 'Employment::freelanceClientList');
+    $routes->get('employment/freelance-client/create', 'Employment::freelanceClientEdit/new');
+    $routes->get('employment/freelance-client/edit/(:any)', 'Employment::freelanceClientEdit/$1');
+    $routes->post('employment/freelance-client/edit', 'Employment::freelanceClientSave');
     // company_freelance_income
     $routes->get('employment/freelance-income', 'Employment::freelanceIncome');
     $routes->post('employment/freelance-income', 'Employment::freelanceIncomeList');
@@ -113,6 +119,7 @@ $routes->group('{locale}/office', ['filter' => 'auth'], static function ($routes
     $routes->get('employment/freelance-income/edit/(:any)', 'Employment::freelanceIncomeEdit/$1');
     $routes->post('employment/freelance-income/edit', 'Employment::freelanceIncomeSave');
     $routes->get('employment/freelance-income/stats', 'Employment::freelanceIncomeStats');
+    // Total income
     $routes->get('employment/company/total-income', 'Employment::totalIncome');
     $routes->get('employment/company/total-income/(:num)', 'Employment::totalIncome/$1');
     // DOCUMENT
