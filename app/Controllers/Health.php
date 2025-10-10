@@ -1329,7 +1329,7 @@ class Health extends BaseController
             'price_tip'               => '0.0'
         ];
         $prev        = $model->where('is_ejac', 'Y')->orderBy('time_start_utc', 'DESC')->first();
-        $data = [
+        $data        = [
             'page_title'    => $page_title,
             'mode'          => $mode,
             'slug_group'    => 'health',

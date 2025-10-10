@@ -23,11 +23,10 @@ $this->extend($layout);
                             <div class="col-4">
                                 <h5 class="card-title"><i class="fa-solid fa-spa fa-fw me-3"></i> <?= $page_title ?></h5>
                             </div>
-                            <div class="col-8">
-                                <a class="btn btn-outline-primary btn-sm float-end ms-3 mb-3" href="<?= base_url($session->locale . '/office/health/activity/new/ejac') ?>"><i class="fa-solid fa-plus-circle"></i> New Ejac</a>
-                                <a class="btn btn-outline-primary btn-sm float-end ms-3 mb-3" href="<?= base_url($session->locale . '/office/health/activity/new/spa') ?>"><i class="fa-solid fa-plus-circle"></i> New Spa</a>
-                                <a class="btn btn-outline-primary btn-sm float-end ms-3 mb-3" href="<?= base_url($session->locale . '/office/health/activity/new/chastity') ?>"><i class="fa-solid fa-plus-circle"></i> New Chastity</a>
-                                <a class="btn btn-outline-primary btn-sm float-end ms-3 mb-3" href="<?= base_url($session->locale . '/office/health/activity/new/enlarge') ?>"><i class="fa-solid fa-plus-circle"></i> New Enlarge</a>
+                            <div class="col-8 text-end mb-3">
+                                <?php foreach ($record_cate as $key => $type) : ?>
+                                    <a class="btn btn-outline-primary btn-sm" href="<?= base_url($session->locale . '/office/health/activity/new/' . $key) ?>"><i class="fa-solid fa-plus-circle"></i> <?= $type ?></a>
+                                <?php endforeach; ?>
                             </div>
                         </div>
                         <div class="row mb-3">
@@ -64,14 +63,6 @@ $this->extend($layout);
                                     <option value="">All</option>
                                     <option value="Y">Yes</option>
                                     <option value="N">No</option>
-                                </select>
-                            </div>
-                            <div class="col">
-                                <label for="event_location" class="form-label">Location</label><br>
-                                <select class="form-select form-select-sm" id="event_location">
-                                    <option value="">All</option>
-                                    <option value="FF">FF</option>
-                                    <option value="YNMR">YNMR</option>
                                 </select>
                             </div>
                         </div>

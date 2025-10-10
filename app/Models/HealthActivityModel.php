@@ -159,7 +159,7 @@ class HealthActivityModel extends Model
         return [
             'ejac'     => 'Ejaculation',
             'chastity' => 'Chastity',
-            'enlarge'  => 'Enlarge',
+//            'enlarge'  => 'Enlarge',
             'spa'      => 'Spa'
         ];
     }
@@ -184,9 +184,9 @@ class HealthActivityModel extends Model
                 'flat'            => 'Chastity / Trumpet (Flat) Cage',
                 'prison'          => 'Chastity / Prison Bird Cage',
             ],
-            'enlarge'  => [
-                'mm' => 'Enlargement / mm'
-            ],
+//            'enlarge'  => [
+//                'mm' => 'Enlargement / mm'
+//            ],
             'spa'      => [
                 'hand-job' => 'Massage Spa / Hand Job',
                 'b2b'      => 'Massage Spa / Body-2-Body',
