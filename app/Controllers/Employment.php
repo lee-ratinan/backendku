@@ -1193,6 +1193,51 @@ class Employment extends BaseController
 
     /**
      * @return string
+     * @throws Exception
+     */
+    public function freelanceStats(): string
+    {
+        $lang    = $this->request->getLocale();
+        $freelance_model = new CompanyFreelanceProjectModel();
+        $freelance_projects = $freelance_model
+            ->select('company_freelance_project.*, company_master.company_trade_name, company_freelance_client.client_company_name')
+            ->join('company_master', 'company_master.id = company_freelance_project.company_id')
+            ->join('company_freelance_client', 'company_freelance_project.freelance_client_id = company_freelance_client.id')
+            ->findAll();
+        $by_company = [];
+        $by_year    = [];
+        foreach ($freelance_projects as $project) {
+            $year             = substr($project['project_start_date'], 0, 4);
+            $start_date       = new DateTime($project['project_start_date']);
+            $end_date         = (empty($project['project_end_date']) ? new DateTime('now') : new DateTime($project['project_end_date']));
+            $diff             = $start_date->diff($end_date);
+            $by_year[$year][] = [
+                'company_name'  => $project['company_trade_name'],
+                'client_name'   => $project['client_company_name'],
+                'project_title' => $project['project_title'],
+                'start_date'    => $project['project_start_date'],
+                'end_date'      => $project['project_end_date'],
+                'days'          => $diff->days,
+            ];
+            $by_company[$project['company_trade_name']][$project['client_company_name']][] = $project['project_title'];
+        }
+        $session = session();
+        $data    = [
+            'lang'         => $lang,
+            'page_title'   => 'Freelance Statistics',
+            'slug_group'   => 'employment',
+            'slug'         => '/office/employment/freelance/stats',
+            'user_session' => $session->user,
+            'roles'        => $session->roles,
+            'current_role' => $session->current_role,
+            'by_company'   => $by_company,
+            'by_year'      => $by_year,
+        ];
+        return view('employment_freelance_stats', $data);
+    }
+
+    /**
+     * @return string
      */
     public function freelanceClient(): string
     {
@@ -1275,48 +1320,52 @@ class Employment extends BaseController
     }
 
     /**
-     * @return string
-     * @throws Exception
+     * @throws ReflectionException
      */
-    public function freelanceStats(): string
+    public function freelanceClientSave()
     {
-        $lang    = $this->request->getLocale();
-        $freelance_model = new CompanyFreelanceProjectModel();
-        $freelance_projects = $freelance_model
-            ->select('company_freelance_project.*, company_master.company_trade_name, company_freelance_client.client_company_name')
-            ->join('company_master', 'company_master.id = company_freelance_project.company_id')
-            ->join('company_freelance_client', 'company_freelance_project.freelance_client_id = company_freelance_client.id')
-            ->findAll();
-        $by_company = [];
-        $by_year    = [];
-        foreach ($freelance_projects as $project) {
-            $year             = substr($project['project_start_date'], 0, 4);
-            $start_date       = new DateTime($project['project_start_date']);
-            $end_date         = (empty($project['project_end_date']) ? new DateTime('now') : new DateTime($project['project_end_date']));
-            $diff             = $start_date->diff($end_date);
-            $by_year[$year][] = [
-                'company_name'  => $project['company_trade_name'],
-                'client_name'   => $project['client_company_name'],
-                'project_title' => $project['project_title'],
-                'start_date'    => $project['project_start_date'],
-                'end_date'      => $project['project_end_date'],
-                'days'          => $diff->days,
-            ];
-            $by_company[$project['company_trade_name']][$project['client_company_name']][] = $project['project_title'];
-        }
-        $session = session();
-        $data    = [
-            'lang'         => $lang,
-            'page_title'   => 'Freelance Statistics',
-            'slug_group'   => 'employment',
-            'slug'         => '/office/employment/freelance/stats',
-            'user_session' => $session->user,
-            'roles'        => $session->roles,
-            'current_role' => $session->current_role,
-            'by_company'   => $by_company,
-            'by_year'      => $by_year,
+        $mode          = $this->request->getPost('mode');
+        $client_model  = new CompanyFreelanceClientModel();
+        $log_model     = new LogActivityModel();
+        $session       = session();
+        $id            = $this->request->getPost('id');
+        $data          = [];
+        $fields        = [
+            'client_company_name',
+            'client_type',
+            'country_code'
         ];
-        return view('employment_freelance_stats', $data);
+        foreach ($fields as $field) {
+            $value        = $this->request->getPost($field);
+            $data[$field] = (!empty($value)) ? $value : null;
+        }
+        if ('edit' == $mode) {
+            if ($client_model->update($id, $data)) {
+                $log_model->insertTableUpdate('company_freelance_client', $id, $data, $session->user_id);
+                $new_id = $id * $client_model::ID_NONCE;
+                return $this->response->setJSON([
+                    'status'  => 'success',
+                    'toast'   => 'Successfully updated the freelance client.',
+                    'redirect' => base_url($session->locale . '/office/employment/freelance-client/edit/' . $new_id)
+                ]);
+            }
+        } else {
+            $data['created_by'] = $session->user_id;
+            // INSERT
+            if ($id = $client_model->insert($data)) {
+                $log_model->insertTableUpdate('company_freelance_client', $id, $data, $session->user_id);
+                $new_id = $id * $client_model::ID_NONCE;
+                return $this->response->setJSON([
+                    'status'   => 'success',
+                    'toast'    => 'Successfully created new freelance client.',
+                    'redirect' => base_url($session->locale . '/office/employment/freelance-client/edit/' . $new_id)
+                ]);
+            }
+        }
+        return $this->response->setJSON([
+            'status'  => 'error',
+            'toast'   => lang('System.status_message.generic_error')
+        ])->setStatusCode(HTTP_STATUS_SOMETHING_WRONG);
     }
 
     /**
