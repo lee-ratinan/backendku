@@ -62,9 +62,9 @@ class CompanyFreelanceProjectModel extends Model
         ],
         'client_name'              => [
             'type'        => 'text',
-            'label'       => 'Client Name',
+            'label'       => 'Client’s Contact Person Name',
             'required'    => false,
-            'placeholder' => 'Client Name',
+            'placeholder' => 'Client’s Contact Person Name',
         ],
         'freelance_client_id'      => [
             'type'     => 'select',
