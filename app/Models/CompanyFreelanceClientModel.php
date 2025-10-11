@@ -59,22 +59,56 @@ class CompanyFreelanceClientModel extends Model
         $configurations = $this->configurations;
         // Countries
         $countries       = lang('ListCountries.countries');
-        $country_options = [];
-        foreach ($countries as $key => $country) {
-            $country_options[$key] = $country['common_name'];
-        }
-        $configurations['country_code']['options'] = $countries;
+        $country_options = array_map(function ($country) {
+            return $country['common_name'];
+        }, $countries);
+        $configurations['country_code']['options'] = $country_options;
         return $columns ? array_intersect_key($configurations, array_flip($columns)) : $configurations;
     }
 
     /**
+     * @return array
+     */
+    public function getCountries(): array
+    {
+        return [
+            'NZ' => 'New Zealand',
+            'TH' => 'Thailand',
+        ];
+    }
+
+    /**
+     * @param string $key
+     * @return array|string
+     */
+    public function getClientTypes(string $key = ''): array|string
+    {
+        $types = [
+            'corporate'  => 'Corporate',
+            'individual' => 'Individual',
+        ];
+        if (isset($types[$key])) {
+            return $types[$key];
+        }
+        return $types;
+    }
+
+    /**
      * @param string $search_value
+     * @param string $client_type
+     * @param string $country_code
      * @return void
      */
-    public function applyFilter(string $search_value): void
+    public function applyFilter(string $search_value, string $client_type, string $country_code): void
     {
         if (!empty($search_value)) {
             $this->like('client_company_name', $search_value);
+        }
+        if (!empty($client_type)) {
+            $this->where('client_type', $client_type);
+        }
+        if (!empty($country_code)) {
+            $this->where('country_code', $country_code);
         }
     }
     /**
@@ -83,16 +117,18 @@ class CompanyFreelanceClientModel extends Model
      * @param string $order_column
      * @param string $order_direction
      * @param string $search_value
+     * @param string $client_type
+     * @param string $country_code
      * @return array
      */
-    public function getDataTables(int $start, int $length, string $order_column, string $order_direction, string $search_value): array
+    public function getDataTables(int $start, int $length, string $order_column, string $order_direction, string $search_value, string $client_type = '', string $country_code = ''): array
     {
         $record_total    = $this->countAllResults();
         $record_filtered = $record_total;
-        if (!empty($search_value)) {
-            $this->applyFilter($search_value);
+        if (!empty($search_value) || !empty($client_type) || !empty($country_code)) {
+            $this->applyFilter($search_value, $client_type, $country_code);
             $record_filtered = $this->countAllResults();
-            $this->applyFilter($search_value);
+            $this->applyFilter($search_value, $client_type, $country_code);
         }
         $session    = session();
         $locale     = $session->locale;
@@ -101,10 +137,10 @@ class CompanyFreelanceClientModel extends Model
         foreach ($raw_result as $row) {
             $new_id       = $row['id'] * self::ID_NONCE;
             $result[]     = [
-                '<a class="btn btn-outline-primary btn-sm" href="' . base_url($locale . '/office/employment/freelance/edit/' . $new_id) . '"><i class="fa-solid fa-edit"></i></a>',
+                '<a class="btn btn-outline-primary btn-sm" href="' . base_url($locale . '/office/employment/freelance-client/edit/' . $new_id) . '"><i class="fa-solid fa-edit"></i></a>',
                 $row['client_company_name'],
-                $row['client_type'],
-                $row['country_code'],
+                $this->getClientTypes($row['client_type']),
+                lang('ListCountries.countries.' . $row['country_code'] . '.common_name'),
             ];
         }
         return [

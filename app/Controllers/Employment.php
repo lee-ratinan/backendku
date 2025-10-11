@@ -1197,13 +1197,16 @@ class Employment extends BaseController
     public function freelanceClient(): string
     {
         $session       = session();
+        $model         = new CompanyFreelanceClientModel();
         $data          = [
             'page_title'   => 'Freelance Clients',
             'slug_group'   => 'employment',
             'slug'         => '/office/employment/freelance-client',
             'user_session' => $session->user,
             'roles'        => $session->roles,
-            'current_role' => $session->current_role
+            'current_role' => $session->current_role,
+            'countries'    => $model->getCountries(),
+            'client_types' => $model->getClientTypes(),
         ];
         return view('employment_freelance_client', $data);
     }
@@ -1228,13 +1231,14 @@ class Employment extends BaseController
         $order_column       = $columns[$order_column_index];
         $order_direction    = $order[0]['dir'] ?? 'desc';
         $search_value       = $search['value'];
-        $result             = $model->getDataTables($start, $length, $order_column, $order_direction, $search_value);
+        $client_type        = $this->request->getPost('client_type');
+        $country_code       = $this->request->getPost('country_code');
+        $result             = $model->getDataTables($start, $length, $order_column, $order_direction, $search_value, $client_type, $country_code);
         return $this->response->setJSON([
             'draw'            => $this->request->getPost('draw'),
             'recordsTotal'    => $result['recordsTotal'],
             'recordsFiltered' => $result['recordsFiltered'],
-            'data'            => $result['data'],
-            'footer'          => $result['footer']
+            'data'            => $result['data']
         ]);
     }
 
