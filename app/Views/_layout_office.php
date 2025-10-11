@@ -87,7 +87,6 @@
                                     '/office/employment/freelance'              => 'Freelance',
                                     '/office/employment/freelance/stats'        => '<i class="fa-solid fa-chart-bar"></i> Statistics',
                                     '/office/employment/freelance-client'       => 'Freelance Client',
-                                    '/office/employment/freelance-client/stats' => '<i class="fa-solid fa-chart-bar"></i> Statistics',
                                     '/office/employment/freelance-income'       => 'Freelance Income',
                                     '/office/employment/freelance-income/stats' => '<i class="fa-solid fa-chart-line"></i> Statistics',
                                     '/office/employment/cpf'                    => 'CPF',
