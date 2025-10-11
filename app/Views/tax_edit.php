@@ -94,7 +94,7 @@ $tax_department = [
                                         <td rowspan="<?= (count($values) + 1) ?>"><?= ucfirst($category) ?></td>
                                         <?php $sum = 0.00; ?>
                                         <?php foreach ($values as $row) : ?>
-                                            <td><a class="btn btn-outline-primary btn-sm" href="<?= base_url($session->locale . '/office/tax/record/edit/' . ($row['new_id'])) ?>"><i class="fa-solid fa-edit"></i></a></td>
+                                            <td><a class="btn btn-outline-primary btn-sm" href="<?= base_url($session->locale . '/office/tax/record/edit/' . $tax_id_for_link . '/' . ($row['new_id'])) ?>"><i class="fa-solid fa-edit"></i></a></td>
                                             <td><?= $row['tax_description'] ?></td>
                                             <td class="text-end"><?= currency_format($tax_year['currency_code'], $row['money_amount']) ?></td>
                                             <td><?= $row['item_notes'] ?></td>
@@ -110,6 +110,7 @@ $tax_department = [
                                 <?php endforeach; ?>
                                 </tbody>
                             </table>
+                            <a class="btn btn-outline-primary btn-sm" href="<?= base_url($session->locale . '/office/tax/record/edit/create/' . $tax_id_for_link) ?>"><i class="fa-solid fa-plus"></i> Add more record</a>
                         <?php endif; ?>
                     </div>
                 </div>

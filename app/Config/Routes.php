@@ -145,6 +145,9 @@ $routes->group('{locale}/office', ['filter' => 'auth'], static function ($routes
     $routes->get('tax/create', 'Tax::masterEdit/new');
     $routes->get('tax/edit/(:num)', 'Tax::masterEdit/$1');
     $routes->post('tax/edit', 'Tax::masterSave'); // both master and breakdown
+    $routes->get('tax/record/edit/create/(:num)', 'Tax::recordEdit/new/$1');
+    $routes->get('tax/record/edit/(:num)/(:num)', 'Tax::recordEdit/$2/$1');
+    $routes->post('tax/record/edit', 'Tax::recordSave');
     // tax calculator app
     $routes->get('tax/calculator', 'Tax::calculator'); // just simple tax calculator
     $routes->post('tax/calculator', 'Tax::calculatorAjax'); // just simple tax calculator

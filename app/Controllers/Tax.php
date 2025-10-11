@@ -187,7 +187,8 @@ class Tax extends BaseController
         $tax_record_model = new TaxRecordModel();
         $taxpayer_model   = new TaxpayerInfoModel();
         $mode             = 'new';
-        $page_title       = 'New Tax Record';
+        $tax_id_for_link  = $tax_id;
+        $page_title       = 'New Tax Year';
         if ('new' == $tax_id) {
             $tax_year    = [];
             $tax_records = [];
@@ -208,19 +209,20 @@ class Tax extends BaseController
             }
             $taxpayer    = $taxpayer_model->find($tax_year['taxpayer_id']);
             $mode        = 'edit';
-            $page_title  = 'Edit Tax Record [' . lang('ListCountries.countries.' . $tax_year['country_code'] . '.common_name') . ' / ' . $tax_year['tax_year'] . ']';
+            $page_title  = 'Edit Tax Year [' . lang('ListCountries.countries.' . $tax_year['country_code'] . '.common_name') . ' / ' . $tax_year['tax_year'] . ']';
         }
         $data    = [
-            'page_title'   => $page_title,
-            'slug'         => 'tax',
-            'user_session' => $session->user,
-            'roles'        => $session->roles,
-            'current_role' => $session->current_role,
-            'mode'         => $mode,
-            'tax_year'     => $tax_year,
-            'tax_records'  => $tax_records,
-            'taxpayer'     => $taxpayer,
-            'ty_config'    => $tax_year_model->getConfigurations(),
+            'page_title'      => $page_title,
+            'slug'            => 'tax',
+            'user_session'    => $session->user,
+            'roles'           => $session->roles,
+            'current_role'    => $session->current_role,
+            'mode'            => $mode,
+            'tax_id_for_link' => $tax_id_for_link,
+            'tax_year'        => $tax_year,
+            'tax_records'     => $tax_records,
+            'taxpayer'        => $taxpayer,
+            'ty_config'       => $tax_year_model->getConfigurations(),
         ];
         return view('tax_edit', $data);
     }
@@ -261,6 +263,103 @@ class Tax extends BaseController
                         'status' => 'success',
                         'toast'  => 'Tax year has been updated',
                         'url'    => base_url($session->locale . '/office/tax/edit/' . ($id * $model::ID_NONCE))
+                    ]);
+                }
+            }
+            return $this->response->setJSON([
+                'status' => 'error',
+                'toast'  => 'There was some unknown error, please try again later.'
+            ]);
+        } catch (DatabaseException|ReflectionException $e) {
+            return $this->response->setJSON([
+                'status' => 'error',
+                'toast'  => 'ERROR: ' . $e->getMessage()
+            ]);
+        }
+    }
+
+    /**
+     * Edit tax record
+     * @param int $tax_year_id
+     * @param string|int $tax_record_id
+     * @return string
+     */
+    public function recordEdit(string|int $tax_record_id, int $tax_year_id): string
+    {
+        $session           = session();
+        $tax_year_model    = new TaxYearModel();
+        $tax_record_model  = new TaxRecordModel();
+        $parent_link       = base_url($session->locale . '/office/tax/edit/' . $tax_year_id);
+        $tax_year_id       = $tax_year_id/$tax_year_model::ID_NONCE;
+        $tax_year          = $tax_year_model->find($tax_year_id);
+        $for               = '[' . lang('ListCountries.countries.' . $tax_year['country_code'] . '.common_name') . ' / ' . $tax_year['tax_year'] . ']';
+        $mode              = 'new';
+        $page_title        = 'New Tax Record ' . $for;
+        $tax_record_config = $tax_record_model->getConfigurations();
+        if ('new' == $tax_record_id) {
+            $tax_record = [];
+        } else {
+            $tax_record_id = $tax_record_id/$tax_record_model::ID_NONCE;
+            $mode          = 'edit';
+            $page_title    = 'Edit Tax Record ' . $for;
+            $tax_record    = $tax_record_model->find($tax_record_id);
+        }
+        $data = [
+            'page_title'   => $page_title,
+            'slug'         => 'tax',
+            'user_session' => $session->user,
+            'roles'        => $session->roles,
+            'current_role' => $session->current_role,
+            'mode'         => $mode,
+            'parent_link'  => $parent_link,
+            'tax_year_id'  => $tax_year_id,
+            'for_year'     => $for,
+            'tax_record'   => $tax_record,
+            'config'       => $tax_record_config,
+        ];
+        return view('tax_record_edit', $data);
+    }
+
+    /**
+     * @return ResponseInterface
+     */
+    public function recordSave(): ResponseInterface
+    {
+        $session  = session();
+        $model    = new TaxRecordModel();
+        $ty_model = new TaxYearModel();
+        $mode     = $this->request->getPost('mode');
+        $id       = $this->request->getPost('id');
+        $data     = [];
+        $fields   = [
+            'tax_year_id',
+            'tax_description',
+            'desc_type',
+            'money_amount',
+            'item_notes',
+        ];
+        foreach ($fields as $field) {
+            $value        = $this->request->getPost($field);
+            $data[$field] = (!empty($value)) ? $value : null;
+        }
+        $tax_year_id = $data['tax_year_id']*$ty_model::ID_NONCE;
+        try {
+            if ('new' == $mode) {
+                $data['created_by'] = $session->user_id;
+                $inserted_id        = $model->insert($data);
+                if ($inserted_id) {
+                    return $this->response->setJSON([
+                        'status' => 'success',
+                        'toast'  => 'Tax record has been added',
+                        'url'    => base_url($session->locale . '/office/tax/record/edit/' . $tax_year_id . '/' . ($inserted_id * $model::ID_NONCE))
+                    ]);
+                }
+            } else {
+                if ($model->update($id, $data)) {
+                    return $this->response->setJSON([
+                        'status' => 'success',
+                        'toast'  => 'Tax record has been updated',
+                        'url'    => base_url($session->locale . '/office/tax/record/edit/' . $tax_year_id . '/' . ($id * $model::ID_NONCE))
                     ]);
                 }
             }
