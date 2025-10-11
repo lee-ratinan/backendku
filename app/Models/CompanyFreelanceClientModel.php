@@ -24,6 +24,10 @@ class CompanyFreelanceClientModel extends Model
     const ID_NONCE = 733;
 
     private array $configurations = [
+        'id'                  => [
+            'label'    => 'ID',
+            'type'     => 'hidden'
+        ],
         'client_company_name' => [
             'type'     => 'text',
             'label'    => 'Name',
@@ -33,10 +37,7 @@ class CompanyFreelanceClientModel extends Model
             'type'     => 'select',
             'label'    => 'ClientType',
             'required' => true,
-            'options'  => [
-                'corporate'  => 'Corporate',
-                'individual' => 'Individual',
-            ]
+            'options'  => []
         ],
         'country_code'        => [
             'type'     => 'select',
@@ -63,6 +64,8 @@ class CompanyFreelanceClientModel extends Model
             return $country['common_name'];
         }, $countries);
         $configurations['country_code']['options'] = $country_options;
+        // Types
+        $configurations['client_type']['options']  = $this->getClientTypes();
         return $columns ? array_intersect_key($configurations, array_flip($columns)) : $configurations;
     }
 

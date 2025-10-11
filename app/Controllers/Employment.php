@@ -1243,6 +1243,38 @@ class Employment extends BaseController
     }
 
     /**
+     * Edit Freelance Client
+     * @param string $freelance_client_id
+     * @return string
+     */
+    public function freelanceClientEdit(string $freelance_client_id = 'new'): string
+    {
+        $session      = session();
+        $client_model = new CompanyFreelanceClientModel();
+        $page_title   = 'New Freelance Client';
+        $client       = [];
+        $mode         = 'new';
+        if ('new' != $freelance_client_id && is_numeric($freelance_client_id)) {
+            $freelance_client_id = $freelance_client_id/$client_model::ID_NONCE;
+            $client              = $client_model->find($freelance_client_id);
+            $page_title          = 'Edit Freelance Client [' . $client['client_company_name'] . ']';
+            $mode                = 'edit';
+        }
+        $data          = [
+            'page_title'   => $page_title,
+            'slug_group'   => 'employment',
+            'slug'         => '/office/employment/freelance-client',
+            'user_session' => $session->user,
+            'roles'        => $session->roles,
+            'current_role' => $session->current_role,
+            'client'       => $client,
+            'config'       => $client_model->getConfigurations(),
+            'mode'         => $mode
+        ];
+        return view('employment_freelance_client_edit', $data);
+    }
+
+    /**
      * @return string
      * @throws Exception
      */
