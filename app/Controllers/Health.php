@@ -1352,62 +1352,58 @@ class Health extends BaseController
         $session = session();
         $model   = new HealthActivityModel();
         $mode    = $this->request->getPost('mode');
-        $data    = [];
-//        $data    = [
-//            'country_code'    => $this->request->getPost('country_code'),
-//            'date_entry'      => $this->request->getPost('date_entry'),
-//            'day_count'       => $this->request->getPost('day_count') ?? 0,
-//            'visa_info'       => $this->request->getPost('visa_info'),
-//            'journey_status'  => $this->request->getPost('journey_status'),
-//            'created_by'      => $session->user_id,
-//        ];
-//        $trip_code       = $this->request->getPost('trip_code');
-//        $date_exit       = $this->request->getPost('date_exit');
-//        $entry_port_id   = $this->request->getPost('entry_port_id');
-//        $exit_port_id    = $this->request->getPost('exit_port_id');
-//        $trip_tags       = $this->request->getPost('trip_tags');
-//        $journey_details = $this->request->getPost('journey_details');
-//        if (!empty($trip_code)) {
-//            $data['trip_code'] = $trip_code;
-//        }
-//        if (!empty($date_exit)) {
-//            $data['date_exit'] = $date_exit;
-//        }
-//        if (!empty($entry_port_id)) {
-//            $data['entry_port_id'] = $entry_port_id;
-//        }
-//        if (!empty($exit_port_id)) {
-//            $data['exit_port_id'] = $exit_port_id;
-//        }
-//        if (!empty($trip_tags)) {
-//            $data['trip_tags'] = $trip_tags;
-//        }
-//        if (!empty($journey_details)) {
-//            $data['journey_details'] = $journey_details;
-//        }
-        try {
-            if ('new' == $mode) {
-                $inserted_id = $model->insert($data);
-                if ($inserted_id) {
-                    return $this->response->setJSON([
-                        'status' => 'success',
-                        'toast'  => 'Trip has been added',
-                        'url'    => base_url($session->locale . '/office/health/activity/edit/' . ($inserted_id * $model::ID_NONCE))
-                    ]);
-                }
-            } else {
-                $id = $this->request->getPost('id');
-                if ($model->update($id, $data)) {
-                    return $this->response->setJSON([
-                        'status' => 'success',
-                        'toast'  => 'Trip has been updated',
-                        'url'    => base_url($session->locale . '/office/health/activity/edit/' . ($id * $model::ID_NONCE))
-                    ]);
-                }
+        $fields  = [
+            'journey_id',
+            'time_start_utc',
+            'time_end_utc',
+            'event_timezone',
+            'event_duration',
+            'duration_from_prev_ejac',
+            'record_type',
+            'event_type',
+            'is_ejac',
+            'spa_name',
+            'spa_type',
+            'currency_code',
+            'price_amount',
+            'price_tip',
+            'event_notes',
+            'event_location'
+        ];
+        foreach ($fields as $field) {
+            $data[$field] = $this->request->getPost($field);
+            if (is_null($data[$field])) {
+                unset($data[$field]);
             }
+        }
+        try {
+//            if ('new' == $mode) {
+//                $inserted_id = $model->insert($data);
+//                if ($inserted_id) {
+//                    return $this->response->setJSON([
+//                        'status' => 'success',
+//                        'toast'  => 'Trip has been added',
+//                        'url'    => base_url($session->locale . '/office/health/activity/edit/' . ($inserted_id * $model::ID_NONCE))
+//                    ]);
+//                }
+//            } else {
+//                $id = $this->request->getPost('id');
+//                if ($model->update($id, $data)) {
+//                    return $this->response->setJSON([
+//                        'status' => 'success',
+//                        'toast'  => 'Trip has been updated',
+//                        'url'    => base_url($session->locale . '/office/health/activity/edit/' . ($id * $model::ID_NONCE))
+//                    ]);
+//                }
+//            }
+//            return $this->response->setJSON([
+//                'status' => 'error',
+//                'toast'  => 'There was some unknown error, please try again later.'
+//            ]);
             return $this->response->setJSON([
-                'status' => 'error',
-                'toast'  => 'There was some unknown error, please try again later.'
+                'status' => 'success',
+                'toast'  => 'TEST',
+                'data'   => $data
             ]);
         } catch (DatabaseException|ReflectionException $e) {
             return $this->response->setJSON([

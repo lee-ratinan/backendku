@@ -22,7 +22,7 @@ $this->extend($layout);
                     <div class="card-body pt-3">
                         <div class="text-end mb-3">
                             <?php foreach ($record_cate as $key => $type) : ?>
-                                <a class="btn btn-outline-primary btn-sm" href="<?= base_url($session->locale . '/office/health/activity/new/' . $key) ?>"><i class="fa-solid fa-plus-circle"></i> <?= $type ?></a>
+                                <a class="btn btn-<?= ($record_type == $key ? '' : 'outline-') ?>primary btn-sm" href="<?= base_url($session->locale . '/office/health/activity/new/' . $key) ?>"><i class="fa-solid fa-plus-circle"></i> <?= $type ?></a>
                             <?php endforeach; ?>
                         </div>
                         <?php
@@ -92,7 +92,44 @@ $this->extend($layout);
     </section>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-
+            $('#btn-save').click(function (e) {
+                e.preventDefault();
+                // let ids = ['transaction_date', 'transaction_code', 'ordinary_amount', 'ordinary_balance', 'special_amount', 'special_balance', 'medisave_amount', 'medisave_balance', 'transaction_amount', 'account_balance', 'contribution_month', 'company_id', 'staff_contribution', 'staff_ytd', 'company_match', 'company_ytd'];
+                // for (let i = 0; i < ids.length; i++) {
+                //     if ('' === $('#' + ids[i]).val()) {
+                //         toastr.warning('Please ensure all mandatory fields are filled.');
+                //         $('#' + ids[i]).focus();
+                //         return;
+                //     }
+                // }
+                $(this).prop('disabled', true);
+                $.ajax({
+                    url: '<?= base_url('en/office/health/activity/edit') ?>',
+                    type: 'post',
+                    data: {
+                        <?php foreach ($fields as $field) : ?>
+                        <?php if (in_array($field, ['NOTES', 'WHEN', 'SPA INFORMATION'])) { continue; } ?>
+                        <?= $field ?>: $('#<?= $field ?>').val(),
+                        <?php endforeach; ?>
+                    },
+                    success: function (response) {
+                        if ('success' === response.status) {
+                            toastr.success(response.toast);
+                            setTimeout(function () {window.location.href = response.redirect;}, 5000);
+                        } else {
+                            let message = (response.toast ?? 'Sorry! Something went wrong. Please try again.');
+                            toastr.error(message);
+                            $('#btn-save-cpf').prop('disabled', false);
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        let response = JSON.parse(xhr.responseText);
+                        let error_message = (response.toast ?? 'Sorry! Something went wrong. Please try again.');
+                        $('#btn-save-cpf').prop('disabled', false);
+                        toastr.error(error_message);
+                    }
+                });
+            });
         });
     </script>
 <?php $this->endSection() ?>
