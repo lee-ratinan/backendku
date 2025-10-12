@@ -37,7 +37,7 @@ $this->extend($layout);
                             'event_duration',
                             'duration_from_prev_ejac',
                             'is_ejac',
-                            'SPA INFORMATION',
+                            'SPA-INFORMATION',
                             'spa_name',
                             'spa_type',
                             'currency_code',
@@ -72,10 +72,10 @@ $this->extend($layout);
                         $record['previous_ejac_time_utc']                = $prev['time_end_utc'];
                         foreach ($fields as $field) {
                             if (in_array($field, ['NOTES', 'WHEN'])) {
-                                echo '<h6>' . $field . '</h6>';
-                            } else if ('SPA INFORMATION' == $field) {
+                                echo '<h6 id="header-' . strtolower($field) . '">' . $field . '</h6>';
+                            } else if ('SPA-INFORMATION' == $field) {
                                 if ('spa' == $record_type) {
-                                    echo '<h6>Spa Information</h6>';
+                                    echo '<h6 id="header-spa-information">SPA INFORMATION</h6>';
                                 }
                             } else {
                                 generate_form_field($field, $configuration[$field], @$record[$field]);
@@ -88,10 +88,50 @@ $this->extend($layout);
                     </div>
                 </div>
             </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h6>Calculation Sheet</h6>
+                        <div id="calculation-sheet"></div>
+                        <pre>
+                            <?php print_r($prev); ?>
+                        </pre>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
+            let append_calculation = function (new_message) {
+                $('#calculation-sheet').html($('#calculation-sheet').html() + '<br>' + new_message);
+            };
+            let calculate_different_in_minutes = function (time_start_utc, time_end_utc) {
+                append_calculation('Start: ' + time_start_utc.toLocaleString());
+                append_calculation('End: ' + time_end_utc.toLocaleString());
+                return 'tets';
+            };
+            let required_fields = [];
+            // SPLIT
+            <?php if ('ejac' == $record_type) : ?>
+            required_fields = [];
+            $('#event_duration-block, #header-spa-information, #spa_name-block, #spa_type-block, #currency_code-block, #price_amount-block, #price_tip-block').hide();
+            $('#time_start_utc').change(function () {
+                $('#time_end_utc').val($(this).val());
+            });
+            $('#time_start_utc, #event_timezone').change(function () {
+                let previous_time = DateTime.fromISO('<?= str_replace(' ', 'T', $prev['time_end_utc']) ?>', {zone: '<?= $prev['event_timezone'] ?>'}),
+                    this_time     = DateTime.fromISO($('#time_start_utc').val(), {zone: $('#event_timezone').val()});
+                let dif = calculate_different_in_minutes(previous_time, this_time);
+                append_calculation('New dif: ' + dif);
+            });
+            <?php elseif ('chastity' == $record_type) : ?>
+            required_fields = [];
+            $('#header-spa-information, #spa_name-block, #spa_type-block, #currency_code-block, #price_amount-block, #price_tip-block').hide();
+            <?php else : ?>
+            required_fields = [];
+            <?php endif; ?>
+            // MERGED
             $('#btn-save').click(function (e) {
                 e.preventDefault();
                 // let ids = ['transaction_date', 'transaction_code', 'ordinary_amount', 'ordinary_balance', 'special_amount', 'special_balance', 'medisave_amount', 'medisave_balance', 'transaction_amount', 'account_balance', 'contribution_month', 'company_id', 'staff_contribution', 'staff_ytd', 'company_match', 'company_ytd'];
@@ -108,24 +148,24 @@ $this->extend($layout);
                     type: 'post',
                     data: {
                         <?php foreach ($fields as $field) : ?>
-                        <?php if (in_array($field, ['NOTES', 'WHEN', 'SPA INFORMATION'])) { continue; } ?>
+                        <?php if (in_array($field, ['NOTES', 'WHEN', 'SPA-INFORMATION'])) { continue; } ?>
                         <?= $field ?>: $('#<?= $field ?>').val(),
                         <?php endforeach; ?>
                     },
                     success: function (response) {
                         if ('success' === response.status) {
                             toastr.success(response.toast);
-                            setTimeout(function () {window.location.href = response.redirect;}, 5000);
+                            // setTimeout(function () {window.location.href = response.redirect;}, 5000);
                         } else {
                             let message = (response.toast ?? 'Sorry! Something went wrong. Please try again.');
                             toastr.error(message);
-                            $('#btn-save-cpf').prop('disabled', false);
+                            $('#btn-save').prop('disabled', false);
                         }
                     },
                     error: function (xhr, status, error) {
                         let response = JSON.parse(xhr.responseText);
                         let error_message = (response.toast ?? 'Sorry! Something went wrong. Please try again.');
-                        $('#btn-save-cpf').prop('disabled', false);
+                        $('#btn-save').prop('disabled', false);
                         toastr.error(error_message);
                     }
                 });

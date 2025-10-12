@@ -28,14 +28,14 @@ function generate_form_field(string $id, array $configuration, int|string|array 
     if (in_array($input_type, ['text', 'email', 'password', 'number', 'date', 'time', 'datetime-local', 'month', 'week', 'url', 'search', 'color'])) {
         $placeholder = @$configuration['placeholder'] ?? '';
         $value = (!is_null($current_value) && '0000-00-00' != $current_value ? "value='{$current_value}'" : (!empty($configuration['default']) ? "value='{$configuration['default']}'" : ''));
-        echo "<div class='form-floating mb-3'><input type='{$input_type}' class='form-control' id='{$id}' name='{$id}' placeholder='{$placeholder}' $value $required $readonly $disabled $min $minlength $max $maxlength><label for='{$id}'>" . $label . "</label>";
+        echo "<div class='form-floating mb-3' id='{$id}-block'><input type='{$input_type}' class='form-control' id='{$id}' name='{$id}' placeholder='{$placeholder}' $value $required $readonly $disabled $min $minlength $max $maxlength><label for='{$id}'>" . $label . "</label>";
         if (!empty($configuration['details'])) {
             echo "<small class='form-text text-muted small'>" . lang($configuration['details']) . "</small>";
         }
         echo "</div>";
     } else if ('tel' == $input_type) {
         $country_codes = lang('ListCallingCode.codes');
-        echo "<div class='input-group mb-3'><span class='input-group-text'>+</span>";
+        echo "<div class='input-group mb-3' id='{$id}-block'><span class='input-group-text'>+</span>";
         echo "<div class='form-floating'><select class='form-select' id='{$configuration['country_code_field']}' name='{$configuration['country_code_field']}' $required $readonly $disabled>";
         echo "<option value=''></option>";
         foreach ($country_codes as $codes) {
@@ -49,7 +49,7 @@ function generate_form_field(string $id, array $configuration, int|string|array 
         echo '<input type="hidden" id="' . $id . '" name="' . $id . '" value="' . @$current_value . '">';
     } else if ('select' == $input_type) {
         $options = $configuration['options'];
-        echo "<div class='form-floating mb-3'><select class='form-select' id='{$id}' name='{$id}' $required $readonly $disabled>";
+        echo "<div class='form-floating mb-3' id='{$id}-block'><select class='form-select' id='{$id}' name='{$id}' $required $readonly $disabled>";
         echo "<option value=''></option>";
         foreach ($options as $key => $value) {
             $selected  = ($current_value == $key ? 'selected' : '');
@@ -59,7 +59,7 @@ function generate_form_field(string $id, array $configuration, int|string|array 
         echo "</select><label for='{$id}'>" . $label . "</label></div>";
     } else if ('textarea' == $input_type) {
         $placeholder = @$configuration['placeholder'] ?? '';
-        echo "<div class='form-floating mb-3'><textarea class='form-control' id='{$id}' name='{$id}' placeholder='{$placeholder}' $required $readonly $disabled style='height:100px'>{$current_value}</textarea><label for='{$id}'>" . $label . "</label>";
+        echo "<div class='form-floating mb-3' id='{$id}-block'><textarea class='form-control' id='{$id}' name='{$id}' placeholder='{$placeholder}' $required $readonly $disabled style='height:100px'>{$current_value}</textarea><label for='{$id}'>" . $label . "</label>";
         if (!empty($configuration['details'])) {
             echo "<small class='form-text text-muted small'>" . lang($configuration['details']) . "</small>";
         }
@@ -85,7 +85,7 @@ function generate_form_field(string $id, array $configuration, int|string|array 
         } else if ($count < 50) {
             $height = 200;
         }
-        echo "<div class='form-floating mb-3 px-2' style='height:{$height}px;overflow:auto;'>";
+        echo "<div class='form-floating mb-3 px-2' style='height:{$height}px;overflow:auto;' id='{$id}-block'>";
         echo '<div class="row"><div class="col-12"><label for="' . $id . '_' . array_key_first($options) . '">' . $configuration['label'] . '</label></div>';
         foreach ($options as $key => $value) {
             $checked = (in_array($key, $current_value) ? 'checked' : '');
