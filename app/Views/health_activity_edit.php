@@ -107,41 +107,54 @@ $this->extend($layout);
                 $('#calculation-sheet').html($('#calculation-sheet').html() + '<br>' + new_message);
             };
             let calculate_different_in_minutes = function (time_start_utc, time_end_utc) {
-                append_calculation('Start: ' + time_start_utc.toLocaleString());
-                append_calculation('End: ' + time_end_utc.toLocaleString());
-                return 'tets';
+                append_calculation('calculate_different_in_minutes');
+                append_calculation(time_start_utc.toISO());
+                append_calculation(time_end_utc.toISO());
+                let diff_object = time_end_utc.diff(time_start_utc, ['minutes']).toString();
+                diff_object = diff_object.replace('PT', '').replace('M', '');
+                return diff_object;
             };
             let required_fields = [];
             // SPLIT
             <?php if ('ejac' == $record_type) : ?>
-            required_fields = [];
-            $('#event_duration-block, #header-spa-information, #spa_name-block, #spa_type-block, #currency_code-block, #price_amount-block, #price_tip-block').hide();
+            required_fields = ['record_type', 'event_type', 'time_start_utc', 'time_end_utc', 'event_timezone', 'duration_from_prev_ejac', 'is_ejac'];
+            $('#event_duration-block, #time_end_utc, #header-spa-information, #spa_name-block, #spa_type-block, #currency_code-block, #price_amount-block, #price_tip-block').hide();
+            $('#is_ejac').val('Y');
             $('#time_start_utc').change(function () {
                 $('#time_end_utc').val($(this).val());
             });
             $('#time_start_utc, #event_timezone').change(function () {
-                let previous_time = DateTime.fromISO('<?= str_replace(' ', 'T', $prev['time_end_utc']) ?>', {zone: '<?= $prev['event_timezone'] ?>'}),
-                    this_time     = DateTime.fromISO($('#time_start_utc').val(), {zone: $('#event_timezone').val()});
-                let dif = calculate_different_in_minutes(previous_time, this_time);
-                append_calculation('New dif: ' + dif);
+                let previous_time = DateTime.fromISO('<?= str_replace(' ', 'T', $prev['time_end_utc']) ?>', {zone: 'UTC'}),
+                    this_time     = DateTime.fromISO($('#time_start_utc').val(), {zone: $('#event_timezone').val()}),
+                    diff          = calculate_different_in_minutes(previous_time, this_time);
+                append_calculation('Difference (min): ' + diff);
+                $('#duration_from_prev_ejac').val(diff);
             });
+            ////////////////////////////////////////////////////////////////////////////////////////////////////
             <?php elseif ('chastity' == $record_type) : ?>
-            required_fields = [];
+            required_fields = ['record_type', 'event_type', 'time_start_utc', 'time_end_utc', 'event_timezone', 'event_duration', 'is_ejac'];
             $('#header-spa-information, #spa_name-block, #spa_type-block, #currency_code-block, #price_amount-block, #price_tip-block').hide();
+            $('#time_start_utc, #time_end_utc, #event_timezone').change(function () {
+                let start_time = DateTime.fromISO($('#time_start_utc').val(), {zone: $('#event_timezone').val()}),
+                    end_time   = DateTime.fromISO($('#time_end_utc').val(), {zone: $('#event_timezone').val()});
+
+            });
+            ////////////////////
             <?php else : ?>
             required_fields = [];
             <?php endif; ?>
             // MERGED
             $('#btn-save').click(function (e) {
                 e.preventDefault();
-                // let ids = ['transaction_date', 'transaction_code', 'ordinary_amount', 'ordinary_balance', 'special_amount', 'special_balance', 'medisave_amount', 'medisave_balance', 'transaction_amount', 'account_balance', 'contribution_month', 'company_id', 'staff_contribution', 'staff_ytd', 'company_match', 'company_ytd'];
-                // for (let i = 0; i < ids.length; i++) {
-                //     if ('' === $('#' + ids[i]).val()) {
-                //         toastr.warning('Please ensure all mandatory fields are filled.');
-                //         $('#' + ids[i]).focus();
-                //         return;
-                //     }
-                // }
+                let looping_field = '';
+                for (let i = 0; i < required_fields.length; i++) {
+                    looping_field = '#' + required_fields[i];
+                    if ('' === $(looping_field).val()) {
+                        toastr.warning('Please ensure all mandatory fields are filled.');
+                        $(looping_field).focus();
+                        return;
+                    }
+                }
                 $(this).prop('disabled', true);
                 $.ajax({
                     url: '<?= base_url('en/office/health/activity/edit') ?>',

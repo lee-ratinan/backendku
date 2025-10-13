@@ -49,7 +49,6 @@
 <div class="lock-screen"><h1><?= lang('System.status_message.lock_screen') ?></h1></div>
 <script src="<?= base_url('assets/vendor/jquery/jquery-3.7.1.min.js') ?>"></script>
 <script src="<?= base_url('assets/vendor/fontawesome/js/all.min.js') ?>"></script>
-<script src="<?= base_url('assets/vendor/apexcharts/apexcharts.min.js') ?>"></script>
 <script src="<?= base_url('assets/vendor/bootstrap/js/bootstrap.bundle.min.js') ?>"></script>
 <script src="<?= base_url('assets/vendor/chart.js/chart.umd.js') ?>"></script>
 <script src="<?= base_url('assets/vendor/echarts/echarts.min.js') ?>"></script>
