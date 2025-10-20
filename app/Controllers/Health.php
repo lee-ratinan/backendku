@@ -1301,8 +1301,7 @@ class Health extends BaseController
         $to                 = $this->request->getPost('to') ?? '';
         $record_type        = $this->request->getPost('record_type') ?? '';
         $is_ejac            = $this->request->getPost('is_ejac') ?? '';
-        $event_location     = $this->request->getPost('event_location') ?? '';
-        $result             = $model->getDataTables($start, $length, $order_column, $order_direction, $search_value, $from, $to, $record_type, $is_ejac, $event_location);
+        $result             = $model->getDataTables($start, $length, $order_column, $order_direction, $search_value, $from, $to, $record_type, $is_ejac);
         return $this->response->setJSON([
             'draw'            => $this->request->getPost('draw'),
             'recordsTotal'    => $result['recordsTotal'],
@@ -1328,6 +1327,27 @@ class Health extends BaseController
             'price_amount'            => '0.0',
             'price_tip'               => '0.0'
         ];
+        if ('chastity' == $record_type) {
+            $open_ctt    = $model->where('record_type', 'chastity')->where('time_start_utc = time_end_utc')->where('event_duration = 0')->orderBy('id', 'DESC')->first();
+            if (!empty($open_ctt)) {
+                $data        = [
+                    'page_title'    => 'Update Chastity',
+                    'mode'          => 'chastity-end',
+                    'slug_group'    => 'health',
+                    'slug'          => '/office/health/activity',
+                    'record'        => $record,
+                    'prev'          => $open_ctt,
+                    'record_type'   => $record_type,
+                    'user_session'  => $session->user,
+                    'roles'         => $session->roles,
+                    'current_role'  => $session->current_role,
+                    'configuration' => $model->getConfigurations(),
+                    'record_cate'   => $model->getRecordCategories(),
+                    'record_types'  => $model->getRecordTypes()
+                ];
+                return view('health_activity_edit', $data);
+            }
+        }
         $prev        = $model->where('is_ejac', 'Y')->orderBy('time_start_utc', 'DESC')->first();
         $data        = [
             'page_title'    => $page_title,
@@ -1352,12 +1372,35 @@ class Health extends BaseController
         $session = session();
         $model   = new HealthActivityModel();
         $mode    = $this->request->getPost('mode');
+        $data    = [];
         if ('chastity-end' == $mode) {
-            return $this->response->setJSON([
-                'status' => 'success',
-                'toast'  => 'TEST',
-                'data'   => []
-            ]);
+            $fields  = [
+                'id',
+                'time_end_utc',
+                'event_duration',
+                'event_notes',
+                'event_location'
+            ];
+            $id = $this->request->getPost('id');
+            foreach ($fields as $field) {
+                $data[$field] = $this->request->getPost($field);
+                if (is_null($data[$field])) {
+                    unset($data[$field]);
+                }
+            }
+            try {
+                $model->update($id, $data);
+                return $this->response->setJSON([
+                    'status' => 'success',
+                    'toast'  => 'Activity has been updated',
+                    'url'    => base_url($session->locale . '/office/health/activity')
+                ]);
+            } catch (DatabaseException|ReflectionException $e) {
+                return $this->response->setJSON([
+                    'status' => 'error',
+                    'toast'  => 'ERROR: ' . $e->getMessage()
+                ]);
+            }
         }
         $fields  = [
             'journey_id',

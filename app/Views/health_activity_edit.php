@@ -27,6 +27,7 @@ $this->extend($layout);
                         </div>
                         <?php
                         $fields = [
+                            'id',
                             'record_type',
                             'event_type',
                             'WHEN',
@@ -67,6 +68,23 @@ $this->extend($layout);
                             $record['currency_code']                = '';
                             $record['price_amount']                 = 0;
                             $record['price_tip']                    = 0;
+                        }
+                        if ('chastity-end' == $mode) {
+                            $start_time = '';
+                            try {
+                                $start_time = new DateTime($prev['time_start_utc'], new DateTimeZone('UTC'));
+                                $start_time->setTimezone(new DateTimeZone($prev['event_timezone']));
+                            } catch (Exception $e) {
+                            }
+                            $record['id']             = $prev['id'];
+                            $record['time_start_utc'] = $start_time->format('Y-m-d H:i:s');
+                            $record['event_timezone'] = $prev['event_timezone'];
+                            $record['event_notes']    = $prev['event_notes'];
+                            $record['event_location'] = $prev['event_location'];
+                            $configuration['time_start_utc']['readonly'] = true;
+                            $timezone_value           = $configuration['event_timezone']['options'][$prev['event_timezone']];
+                            unset($configuration['event_timezone']['options']);
+                            $configuration['event_timezone']['options'][$prev['event_timezone']] = $timezone_value;
                         }
                         $configuration['previous_ejac_time_utc']['type'] = 'hidden';
                         $record['previous_ejac_time_utc']                = $prev['time_end_utc'];
@@ -113,7 +131,7 @@ $this->extend($layout);
             };
             let required_fields = [];
             // SPLIT
-            <?php if ('ejac' == $record_type) : ?>
+            <?php if ('ejac' == $mode) : ?>
             required_fields = ['record_type', 'event_type', 'time_start_utc', 'time_end_utc', 'event_timezone', 'duration_from_prev_ejac', 'is_ejac'];
             $('#event_duration-block, #time_end_utc, #header-spa-information, #spa_name-block, #spa_type-block, #currency_code-block, #price_amount-block, #price_tip-block').hide();
             $('#is_ejac').val('Y');
@@ -128,12 +146,15 @@ $this->extend($layout);
                 $('#duration_from_prev_ejac').val(diff);
             });
             ////////////////////////////////////////////////////////////////////////////////////////////////////
-            <?php elseif ('chastity' == $record_type) : ?>
+            <?php elseif ('chastity' == $mode) : ?>
             required_fields = ['record_type', 'event_type', 'time_start_utc', 'event_timezone', 'is_ejac'];
             $('#time_end_utc, #event_duration, #duration_from_prev_ejac, #header-spa-information, #spa_name-block, #spa_type-block, #currency_code-block, #price_amount-block, #price_tip-block').hide();
             $('#is_ejac').val('N');
+            $('#time_start_utc').change(function () {
+                $('#time_end_utc').val($(this).val());
+            });
             ////////////////////
-            <?php elseif ('spa' == $record_type) : ?>
+            <?php elseif ('spa' == $mode) : ?>
             required_fields = ['record_type', 'event_type', 'time_start_utc', 'time_end_utc', 'event_timezone', 'event_duration', 'is_ejac', 'spa_name', 'spa_type', 'currency_code', 'price_amount', 'price_tip'];
             $('#event_type').change(function () {
                 let event_type = $(this).val();
@@ -157,7 +178,16 @@ $this->extend($layout);
                 append_calculation('Duration (min): ' + event_duration);
                 append_calculation('From prev (min): ' + from_prev);
             });
-            <?php elseif ('chastity-end' == $record_type) : ?>
+            <?php elseif ('chastity-end' == $mode) : ?>
+            required_fields = ['time_start_utc', 'time_end_utc', 'event_duration'];
+            $('#record_type-block, #event_type-block, #journey_id-block, #duration_from_prev_ejac-block, #is_ejac-block, #header-spa-information, #spa_name-block, #spa_type-block, #currency_code-block, #price_amount-block, #price_tip-block').hide();
+            $('#time_end_utc').change(function () {
+                let this_start_time = DateTime.fromISO($('#time_start_utc').val(), {zone: $('#event_timezone').val()}),
+                    this_end_time   = DateTime.fromISO($('#time_end_utc').val(), {zone: $('#event_timezone').val()}),
+                    event_duration  = calculate_different_in_minutes(this_start_time, this_end_time);
+                $('#event_duration').val(event_duration);
+                append_calculation('Duration (min): ' + event_duration);
+            });
             <?php endif; ?>
             // MERGED
             $('#btn-save').click(function (e) {
@@ -174,16 +204,13 @@ $this->extend($layout);
                 let time_start = $('#time_start_utc').val(),
                     time_end   = $('#time_end_utc').val(),
                     time_start_utc = new Date(time_start).toISOString(),
-                    time_end_utc = '';
-                if ('' !== time_end) {
                     time_end_utc = new Date(time_end).toISOString();
-                }
                 $(this).prop('disabled', true);
                 $.ajax({
                     url: '<?= base_url('en/office/health/activity/edit') ?>',
                     type: 'post',
                     data: {
-                        mode: '<?= $record_type ?>',
+                        mode: '<?= $mode ?>',
                         <?php foreach ($fields as $field) : ?>
                         <?php
                         if (in_array($field, ['NOTES', 'WHEN', 'SPA-INFORMATION', 'previous_ejac_time_utc'])) {

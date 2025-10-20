@@ -205,7 +205,7 @@ class HealthActivityModel extends Model
      * @param string $event_location
      * @return void
      */
-    private function applyFilter(string $search_value, string $from, string $to, string $record_type, string $is_ejac, string $event_location): void
+    private function applyFilter(string $search_value, string $from, string $to, string $record_type, string $is_ejac): void
     {
         if (!empty($search_value)) {
             $this->groupStart()
@@ -236,9 +236,6 @@ class HealthActivityModel extends Model
         if (!empty($is_ejac)) {
             $this->where('is_ejac', $is_ejac);
         }
-        if (!empty($event_location)) {
-            $this->where('event_location', $event_location);
-        }
     }
 
     /**
@@ -251,17 +248,16 @@ class HealthActivityModel extends Model
      * @param string $to
      * @param string $record_type
      * @param string $is_ejac
-     * @param string $event_location
      * @return array
      */
-    public function getDataTables(int $start, int $length, string $order_column, string $order_direction, string $search_value, string $from, string $to, string $record_type, string $is_ejac, string $event_location): array
+    public function getDataTables(int $start, int $length, string $order_column, string $order_direction, string $search_value, string $from, string $to, string $record_type, string $is_ejac): array
     {
         $record_total    = $this->countAllResults();
         $record_filtered = $record_total;
-        if (!empty($search_value) || !empty($from) || !empty($to) || !empty($record_type) || !empty($is_ejac) || !empty($event_location)) {
-            $this->applyFilter($search_value, $from, $to, $record_type, $is_ejac, $event_location);
+        if (!empty($search_value) || !empty($from) || !empty($to) || !empty($record_type) || !empty($is_ejac)) {
+            $this->applyFilter($search_value, $from, $to, $record_type, $is_ejac);
             $record_filtered = $this->countAllResults();
-            $this->applyFilter($search_value, $from, $to, $record_type, $is_ejac, $event_location);
+            $this->applyFilter($search_value, $from, $to, $record_type, $is_ejac);
         }
 //        $session    = session();
 //        $locale     = $session->locale;
