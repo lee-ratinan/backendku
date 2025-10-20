@@ -171,6 +171,13 @@ $this->extend($layout);
                         return;
                     }
                 }
+                let time_start = $('#time_start_utc').val(),
+                    time_end   = $('#time_end_utc').val(),
+                    time_start_utc = new Date(time_start).toISOString(),
+                    time_end_utc = '';
+                if ('' !== time_end) {
+                    time_end_utc = new Date(time_end).toISOString();
+                }
                 $(this).prop('disabled', true);
                 $.ajax({
                     url: '<?= base_url('en/office/health/activity/edit') ?>',
@@ -178,8 +185,15 @@ $this->extend($layout);
                     data: {
                         mode: '<?= $record_type ?>',
                         <?php foreach ($fields as $field) : ?>
-                        <?php if (in_array($field, ['NOTES', 'WHEN', 'SPA-INFORMATION', 'previous_ejac_time_utc'])) { continue; } ?>
-                        <?= $field ?>: $('#<?= $field ?>').val(),
+                        <?php
+                        if (in_array($field, ['NOTES', 'WHEN', 'SPA-INFORMATION', 'previous_ejac_time_utc'])) {
+                            continue;
+                        } else if (in_array($field, ['time_start_utc', 'time_end_utc'])) {
+                            echo "{$field}: {$field}, ";
+                        } else {
+                            echo "{$field}: $('#{$field}').val(), ";
+                        }
+                        ?>
                         <?php endforeach; ?>
                     },
                     success: function (response) {
