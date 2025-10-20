@@ -93,9 +93,6 @@ $this->extend($layout);
                     <div class="card-body">
                         <h6>Calculation Sheet</h6>
                         <div id="calculation-sheet"></div>
-                        <pre>
-                            <?php print_r($prev); ?>
-                        </pre>
                     </div>
                 </div>
             </div>
@@ -132,16 +129,34 @@ $this->extend($layout);
             });
             ////////////////////////////////////////////////////////////////////////////////////////////////////
             <?php elseif ('chastity' == $record_type) : ?>
-            required_fields = ['record_type', 'event_type', 'time_start_utc', 'time_end_utc', 'event_timezone', 'event_duration', 'is_ejac'];
-            $('#header-spa-information, #spa_name-block, #spa_type-block, #currency_code-block, #price_amount-block, #price_tip-block').hide();
-            $('#time_start_utc, #time_end_utc, #event_timezone').change(function () {
-                let start_time = DateTime.fromISO($('#time_start_utc').val(), {zone: $('#event_timezone').val()}),
-                    end_time   = DateTime.fromISO($('#time_end_utc').val(), {zone: $('#event_timezone').val()});
-
-            });
+            required_fields = ['record_type', 'event_type', 'time_start_utc', 'event_timezone', 'is_ejac'];
+            $('#time_end_utc, #event_duration, #duration_from_prev_ejac, #header-spa-information, #spa_name-block, #spa_type-block, #currency_code-block, #price_amount-block, #price_tip-block').hide();
+            $('#is_ejac').val('N');
             ////////////////////
-            <?php else : ?>
-            required_fields = [];
+            <?php elseif ('spa' == $record_type) : ?>
+            required_fields = ['record_type', 'event_type', 'time_start_utc', 'time_end_utc', 'event_timezone', 'event_duration', 'is_ejac', 'spa_name', 'spa_type', 'currency_code', 'price_amount', 'price_tip'];
+            $('#event_type').change(function () {
+                let event_type = $(this).val();
+                if ('clean' === event_type) {
+                    $('#is_ejac').val('N');
+                    $('#duration_from_prev_ejac').val('0');
+                } else {
+                    $('#is_ejac').val('Y');
+                }
+            });
+            $('#time_start_utc, #time_end_utc, #event_timezone').change(function () {
+                let previous_time   = DateTime.fromISO('<?= str_replace(' ', 'T', $prev['time_end_utc']) ?>', {zone: 'UTC'}),
+                    this_start_time = DateTime.fromISO($('#time_start_utc').val(), {zone: $('#event_timezone').val()}),
+                    this_end_time   = DateTime.fromISO($('#time_end_utc').val(), {zone: $('#event_timezone').val()}),
+                    event_duration  = calculate_different_in_minutes(this_start_time, this_end_time),
+                    from_prev       = calculate_different_in_minutes(previous_time, this_end_time);
+                $('#event_duration').val(event_duration);
+                if ('Y' === $('#is_ejac').val()) {
+                    $('#duration_from_prev_ejac').val(from_prev);
+                }
+                append_calculation('Duration (min): ' + event_duration);
+                append_calculation('From prev (min): ' + from_prev);
+            });
             <?php endif; ?>
             // MERGED
             $('#btn-save').click(function (e) {
@@ -161,7 +176,7 @@ $this->extend($layout);
                     type: 'post',
                     data: {
                         <?php foreach ($fields as $field) : ?>
-                        <?php if (in_array($field, ['NOTES', 'WHEN', 'SPA-INFORMATION'])) { continue; } ?>
+                        <?php if (in_array($field, ['NOTES', 'WHEN', 'SPA-INFORMATION', 'previous_ejac_time_utc'])) { continue; } ?>
                         <?= $field ?>: $('#<?= $field ?>').val(),
                         <?php endforeach; ?>
                     },
