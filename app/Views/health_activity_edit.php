@@ -157,6 +157,7 @@ $this->extend($layout);
                 append_calculation('Duration (min): ' + event_duration);
                 append_calculation('From prev (min): ' + from_prev);
             });
+            <?php elseif ('chastity-end' == $record_type) : ?>
             <?php endif; ?>
             // MERGED
             $('#btn-save').click(function (e) {
@@ -175,6 +176,7 @@ $this->extend($layout);
                     url: '<?= base_url('en/office/health/activity/edit') ?>',
                     type: 'post',
                     data: {
+                        mode: '<?= $record_type ?>',
                         <?php foreach ($fields as $field) : ?>
                         <?php if (in_array($field, ['NOTES', 'WHEN', 'SPA-INFORMATION', 'previous_ejac_time_utc'])) { continue; } ?>
                         <?= $field ?>: $('#<?= $field ?>').val(),
@@ -183,7 +185,7 @@ $this->extend($layout);
                     success: function (response) {
                         if ('success' === response.status) {
                             toastr.success(response.toast);
-                            // setTimeout(function () {window.location.href = response.redirect;}, 5000);
+                            setTimeout(function () {window.location.href = response.redirect;}, 5000);
                         } else {
                             let message = (response.toast ?? 'Sorry! Something went wrong. Please try again.');
                             toastr.error(message);

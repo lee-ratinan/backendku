@@ -1352,6 +1352,13 @@ class Health extends BaseController
         $session = session();
         $model   = new HealthActivityModel();
         $mode    = $this->request->getPost('mode');
+        if ('chastity-end' == $mode) {
+            return $this->response->setJSON([
+                'status' => 'success',
+                'toast'  => 'TEST',
+                'data'   => []
+            ]);
+        }
         $fields  = [
             'journey_id',
             'time_start_utc',
@@ -1377,32 +1384,17 @@ class Health extends BaseController
             }
         }
         try {
-//            if ('new' == $mode) {
-//                $inserted_id = $model->insert($data);
-//                if ($inserted_id) {
-//                    return $this->response->setJSON([
-//                        'status' => 'success',
-//                        'toast'  => 'Trip has been added',
-//                        'url'    => base_url($session->locale . '/office/health/activity/edit/' . ($inserted_id * $model::ID_NONCE))
-//                    ]);
-//                }
-//            } else {
-//                $id = $this->request->getPost('id');
-//                if ($model->update($id, $data)) {
-//                    return $this->response->setJSON([
-//                        'status' => 'success',
-//                        'toast'  => 'Trip has been updated',
-//                        'url'    => base_url($session->locale . '/office/health/activity/edit/' . ($id * $model::ID_NONCE))
-//                    ]);
-//                }
-//            }
-//            return $this->response->setJSON([
-//                'status' => 'error',
-//                'toast'  => 'There was some unknown error, please try again later.'
-//            ]);
+            $inserted_id = $model->insert($data);
+            if ($inserted_id) {
+                return $this->response->setJSON([
+                    'status' => 'success',
+                    'toast'  => 'Activity has been added',
+                    'url'    => base_url($session->locale . '/office/health/activity')
+                ]);
+            }
             return $this->response->setJSON([
                 'status' => 'success',
-                'toast'  => 'TEST',
+                'toast'  => 'Failed to insert the activity.',
                 'data'   => $data
             ]);
         } catch (DatabaseException|ReflectionException $e) {
