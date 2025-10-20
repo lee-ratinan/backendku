@@ -284,7 +284,7 @@ class JourneyMasterModel extends Model
         $transport_data      = $transport_model->findById($real_id, 'journey_id');
         $accommodation_data  = $accommodation_model->where('journey_id', $real_id)->orderBy('check_in_date', 'asc')->findAll();
         $attraction_data     = $attraction_model->where('journey_id', $real_id)->orderBy('attraction_date', 'asc')->findAll();
-        $leisure_data        = $leisure_model->where('journey_id', $real_id)->orderBy('time_start_utc', 'asc')->findAll();
+        $leisure_data        = $leisure_model->where('journey_id', $real_id)->orderBy('time_start_utc', 'asc')->limit(25)->findAll();
         return [
             'master_data'         => $master_data,
             'transport_data'      => $transport_data,
