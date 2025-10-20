@@ -131,7 +131,7 @@ $this->extend($layout);
             };
             let required_fields = [];
             // SPLIT
-            <?php if ('ejac' == $mode) : ?>
+            <?php if ('ejac' == $record_type) : ?>
             required_fields = ['record_type', 'event_type', 'time_start_utc', 'time_end_utc', 'event_timezone', 'duration_from_prev_ejac', 'is_ejac'];
             $('#event_duration-block, #time_end_utc, #header-spa-information, #spa_name-block, #spa_type-block, #currency_code-block, #price_amount-block, #price_tip-block').hide();
             $('#is_ejac').val('Y');
@@ -145,8 +145,18 @@ $this->extend($layout);
                 append_calculation('Difference (min): ' + diff);
                 $('#duration_from_prev_ejac').val(diff);
             });
+            <?php elseif ('chastity-end' == $mode) : ?>
+            required_fields = ['time_start_utc', 'time_end_utc', 'event_duration'];
+            $('#record_type-block, #event_type-block, #journey_id-block, #duration_from_prev_ejac-block, #is_ejac-block, #header-spa-information, #spa_name-block, #spa_type-block, #currency_code-block, #price_amount-block, #price_tip-block').hide();
+            $('#time_end_utc').change(function () {
+                let this_start_time = DateTime.fromISO($('#time_start_utc').val(), {zone: $('#event_timezone').val()}),
+                    this_end_time   = DateTime.fromISO($('#time_end_utc').val(), {zone: $('#event_timezone').val()}),
+                    event_duration  = calculate_different_in_minutes(this_start_time, this_end_time);
+                $('#event_duration').val(event_duration);
+                append_calculation('Duration (min): ' + event_duration);
+            });
             ////////////////////////////////////////////////////////////////////////////////////////////////////
-            <?php elseif ('chastity' == $mode) : ?>
+            <?php elseif ('chastity' == $record_type) : ?>
             required_fields = ['record_type', 'event_type', 'time_start_utc', 'event_timezone', 'is_ejac'];
             $('#time_end_utc, #event_duration, #duration_from_prev_ejac, #header-spa-information, #spa_name-block, #spa_type-block, #currency_code-block, #price_amount-block, #price_tip-block').hide();
             $('#is_ejac').val('N');
@@ -154,7 +164,7 @@ $this->extend($layout);
                 $('#time_end_utc').val($(this).val());
             });
             ////////////////////
-            <?php elseif ('spa' == $mode) : ?>
+            <?php elseif ('spa' == $record_type) : ?>
             required_fields = ['record_type', 'event_type', 'time_start_utc', 'time_end_utc', 'event_timezone', 'event_duration', 'is_ejac', 'spa_name', 'spa_type', 'currency_code', 'price_amount', 'price_tip'];
             $('#event_type').change(function () {
                 let event_type = $(this).val();
@@ -177,16 +187,6 @@ $this->extend($layout);
                 }
                 append_calculation('Duration (min): ' + event_duration);
                 append_calculation('From prev (min): ' + from_prev);
-            });
-            <?php elseif ('chastity-end' == $mode) : ?>
-            required_fields = ['time_start_utc', 'time_end_utc', 'event_duration'];
-            $('#record_type-block, #event_type-block, #journey_id-block, #duration_from_prev_ejac-block, #is_ejac-block, #header-spa-information, #spa_name-block, #spa_type-block, #currency_code-block, #price_amount-block, #price_tip-block').hide();
-            $('#time_end_utc').change(function () {
-                let this_start_time = DateTime.fromISO($('#time_start_utc').val(), {zone: $('#event_timezone').val()}),
-                    this_end_time   = DateTime.fromISO($('#time_end_utc').val(), {zone: $('#event_timezone').val()}),
-                    event_duration  = calculate_different_in_minutes(this_start_time, this_end_time);
-                $('#event_duration').val(event_duration);
-                append_calculation('Duration (min): ' + event_duration);
             });
             <?php endif; ?>
             // MERGED
