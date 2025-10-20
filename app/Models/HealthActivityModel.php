@@ -263,13 +263,21 @@ class HealthActivityModel extends Model
             $record_filtered = $this->countAllResults();
             $this->applyFilter($search_value, $from, $to, $record_type, $is_ejac, $event_location);
         }
-        $session    = session();
-        $locale     = $session->locale;
-        $raw_result = $this->orderBy($order_column, $order_direction)->limit($length, $start)->findAll();
+//        $session    = session();
+//        $locale     = $session->locale;
+        $raw_result = $this->select('health_activity.*, journey_master.country_code, journey_master.date_entry')
+            ->join('journey_master', 'health_activity.journey_id = journey_master.id', 'left outer')
+            ->orderBy($order_column, $order_direction)->limit($length, $start)->findAll();
         $result     = [];
         $types      = $this->getRecordTypes();
         foreach ($raw_result as $row) {
-//            $new_id       = $row['id'] * self::ID_NONCE;
+            $last_col = [];
+            if (!empty($row['event_location'])) {
+                $last_col[] = $row['event_location'];
+            }
+            if (! is_null($row['country_code'])) {
+                $last_col[] = lang('ListCountries.countries.' . $row['country_code'] . '.common_name') . ' - ' . date(DATE_FORMAT_UI, strtotime($row['date_entry']));
+            }
             $result[]     = [
                 '<span class="utc-to-local-time">' . str_replace(' ', 'T', $row['time_start_utc']) . 'Z</span>' . ($row['time_start_utc'] != $row['time_end_utc'] ? ' - <span class="utc-to-local-time">' . str_replace(' ', 'T', $row['time_end_utc']) . 'Z</span>' : '') . '<br><span class="smal">' . $row['event_timezone'] . '</span>',
                 minute_format($row['event_duration']),
@@ -279,7 +287,7 @@ class HealthActivityModel extends Model
                 $row['spa_name'] . (empty($row['spa_type']) ? '' : ' (' . $row['spa_type'] . ')'),
                 ($row['price_amount'] > 0 ? currency_format($row['currency_code'], $row['price_amount']) : '') . ($row['price_tip'] > 0 ? '<br>' . currency_format($row['currency_code'], $row['price_tip']) . ' tip' : ''),
                 $row['event_notes'],
-                $row['event_location'],
+                implode('<br>', $last_col),
             ];
         }
         return [

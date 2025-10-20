@@ -84,7 +84,7 @@ $this->extend($layout);
                                     <th style="min-width:180px">Spa</th>
                                     <th style="min-width:100px">Price</th>
                                     <th style="min-width:150px">Notes</th>
-                                    <th style="min-width:100px">Location</th>
+                                    <th style="min-width:150px">Location</th>
                                 </tr>
                                 </thead>
                                 <tbody></tbody>
