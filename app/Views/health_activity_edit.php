@@ -185,7 +185,7 @@ $this->extend($layout);
                     success: function (response) {
                         if ('success' === response.status) {
                             toastr.success(response.toast);
-                            setTimeout(function () {window.location.href = response.redirect;}, 5000);
+                            setTimeout(function () {window.location.href = '<?= base_url('en/office/health/activity') ?>';}, 5000);
                         } else {
                             let message = (response.toast ?? 'Sorry! Something went wrong. Please try again.');
                             toastr.error(message);

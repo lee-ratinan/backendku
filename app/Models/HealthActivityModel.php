@@ -142,7 +142,7 @@ class HealthActivityModel extends Model
         $configurations['currency_code']['options']    = $all_currencies;
         // Journeys
         $journey_model   = new JourneyMasterModel();
-        $journeys        = $journey_model->orderBy('date_entry', 'DESC')->limit(10)->findAll();
+        $journeys        = $journey_model->where('date_entry <= CURDATE()')->orderBy('date_entry', 'DESC')->limit(10)->findAll();
         $journey_options = [];
         foreach ($journeys as $journey) {
             $journey_options[$journey['id']] = date(DATE_FORMAT_UI, strtotime($journey['date_entry'])) . ': ' . lang('ListCountries.countries.' . $journey['country_code'] . '.common_name');
@@ -269,9 +269,8 @@ class HealthActivityModel extends Model
         $result     = [];
         $types      = $this->getRecordTypes();
         foreach ($raw_result as $row) {
-            $new_id       = $row['id'] * self::ID_NONCE;
+//            $new_id       = $row['id'] * self::ID_NONCE;
             $result[]     = [
-                $row['id'],
                 '<span class="utc-to-local-time">' . str_replace(' ', 'T', $row['time_start_utc']) . 'Z</span>' . ($row['time_start_utc'] != $row['time_end_utc'] ? ' - <span class="utc-to-local-time">' . str_replace(' ', 'T', $row['time_end_utc']) . 'Z</span>' : '') . '<br><span class="smal">' . $row['event_timezone'] . '</span>',
                 minute_format($row['event_duration']),
                 minute_format($row['duration_from_prev_ejac']),

@@ -76,7 +76,6 @@ $this->extend($layout);
                             <table class="table table-sm table-striped table-hover">
                                 <thead>
                                 <tr>
-                                    <th>ID</th>
                                     <th style="min-width:200px">Time</th>
                                     <th style="min-width:100px">Duration</th>
                                     <th style="min-width:100px">Time from PE</th>
@@ -115,7 +114,7 @@ $this->extend($layout);
                         d.event_location = $('#event_location').val();
                     }
                 },
-                order: [[1, 'desc']],
+                order: [[0, 'desc']],
                 columnDefs: [{orderable: false, targets: 0}],
                 drawCallback: function () {
                     let DateTime = luxon.DateTime;
