@@ -20,10 +20,10 @@ $this->extend($layout);
                 <div class="card">
                     <div class="card-body pt-3">
                         <div class="row">
-                            <div class="col-4">
+                            <div class="col-12">
                                 <h5 class="card-title"><i class="fa-solid fa-spa fa-fw me-3"></i> <?= $page_title ?></h5>
                             </div>
-                            <div class="col-8 text-end mb-3">
+                            <div class="col-12 text-end mb-3">
                                 <?php foreach ($record_cate as $key => $type) : ?>
                                     <a class="btn btn-outline-primary btn-sm" href="<?= base_url($session->locale . '/office/health/activity/new/' . $key) ?>"><i class="fa-solid fa-plus-circle"></i> <?= $type ?></a>
                                 <?php endforeach; ?>

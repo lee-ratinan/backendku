@@ -20,7 +20,7 @@ $this->extend($layout);
     </div>
     <section class="section">
         <div class="row">
-            <div class="col-md-8">
+            <div class="col">
                 <div class="card">
                     <div class="card-body pt-3">
                         <?php

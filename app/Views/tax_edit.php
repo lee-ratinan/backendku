@@ -55,30 +55,30 @@ $tax_department = [
                                 <a class="btn btn-outline-primary btn-sm float-end" href="<?= $tax_year['google_drive_link'] ?>" target="_blank"><i class="fa-brands fa-google-drive"></i></a>
                                 <h6>Tax Record</h6>
                                 <div class="row g-3">
-                                    <div class="col-4">
+                                    <div class="col-md-4">
                                         Taxpayer Name<h4><?= $taxpayer['taxpayer_name'] ?></h4>
                                     </div>
-                                    <div class="col-4">
+                                    <div class="col-md-4">
                                         <?= $taxpayer['taxpayer_id_key'] ?><h4><?= $taxpayer['taxpayer_id_value'] ?></h4>
                                     </div>
-                                    <div class="col-2">
+                                    <div class="col-6 col-md-2">
                                         Filing Status<br><h4><?= $taxpayer['filing_status'] ?></h4>
                                     </div>
-                                    <div class="col-2">
+                                    <div class="col-6 col-md-2">
                                         Citizenship Status<br><h4><?= $taxpayer['citizenship_status'] ?></h4>
                                     </div>
                                     <div class="col-12">
                                         Address<br><h4><?= $taxpayer['taxpayer_address'] ?></h4>
                                     </div>
-                                    <div class="col-4">
+                                    <div class="col-md-4">
                                         Total Income
                                         <h4><?= currency_format($tax_year['currency_code'], $tax_year['total_income']) ?></h4>
                                     </div>
-                                    <div class="col-4">
+                                    <div class="col-md-4">
                                         Taxable Income
                                         <h4><?= currency_format($tax_year['currency_code'], $tax_year['taxable_income']) ?></h4>
                                     </div>
-                                    <div class="col-4">
+                                    <div class="col-md-4">
                                         Tax Amount
                                         <h4><?= currency_format($tax_year['currency_code'], $tax_year['final_tax_amount']) ?></h4>
                                     </div>
@@ -87,29 +87,31 @@ $tax_department = [
                         </div>
                         <?php if ('edit' == $mode) : ?>
                             <h6 class="card-title">Details</h6>
-                            <table class="table table-sm table-responsive table-hover">
-                                <tbody>
-                                <?php foreach ($tax_records as $category => $values) : ?>
-                                    <tr>
-                                        <td rowspan="<?= (count($values) + 1) ?>"><?= ucfirst($category) ?></td>
-                                        <?php $sum = 0.00; ?>
-                                        <?php foreach ($values as $row) : ?>
-                                            <td><a class="btn btn-outline-primary btn-sm" href="<?= base_url($session->locale . '/office/tax/record/edit/' . $tax_id_for_link . '/' . ($row['new_id'])) ?>"><i class="fa-solid fa-edit"></i></a></td>
-                                            <td><?= $row['tax_description'] ?></td>
-                                            <td class="text-end"><?= currency_format($tax_year['currency_code'], $row['money_amount']) ?></td>
-                                            <td><?= $row['item_notes'] ?></td>
-                                            <?php $sum += $row['money_amount']; ?>
-                                        </tr>
+                            <div class="table-responsive">
+                                <table class="table table-sm table-hover">
+                                    <tbody>
+                                    <?php foreach ($tax_records as $category => $values) : ?>
                                         <tr>
-                                        <?php endforeach; ?>
-                                        <?php if ('record' == $category && 0 > $sum) { $sum = 0.00; } ?>
-                                        <td colspan="2" class="text-end">TOTAL</td>
-                                        <td class="text-end"><?= currency_format($tax_year['currency_code'], $sum) ?></td>
-                                        <td></td>
-                                    </tr>
-                                <?php endforeach; ?>
-                                </tbody>
-                            </table>
+                                            <td rowspan="<?= (count($values) + 1) ?>" style="min-width:85px"><?= ucfirst($category) ?></td>
+                                            <?php $sum = 0.00; ?>
+                                            <?php foreach ($values as $row) : ?>
+                                                <td style="min-width:50px"><a class="btn btn-outline-primary btn-sm" href="<?= base_url($session->locale . '/office/tax/record/edit/' . $tax_id_for_link . '/' . ($row['new_id'])) ?>"><i class="fa-solid fa-edit"></i></a></td>
+                                                <td style="min-width:200px"><?= $row['tax_description'] ?></td>
+                                                <td style="min-width:120px" class="text-end"><?= currency_format($tax_year['currency_code'], $row['money_amount']) ?></td>
+                                                <td style="min-width:300px"><?= $row['item_notes'] ?></td>
+                                                <?php $sum += $row['money_amount']; ?>
+                                            </tr>
+                                            <tr>
+                                            <?php endforeach; ?>
+                                            <?php if ('record' == $category && 0 > $sum) { $sum = 0.00; } ?>
+                                            <td colspan="2" class="text-end">TOTAL</td>
+                                            <td class="text-end"><?= currency_format($tax_year['currency_code'], $sum) ?></td>
+                                            <td></td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                    </tbody>
+                                </table>
+                            </div>
                             <a class="btn btn-outline-primary btn-sm" href="<?= base_url($session->locale . '/office/tax/record/edit/create/' . $tax_id_for_link) ?>"><i class="fa-solid fa-plus"></i> Add more record</a>
                         <?php endif; ?>
                     </div>
