@@ -1383,8 +1383,8 @@ class Health extends BaseController
             ];
             $id = $this->request->getPost('id');
             foreach ($fields as $field) {
-                $data[$field] = $this->request->getPost($field);
-                if (is_null($data[$field])) {
+                $data[$field] = htmlspecialchars($this->request->getPost($field));
+                if (empty($data[$field])) {
                     unset($data[$field]);
                 }
             }
@@ -1421,8 +1421,8 @@ class Health extends BaseController
             'event_location'
         ];
         foreach ($fields as $field) {
-            $data[$field] = $this->request->getPost($field);
-            if (is_null($data[$field])) {
+            $data[$field] = htmlspecialchars($this->request->getPost($field));
+            if (empty($data[$field])) {
                 unset($data[$field]);
             }
         }
@@ -1595,7 +1595,10 @@ class Health extends BaseController
             'note_what_suggested',
         ];
         foreach ($fields as $field) {
-            $data[$field] = $this->request->getPost($field);
+            $data[$field] = htmlspecialchars($this->request->getPost($field));
+            if (empty($data[$field])) {
+                unset($data[$field]);
+            }
         }
         if (0 < $id) {
             if ($ooca_model->update($id, $data)) {
