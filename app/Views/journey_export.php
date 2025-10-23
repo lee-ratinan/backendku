@@ -75,13 +75,13 @@ function print_hotel_time($datetime) {
                         <table class="table table-borderless mb-0 p-0">
                             <?php foreach ($data['transport'] as $transport) : ?>
                                 <tr>
-                                    <td rowspan="3" class="p-0">+&nbsp;</td>
+                                    <td rowspan="3" class="p-0" style="width:20px">+&nbsp;</td>
                                     <td colspan="2" class="p-0">
                                         OPER : <?= strtoupper($transport['operator_name']) ?>
                                         <?= ($transport['flight_number'] ? ' / ' . strtoupper($transport['flight_number']) : '') ?>
                                         <?= ($transport['pnr_number'] ? ' PNR : ' . strtoupper($transport['pnr_number']) : '') ?>
                                     </td>
-                                    <td class="p-0">
+                                    <td class="p-0" style="width:250px">
                                         STATUS &nbsp;: <?= ('as_planned' == $transport['journey_status'] ? 'CONFIRMED' : 'CANCELED') ?>
                                         <?php if (!empty($transport['google_drive_link'])) : ?>
                                             <a href="<?= $transport['google_drive_link'] ?>" target="_blank">[DL]</a>
@@ -129,12 +129,12 @@ function print_hotel_time($datetime) {
                         <table class="table table-borderless mb-0 p-0">
                             <?php foreach ($data['accommodation'] as $accommodation) : ?>
                                 <tr>
-                                    <td rowspan="3" class="p-0">+&nbsp;</td>
+                                    <td rowspan="3" class="p-0" style="width:20px">+&nbsp;</td>
                                     <td colspan="2" class="p-0">
                                         <?= strtoupper($accommodation['hotel_name']) ?><br>
                                         <?= $accommodation['hotel_address'] ? 'ADDR : ' . strtoupper($accommodation['hotel_address']) : '' ?>
                                     </td>
-                                    <td class="p-0">
+                                    <td class="p-0" style="width:250px">
                                         STATUS &nbsp;: <?= ('as_planned' == $accommodation['journey_status'] ? 'CONFIRMED' : 'CANCELED') ?>
                                         <?php if (!empty($accommodation['google_drive_link'])) : ?>
                                             <a href="<?= $accommodation['google_drive_link'] ?>" target="_blank">[DL]</a>
@@ -177,11 +177,11 @@ function print_hotel_time($datetime) {
                         <table class="table table-borderless mb-0 p-0">
                             <?php foreach ($data['attraction'] as $attraction) : ?>
                                 <tr>
-                                    <td rowspan="3" class="p-0">+&nbsp;</td>
+                                    <td rowspan="3" class="p-0" style="width:20px">+&nbsp;</td>
                                     <td class="p-0">
                                         <?= strtoupper($attraction['attraction_title']) ?>
                                     </td>
-                                    <td class="p-0">
+                                    <td class="p-0" style="width:250px">
                                         STATUS &nbsp;: <?= ('as_planned' == $attraction['journey_status'] ? 'CONFIRMED' : 'CANCELED') ?>
                                         <?php if (!empty($attraction['google_drive_link'])) : ?>
                                             <a href="<?= $attraction['google_drive_link'] ?>" target="_blank">[DL]</a>
