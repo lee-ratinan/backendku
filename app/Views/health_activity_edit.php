@@ -69,7 +69,7 @@ $this->extend($layout);
                             $record['price_amount']                 = 0;
                             $record['price_tip']                    = 0;
                         }
-                        if ('chastity-end' == $mode) {
+                        if ('chastity-end' == $mode || 'enlarge-end' == $mode) {
                             $start_time = '';
                             try {
                                 $start_time = new DateTime($prev['time_start_utc'], new DateTimeZone('UTC'));
@@ -145,7 +145,7 @@ $this->extend($layout);
                 append_calculation('Difference (min): ' + diff);
                 $('#duration_from_prev_ejac').val(diff);
             });
-            <?php elseif ('chastity-end' == $mode) : ?>
+            <?php elseif ('chastity-end' == $mode || 'enlarge-end' == $mode) : ?>
             required_fields = ['time_start_utc', 'time_end_utc', 'event_duration'];
             $('#record_type-block, #event_type-block, #journey_id-block, #duration_from_prev_ejac-block, #is_ejac-block, #header-spa-information, #spa_name-block, #spa_type-block, #currency_code-block, #price_amount-block, #price_tip-block').hide();
             $('#time_end_utc').change(function () {
@@ -156,14 +156,14 @@ $this->extend($layout);
                 append_calculation('Duration (min): ' + event_duration);
             });
             ////////////////////////////////////////////////////////////////////////////////////////////////////
-            <?php elseif ('chastity' == $record_type) : ?>
+            <?php elseif ('chastity' == $record_type || 'enlarge' == $record_type) : ?>
             required_fields = ['record_type', 'event_type', 'time_start_utc', 'event_timezone', 'is_ejac'];
             $('#time_end_utc, #event_duration, #duration_from_prev_ejac, #header-spa-information, #spa_name-block, #spa_type-block, #currency_code-block, #price_amount-block, #price_tip-block').hide();
             $('#is_ejac').val('N');
             $('#time_start_utc').change(function () {
                 $('#time_end_utc').val($(this).val());
             });
-            ////////////////////
+            ////////////////////////////////////////////////////////////////////////////////////////////////////
             <?php elseif ('spa' == $record_type) : ?>
             required_fields = ['record_type', 'event_type', 'time_start_utc', 'time_end_utc', 'event_timezone', 'event_duration', 'is_ejac', 'spa_name', 'spa_type', 'currency_code', 'price_amount', 'price_tip'];
             $('#event_type').change(function () {

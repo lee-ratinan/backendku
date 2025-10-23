@@ -1327,16 +1327,16 @@ class Health extends BaseController
             'price_amount'            => '0.0',
             'price_tip'               => '0.0'
         ];
-        if ('chastity' == $record_type) {
-            $open_ctt    = $model->where('record_type', 'chastity')->where('time_start_utc = time_end_utc')->where('event_duration = 0')->orderBy('id', 'DESC')->first();
-            if (!empty($open_ctt)) {
+        if ('chastity' == $record_type || 'enlarge' == $record_type) {
+            $open_rec    = $model->where('record_type', $record_type)->where('time_start_utc = time_end_utc')->where('event_duration = 0')->orderBy('id', 'DESC')->first();
+            if (!empty($open_rec)) {
                 $data        = [
-                    'page_title'    => 'Update Chastity',
-                    'mode'          => 'chastity-end',
+                    'page_title'    => 'Update ' . ('chastity' == $record_type ? 'Chastity' : 'Enlargement Record'),
+                    'mode'          => $record_type . '-end',
                     'slug_group'    => 'health',
                     'slug'          => '/office/health/activity',
                     'record'        => $record,
-                    'prev'          => $open_ctt,
+                    'prev'          => $open_rec,
                     'record_type'   => $record_type,
                     'user_session'  => $session->user,
                     'roles'         => $session->roles,
@@ -1373,7 +1373,7 @@ class Health extends BaseController
         $model   = new HealthActivityModel();
         $mode    = $this->request->getPost('mode');
         $data    = [];
-        if ('chastity-end' == $mode) {
+        if ('chastity-end' == $mode || 'enlarge-end' == $mode) {
             $fields  = [
                 'id',
                 'time_end_utc',

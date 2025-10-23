@@ -159,7 +159,8 @@ class HealthActivityModel extends Model
         return [
             'ejac'     => 'Ejaculation',
             'chastity' => 'Chastity',
-            'spa'      => 'Spa'
+            'spa'      => 'Spa',
+            'enlarge'  => 'Enlargement Tool'
         ];
     }
     /**
@@ -167,6 +168,10 @@ class HealthActivityModel extends Model
      */
     public function getRecordTypes(): array
     {
+        $enlarge_options = [];
+        for ($mm = 160; $mm <= 220; $mm += 5) {
+            $enlarge_options[$mm] = number_format($mm/10, 1, '.', '') . ' mm';
+        }
         return [
             'ejac'     => [
                 'jerk-off' => 'Ejaculation / Jerk-off',
@@ -183,9 +188,7 @@ class HealthActivityModel extends Model
                 'flat'            => 'Chastity / Trumpet (Flat) Cage',
                 'prison'          => 'Chastity / Prison Bird Cage',
             ],
-//            'enlarge'  => [
-//                'mm' => 'Enlargement / mm'
-//            ],
+            'enlarge'  => $enlarge_options,
             'spa'      => [
                 'hand-job' => 'Massage Spa / Hand Job',
                 'b2b'      => 'Massage Spa / Body-2-Body',
@@ -202,7 +205,6 @@ class HealthActivityModel extends Model
      * @param string $to
      * @param string $record_type
      * @param string $is_ejac
-     * @param string $event_location
      * @return void
      */
     private function applyFilter(string $search_value, string $from, string $to, string $record_type, string $is_ejac): void

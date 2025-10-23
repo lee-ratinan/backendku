@@ -45,15 +45,9 @@ $this->extend($layout);
                                     <?php foreach ($record_types as $category => $types) : ?>
                                         <optgroup label="<?= $record_cate[$category] ?>">
                                             <option value="<?= $category ?>:"><?= $record_cate[$category] ?> / *</option>
-                                            <?php if ('enlarge' == $category): ?>
-                                                <?php for ($l = 110; $l <= 180; $l += 5) : ?>
-                                                    <option value="<?= $category . ':' . $l ?>"><?= number_format($l/10, 1) ?>cm</option>
-                                                <?php endfor; ?>
-                                            <?php else: ?>
-                                                <?php foreach ($types as $type => $value) : ?>
-                                                    <option value="<?= $category . ':' . $type ?>"><?= $value ?></option>
-                                                <?php endforeach; ?>
-                                            <?php endif; ?>
+                                            <?php foreach ($types as $type => $value) : ?>
+                                                <option value="<?= $category . ':' . $type ?>"><?= $value ?></option>
+                                            <?php endforeach; ?>
                                     <?php endforeach; ?>
                                 </select>
                             </div>
