@@ -2036,20 +2036,22 @@ class Journey extends BaseController
 
     public function export(): string
     {
-        $journey_master    = new JourneyMasterModel();
-        $journey_transport = new JourneyTransportModel();
-        $journey_accom     = new JourneyAccommodationModel();
-        $journey_data      = [];
-        $journey_raw       = $journey_master->select('journey_master.*, entry_port.port_name AS entry_port_name, exit_port.port_name AS exit_port_name')
+        $journey_master     = new JourneyMasterModel();
+        $journey_transport  = new JourneyTransportModel();
+        $journey_accom      = new JourneyAccommodationModel();
+        $journey_attraction = new JourneyAttractionModel();
+        $journey_data       = [];
+        $journey_raw        = $journey_master->select('journey_master.*, entry_port.port_name AS entry_port_name, entry_port.port_code_1 AS entry_port_code, exit_port.port_name AS exit_port_name, exit_port.port_code_1 AS exit_port_code')
             ->join('journey_port AS entry_port', 'journey_master.entry_port_id = entry_port.id', 'left outer')
             ->join('journey_port AS exit_port',  'journey_master.exit_port_id = exit_port.id', 'left outer')
-            ->orderBy('id', 'asc')->findAll();
-        $transport_raw     = $journey_transport->select('journey_transport.*, journey_operator.operator_name, port_departure.port_name AS departure_port_name, port_arrival.port_name AS arrival_port_name')
+            ->orderBy('date_entry', 'asc')->findAll();
+        $transport_raw      = $journey_transport->select('journey_transport.*, journey_operator.operator_name, port_departure.port_name AS departure_port_name, port_departure.port_code_1 AS departure_port_code, port_arrival.port_name AS arrival_port_name, port_arrival.port_code_1 AS arrival_port_code')
             ->join('journey_operator', 'journey_transport.operator_id = journey_operator.id', 'left outer')
             ->join('journey_port AS port_departure', 'journey_transport.departure_port_id = port_departure.id', 'left outer')
             ->join('journey_port AS port_arrival',   'journey_transport.arrival_port_id = port_arrival.id', 'left outer')
-            ->orderBy('id', 'asc')->findAll();
-        $accom_raw         = $journey_accom->orderBy('id', 'asc')->findAll();
+            ->orderBy('departure_date_time', 'asc')->findAll();
+        $accom_raw          = $journey_accom->orderBy('check_in_date', 'asc')->findAll();
+        $attraction_raw     = $journey_attraction->orderBy('attraction_date', 'asc')->findAll();
         foreach ($journey_raw as $row) {
             $journey_data[$row['id']]['master'] = $row;
         }
@@ -2059,6 +2061,11 @@ class Journey extends BaseController
         foreach ($accom_raw as $row) {
             if (0 < $row['journey_id']) {
                 $journey_data[$row['journey_id']]['accommodation'][] = $row;
+            }
+        }
+        foreach ($attraction_raw as $row) {
+            if (0 < $row['journey_id']) {
+                $journey_data[$row['journey_id']]['attraction'][] = $row;
             }
         }
         $data = [
