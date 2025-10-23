@@ -48,12 +48,12 @@ function print_hotel_time($datetime) {
                 <td>
                     <table class="table table-borderless mb-0 p-0">
                         <tr>
-                            <td style="width:25%" class="p-0">
+                            <td style="width:20%" class="p-0">
                                 ENTRY : <?= strtoupper(date('d M Y', strtotime($data['master']['date_entry']))) ?><br>
                                 EXIT &nbsp;: <?= strtoupper(date('d M Y', strtotime($data['master']['date_exit']))) ?><br>
                                 DAYS &nbsp;: <?= number_format($data['master']['day_count']) ?>
                             </td>
-                            <td style="width:35%" class="p-0">
+                            <td style="width:40%" class="p-0">
                                 <?= $data['master']['entry_port_name'] ? $data['master']['entry_port_code'] . ' ' . strtoupper($data['master']['entry_port_name']) : '-' ?><br>
                                 <?= $data['master']['exit_port_name'] ?  $data['master']['exit_port_code']  . ' ' . strtoupper($data['master']['exit_port_name'])  : '-' ?><br>
                             </td>
@@ -89,12 +89,12 @@ function print_hotel_time($datetime) {
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td class="p-0" style="width:30%;">
+                                    <td class="p-0">
                                         DEP &nbsp;: <?= $transport['departure_port_code'] . ' ' . strtoupper($transport['departure_port_name']) ?><br>
                                         ARR &nbsp;: <?= $transport['arrival_port_code'] . ' ' . strtoupper($transport['arrival_port_name']) ?><br>
                                         DIST : <?= number_format($transport['distance_traveled']) ?>KM
                                     </td>
-                                    <td class="p-0" style="width:40%;">
+                                    <td class="p-0">
                                         <?php if ('Y' == $transport['is_time_known']) : ?>
                                             <?= date('d M Y h:i A', strtotime($transport['departure_date_time'])) ?> / <?= strtoupper($transport['departure_timezone']) ?><br>
                                             <?= date('d M Y h:i A', strtotime($transport['arrival_date_time'])) ?> / <?= strtoupper($transport['arrival_timezone']) ?><br>
@@ -130,7 +130,7 @@ function print_hotel_time($datetime) {
                             <?php foreach ($data['accommodation'] as $accommodation) : ?>
                                 <tr>
                                     <td rowspan="3" class="p-0">+&nbsp;</td>
-                                    <td colspan="2" class="p-0" style="width:70%">
+                                    <td colspan="2" class="p-0">
                                         <?= strtoupper($accommodation['hotel_name']) ?><br>
                                         <?= $accommodation['hotel_address'] ? 'ADDR : ' . strtoupper($accommodation['hotel_address']) : '' ?>
                                     </td>
@@ -189,7 +189,7 @@ function print_hotel_time($datetime) {
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td class="p-0" style="width:70%">
+                                    <td class="p-0">
                                         DATE : <?= date('d M Y', strtotime($attraction['attraction_date'])) ?><br>
                                         TYPE : <?= $attraction['attraction_type'] ? strtoupper($attraction['attraction_type']) : '-' ?>
                                     </td>
