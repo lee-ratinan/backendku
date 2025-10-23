@@ -1387,6 +1387,7 @@ class Health extends BaseController
                 if (empty($data[$field])) {
                     unset($data[$field]);
                 }
+                $data[$field] = str_replace("'", '’', $data[$field]);
             }
             try {
                 $model->update($id, $data);
@@ -1425,6 +1426,7 @@ class Health extends BaseController
             if (empty($data[$field])) {
                 unset($data[$field]);
             }
+            $data[$field] = str_replace("'", '’', $data[$field]);
         }
         try {
             $inserted_id = $model->insert($data);
@@ -1595,10 +1597,11 @@ class Health extends BaseController
             'note_what_suggested',
         ];
         foreach ($fields as $field) {
-            $data[$field] = htmlspecialchars($this->request->getPost($field));
+            $data[$field] = $this->request->getPost($field);
             if (empty($data[$field])) {
                 unset($data[$field]);
             }
+            $data[$field] = str_replace("'", '’', $data[$field]);
         }
         if (0 < $id) {
             if ($ooca_model->update($id, $data)) {
