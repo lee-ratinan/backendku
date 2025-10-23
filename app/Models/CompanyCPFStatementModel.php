@@ -24,11 +24,12 @@ class CompanyCPFStatementModel extends Model
 
     private array $configurations = [
         'statement_year'   => [
-            'type'        => 'text',
+            'type'        => 'select',
             'label'       => 'Year',
             'required'    => true,
             'maxlength'   => 4,
-            'placeholder' => '2020'
+            'placeholder' => '2020',
+            'options'     => []
         ],
         'google_drive_url' => [
             'type'        => 'url',
@@ -44,6 +45,15 @@ class CompanyCPFStatementModel extends Model
      */
     public function getConfiguration(string $key = null): array
     {
-        return $key ? $this->configurations[$key] : $this->configurations;
+        $year_options = [];
+        for ($year = date('Y')-2; $year <= date('Y'); $year++) {
+            $year_options["{$year}"] = $year;
+        }
+        $configurations = $this->configurations;
+        $configurations['statement_year']['options'] = $year_options;
+        if (!is_null($key) && array_key_exists($key, $configurations)) {
+            return $configurations[$key];
+        }
+        return $configurations;
     }
 }

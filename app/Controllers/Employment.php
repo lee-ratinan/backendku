@@ -832,6 +832,41 @@ class Employment extends BaseController
     }
 
     /**
+     * Save CPF Statement
+     * @return ResponseInterface
+     * @throws ReflectionException
+     */
+    public function cpfStatementSave(): ResponseInterface
+    {
+        $cpf_model = new CompanyCPFStatementModel();
+        $log_model = new LogActivityModel();
+        $session   = session();
+        $data      = [];
+        $fields    = [
+            'statement_year',
+            'google_drive_url'
+        ];
+        foreach ($fields as $field) {
+            $value        = $this->request->getPost($field);
+            $data[$field] = (!empty($value)) ? $value : null;
+        }
+        $data['created_by'] = $session->user_id;
+        // INSERT
+        if ($id = $cpf_model->insert($data)) {
+            $log_model->insertTableUpdate('company_cpf_statement', $id, $data, $session->user_id);
+            return $this->response->setJSON([
+                'status'   => 'success',
+                'toast'    => 'Successfully created new CPF record.',
+                'redirect' => base_url($session->locale . '/office/employment/cpf/statement/')
+            ]);
+        }
+        return $this->response->setJSON([
+            'status'  => 'error',
+            'toast'   => lang('System.status_message.generic_error')
+        ])->setStatusCode(HTTP_STATUS_SOMETHING_WRONG);
+    }
+
+    /**
      * @return string
      */
     public function cpfNow(): string
