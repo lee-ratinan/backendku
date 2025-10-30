@@ -501,7 +501,8 @@ class Employment extends BaseController
         $max_base_h     = [];
         $chart_data_2   = [];
         ksort($salary_by_year);
-        for ($y = 2010; $y <= date('Y'); $y++) {
+        $start_year     = ('SGD' == $currency_code ? 2015 : 2010);
+        for ($y = $start_year; $y <= date('Y'); $y++) {
             if (isset($base_amounts[$y])) {
                 $max_base       = max($base_amounts[$y]);
                 $chart_data[]   = [
