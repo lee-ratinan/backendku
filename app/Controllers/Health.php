@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\HealthActivityModel;
+use App\Models\HealthMBTIModel;
 use App\Models\JourneyHolidayModel;
 use App\Models\LogActivityModel;
 use App\Models\OocaLogModel;
@@ -1477,13 +1478,16 @@ class Health extends BaseController
     public function mbti(): string
     {
         $session = session();
+        $model   = new HealthMbtiModel();
+        $recs    = $model->findAll();
         $data    = [
             'page_title'   => 'MBTI',
             'slug_group'   => 'health-forms',
             'slug'         => '/office/health/mbti',
             'user_session' => $session->user,
             'roles'        => $session->roles,
-            'current_role' => $session->current_role
+            'current_role' => $session->current_role,
+            'records'      => $recs
         ];
         return view('health_mbti', $data);
     }
