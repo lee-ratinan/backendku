@@ -150,6 +150,9 @@ $this->extend($layout);
                     success: function(response) {
                         $('#login-form').slideUp();
                         if ('success' === response.status) {
+                            if ('skip' === response.otp) {
+                                window.location.href = response.dashboard;
+                            }
                             $('#otp-form').slideDown();
                             $('#btn-resend-otp').prop('disabled', true);
                             $('#otp').focus();

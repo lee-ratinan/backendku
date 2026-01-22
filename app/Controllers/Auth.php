@@ -240,12 +240,25 @@ class Auth extends BaseController
         try {
             $this->generateLoginOTP();
         } catch (ReflectionException|RandomException|ClientExceptionInterface $e) {
-            // Do nothing, get the user to send again if failed.
+            $role_master_model  = new RoleMasterModel();
+            $permitted_features = $role_master_model->retrieveAccessRightsByRole($session->current_role);
+            $session->set(['logged_in' => true]);
+            $session->set(['permitted_features' => $permitted_features]);
+            $log_model = new LogActivityModel();
+            $log_model->insertLogin($session->user_id, 'success', $session->current_role);
+            return $this->response->setJSON([
+                'status'    => 'success',
+                'message'   => 'successfully-logged-in-now-otp',
+                'toast'     => lang('Auth.login.otp.heading'),
+                'otp'       => 'skip',
+                'dashboard' => base_url($session->locale . '/office/dashboard')
+            ]);
         }
         return $this->response->setJSON([
             'status'  => 'success',
             'message' => 'successfully-logged-in-now-otp',
-            'toast'   => lang('Auth.login.otp.heading')
+            'toast'   => lang('Auth.login.otp.heading'),
+            'otp'     => 'perform'
         ]);
     }
 
