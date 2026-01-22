@@ -353,7 +353,6 @@
     </div>
 </div>
 <script src="<?= base_url('appstack/js/app.js') ?>"></script>
-<script src="<?= base_url('assets/vendor/tinymce/tinymce.min.js') ?>"></script>
 <script src="<?= base_url('assets/vendor/toastrjs/toastr.min.js') ?>"></script>
 <script src="<?= base_url('assets/vendor/Luxon/luxon.min.js') ?>"></script>
 <script src="<?= base_url('assets/vendor/DataTables/datatables.min.js') ?>"></script>
