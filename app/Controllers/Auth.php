@@ -237,29 +237,30 @@ class Auth extends BaseController
                 'toast'      => lang('Auth.login.expired_password.subheading')
             ]);
         }
-        try {
-            $this->generateLoginOTP();
-        } catch (ReflectionException|RandomException|ClientExceptionInterface $e) {
-            $role_master_model  = new RoleMasterModel();
-            $permitted_features = $role_master_model->retrieveAccessRightsByRole($session->current_role);
-            $session->set(['logged_in' => true]);
-            $session->set(['permitted_features' => $permitted_features]);
-            $log_model = new LogActivityModel();
-            $log_model->insertLogin($session->user_id, 'success', $session->current_role);
-            return $this->response->setJSON([
-                'status'    => 'success',
-                'message'   => 'successfully-logged-in-now-otp',
-                'toast'     => lang('Auth.login.otp.heading'),
-                'otp'       => 'skip',
-                'dashboard' => base_url($session->locale . '/office/dashboard')
-            ]);
-        }
+        $role_master_model  = new RoleMasterModel();
+        $permitted_features = $role_master_model->retrieveAccessRightsByRole($session->current_role);
+        $session->set(['logged_in' => true]);
+        $session->set(['permitted_features' => $permitted_features]);
+        $log_model = new LogActivityModel();
+        $log_model->insertLogin($session->user_id, 'success', $session->current_role);
         return $this->response->setJSON([
-            'status'  => 'success',
-            'message' => 'successfully-logged-in-now-otp',
-            'toast'   => lang('Auth.login.otp.heading'),
-            'otp'     => 'perform'
+            'status'    => 'success',
+            'message'   => 'successfully-logged-in-now-otp',
+            'toast'     => lang('Auth.login.otp.heading'),
+            'otp'       => 'skip',
+            'dashboard' => base_url($session->locale . '/office/dashboard')
         ]);
+//        try {
+//            $this->generateLoginOTP();
+//        } catch (ReflectionException|RandomException|ClientExceptionInterface $e) {
+//
+//        }
+//        return $this->response->setJSON([
+//            'status'  => 'success',
+//            'message' => 'successfully-logged-in-now-otp',
+//            'toast'   => lang('Auth.login.otp.heading'),
+//            'otp'     => 'perform'
+//        ]);
     }
 
     /**
