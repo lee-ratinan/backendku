@@ -32,16 +32,20 @@ $this->extend($layout);
                             <tbody>
                             <?php for ($year = date('Y'); $year >= 1989; $year--) : ?>
                                 <tr>
-                                    <?php $count = count($visited_countries_by_year[$year]); ?>
+                                    <?php $count = count($visited_countries_by_year[$year]??[]); ?>
                                     <td><h6><?= $year ?></h6></td>
                                     <td class="text-center"><h6><?= $count ?></h6></td>
                                     <td>
-                                        <?php ksort($visited_countries_by_year[$year]) ?>
+                                        <?php if (isset($visited_countries_by_year[$year])) : ?>
+                                        <?php ksort($visited_countries_by_year[$year]); ?>
                                         <h5>
                                             <?php foreach ($visited_countries_by_year[$year] as $country_code => $dummy) : ?>
                                                 <span class="badge text-bg-<?= in_array($country_code, $countries_considered_home) ? 'warning' : 'primary' ?> rounded-pill"><span class="flag-icon flag-icon-<?= strtolower($country_code) ?>"></span> <?= $country_code ?></span>
                                             <?php endforeach; ?>
                                         </h5>
+                                        <?php else : ?>
+                                        -
+                                        <?php endif; ?>
                                     </td>
                                 </tr>
                             <?php endfor; ?>

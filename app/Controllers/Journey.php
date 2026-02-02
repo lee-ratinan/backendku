@@ -466,7 +466,8 @@ class Journey extends BaseController
             $departure  = $port_model->find($departure_port_id);
             $arrival    = $port_model->find($arrival_port_id);
             $data['distance_traveled'] = calculateDistance($departure['location_latitude'], $departure['location_longitude'], $arrival['location_latitude'], $arrival['location_longitude']);
-            $data['is_domestic'] = ($departure['country_code'] == $arrival['country_code'] ? 'D' : 'I');
+            $data['haul_type']         = calculateHaul($data['distance_traveled']);
+            $data['is_domestic']       = ($departure['country_code'] == $arrival['country_code'] ? 'D' : 'I');
         }
         $flight_number = $this->request->getPost('flight_number');
         $pnr_number    = $this->request->getPost('pnr_number');
@@ -594,6 +595,12 @@ class Journey extends BaseController
         $generic_stats       = [];
         $distant_by_year     = []; // only flights
         $distant_by_year_sum = []; // only flights
+        $haul_types          = [
+            'S' => 0,
+            'M' => 0,
+            'L' => 0,
+            'U' => 0
+        ]; // only flights
         foreach ($raw_data as $row) {
             $year = substr($row['departure_date_time'], 0, 4);
             // Generic
@@ -603,6 +610,7 @@ class Journey extends BaseController
             if ('airplane' == $row['mode_of_transport']) {
                 $distant_by_year[$year][] = $row['distance_traveled'];
                 $distant_by_year_sum[$year] = (isset($distant_by_year_sum[$year]) ? $distant_by_year_sum[$year] + $row['distance_traveled'] : $row['distance_traveled']);
+                $haul_types[$row['haul_type']] += 1;
             }
         }
         $data = [
@@ -619,6 +627,7 @@ class Journey extends BaseController
             'distant_by_year'     => $distant_by_year,
             'distant_by_year_sum' => $distant_by_year_sum,
             'distant_by_year_max' => max($distant_by_year_sum),
+            'haul_types'          => $haul_types,
         ];
         return view('journey_transport_statistics', $data);
     }

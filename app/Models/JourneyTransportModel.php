@@ -23,6 +23,7 @@ class JourneyTransportModel extends Model
         'is_time_known',
         'trip_duration',
         'distance_traveled',
+        'haul_type',
         'mode_of_transport',
         'is_domestic',
         'craft_type',
@@ -381,6 +382,12 @@ class JourneyTransportModel extends Model
                 $departure_time = date(DATE_FORMAT_UI, strtotime($row['departure_date_time']));
                 $arrival_time   = date(DATE_FORMAT_UI, strtotime($row['arrival_date_time']));
             }
+            $haul_types    = [
+                'S' => '<span class="badge bg-danger">SHORT</span>',
+                'M' => '<span class="badge bg-warning">MEDIUM</span>',
+                'L' => '<span class="badge bg-success">LONG</span>',
+                'U' => '<span class="badge bg-primary">ULTRA-LONG</span>'
+            ];
             $result[]      = [
                 '<a class="btn btn-outline-primary btn-sm" href="' . base_url($locale . '/office/journey/transport/edit/' . $new_id) . '"><i class="fa-solid fa-edit"></i></a>',
                 $row['id'],
@@ -393,7 +400,7 @@ class JourneyTransportModel extends Model
                 '<span class="flag-icon flag-icon-' . strtolower($row['arrival_country_code']) . '"></span> ' . (empty($row['arrival_port_code']) ? '' : '<h4 class="mb-0 d-inline-block">' . $row['arrival_port_code'] . '</h4><br>') . '<b>' . $row['arrival_port_name'] . '</b>',
                 ($is_domestic[$row['is_domestic']] ?? ''),
                 empty($row['trip_duration']) ? '-' : $this->printMinutes($row['trip_duration']),
-                empty($row['distance_traveled']) ? '-' : number_format($row['distance_traveled']) . ' km',
+                empty($row['distance_traveled']) ? '-' : number_format($row['distance_traveled']) . ' km<br>' . @$haul_types[$row['haul_type']],
                 (empty($row['price_amount']) ? '-' : currency_format($row['price_currency_code'], $row['price_amount'])) .
                 (empty($row['charged_amount']) ? '' : '<br><span class="badge badge-success"><i class="fa-regular fa-credit-card"></i></span>' . currency_format($row['charged_currency_code'], $row['charged_amount'])),
                 $journey_details,

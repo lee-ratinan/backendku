@@ -26,6 +26,27 @@ function calculateDistance(float $lat1, float $lon1, float $lat2, float $lon2, i
 }
 
 /**
+ * @param float|int $distance
+ * @return string
+ */
+function calculateHaul(float|int $distance): string
+{
+    if (!is_int($distance)) {
+        $distance = intval($distance);
+    }
+    if (1 > $distance) {
+        return '';
+    } else if (1500 > $distance) {
+        return 'S'; // Short
+    } else if (4000 > $distance) {
+        return 'M'; // Medium
+    } else if (9000 > $distance) {
+        return 'L'; // Long
+    }
+    return 'U'; // Ultra-Long
+}
+
+/**
  * Generate 6-digit unique identifier using Crockford’s Alphabet
  * @return string
  */

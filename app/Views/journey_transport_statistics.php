@@ -85,11 +85,57 @@ helper('math');
                                 <?= number_format($total['distant']) ?> km |
                                 <?= number_format(kmToMiles($total['distant'])) ?> mi
                             </div>
-                            <div class="col-12">
-                                <h6>I TRAVELED</h6>
-                                <h6 class="display-1"><?= number_format($total['distant']/40075, 2) ?></h6>
-                                <h6>ROUND THE GLOBE</h6>
-                                <h6><b><?= number_format($generic_stats['distant_by_mode']['airplane']/40075, 2) ?></b> on the plane</h6>
+                            <?php
+                            $equator = 40075;
+                            $moon    = 384400;
+                            $percent_to_moon = $generic_stats['distant_by_mode']['airplane'] / $moon * 100;
+                            $haul_values     = [
+                                'S' => 'danger',
+                                'M' => 'warning',
+                                'L' => 'success',
+                                'U' => 'primary'
+                            ];
+                            ?>
+                            <div class="col-12 mt-5">
+                                <h3><i class="fa-solid fa-earth-asia"></i> The Equator Club</h3>
+                                <p>
+                                    I circled <b class="display-6"><?= number_format($generic_stats['distant_by_mode']['airplane']/$equator, 2) ?></b> times around the globe.<br>
+                                    Or <b><?= number_format($total['distant']/$equator, 2) ?></b> around the globe when covered all modes of transport.
+                                </p>
+                            </div>
+                            <div class="col-12 mt-5">
+                                <h3><i class="fa-solid fa-moon"></i> The Moon Mission</h3>
+                                <?php if ($generic_stats['distant_by_mode']['airplane'] < $moon) : ?>
+                                    <p>My flight to the moon is <b class="display-6"><?= number_format($percent_to_moon, 2) ?>%</b> completed!<br></p>
+                                    <div class="progress-stacked">
+                                        <div class="progress" role="progressbar" aria-label="moon"
+                                             aria-valuenow="<?= round($percent_to_moon) ?>" aria-valuemin="0"
+                                             aria-valuemax="100" style="width: <?= round($percent_to_moon) ?>%">
+                                            <div class="progress-bar bg-gold"></div>
+                                        </div>
+                                    </div>
+                                <?php else: ?>
+                                    <p>I have reached the moon <b class="display-6"><?= number_format($generic_stats['distant_by_mode']['airplane'] / $moon, 2) ?></b> times.</p>
+                                <?php endif; ?>
+                            </div>
+                            <div class="col-12 mt-5">
+                                <h3><i class="fa-solid fa-gauge"></i> Haul Types</h3>
+                                <p>
+                                    Short: <?= $haul_types['S'] ?> |
+                                    Medium: <?= $haul_types['L'] ?> |
+                                    Long: <?= $haul_types['L'] ?> |
+                                    Ultra-Long: <?= $haul_types['U'] ?>
+                                </p>
+                                <div class="progress-stacked">
+                                    <?php foreach ($haul_values as $key => $color_class): ?>
+                                        <?php $haul_length = number_format($haul_types[$key]/$generic_stats['count_by_mode']['airplane']*100, 2); ?>
+                                        <div class="progress" role="progressbar" aria-label="haul-short"
+                                             aria-valuenow="<?= $haul_length ?>" aria-valuemin="0"
+                                             aria-valuemax="100" style="width: <?= $haul_length ?>%">
+                                            <div class="progress-bar bg-<?= $color_class ?>"><?= $haul_types[$key] ?></div>
+                                        </div>
+                                    <?php endforeach; ?>
+                                </div>
                             </div>
                         </div>
                     </div>
