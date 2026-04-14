@@ -64,11 +64,11 @@ $this->extend($layout);
                                 <?php foreach ($salary_by_year as $year => $salary) : ?>
                                 <tr>
                                     <td><?= $year ?></td>
-                                    <td class="text-end"><?= currency_format($currency_code, $max_bases[$year]) ?></td>
-                                    <td class="text-end"><?= currency_format($currency_code, $max_base_d[$year]) ?></td>
-                                    <td class="text-end"><?= currency_format($currency_code, $max_base_h[$year]) ?></td>
-                                    <td class="text-end"><?= currency_format($currency_code, $salary['subtotal']) ?></td>
-                                    <td class="text-end"><?= currency_format($currency_code, $salary['total']) ?></td>
+                                    <td class="text-end"><?= currency_format($currency_code, @$max_bases[$year]) ?></td>
+                                    <td class="text-end"><?= currency_format($currency_code, @$max_base_d[$year]) ?></td>
+                                    <td class="text-end"><?= currency_format($currency_code, @$max_base_h[$year]) ?></td>
+                                    <td class="text-end"><?= currency_format($currency_code, @$salary['subtotal']) ?></td>
+                                    <td class="text-end"><?= currency_format($currency_code, @$salary['total']) ?></td>
                                 </tr>
                                 <?php endforeach; ?>
                                 </tbody>
