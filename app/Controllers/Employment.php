@@ -491,7 +491,7 @@ class Employment extends BaseController
         $base_amounts   = [];
         foreach ($salary_records as $salary_record) {
             $year                              = substr($salary_record['tax_year'], 0, 4);
-            $base_amounts[$year][]             = $salary_record['base_amount'];
+            $base_amounts[$year][]             = $salary_record['base_amount'] ?? 0.0;
             $salary_by_year[$year]['subtotal'] = (isset($salary_by_year[$year]['subtotal']) ? $salary_by_year[$year]['subtotal'] += $salary_record['subtotal_amount'] : $salary_record['subtotal_amount']);
             $salary_by_year[$year]['total']    = (isset($salary_by_year[$year]['total'])    ? $salary_by_year[$year]['total']    += $salary_record['total_amount']    : $salary_record['total_amount']);
         }
