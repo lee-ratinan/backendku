@@ -158,6 +158,7 @@ $routes->group('{locale}/office', ['filter' => 'auth'], static function ($routes
     /// SHAVIAN
     /////////////////////////////////////////////////////////////////////////////
     $routes->get('shavian', 'Shavian::index');
+    $routes->get('shavian-ipa', 'Shavian::toIpa');
     $routes->post('shavian', 'Shavian::ajaxTranslator');
     // FICTION
 //    $routes->get('fiction', 'Fiction::index'); // done
