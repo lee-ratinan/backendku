@@ -345,7 +345,7 @@ class CompanySalaryModel extends Model
             $new_id       = $row['id'] * self::ID_NONCE;
             $result[]     = [
                 '<a class="btn btn-outline-primary btn-sm" href="' . base_url($locale . '/office/employment/salary/edit/' . $new_id) . '"><i class="fa-solid fa-edit"></i></a>',
-                (empty($row['google_drive_link']) ? '' : '<a class="btn btn-sm btn-outline-primary" href="' . $row['google_drive_link'] . '" target="_blank"><i class="fa-solid fa-file-pdf"></i></a>'),
+                (empty($row['google_drive_link'] || '#' == $row['google_drive_link']) ? '' : '<a class="btn btn-sm btn-outline-primary" href="' . $row['google_drive_link'] . '" target="_blank"><i class="fa-solid fa-file-pdf"></i></a>'),
                 ('US' == $row['tax_country_code'] ? date(DATE_FORMAT_UI, strtotime($row['pay_date'])) : date(MONTH_FORMAT_UI, strtotime($row['pay_date']))),
                 $row['company_trade_name'],
                 $row['tax_year'],
