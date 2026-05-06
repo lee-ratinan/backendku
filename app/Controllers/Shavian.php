@@ -29,6 +29,16 @@ class Shavian extends BaseController
         return view('shavian-ipa', $data);
     }
 
+    public function keyboard(): string
+    {
+        $data = [
+            'page_title' => '𐑖𐑱𐑝𐑾𐑯 𐑒𐑰𐑚𐑹𐑛',
+            'slug_group' => 'shavian',
+            'slug'       => '/office/shavian-keyboard',
+        ];
+        return view('shavian-keyboard', $data);
+    }
+
     public function ajaxTranslator(): ResponseInterface
     {
         helper('math');

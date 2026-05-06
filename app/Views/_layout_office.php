@@ -163,8 +163,9 @@
                                 'id' => 'shavian',
                                 'group' => '<i class="fa-solid fa-language fa-fw"></i> 𐑖𐑱𐑝𐑾𐑯',
                                 'items' => [
-                                    '/office/shavian'     => '𐑖𐑱𐑝𐑾𐑯',
-                                    '/office/shavian-ipa' => '𐑖𐑱𐑝𐑾𐑯-IPA'
+                                    '/office/shavian'          => '𐑖𐑱𐑝𐑾𐑯',
+                                    '/office/shavian-ipa'      => '𐑖𐑱𐑝𐑾𐑯-IPA',
+                                    '/office/shavian-keyboard' => '𐑖𐑱𐑝𐑾𐑯 𐑒𐑰𐑚𐑹𐑛'
                                 ]
                             ]
                         ]
