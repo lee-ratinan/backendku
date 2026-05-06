@@ -155,6 +155,10 @@ $routes->group('{locale}/office', ['filter' => 'auth'], static function ($routes
     $routes->post('tax/projection', 'Tax::projectionAjax');
     $routes->get('tax/comparison', 'Tax::comparison');
     /////////////////////////////////////////////////////////////////////////////
+    /// SHAVIAN
+    /////////////////////////////////////////////////////////////////////////////
+    $routes->get('shavian', 'Shavian::index');
+    $routes->post('shavian', 'Shavian::ajaxTranslator');
     // FICTION
 //    $routes->get('fiction', 'Fiction::index'); // done
 //    $routes->get('fiction/create', 'Fiction::edit/new');

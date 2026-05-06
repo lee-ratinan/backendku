@@ -156,6 +156,18 @@
                             ]
                         ]
                     ],
+                    [
+                        'header' => '𐑖𐑱𐑝𐑾𐑯',
+                        'menu'   => [
+                            [
+                                'id' => 'shavian',
+                                'group' => '<i class="fa-solid fa-language fa-fw"></i> 𐑖𐑱𐑝𐑾𐑯',
+                                'items' => [
+                                    '/office/shavian' => '𐑖𐑱𐑝𐑾𐑯'
+                                ]
+                            ]
+                        ]
+                    ],
 //                    [
 //                        'header' => 'Fiction',
 //                        'menu'   => [
