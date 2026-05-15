@@ -1,0 +1,156 @@
+<?php
+$layout = getenv('LAYOUT_FILE_OFFICE');
+$layout = (!empty($layout) ? $layout : 'system/_layout_office');
+$this->extend($layout);
+?>
+<?= $this->section('content') ?>
+<?php $session = session(); ?>
+<!--    <script src="--><?php //= base_url('assets/vendor/amcharts5/index.js') ?><!--"></script>-->
+<!--    <script src="--><?php //= base_url('assets/vendor/amcharts5/xy.js') ?><!--"></script>-->
+<!--    <script src="--><?php //= base_url('assets/vendor/amcharts5/percent.js') ?><!--"></script>-->
+<!--    <script src="--><?php //= base_url('assets/vendor/amcharts5/themes/Animated.js') ?><!--"></script>-->
+    <div class="pagetitle">
+        <h1><?= $page_title ?></h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="<?= base_url($session->locale . '/office/dashboard') ?>"><?= lang('System.dashboard.page_title') ?></a></li>
+                <li class="breadcrumb-item"><a href="<?= base_url($session->locale . '/office/employment/cpf') ?>">CPF</a></li>
+                <li class="breadcrumb-item active"><?= $page_title ?></li>
+            </ol>
+        </nav>
+    </div>
+    <section class="section">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body pt-3">
+                        <h5 class="card-title"><i class="fa-solid fa-piggy-bank fa-fw me-3"></i> <?= $page_title ?></h5>
+                        <p class="small">To search for transactions happened in 2025, search "D2025". To search for the contribution month of 2025, search "Y2025".</p>
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover">
+                                <thead>
+                                <tr>
+                                    <th rowspan="2">Date</th>
+                                    <th rowspan="2">Company</th>
+                                    <th rowspan="2">For</th>
+                                    <th colspan="2">Staff Contribution</th>
+                                    <th colspan="2">Company Match</th>
+                                    <th colspan="2">Total</th>
+                                </tr>
+                                <tr>
+                                    <th>Amount</th>
+                                    <th>YTD</th>
+                                    <th>Amount</th>
+                                    <th>YTD</th>
+                                    <th>Amount</th>
+                                    <th>YTD</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <?php $total_ytd = 0.0; ?>
+                                <?php foreach ($contributions as $row): ?>
+                                    <?php
+                                    $total_ytd += @$row['transaction_amount'];
+                                    if ($row['staff_contribution'] == $row['staff_ytd']) {
+                                        $total_ytd = @$row['transaction_amount'];
+                                    }
+                                    ?>
+                                    <tr>
+                                        <td data-filter="D<?= substr($row['transaction_date'], 0, 4) ?>" data-sort="<?= $row['transaction_date'] ?>"><?= date(DATE_FORMAT_UI, strtotime($row['transaction_date'] )) ?></td>
+                                        <td><?= $companies[$row['company_id']] ?></td>
+                                        <td data-filter="Y<?= substr($row['contribution_month'], 0, 4) ?>" data-sort="<?= $row['contribution_month'] ?>"><?= date(MONTH_FORMAT_UI, strtotime($row['contribution_month'] . '-01')) ?></td>
+                                        <td class="text-end" data-sort="<?= $row['staff_contribution'] ?>"><?= currency_format('SGD', @$row['staff_contribution']) ?></td>
+                                        <td class="text-end" data-sort="<?= $row['staff_ytd'] ?>"><?= currency_format('SGD', @$row['staff_ytd']) ?></td>
+                                        <td class="text-end" data-sort="<?= $row['company_match'] ?>"><?= currency_format('SGD', @$row['company_match']) ?></td>
+                                        <td class="text-end" data-sort="<?= $row['company_ytd'] ?>"><?= currency_format('SGD', @$row['company_ytd']) ?></td>
+                                        <td class="text-end" data-sort="<?= $row['transaction_amount'] ?>"><?= currency_format('SGD', @$row['transaction_amount']) ?></td>
+                                        <td class="text-end" data-sort="<?= $total_ytd ?>"><?= currency_format('SGD', $total_ytd) ?></td>
+                                    </tr>
+                                <?php endforeach; ?>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 col-md-6">
+                                <h3>By Company</h3>
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-hover">
+                                        <thead>
+                                        <tr>
+                                            <th rowspan="2">Company</th>
+                                            <th colspan="2">Contribution</th>
+                                            <th colspan="2">Match</th>
+                                            <th rowspan="2"># Records</th>
+                                        </tr>
+                                        <tr>
+                                            <th>Total</th>
+                                            <th>Average</th>
+                                            <th>Total</th>
+                                            <th>Average</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <?php foreach ($company_ids as $company_id): ?>
+                                        <tr>
+                                            <td><?= $companies[$company_id] ?></td>
+                                            <td class="text-end" data-sort="<?= $sum_staff_contribution_by_company[$company_id] ?>"><?= currency_format('SGD', $sum_staff_contribution_by_company[$company_id]) ?></td>
+                                            <td class="text-end" data-sort="<?= $avg_staff_contribution_by_company[$company_id] ?>"><?= currency_format('SGD', $avg_staff_contribution_by_company[$company_id]) ?></td>
+                                            <td class="text-end" data-sort="<?= $sum_company_match_by_company[$company_id] ?>"><?= currency_format('SGD', $sum_company_match_by_company[$company_id]) ?></td>
+                                            <td class="text-end" data-sort="<?= $avg_company_match_by_company[$company_id] ?>"><?= currency_format('SGD', $avg_company_match_by_company[$company_id]) ?></td>
+                                            <td class="text-end"><?= $count_records_by_company[$company_id] ?></td>
+                                        </tr>
+                                        <?php endforeach; ?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <h3>By Contribution Year (not by transaction date)</h3>
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-hover">
+                                        <thead>
+                                        <tr>
+                                            <th rowspan="2">Year</th>
+                                            <th colspan="2">Contribution</th>
+                                            <th colspan="2">Match</th>
+                                            <th rowspan="2"># Records</th>
+                                        </tr>
+                                        <tr>
+                                            <th>Total</th>
+                                            <th>Average</th>
+                                            <th>Total</th>
+                                            <th>Average</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <?php foreach ($con_years as $con_year): ?>
+                                            <tr>
+                                                <td><?= $con_year ?></td>
+                                                <td class="text-end" data-sort="<?= $sum_staff_contribution_by_year[$con_year] ?>"><?= currency_format('SGD', $sum_staff_contribution_by_year[$con_year]) ?></td>
+                                                <td class="text-end" data-sort="<?= $avg_staff_contribution_by_year[$con_year] ?>"><?= currency_format('SGD', $avg_staff_contribution_by_year[$con_year]) ?></td>
+                                                <td class="text-end" data-sort="<?= $sum_company_match_by_year[$con_year] ?>"><?= currency_format('SGD', $sum_company_match_by_year[$con_year]) ?></td>
+                                                <td class="text-end" data-sort="<?= $avg_company_match_by_year[$con_year] ?>"><?= currency_format('SGD', $avg_company_match_by_year[$con_year]) ?></td>
+                                                <td class="text-end"><?= $count_records_by_year[$con_year] ?></td>
+                                            </tr>
+                                        <?php endforeach; ?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <pre>
+                            <?php
+
+                            ?>
+                        </pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            $('table').DataTable();
+        });
+    </script>
+<?php $this->endSection() ?>

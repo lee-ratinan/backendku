@@ -277,11 +277,11 @@ function number_format_india(float $number): string
 }
 
 /**
- * @param string $currency
+ * @param string $currency_code
  * @param float $amount
  * @return string
  */
-function currency_format(string $currency_code, float $amount): string
+function currency_format(string $currency_code, float|null $amount = 0.0): string
 {
     $currency_format = [
         // Americas
