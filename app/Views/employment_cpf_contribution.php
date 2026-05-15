@@ -74,6 +74,11 @@ $this->extend($layout);
                             <div class="col-12 col-md-6">
                                 <h3>By Company</h3>
                                 <div class="table-responsive">
+                                    <?php
+                                    $total_staff   = array_sum($sum_staff_contribution_by_company);
+                                    $total_company = array_sum($sum_company_match_by_company);
+                                    $total_count   = array_sum($count_records_by_company);
+                                    ?>
                                     <table class="table table-striped table-hover">
                                         <thead>
                                         <tr>
@@ -101,12 +106,27 @@ $this->extend($layout);
                                         </tr>
                                         <?php endforeach; ?>
                                         </tbody>
+                                        <tfoot>
+                                        <tr>
+                                            <td></td>
+                                            <td class="text-end"><?= currency_format('SGD', $total_staff) ?></td>
+                                            <td></td>
+                                            <td class="text-end"><?= currency_format('SGD', $total_company) ?></td>
+                                            <td></td>
+                                            <td class="text-end"><?= $total_count ?></td>
+                                        </tr>
+                                        </tfoot>
                                     </table>
                                 </div>
                             </div>
                             <div class="col-12 col-md-6">
                                 <h3>By Contribution Year (not by transaction date)</h3>
                                 <div class="table-responsive">
+                                    <?php
+                                    $total_staff   = array_sum($sum_staff_contribution_by_year);
+                                    $total_company = array_sum($sum_company_match_by_year);
+                                    $total_count   = array_sum($count_records_by_year);
+                                    ?>
                                     <table class="table table-striped table-hover">
                                         <thead>
                                         <tr>
@@ -134,6 +154,16 @@ $this->extend($layout);
                                             </tr>
                                         <?php endforeach; ?>
                                         </tbody>
+                                        <tfoot>
+                                        <tr>
+                                            <td></td>
+                                            <td class="text-end"><?= currency_format('SGD', $total_staff) ?></td>
+                                            <td></td>
+                                            <td class="text-end"><?= currency_format('SGD', $total_company) ?></td>
+                                            <td></td>
+                                            <td class="text-end"><?= $total_count ?></td>
+                                        </tr>
+                                        </tfoot>
                                     </table>
                                 </div>
                             </div>
