@@ -191,7 +191,7 @@
                                 'id'    => 'health',
                                 'group' => '<i class="fa-solid fa-dumbbell fa-fw"></i> Health',
                                 'items' => [
-                                    '/office/health/gym'         => 'Gym',
+//                                    '/office/health/gym'         => 'Gym',
                                     '/office/health/measurement' => 'Measurement',
                                     '/office/health/activity'    => 'Activity',
                                     '/office/health/vaccine'     => 'Vaccine',

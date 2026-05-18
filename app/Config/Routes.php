@@ -252,9 +252,9 @@ $routes->group('{locale}/office', ['filter' => 'auth'], static function ($routes
     $routes->post('profile/resume/builder', 'Profile::resumeBuilder');
     /////////////////////////////////////////////////////////////////////////////
     // HEALTH
-    $routes->get('health/gym', 'Health::gym');
-    $routes->get('health/gym-finder', 'Health::gymFinder');
-    $routes->post('health/gym-finder', 'Health::gymFinderList');
+//    $routes->get('health/gym', 'Health::gym');
+//    $routes->get('health/gym-finder', 'Health::gymFinder');
+//    $routes->post('health/gym-finder', 'Health::gymFinderList');
     $routes->get('health/vaccine', 'Health::vaccine');
     // Activity
     $routes->get('health/activity', 'Health::activity');
