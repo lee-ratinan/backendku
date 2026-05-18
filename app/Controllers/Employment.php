@@ -1157,6 +1157,33 @@ class Employment extends BaseController
         return view('employment_cpf_contribution', $data);
     }
 
+    public function cpfInvestment(): string
+    {
+        $session   = session();
+        $cpf_model = new CompanyCPFModel();
+        $records   = $cpf_model->where('transaction_code', 'INV')->findAll();
+        $total_inv = 0.0;
+        $total_fee = 0.0;
+        foreach ($records as $record) {
+            $total = $record['transaction_amount'] * -1;
+            if (10 < $total) {
+                $total_inv += $total;
+            } else {
+                $total_fee += $total;
+            }
+        }
+        $data = [
+            'page_title'                => 'CPF Investment',
+            'slug_group'                => 'employment',
+            'slug'                      => '/office/employment/cpf/investment',
+            'user_session'              => $session->user,
+            'roles'                     => $session->roles,
+            'current_role'              => $session->current_role,
+            'total_investment_deducted' => $total_inv,
+            'total_fees'                => $total_fee,
+        ];
+        return view('employment_cpf_investment', $data);
+    }
     /************************************************************************
      * Freelance
      ************************************************************************/

@@ -91,6 +91,7 @@
                                     '/office/employment/freelance-income/stats' => '<i class="fa-solid fa-chart-line"></i> Statistics',
                                     '/office/employment/cpf'                    => 'CPF',
                                     '/office/employment/cpf/contribution'       => '<i class="fa-solid fa-chart-bar"></i> CPF Contribution',
+                                    '/office/employment/cpf/investment'         => '<i class="fa-solid fa-chart-bar"></i> CPF Investment',
                                     '/office/employment/cpf/now'                => '<i class="fa-solid fa-chart-pie"></i> CPF Now',
                                     '/office/employment/cpf/growth'             => '<i class="fa-solid fa-chart-line"></i> CPF Growth',
                                     '/office/employment/cpf/stats'              => '<i class="fa-solid fa-chart-bar"></i> CPF Statistics',

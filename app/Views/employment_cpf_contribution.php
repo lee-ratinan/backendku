@@ -168,11 +168,6 @@ $this->extend($layout);
                                 </div>
                             </div>
                         </div>
-                        <pre>
-                            <?php
-
-                            ?>
-                        </pre>
                     </div>
                 </div>
             </div>
