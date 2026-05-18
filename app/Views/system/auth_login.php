@@ -132,18 +132,12 @@ $this->extend($layout);
             let name_regex = null;
             $('#btn-resend-otp').prop('disabled', true);
             // LOGIN FLOW
-            $('#email_address, #account_password').change(function() {
-                if ('' !== $('#email_address').val() && '' !== $('#account_password').val()) {
-                    $('#btn-login').click();
-                }
-            });
-            $('#btn-login').on('click', function(e) {
-                e.preventDefault();
+            let performLogin = function () {
                 if ('' === $('#email_address').val() || '' === $('#account_password').val()) {
                     $('#error-message-1').html(`<div class="alert alert-danger" role="alert"><i class="fa-solid fa-triangle-exclamation"></i> <?= lang('Auth.login.empty_fields') ?></div>`);
                     return;
                 }
-                $(this).prop('disabled', true);
+                $('#btn-login').prop('disabled', true);
                 $.ajax({
                     url: '<?= base_url('login') ?>',
                     type: 'POST',
@@ -183,6 +177,15 @@ $this->extend($layout);
                         $('#btn-login').prop('disabled', false);
                     }
                 });
+            };
+            $('#email_address, #account_password').change(function() {
+                if ('' !== $('#email_address').val() && '' !== $('#account_password').val()) {
+                    performLogin();
+                }
+            });
+            $('#btn-login').on('click', function(e) {
+                e.preventDefault();
+                performLogin();
             });
             $('#btn-resend-otp').on('click', function (e) {
                 e.preventDefault();
