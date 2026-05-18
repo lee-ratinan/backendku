@@ -132,6 +132,11 @@ $this->extend($layout);
             let name_regex = null;
             $('#btn-resend-otp').prop('disabled', true);
             // LOGIN FLOW
+            $('#email_address, #account_password').change(function() {
+                if ('' !== $('#email_address').val() && '' !== $('#account_password').val()) {
+                    $('#btn-login').click();
+                }
+            });
             $('#btn-login').on('click', function(e) {
                 e.preventDefault();
                 if ('' === $('#email_address').val() || '' === $('#account_password').val()) {
