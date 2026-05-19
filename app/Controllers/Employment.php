@@ -1097,15 +1097,20 @@ class Employment extends BaseController
         // SUM DATA ARRAYS
         $sum_company_match_by_company      = [];
         $sum_staff_contribution_by_company = [];
+        $sum_total_by_company              = [];
         $avg_company_match_by_company      = [];
         $avg_staff_contribution_by_company = [];
+        $avg_total_by_company              = [];
         $count_records_by_company          = [];
         $sum_company_match_by_year         = [];
         $sum_staff_contribution_by_year    = [];
+        $sum_total_by_year                 = [];
         $avg_company_match_by_year         = [];
         $avg_staff_contribution_by_year    = [];
+        $avg_total_by_year                 = [];
         $count_records_by_year             = [];
         $company_ids                       = [];
+        $con_years                         = [];
         // PROCESS
         $contributions = $cpf_model->where('transaction_code', 'CON')->orderBy('transaction_date', 'asc')->findAll();
         foreach ($contributions as $row) {
@@ -1116,21 +1121,25 @@ class Employment extends BaseController
                 $count_records_by_company[$company_id]          = isset($count_records_by_company[$company_id]) ? $count_records_by_company[$company_id] + 1 : 1;
                 $sum_company_match_by_company[$company_id]      = isset($sum_company_match_by_company[$company_id]) ? $sum_company_match_by_company[$company_id] + $row['company_match'] : $row['company_match'];
                 $sum_staff_contribution_by_company[$company_id] = isset($sum_staff_contribution_by_company[$company_id]) ? $sum_staff_contribution_by_company[$company_id] + $row['staff_contribution'] : $row['staff_contribution'];
+                $sum_total_by_company[$company_id]              = isset($sum_total_by_company[$company_id]) ? $sum_total_by_company[$company_id] + $row['transaction_amount'] : $row['transaction_amount'];
                 // by year
                 $con_year                                       = substr($row['contribution_month'], 0, 4);
                 $con_years[$con_year]                           = 1;
                 $count_records_by_year[$con_year]               = isset($count_records_by_year[$con_year]) ? $count_records_by_year[$con_year] + 1 : 1;
                 $sum_company_match_by_year[$con_year]           = isset($sum_company_match_by_year[$con_year]) ? $sum_company_match_by_year[$con_year] + $row['company_match'] : $row['company_match'];
                 $sum_staff_contribution_by_year[$con_year]      = isset($sum_staff_contribution_by_year[$con_year]) ? $sum_staff_contribution_by_year[$con_year] + $row['staff_contribution'] : $row['staff_contribution'];
+                $sum_total_by_year[$con_year]                   = isset($sum_total_by_year[$con_year]) ? $sum_total_by_year[$con_year] + $row['transaction_amount'] : $row['transaction_amount'];
             }
         }
         foreach ($count_records_by_company as $company_id => $count) {
             $avg_company_match_by_company[$company_id]      = $sum_company_match_by_company[$company_id] / $count;
             $avg_staff_contribution_by_company[$company_id] = $sum_staff_contribution_by_company[$company_id] / $count;
+            $avg_total_by_company[$company_id]              = $sum_total_by_company[$company_id] / $count;
         }
         foreach ($count_records_by_year as $con_year => $count) {
             $avg_company_match_by_year[$con_year]      = $sum_company_match_by_year[$con_year] / $count;
             $avg_staff_contribution_by_year[$con_year] = $sum_staff_contribution_by_year[$con_year] / $count;
+            $avg_total_by_year[$con_year]              = $sum_total_by_year[$con_year] / $count;
         }
         $data = [
             'page_title'                        => 'CPF Contribution',
@@ -1145,13 +1154,17 @@ class Employment extends BaseController
             'con_years'                         => array_keys($con_years),
             'sum_company_match_by_company'      => $sum_company_match_by_company,
             'sum_staff_contribution_by_company' => $sum_staff_contribution_by_company,
+            'sum_total_by_company'              => $sum_total_by_company,
             'avg_company_match_by_company'      => $avg_company_match_by_company,
             'avg_staff_contribution_by_company' => $avg_staff_contribution_by_company,
+            'avg_total_by_company'              => $avg_total_by_company,
             'count_records_by_company'          => $count_records_by_company,
             'sum_company_match_by_year'         => $sum_company_match_by_year,
             'sum_staff_contribution_by_year'    => $sum_staff_contribution_by_year,
+            'sum_total_by_year'                 => $sum_total_by_year,
             'avg_company_match_by_year'         => $avg_company_match_by_year,
             'avg_staff_contribution_by_year'    => $avg_staff_contribution_by_year,
+            'avg_total_by_year'                 => $avg_total_by_year,
             'count_records_by_year'             => $count_records_by_year,
         ];
         return view('employment_cpf_contribution', $data);
