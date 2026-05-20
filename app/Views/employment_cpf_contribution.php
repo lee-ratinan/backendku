@@ -198,7 +198,58 @@ $this->extend($layout);
                         </div>
                         <div class="tab-table" id="div_by_salary" style="display:none;">
                             <h3>Contribution Records from Salary</h3>
-                            (table)
+                            <div class="table-responsive">
+                                <table class="table table-striped table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th rowspan="2">Month</th>
+                                        <th rowspan="2">Company</th>
+                                        <th colspan="2">Salary Record</th>
+                                        <th colspan="3">CPF Record</th>
+                                    </tr>
+                                    <tr>
+                                        <th>Staff Contribution</th>
+                                        <th>Total Salary</th>
+                                        <th>Staff Contribution</th>
+                                        <th>Company Match</th>
+                                        <th>Total CPF</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <?php foreach ($salary_records_salary as $month => $company_rows): ?>
+                                        <?php foreach ($company_rows as $company_id => $record_types) : ?>
+                                            <?php
+                                            $salary_contribution = 0.0;
+                                            $salary_total        = 0.0;
+                                            foreach ($record_types as $rec) {
+                                                $salary_contribution += ($rec['cpf_amt'] * -1);
+                                                $salary_total        += $rec['salary'];
+                                            }
+                                            $cpf_contribution    = 0.0;
+                                            $cpf_match           = 0.0;
+                                            $cpf_total           = 0.0;
+                                            if (isset($salary_records_cpf[$month][$company_id])) {
+                                                foreach ($salary_records_cpf[$month][$company_id] as $rec) {
+                                                    $cpf_contribution += $rec['contribution'];
+                                                    $cpf_match        += $rec['match'];
+                                                    $cpf_total        += $rec['total'];
+                                                }
+                                            }
+                                            ?>
+                                            <tr>
+                                                <td data-sort="<?= $month ?>"><?= date(MONTH_FORMAT_UI, strtotime($month . '-01')) ?></td>
+                                                <td><?= $companies[$company_id] ?></td>
+                                                <td class="text-end" data-sort="<?= $salary_contribution ?>"><?= currency_format('SGD', $salary_contribution) ?></td>
+                                                <td class="text-end" data-sort="<?= $salary_total ?>"><?= currency_format('SGD', $salary_total) ?></td>
+                                                <td class="text-end <?= ($salary_contribution == $cpf_contribution ? '' : 'text-danger') ?>" data-sort="<?= $cpf_contribution ?>"><?= currency_format('SGD', $cpf_contribution) ?></td>
+                                                <td class="text-end" data-sort="<?= $cpf_match ?>"><?= currency_format('SGD', $cpf_match) ?></td>
+                                                <td class="text-end" data-sort="<?= $cpf_total ?>"><?= currency_format('SGD', $cpf_total) ?></td>
+                                            </tr>
+                                        <?php endforeach; ?>
+                                    <?php endforeach; ?>
+                                    </tbody>
+                                </table>
+                            </div>
                             <hr />
                         </div>
                     </div>
