@@ -122,7 +122,7 @@ $this->extend($layout);
                 fixedHeader: true,
                 searching: false,
                 ordering: false,
-                pageLength: 25,
+                pageLength: 50,
                 ajax: {
                     url: '<?= base_url($session->locale . '/office/employment/cpf') ?>',
                     type: 'POST',

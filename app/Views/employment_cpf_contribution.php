@@ -37,7 +37,7 @@ $this->extend($layout);
                             <h3>Main Table</h3>
                             <p class="small">To search for transactions happened in 2025, search "D2025". To search for the contribution month of 2025, search "Y2025".</p>
                             <div class="table-responsive">
-                                <table class="table table-striped table-hover">
+                                <table class="table table-striped table-hover" id="tbl_main_table">
                                     <thead>
                                     <tr>
                                         <th rowspan="2">Date</th>
@@ -91,7 +91,7 @@ $this->extend($layout);
                                 $total_total   = array_sum($sum_total_by_company);
                                 $total_count   = array_sum($count_records_by_company);
                                 ?>
-                                <table class="table table-striped table-hover">
+                                <table class="table table-striped table-hover" id="tbl_by_company">
                                     <thead>
                                     <tr>
                                         <th rowspan="2">Company</th>
@@ -148,7 +148,7 @@ $this->extend($layout);
                                 $total_total   = array_sum($sum_total_by_year);
                                 $total_count   = array_sum($count_records_by_year);
                                 ?>
-                                <table class="table table-striped table-hover">
+                                <table class="table table-striped table-hover" id="tbl_by_year">
                                     <thead>
                                     <tr>
                                         <th rowspan="2">Year</th>
@@ -199,7 +199,7 @@ $this->extend($layout);
                         <div class="tab-table" id="div_by_salary" style="display:none;">
                             <h3>Contribution Records from Salary</h3>
                             <div class="table-responsive">
-                                <table class="table table-striped table-hover">
+                                <table class="table table-striped table-hover" id="tbl_by_salary">
                                     <thead>
                                     <tr>
                                         <th rowspan="2">Month</th>
@@ -259,7 +259,11 @@ $this->extend($layout);
     </section>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            $('table').DataTable();
+            $('#tbl_main_table, #tbl_by_salary').DataTable({
+                order: [[0, 'desc']],
+                pageLength: 50
+            });
+            $('#tbl_by_company, #tbl_by_year').DataTable();
             $('.btn-tab').click(function () {
                 $('.btn-tab').removeClass('btn-primary').addClass('btn-outline-primary');
                 $(this).addClass('btn-primary').removeClass('btn-outline-primary');
