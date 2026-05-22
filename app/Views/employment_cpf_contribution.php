@@ -27,13 +27,13 @@ $this->extend($layout);
                         <h5 class="card-title"><i class="fa-solid fa-piggy-bank fa-fw me-3"></i> <?= $page_title ?></h5>
                         <div class="row">
                             <div class="col text-end">
-                                <button class="btn btn-primary btn-tab" data-for-id="main_table">All Contributions</button>
+                                <button class="btn btn-outline-primary btn-tab" data-for-id="main_table">All Contributions</button>
                                 <button class="btn btn-outline-primary btn-tab" data-for-id="by_company">Contributions by Company</button>
                                 <button class="btn btn-outline-primary btn-tab" data-for-id="by_year">Contributions by Year</button>
-                                <button class="btn btn-outline-primary btn-tab" data-for-id="by_salary">Salary Records</button>
+                                <button class="btn btn-primary btn-tab" data-for-id="by_salary">Salary Records</button>
                             </div>
                         </div>
-                        <div class="tab-table" id="div_main_table">
+                        <div class="tab-table" id="div_main_table" style="display:none;">
                             <h3>Main Table</h3>
                             <p class="small">To search for transactions happened in 2025, search "D2025". To search for the contribution month of 2025, search "Y2025".</p>
                             <div class="table-responsive">
@@ -196,7 +196,7 @@ $this->extend($layout);
                             </div>
                             <hr />
                         </div>
-                        <div class="tab-table" id="div_by_salary" style="display:none;">
+                        <div class="tab-table" id="div_by_salary">
                             <h3>Contribution Records from Salary</h3>
                             <div class="table-responsive">
                                 <table class="table table-striped table-hover" id="tbl_by_salary">
