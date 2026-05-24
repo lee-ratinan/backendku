@@ -40,7 +40,7 @@ class Office extends BaseController
         $holiday_model = new JourneyHolidayModel();
         $holidays      = $holiday_model->where('holiday_date >=', date('Y-m-d'))->orderBy('holiday_date', 'asc')->limit(5)->findAll();
         // income
-        $year           = 2025; // date('Y');
+        $year           = date('Y');
         $salary_model   = new CompanySalaryModel();
         $fl_ic_model    = new CompanyFreelanceIncomeModel();
         $salary_records = $salary_model->where('tax_year', $year)->findAll();
