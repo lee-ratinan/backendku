@@ -13,18 +13,28 @@ $this->extend($layout);
             <div class="col-12 col-md-6">
                 <div class="card">
                     <div class="card-body">
-                        <h2>Next Holiday</h2>
+                        <h2>Upcoming Holidays</h2>
+                        <?php
+                        if (empty($holidays)) {
+                            echo '<p>No upcoming holidays</p>';
+                        } else {
+                            $this_date = '';
+                            foreach ($holidays as $holiday) {
+                                if ($this_date != $holiday['holiday_date']) {
+                                    $this_date = $holiday['holiday_date'];
+                                    echo '<h5 class="mt-2 mb-0">' . date(DATE_FORMAT_UI, strtotime($holiday['holiday_date'])) . '</h5>';
+                                }
+                                echo '<div>' . ($holiday['holiday_date'] != $holiday['holiday_date_to'] ? 'to ' . date(DATE_FORMAT_UI, strtotime($holiday['holiday_date_to'])) . ': ' : '');
+                                echo ('XV' == $holiday['country_code'] ? 'Vacation' : '<span class="flag-icon flag-icon-' . strtolower($holiday['country_code']) . '"></span> ' . $countries[$holiday['country_code']]['common_name']) . ' - <b>' . $holiday['holiday_name'] . '</b>';
+                                echo '</div>';
+                            }
+                        }
+                        ?>
+                        <a href="<?= base_url($session->locale . '/office/journey/holiday') ?>" class="btn btn-primary">View All</a>
                     </div>
                 </div>
             </div>
             <div class="col-12 col-md-6">
-                <div class="card">
-                    <div class="card-body">
-                        <h2>Weather</h2>
-                    </div>
-                </div>
-            </div>
-            <div class="col-12">
                 <div class="card">
                     <div class="card-body">
                         <h2>YTD Income</h2>

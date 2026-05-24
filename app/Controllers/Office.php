@@ -11,6 +11,7 @@
 
 namespace App\Controllers;
 
+use App\Models\JourneyHolidayModel;
 use App\Models\LogActivityModel;
 use App\Models\RoleMasterModel;
 use App\Models\UserMasterModel;
@@ -33,12 +34,16 @@ class Office extends BaseController
     public function index(): string
     {
         $session = session();
+        $holiday_model = new JourneyHolidayModel();
+        $holidays      = $holiday_model->where('holiday_date >=', date('Y-m-d'))->orderBy('holiday_date', 'asc')->limit(5)->findAll();
         $data    = [
             'page_title'   => lang('System.dashboard.page_title'),
             'slug'         => '/office/dashboard',
             'user_session' => $session->user,
             'roles'        => $session->roles,
-            'current_role' => $session->current_role
+            'current_role' => $session->current_role,
+            'holidays'     => $holidays,
+            'countries'    => lang('ListCountries.countries')
         ];
         return view('system/office_dashboard', $data);
     }
