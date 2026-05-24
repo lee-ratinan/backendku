@@ -38,6 +38,19 @@ $this->extend($layout);
                 <div class="card">
                     <div class="card-body">
                         <h2>YTD Income</h2>
+                        <?php foreach ($ytd_currencies as $ccy) : ?>
+                            <h4 class="mt-2 mb-0 text-center"><?= $ccy ?></h4>
+                            <div class="row">
+                                <div class="col-6 text-center">
+                                    <h5>Subtotal</h5>
+                                    <?= currency_format($ccy, $ytd_totals[$ccy]['subtotal']) ?>
+                                </div>
+                                <div class="col-6 text-center">
+                                    <h5>Total</h5>
+                                    <?= currency_format($ccy, $ytd_totals[$ccy]['total']) ?>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
                     </div>
                 </div>
             </div>

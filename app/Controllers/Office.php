@@ -11,6 +11,8 @@
 
 namespace App\Controllers;
 
+use App\Models\CompanyFreelanceIncomeModel;
+use App\Models\CompanySalaryModel;
 use App\Models\JourneyHolidayModel;
 use App\Models\LogActivityModel;
 use App\Models\RoleMasterModel;
@@ -33,17 +35,58 @@ class Office extends BaseController
      */
     public function index(): string
     {
-        $session = session();
+        $session       = session();
+        // holiday
         $holiday_model = new JourneyHolidayModel();
         $holidays      = $holiday_model->where('holiday_date >=', date('Y-m-d'))->orderBy('holiday_date', 'asc')->limit(5)->findAll();
-        $data    = [
-            'page_title'   => lang('System.dashboard.page_title'),
-            'slug'         => '/office/dashboard',
-            'user_session' => $session->user,
-            'roles'        => $session->roles,
-            'current_role' => $session->current_role,
-            'holidays'     => $holidays,
-            'countries'    => lang('ListCountries.countries')
+        // income
+        $year           = 2025; // date('Y');
+        $salary_model   = new CompanySalaryModel();
+        $fl_ic_model    = new CompanyFreelanceIncomeModel();
+        $salary_records = $salary_model->where('tax_year', $year)->findAll();
+        $fl_ic_records  = $fl_ic_model->where('pay_date >=', $year . '-01-01')->findAll();
+        $ytd_records    = [];
+        $ytd_currencies = [];
+        $ytd_totals     = [];
+        foreach ($salary_records as $row) {
+            $ytd_currencies[$row['payment_currency']] = 1;
+            $ytd_records[$row['payment_currency']][]  = [
+                'date'     => $row['pay_date'],
+                'type'     => 'S',
+                'subtotal' => $row['subtotal_amount'],
+                'total'    => $row['total_amount'],
+            ];
+        }
+        foreach ($fl_ic_records as $row) {
+            $ytd_currencies[$row['payment_currency']] = 1;
+            $ytd_records[$row['payment_currency']][]  = [
+                'date'     => $row['pay_date'],
+                'type'     => 'F',
+                'subtotal' => $row['subtotal_amount'],
+                'total'    => $row['total_amount'],
+            ];
+        }
+        ksort($ytd_currencies);
+        foreach ($ytd_currencies as $ccy => $dummy) {
+            $ytd_totals[$ccy] = ['total' => 0, 'subtotal' => 0];
+        }
+        foreach ($ytd_records as $currency => $rows) {
+            foreach ($rows as $row) {
+                $ytd_totals[$currency]['total']    += $row['total'];
+                $ytd_totals[$currency]['subtotal'] += $row['subtotal'];
+            }
+        }
+        // data
+        $data = [
+            'page_title'     => lang('System.dashboard.page_title'),
+            'slug'           => '/office/dashboard',
+            'user_session'   => $session->user,
+            'roles'          => $session->roles,
+            'current_role'   => $session->current_role,
+            'holidays'       => $holidays,
+            'countries'      => lang('ListCountries.countries'),
+            'ytd_currencies' => array_keys($ytd_currencies),
+            'ytd_totals'     => $ytd_totals,
         ];
         return view('system/office_dashboard', $data);
     }
