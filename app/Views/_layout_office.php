@@ -102,6 +102,7 @@
                                 'group' => '<i class="fa-solid fa-building-columns fa-fw"></i> Tax',
                                 'items' => [
                                     '/office/tax'            => 'Tax',
+                                    '/office/tax/statistics' => 'Tax Statistics',
                                     '/office/tax/calculator' => 'Tax Calculator',
                                     '/office/tax/projection' => 'Tax Projection',
                                     '/office/tax/comparison' => 'Tax Comparison',

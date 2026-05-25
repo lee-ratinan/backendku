@@ -65,7 +65,7 @@ class Tax extends BaseController
     ];
     private array $market_rates = [
         'AU' => [8000, 13000],
-        'SG' => [5000, 9000],
+        'SG' => [7000, 14000],
         'TH' => [30000, 60000]
     ];
 
@@ -538,5 +538,48 @@ class Tax extends BaseController
             'rate'         => $rate
         ];
         return view('tax_comparison', $data);
+    }
+
+    /**
+     * @return string
+     */
+    public function statistics(): string
+    {
+        $session   = session();
+        $model     = new TaxYearModel();
+        $raw       = $model->findAll();
+        $countries = lang('ListCountries.countries');
+        $records   = [];
+        $totals    = [];
+        $cc        = [];
+        $chart     = [];
+        foreach ($raw as $row) {
+            $cc[$row['country_code']] = 1;
+            $records[$row['country_code']][$row['tax_year']] = [
+                'income'  => $row['total_income'],
+                'taxable' => $row['taxable_income'],
+                'tax'     => $row['final_tax_amount']
+            ];
+        }
+        foreach ($cc as $country => $dummy) {
+            $totals[$country]['income']  = array_sum(array_column($records[$country], 'income'));
+            $totals[$country]['taxable'] = array_sum(array_column($records[$country], 'taxable'));
+            $totals[$country]['tax']     = array_sum(array_column($records[$country], 'tax'));
+            for ($y = 2010; $y <= date('Y'); $y++) {
+                $chart[$country][$y] = $records[$country][$y]['tax'] ?? 0;
+            }
+        }
+        $data    = [
+            'page_title'   => 'Tax Statistics',
+            'slug_group'   => 'tax',
+            'slug'         => '/office/tax/statistics',
+            'user_session' => $session->user,
+            'roles'        => $session->roles,
+            'current_role' => $session->current_role,
+            'totals'       => $totals,
+            'countries'    => $countries,
+            'chart'        => $chart,
+        ];
+        return view('tax_statistics', $data);
     }
 }
