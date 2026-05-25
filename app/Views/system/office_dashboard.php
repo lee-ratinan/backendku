@@ -22,9 +22,9 @@ $this->extend($layout);
                             foreach ($holidays as $holiday) {
                                 if ($this_date != $holiday['holiday_date']) {
                                     $this_date = $holiday['holiday_date'];
-                                    echo '<h5 class="mt-2 mb-0">' . date(DATE_FORMAT_UI, strtotime($holiday['holiday_date'])) . '</h5>';
+                                    echo '<h5 class="mt-1 mb-0"><i class="fa-regular fa-calendar-check"></i> ' . date(DATE_FORMAT_UI, strtotime($holiday['holiday_date'])) . '</h5>';
                                 }
-                                echo '<div>' . ($holiday['holiday_date'] != $holiday['holiday_date_to'] ? 'to ' . date(DATE_FORMAT_UI, strtotime($holiday['holiday_date_to'])) . ': ' : '');
+                                echo '<div class="mb-2">' . ($holiday['holiday_date'] != $holiday['holiday_date_to'] ? 'to ' . date(DATE_FORMAT_UI, strtotime($holiday['holiday_date_to'])) . ': ' : '');
                                 echo ('XV' == $holiday['country_code'] ? 'Vacation' : '<span class="flag-icon flag-icon-' . strtolower($holiday['country_code']) . '"></span> ' . $countries[$holiday['country_code']]['common_name']) . ' - <b>' . $holiday['holiday_name'] . '</b>';
                                 echo '</div>';
                             }

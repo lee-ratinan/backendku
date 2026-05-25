@@ -159,20 +159,6 @@
                             ]
                         ]
                     ],
-                    [
-                        'header' => '𐑖𐑱𐑝𐑾𐑯',
-                        'menu'   => [
-                            [
-                                'id' => 'shavian',
-                                'group' => '<i class="fa-solid fa-language fa-fw"></i> 𐑖𐑱𐑝𐑾𐑯',
-                                'items' => [
-                                    '/office/shavian'          => '𐑖𐑱𐑝𐑾𐑯',
-                                    '/office/shavian-ipa'      => '𐑖𐑱𐑝𐑾𐑯-IPA',
-                                    '/office/shavian-keyboard' => '𐑖𐑱𐑝𐑾𐑯 𐑒𐑰𐑚𐑹𐑛'
-                                ]
-                            ]
-                        ]
-                    ],
 //                    [
 //                        'header' => 'Fiction',
 //                        'menu'   => [
@@ -192,7 +178,6 @@
                                 'id'    => 'health',
                                 'group' => '<i class="fa-solid fa-dumbbell fa-fw"></i> Health',
                                 'items' => [
-//                                    '/office/health/gym'         => 'Gym',
                                     '/office/health/measurement' => 'Measurement',
                                     '/office/health/activity'    => 'Activity',
                                     '/office/health/vaccine'     => 'Vaccine',
@@ -208,6 +193,20 @@
                                     '/office/health/ooca/statistics' => '<i class="fa-solid fa-chart-bar"></i> OOCA Statistics',
                                 ]
                             ],
+                        ]
+                    ],
+                    [
+                        'header' => '𐑖𐑱𐑝𐑾𐑯',
+                        'menu'   => [
+                            [
+                                'id' => 'shavian',
+                                'group' => '<i class="fa-solid fa-language fa-fw"></i> 𐑖𐑱𐑝𐑾𐑯',
+                                'items' => [
+                                    '/office/shavian'          => '𐑖𐑱𐑝𐑾𐑯',
+                                    '/office/shavian-ipa'      => '𐑖𐑱𐑝𐑾𐑯-IPA',
+                                    '/office/shavian-keyboard' => '𐑖𐑱𐑝𐑾𐑯 𐑒𐑰𐑚𐑹𐑛'
+                                ]
+                            ]
                         ]
                     ],
                     [
