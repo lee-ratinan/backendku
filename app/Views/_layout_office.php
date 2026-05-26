@@ -63,6 +63,9 @@
                     <h6><?= $session->display_name ?></h6>
                     <span><?= $session->user['employee_title'] ?></span>
                 </li>
+                <li class="sidebar-header my-3">
+                    <h6><i class="fa-solid fa-quote-left"></i> <?= get_daily_affirmation() ?></h6>
+                </li>
                 <?php
                 $navigation = [
                     [
@@ -285,7 +288,7 @@
         <nav class="navbar navbar-expand navbar-bg d-print-none">
             <a class="sidebar-toggle"><i class="hamburger align-self-center"></i></a>
             <!-- SEARCH BAR -->
-            <form class="d-none d-sm-inline-block">
+            <form class="d-none">
                 <div class="input-group input-group-navbar">
                     <input type="text" class="form-control" placeholder="Search projects…" aria-label="Search">
                     <button class="btn" type="button">

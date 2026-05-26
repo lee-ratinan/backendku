@@ -13,6 +13,15 @@ $this->extend($layout);
             <div class="col-12 col-md-6">
                 <div class="card">
                     <div class="card-body">
+                        <h2>Daily Affirmation</h2>
+                        <hr/>
+                        <h3 class="text-center"><i class="fa-solid fa-quote-left"></i> <?= get_daily_affirmation() ?></h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6">
+                <div class="card">
+                    <div class="card-body">
                         <h2>Upcoming Holidays</h2>
                         <?php
                         if (empty($holidays)) {

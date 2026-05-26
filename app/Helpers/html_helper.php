@@ -7,6 +7,8 @@
  * *********************************************************************
  */
 
+use App\Models\HealthAffirmationModel;
+
 /**
  * Generate any form field with floating label
  * @param string $id
@@ -609,4 +611,25 @@ function smart_multilang_word_count(string $text): array
         'word_count' => round($thaiWords + $latinWordCount + $chineseWords + $japaneseWords + $koreanWords),
         'char_count' => mb_strlen($text, 'UTF-8')
     ];
+}
+
+if (!function_exists('get_daily_affirmation')) {
+    /**
+     * Retrieves a cached affirmation message or fetches a new one if expired.
+     *
+     * @param int $ttl Time-to-live in seconds. Defaults to 3600 (1 hour).
+     * @return string
+     */
+    function get_daily_affirmation(int $ttl = 3360): string
+    {
+        $cacheKey      = 'global_affirmation_message';
+        $cachedMessage = cache($cacheKey);
+        if ($cachedMessage !== null) {
+            return $cachedMessage;
+        }
+        $model      = model(HealthAffirmationModel::class);
+        $newMessage = $model->retrieveRandomMessage();
+        cache()->save($cacheKey, $newMessage, $ttl);
+        return $newMessage;
+    }
 }

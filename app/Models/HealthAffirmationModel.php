@@ -56,4 +56,18 @@ class HealthAffirmationModel extends Model
             'data'            => $result
         ];
     }
+
+    /**
+     * Randomly retrieve a message from the database
+     * @return string
+     */
+    public function retrieveRandomMessage(): string
+    {
+        $count = $this->countAllResults();
+        if ($count > 0) {
+            $random_index = rand(0, $count - 1);
+            return $this->limit(1, $random_index)->first()['affirmation_message'] ?? '';
+        }
+        return '';
+    }
 }
