@@ -1300,10 +1300,38 @@ class Health extends BaseController
 
     public function affirmationSave (): ResponseInterface
     {
-        return $this->response->setJSON([
-            'status' => 'success',
-            'message' => 'Saved'
-        ]);
+        $session                     = session();
+        $model                       = new HealthAffirmationModel();
+        $id                          = $this->request->getPost('id');
+        $data['affirmation_message'] = $this->request->getPost('affirmation_message');
+        try {
+            if (0 < $id) {
+                $model->update($id, $data);
+                return $this->response->setJSON([
+                    'status' => 'success',
+                    'toast'  => 'Message has been updated'
+                ]);
+            } else {
+                $inserted_id = $model->insert($data);
+                if ($inserted_id) {
+                    return $this->response->setJSON([
+                        'status' => 'success',
+                        'toast'  => 'Message has been added',
+                        'url'    => base_url($session->locale . '/office/health/activity')
+                    ]);
+                }
+                return $this->response->setJSON([
+                    'status' => 'success',
+                    'toast'  => 'Failed to insert the message.',
+                    'data'   => $data
+                ]);
+            }
+        } catch (DatabaseException|ReflectionException $e) {
+            return $this->response->setJSON([
+                'status' => 'error',
+                'toast'  => 'ERROR: ' . $e->getMessage()
+            ]);
+        }
     }
 
     /**

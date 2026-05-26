@@ -20,6 +20,7 @@ $this->extend($layout);
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title"><i class="fa-solid fa-list"></i> <?= $page_title ?></h5>
+                        <h6 id="form_mode_label">New Affirmation Message</h6>
                         <?php generate_form_field('affirmation_message', [
                             'type'        => 'text',
                             'label'       => 'Affirmation Message',
@@ -30,21 +31,12 @@ $this->extend($layout);
                             'type'        => 'number',
                             'label'       => 'Affirmation ID',
                             'required'    => true,
+                            'readonly'    => true,
                             'placeholder' => 'Affirmation ID',
                         ], '0'); ?>
                         <div class="text-end">
+                            <button class="btn btn-outline-danger" id="cancel_affirmation_message">Cancel</button>
                             <button class="btn btn-primary" id="save_affirmation_message"><i class="fa-solid fa-save"></i> Save</button>
-                        </div>
-                        <div id="edit_section" class="d-none">
-                            <?php generate_form_field('new_affirmation_message', [
-                                'type'        => 'text',
-                                'label'       => 'Edit Affirmation Message',
-                                'required'    => true,
-                                'placeholder' => 'Affirmation Message',
-                            ], ''); ?>
-                            <div class="text-end">
-                                <button class="btn btn-primary" id="edit_affirmation_message"><i class="fa-solid fa-save"></i> Save Change</button>
-                            </div>
                         </div>
                         <div class="table-responsive">
                             <table class="table table-sm table-hover" id="main_table">
@@ -64,6 +56,16 @@ $this->extend($layout);
     </section>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
+            let toNewMode = function () {
+                $('#affirmation_message').val('');
+                $('#affirmation_id').val('0');
+                $('#form_mode_label').html('New Affirmation Message');
+            };
+            let toEditMode = function (id, message) {
+                $('#affirmation_message').val(message);
+                $('#affirmation_id').val(id);
+                $('#form_mode_label').html('Edit Affirmation Message');
+            };
             const table = $('table').DataTable({
                 processing: true,
                 serverSide: true,
@@ -74,14 +76,20 @@ $this->extend($layout);
                     url: '<?= base_url($session->locale . '/office/health/affirmation') ?>',
                     type: 'POST'
                 },
-                order: [[1, 'asc']],
+                order: [[0, 'asc']],
             });
+            // click edit, change form to edit mode
             $('body').on('click', '.btn-edit-message', function () {
                 let message = $(this).data('message'),
                     id = $(this).data('id');
-                $('#affirmation_message').val(message);
-                $('#affirmation_id').val(id);
+                toEditMode(id, message);
             })
+            // click cancel, always default to new mode
+            $('#cancel_affirmation_message').click(function (e) {
+                e.preventDefault();
+                toNewMode();
+            });
+            // click save
             $('#save_affirmation_message').click(function (e) {
                 e.preventDefault();
                 let message = $('#affirmation_message').val();
@@ -103,14 +111,15 @@ $this->extend($layout);
                     },
                     success: function (response) {
                         if ('success' === response.status) {
+                            // success, default form to new mode
                             toastr.success(response.toast);
                             setTimeout(function () {
-                                $('#affirmation_message').val('');
-                                $('#affirmation_id').val('0');
+                                toNewMode();
                                 table.draw();
                                 $('#save_affirmation_message').prop('disabled', false);
                             }, 5000);
                         } else {
+                            // failed...
                             let message = (response.toast ?? 'Sorry! Something went wrong. Please try again.');
                             toastr.error(message);
                             $('#save_affirmation_message').prop('disabled', false);
