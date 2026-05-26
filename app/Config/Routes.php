@@ -257,6 +257,9 @@ $routes->group('{locale}/office', ['filter' => 'auth'], static function ($routes
 //    $routes->get('health/gym-finder', 'Health::gymFinder');
 //    $routes->post('health/gym-finder', 'Health::gymFinderList');
     $routes->get('health/vaccine', 'Health::vaccine');
+    $routes->get('health/affirmation', 'Health::affirmation');
+    $routes->post('health/affirmation', 'Health::affirmationList');
+    $routes->post('health/affirmation/edit', 'Health::affirmationSave');
     // Activity
     $routes->get('health/activity', 'Health::activity');
     $routes->post('health/activity', 'Health::activityList');

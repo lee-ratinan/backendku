@@ -181,6 +181,7 @@
                                     '/office/health/measurement' => 'Measurement',
                                     '/office/health/activity'    => 'Activity',
                                     '/office/health/vaccine'     => 'Vaccine',
+                                    '/office/health/affirmation' => 'Affirmation',
                                 ]
                             ],
                             [
