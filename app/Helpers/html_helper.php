@@ -617,10 +617,10 @@ if (!function_exists('get_daily_affirmation')) {
     /**
      * Retrieves a cached affirmation message or fetches a new one if expired.
      *
-     * @param int $ttl Time-to-live in seconds. Defaults to 3600 (1 hour).
+     * @param int $ttl Time-to-live in seconds. Defaults to 600 (10 minutes).
      * @return string
      */
-    function get_daily_affirmation(int $ttl = 3360): string
+    function get_daily_affirmation(int $ttl = 600): string
     {
         $cacheKey      = 'global_affirmation_message';
         $cachedMessage = cache($cacheKey);
