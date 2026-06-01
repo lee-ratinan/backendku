@@ -25,24 +25,13 @@
     <link href="<?= base_url('assets/vendor/toastrjs/toastr.min.css') ?>" rel="stylesheet">
     <link href="<?= base_url('appstack/css/app.css') ?>" rel="stylesheet" />
     <script src="<?= base_url('assets/vendor/tinymce7.8.0/js/tinymce/tinymce.min.js') ?>" defer></script>
-    <style>
-        h1,h2,h3,h4,h5,h6,th{font-family:"Oxanium","Noto Serif Thai",sans-serif;} .alert{padding:1rem;}  svg:not(:host).svg-inline--fa, svg:not(:root).svg-inline--fa {overflow: visible;box-sizing: content-box;margin: auto 0.25rem;}
-        .sidebar-header .avatar-img, .sidebar-header .avatar-txt {width: 3rem !important;height: 3rem !important;}
-        table.dataTable tbody tr>.dtfc-fixed-start, table.dataTable tbody tr>.dtfc-fixed-end {background-color:#202634;}
-        table.dataTable tbody tr:nth-of-type(odd)>.dtfc-fixed-start, table.dataTable tbody tr:nth-of-type(odd)>.dtfc-fixed-end {background-color:#323c4c!important;}
-        table.dataTable thead tr>.dtfc-fixed-start, table.dataTable thead tr>.dtfc-fixed-end, table.dataTable tfoot tr>.dtfc-fixed-start, table.dataTable tfoot tr>.dtfc-fixed-end {background-color:#292f43;}
-        .bg-red {background-color: #740001 !important;} .bg-gold {background-color: #D3A625 !important;color:#000!important;} .bg-yellow {background-color: #FFD800 !important;color:#000!important;} .bg-black {background-color: #000000 !important;} .bg-blue {background-color: #0E1A40 !important;} .bg-bronze {background-color: #946B2D !important;} .bg-green {background-color: #1A472A !important;} .bg-silver {background-color: #5D5D5D !important;}
-        .text-red {color: #740001 !important;} .text-gold {color: #D3A625 !important} .text-yellow {color: #FFD800 !important} .text-black {color: #000000 !important;} .text-blue {color: #0E1A40 !important;} .text-bronze {color: #946B2D !important;} .text-green {color: #1A472A !important;} .text-silver {color: #5D5D5D !important;}
-        .tox-promotion {display:none!important;}
-        .full-page {background-color: #232f3f;padding:10px;position: fixed;width:100vw;height:100vh;top:0;left:0;z-index: 1000;}
-    </style>
 </head>
 <body>
 <div class="wrapper">
     <nav id="sidebar" class="sidebar">
         <div class="sidebar-content js-simplebar">
             <!-- SIDEBAR NAVIGATION -->
-            <ul class="sidebar-nav">
+            <ul class="sidebar-nav pb-5 mb-5">
                 <li class="sidebar-header p-0">
                     <?php
                     switch ($session->current_role) {
@@ -393,6 +382,7 @@
     let shrinkTinyMceArea = function (div_id) {$('#'+div_id+'-block').removeClass('full-page');$('#'+div_id+'-shrink-btn').hide();$('#'+div_id+'-expand-btn').show();}
     let DateTime = luxon.DateTime;
     function utcToLocal(utc) {if ('' !== utc) {return DateTime.fromISO(utc).toLocaleString(DateTime.DATETIME_MED);} else {return '-';}}
+    $('.avatar-img').on('click', function() {$(this).toggleClass('expanded');});
 </script>
 </body>
 </html>
