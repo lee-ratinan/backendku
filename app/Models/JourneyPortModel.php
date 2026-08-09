@@ -160,6 +160,7 @@ class JourneyPortModel extends Model
     {
         $lat_deg  = '&deg;N';
         $long_deg = '&deg;E';
+        $link     = "https://www.google.com/maps/@{$latitude},{$longitude},3000m";
         if (0 > $latitude) {
             $lat_deg   = '&deg;S';
             $latitude *= -1;
@@ -168,7 +169,8 @@ class JourneyPortModel extends Model
             $lat_deg   = '&deg;W';
             $longitude *= -1;
         }
-        return "{$latitude}{$lat_deg} {$longitude}{$long_deg}";
+        // 1.4061058,103.9082497,3826m
+        return "<a href='{$link}' target='_blank'>{$latitude}{$lat_deg} {$longitude}{$long_deg}</a>";
     }
 
     /**
