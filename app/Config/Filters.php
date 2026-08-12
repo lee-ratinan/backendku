@@ -96,7 +96,11 @@ class Filters extends BaseFilters
      *
      * @var array<string, list<string>>
      */
-    public array $methods = [];
+    public array $methods = [
+        'POST' => ['cors'],
+        'GET'  => ['cors'],
+        'OPTIONS' => ['cors']
+    ];
 
     /**
      * List of filter aliases that should run on any
