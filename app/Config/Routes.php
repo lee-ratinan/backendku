@@ -29,6 +29,8 @@ $routes->get('file/(:any)', 'File::index/$1/0');
 $routes->get('download/(:any)', 'File::index/$1/1');
 // Cron
 $routes->get('cron/run-monthly', 'Cron::runMonthly');
+// API
+$routes->get('api/journey-stats', 'Api::getJourneyStats');
 // SYSTEM
 $routes->group('{locale}/office', ['filter' => 'auth'], static function ($routes) {
     // Dashboard
