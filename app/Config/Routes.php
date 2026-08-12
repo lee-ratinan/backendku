@@ -290,5 +290,7 @@ $routes->group('{locale}/office', ['filter' => 'auth'], static function ($routes
     $routes->post('health/phq9', 'Health::phq9List');
 });
 
-// Leave empty function for preflight calls. CodeIgniter handles the CORS filter logic automatically if it catches the route.
-$routes->options('(:any)', function() {});
+// for preflight API calls
+$routes->options('(:any)', function() {
+    return response()->setStatusCode(204);
+});
