@@ -27,7 +27,7 @@ class Api extends BaseController
             }
         }
         // Count countries
-        $countries   = $model2->select('country_code, COUNT(1) AS country_count')->where('date_entry <=', date(DATE_FORMAT_DB))->groupBy('country_code')->findAll();
+        $countries   = $model2->select('country_code, COUNT(1) AS country_count')->where('date_entry <=', date(DATE_FORMAT_DB))->where('journey_status', 'as_planned')->groupBy('country_code')->findAll();
         $country_cnt = [];
         foreach ($countries as $country) {
             $country_cnt[$country['country_code']] = $country['country_count'];
