@@ -34,17 +34,17 @@ $this->extend($layout);
                         </script>
                         <div id="chart_1" style="width:100%;height:500px"></div>
                         <table class="table table-striped table-hover table-borderless table-sm mt-3">
-                            <?php $total = 0; ?>
+                            <?php $grand_total = 0; ?>
                             <?php foreach ($chart_1 as $row) : ?>
                             <tr class="row-<?= str_replace(' ', '-', strtolower($row['account'])) ?>">
                                 <td><?= $row['account'] ?></td>
                                 <td class="text-end"><?= currency_format('SGD', $row['value']) ?></td>
-                                <?php $total += $row['value']; ?>
+                                <?php $grand_total += $row['value']; ?>
                             </tr>
                             <?php endforeach; ?>
                             <tr>
                                 <td><b>TOTAL</b></td>
-                                <td class="text-end"><?= currency_format('SGD', $total) ?></td>
+                                <td class="text-end"><?= currency_format('SGD', $grand_total) ?></td>
                             </tr>
                         </table>
                     </div>
@@ -80,14 +80,14 @@ $this->extend($layout);
                     <div class="card-body pt-3">
                         <h2>Grand Total</h2>
                         <?php
-                        $all_i_have = $total + $inv['investment_value'];
-                        $total_pc   = ceil($total / $all_i_have * 100);
+                        $all_i_have = $grand_total + $inv['investment_value'];
+                        $total_pc   = ceil($grand_total / $all_i_have * 100);
                         $inv_pc     = 100 - $total_pc;
                         ?>
                         <h3 class="text-center"><?= currency_format('SGD', $all_i_have) ?></h3>
                         <div class="row">
                             <div class="col">
-                                <h4>CPF:<br/><?= currency_format('SGD', $total) ?></h4>
+                                <h4>CPF:<br/><?= currency_format('SGD', $grand_total) ?></h4>
                             </div>
                             <div class="col text-end">
                                 <h4>INV:<br/><?= currency_format('SGD', $inv['investment_value']) ?></h4>
