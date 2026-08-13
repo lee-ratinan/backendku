@@ -22,8 +22,8 @@ function generate_form_field(string $id, array $configuration, int|string|array 
     $required   = (@$configuration['required'] ? 'required' : '');
     $readonly   = (@$configuration['readonly'] ? 'readonly' : '');
     $disabled   = (@$configuration['disabled'] ? 'disabled' : '');
-    $min        = (is_numeric(@$configuration['min']) ? "min='{$configuration['min']}'" : '');
-    $max        = (is_numeric(@$configuration['max']) ? "max='{$configuration['max']}'" : '');
+    $min        = (@$configuration['min'] ? "min='{$configuration['min']}'" : '');
+    $max        = (@$configuration['max'] ? "max='{$configuration['max']}'" : '');
     $minlength  = (@$configuration['minlength'] ? "minlength='{$configuration['minlength']}'" : '');
     $maxlength  = (@$configuration['maxlength'] ? "maxlength='{$configuration['maxlength']}'" : '');
     $label      = (isset($configuration['label_key']) ? lang($configuration['label_key']) : @$configuration['label']);

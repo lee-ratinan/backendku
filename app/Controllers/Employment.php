@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Models\CompanyCPFInvestmentSnapshotModel;
 use App\Models\CompanyCPFModel;
 use App\Models\CompanyCPFStatementModel;
 use App\Models\CompanyFreelanceClientModel;
@@ -1206,7 +1207,9 @@ class Employment extends BaseController
     {
         $session   = session();
         $cpf_model = new CompanyCPFModel();
+        $inv_model = new CompanyCPFInvestmentSnapshotModel();
         $records   = $cpf_model->where('transaction_code', 'INV')->findAll();
+        $inv       = $inv_model->orderBy('snapshot_date', 'DESC')->findAll(25);
         $total_inv = 0.0;
         $total_fee = 0.0;
         foreach ($records as $record) {
@@ -1217,7 +1220,17 @@ class Employment extends BaseController
                 $total_fee += $total;
             }
         }
-        $data = [
+        $graph = [];
+        foreach ($inv as $row) {
+            $graph[$row['snapshot_date']] = [
+                'date'  => intval(strtotime($row['snapshot_date']) . '000'),
+                'value' => floatval($row['investment_value'])
+            ];
+        }
+        $latest_inv_value = array_values($graph)[0]['value'];
+        $latest_date      = array_values($graph)[0]['date'];
+        ksort($graph);
+        $data  = [
             'page_title'                => 'CPF Investment',
             'slug_group'                => 'employment',
             'slug'                      => '/office/employment/cpf/investment',
@@ -1226,9 +1239,47 @@ class Employment extends BaseController
             'current_role'              => $session->current_role,
             'total_investment_deducted' => $total_inv,
             'total_fees'                => $total_fee,
+            'chart_data'                => array_values($graph),
+            'latest_inv_value'          => $latest_inv_value,
+            'latest_date'               => $latest_date,
+            'config'                    => $inv_model->getConfiguration()
         ];
         return view('employment_cpf_investment', $data);
     }
+
+    /**
+     * @throws ReflectionException
+     */
+    public function cpfInvestmentSnapshot(): ResponseInterface
+    {
+        $cpf_model = new CompanyCPFInvestmentSnapshotModel();
+        $log_model = new LogActivityModel();
+        $session   = session();
+        $data      = [];
+        $fields    = [
+            'snapshot_date',
+            'investment_value',
+        ];
+        foreach ($fields as $field) {
+            $value        = $this->request->getPost($field);
+            $data[$field] = (!empty($value)) ? $value : null;
+        }
+        $data['created_by'] = $session->user_id;
+        // INSERT
+        if ($id = $cpf_model->insert($data)) {
+            $log_model->insertTableUpdate('company_cpf_investment_snapshot', $id, $data, $session->user_id);
+            return $this->response->setJSON([
+                'status'   => 'success',
+                'toast'    => 'Successfully created new CPF snapshot.',
+                'redirect' => base_url($session->locale . '/office/employment/cpf/investment/')
+            ]);
+        }
+        return $this->response->setJSON([
+            'status'  => 'error',
+            'toast'   => lang('System.status_message.generic_error')
+        ])->setStatusCode(HTTP_STATUS_SOMETHING_WRONG);
+    }
+
     /************************************************************************
      * Freelance
      ************************************************************************/

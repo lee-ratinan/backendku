@@ -103,6 +103,7 @@ $routes->group('{locale}/office', ['filter' => 'auth'], static function ($routes
     $routes->get('employment/cpf/stats/(:any)', 'Employment::cpfStatistics/$1');
     $routes->get('employment/cpf/contribution', 'Employment::cpfContribution');
     $routes->get('employment/cpf/investment', 'Employment::cpfInvestment');
+    $routes->post('employment/cpf/investment/snapshot', 'Employment::cpfInvestmentSnapshot');
     // company_freelance_project
     $routes->get('employment/freelance', 'Employment::freelance');
     $routes->post('employment/freelance', 'Employment::freelanceList');

@@ -6,7 +6,7 @@ use CodeIgniter\Model;
 
 class CompanyCPFInvestmentSnapshotModel extends Model
 {
-    protected $table = 'company_cpf';
+    protected $table = 'company_cpf_investment_snapshot';
     protected $primaryKey = 'id';
     protected $allowedFields = [
         'id',
@@ -20,4 +20,33 @@ class CompanyCPFInvestmentSnapshotModel extends Model
     protected $useTimestamps = true;
     protected $createdField = 'created_at';
     protected $updatedField = 'updated_at';
+
+    private array $configurations = [
+        'snapshot_date'   => [
+            'type'        => 'date',
+            'label'       => 'Date',
+            'required'    => true
+        ],
+        'investment_value' => [
+            'type'        => 'text',
+            'label'       => 'Current Investment Value',
+            'required'    => true,
+            'min'         => 100
+        ]
+    ];
+
+    /**
+     * @param string|null $key
+     * @return array|array[]
+     */
+    public function getConfiguration(string $key = null): array
+    {
+        $configurations = $this->configurations;
+        $configurations['snapshot_date']['default'] = date(DATE_FORMAT_DB);
+        $configurations['snapshot_date']['max']     = date(DATE_FORMAT_DB);
+        if (!is_null($key) && array_key_exists($key, $configurations)) {
+            return $configurations[$key];
+        }
+        return $configurations;
+    }
 }
