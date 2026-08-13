@@ -49,7 +49,7 @@ ServerSignature Off
 # Disable server signature end
 
 <IfModule mod_headers.c>
-    Header set Access-Control-Allow-Origin "https://www.example.com"
+    Header set Access-Control-Allow-Origin "https://lee.ratinan.com"
     Header set Access-Control-Allow-Methods "GET, POST, OPTIONS, PUT, DELETE"
     Header set Access-Control-Allow-Headers "Origin, X-Requested-With, Content-Type, Accept, Authorization"
 </IfModule>
