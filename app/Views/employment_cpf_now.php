@@ -75,6 +75,35 @@ $this->extend($layout);
                     </div>
                 </div>
             </div>
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body pt-3">
+                        <h2>Grand Total</h2>
+                        <?php
+                        $all_i_have = $total + $inv['investment_value'];
+                        $total_pc   = ceil($total / $all_i_have * 100);
+                        $inv_pc     = 100 - $total_pc;
+                        ?>
+                        <h3 class="text-center"><?= currency_format('SGD', $all_i_have) ?></h3>
+                        <div class="row">
+                            <div class="col">
+                                <h4>CPF:<br/><?= currency_format('SGD', $total) ?></h4>
+                            </div>
+                            <div class="col text-end">
+                                <h4>INV:<br/><?= currency_format('SGD', $inv['investment_value']) ?></h4>
+                            </div>
+                        </div>
+                        <div class="progress-stacked">
+                            <div class="progress" role="progressbar" aria-label="CPF" aria-valuenow="<?= $total_pc ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?= $total_pc ?>%">
+                                <div class="progress-bar bg-warning"></div>
+                            </div>
+                            <div class="progress" role="progressbar" aria-label="INV" aria-valuenow="<?= $inv_pc ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?= $inv_pc ?>%">
+                                <div class="progress-bar bg-info"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 <?php $this->endSection() ?>

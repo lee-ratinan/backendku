@@ -875,7 +875,9 @@ class Employment extends BaseController
     {
         $session   = session();
         $cpf_model = new CompanyCPFModel();
+        $inv_model = new CompanyCPFInvestmentSnapshotModel();
         $latest    = $cpf_model->orderBy('id', 'desc')->first();
+        $inv       = $inv_model->orderBy('id', 'desc')->first();
         $fields    = ['ordinary_balance', 'special_balance', 'medisave_balance'];
         $chart_1   = [];
         foreach ($fields as $field) {
@@ -895,6 +897,7 @@ class Employment extends BaseController
             'current_role' => $session->current_role,
             'chart_1'      => $chart_1,
             'chart_2'      => $chart_2,
+            'inv'          => $inv
         ];
         return view('employment_cpf_now', $data);
     }
