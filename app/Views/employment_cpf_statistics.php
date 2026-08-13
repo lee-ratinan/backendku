@@ -85,6 +85,23 @@ $this->extend($layout);
                                 </tr>
                                 </tfoot>
                             </table>
+                            <?php
+                            $total_movement = $total['pos'] + $total['neg'];
+                            $positive_pc    = 0;
+                            $negative_pc    = 0;
+                            if (0 < $total_movement) {
+                                $positive_pc = ceil($total['pos'] / $total_movement * 100);
+                                $negative_pc = 100 - $positive_pc;
+                            }
+                            ?>
+                        </div>
+                        <div class="progress-stacked my-3" style="height: 25px">
+                            <div class="progress" role="progressbar" aria-label="Positive" aria-valuenow="<?= $positive_pc ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?= $positive_pc ?>%; height: 25px; font-size: 1rem;">
+                                <div class="progress-bar bg-success">+<?= currency_format('SGD', $total['pos']) ?></div>
+                            </div>
+                            <div class="progress" role="progressbar" aria-label="Negative" aria-valuenow="<?= $negative_pc ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?= $negative_pc ?>%; height: 25px; font-size: 1rem;">
+                                <div class="progress-bar bg-danger">-<?= currency_format('SGD', $total['neg']) ?></div>
+                            </div>
                         </div>
                         <h4>Account Movements</h4>
                         <div class="table-responsive">
