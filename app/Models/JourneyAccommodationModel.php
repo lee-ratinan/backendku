@@ -101,7 +101,7 @@ class JourneyAccommodationModel extends Model
             'maxlength' => 24,
             'required' => true,
             'placeholder' => 'AGODA',
-            'details'     => 'e.g. AGODA'
+            'copy-to-field' => ['AGODA']
         ],
         'room_type' => [
             'type' => 'text',

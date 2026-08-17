@@ -95,15 +95,17 @@ class JourneyMasterModel extends Model
             'required'    => false,
             'maxlength'   => 128,
             'placeholder' => 'Visitor Visa',
-            'details'     => 'Use: Permanent Resident, Citizen, Visitor/Tourist, or actual Visa type'
+            'details'     => 'Use: Permanent Resident, Citizen, Visitor/Tourist, or actual Visa type',
+            'copy-to-field' => ['Permanent Resident', 'Citizen', 'Visitor/Tourist']
         ],
         'trip_tags'     => [
             'type'        => 'text',
             'label'       => 'Trip Tags',
             'required'    => false,
             'maxlength'   => 256,
-            'placeholder' => 'vacation, family, education, family, religious',
-            'details'     => 'Use comma to separate tags. Example: vacation, family, education, family, religious, etc.'
+            'placeholder' => 'vacation, family, education, religious',
+            'details'     => 'Use comma to separate tags. Example: vacation, family, education, family, religious, etc.',
+            'copy-to-field' => ['vacation', 'family', 'education', 'religious', 'work']
         ],
         'journey_details'     => [
             'type'        => 'text',

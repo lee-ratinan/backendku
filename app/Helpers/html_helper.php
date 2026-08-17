@@ -34,6 +34,9 @@ function generate_form_field(string $id, array $configuration, int|string|array 
         if (!empty($configuration['details'])) {
             echo "<small class='form-text text-muted small'>" . lang($configuration['details']) . "</small>";
         }
+        if (!empty($configuration['copy-to-field'])) {
+            generate_link_for_copy_to_field($configuration['copy-to-field'], $id);
+        }
         echo "</div>";
     } else if ('tel' == $input_type) {
         $country_codes = lang('ListCallingCode.codes');
@@ -97,6 +100,17 @@ function generate_form_field(string $id, array $configuration, int|string|array 
             echo "</div>";
         }
         echo '</div></div>';
+    }
+}
+
+function generate_link_for_copy_to_field (array $items_to_copy, string $target_field_id): void
+{
+    if (!empty($items_to_copy)) {
+        echo '<div class="form-text text-muted small">';
+        foreach ($items_to_copy as $value) {
+            echo '<a href="#" class="copy-to-field me-3" data-target-id="' . $target_field_id . '" data-str-to-copy="' . $value . '">' . $value . '</a>';
+        }
+        echo '</div>';
     }
 }
 

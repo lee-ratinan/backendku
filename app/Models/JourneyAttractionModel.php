@@ -66,7 +66,8 @@ class JourneyAttractionModel extends Model
             'label'       => 'Attraction Type',
             'maxlength'   => 24,
             'required'    => true,
-            'placeholder' => 'Attraction Type'
+            'placeholder' => 'Attraction Type',
+            'copy-to-field' => ['Onsen', 'Observation', 'Cultural', 'Pride/Gay', 'Massage/Spa', 'Night Market/Old Street', 'Park/Natural/Animal', 'Performance', 'Theme Park', 'Water Park', 'Museum', 'Train']
         ],
         'price_amount'          => [
             'type'        => 'number',
@@ -140,7 +141,7 @@ class JourneyAttractionModel extends Model
         $currencies     = lang('ListCurrencies.currencies');
         $all_currencies = [];
         foreach ($currencies as $key => $currency) {
-            $all_currencies[$key] = '[' . $key . '] ' . $currency['currency_name'];
+            $all_currencies[$key] = $key . ' - ' . $currency['currency_name'];
         }
         $configurations['price_currency_code']['options']    = $all_currencies;
         $configurations['charged_currency_code']['options']  = $all_currencies;

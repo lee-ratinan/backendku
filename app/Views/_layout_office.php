@@ -383,6 +383,7 @@
     let DateTime = luxon.DateTime;
     function utcToLocal(utc) {if ('' !== utc) {return DateTime.fromISO(utc).toLocaleString(DateTime.DATETIME_MED);} else {return '-';}}
     $('.avatar-img').on('click', function() {$(this).toggleClass('expanded');});
+    $('.copy-to-field').click(function () {let target_id = $(this).data('target-id'), str_to_copy = $(this).data('str-to-copy');$('#'+target_id).val(str_to_copy);});
 </script>
 </body>
 </html>

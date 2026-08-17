@@ -36,10 +36,10 @@ class OocaLogModel extends Model
             'required' => true,
         ],
         'psychologist_name'  => [
-            'type'     => 'text',
-            'label'    => '<i class="fa-solid fa-user"></i> ชื่อผู้ให้คำปรึกษา',
-            'required' => true,
-            'details'  => 'Mostly นายพรเลิศ ชุตินธรางค์กูล',
+            'type'          => 'text',
+            'label'         => '<i class="fa-solid fa-user"></i> ชื่อผู้ให้คำปรึกษา',
+            'required'      => true,
+            'copy-to-field' => ['นายพรเลิศ ชุตินธรางค์กูล']
         ],
         'note_what_happened'  => [
             'type'     => 'tinymce',

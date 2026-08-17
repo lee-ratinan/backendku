@@ -25,7 +25,7 @@ $this->extend($layout);
     </div>
     <section class="section">
         <div class="row">
-            <div class="col-12 col-lg-6">
+            <div class="col-12 col-lg-8">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title"><?= $page_title ?></h5>
@@ -132,17 +132,30 @@ $this->extend($layout);
                                 'label'    => '<span class="badge bg-danger rounded-pill">Previous Company Match YTD</span>',
                                 'readonly' => true,
                             ];
+                            echo '<div class="row">';
+                            $separators = [
+                                'Ordinary Account',
+                                'Special Account',
+                                'MediSave Account',
+                                'All Accounts',
+                                'Contribution Data',
+                                'My Contribution',
+                                'Company Match'
+                            ];
+                            $counter = 0;
                             foreach ($fields as $field) {
                                 if ('---' == $field) {
-                                    echo '<div class="text-center mb-3"><span class="badge rounded-pill text-bg-secondary w-100"><i class="fa-solid fa-star"></i></span></div>';
-                                } else if ('+' == $field) {
-                                    echo '<div class="text-center mb-3"><span class="badge rounded-pill text-bg-light w-100"><i class="fa-solid fa-plus-circle"></i></span></div>';
-                                } else if ('=' == $field) {
-                                    echo '<div class="text-center mb-3"><span class="badge rounded-pill text-bg-light w-100"><i class="fa-solid fa-equals"></i></span></div>';
+                                    echo '<div class="text-center mb-3">' . @$separators[$counter] . '</div>';
+                                    $counter++;
+                                } else if ('+' == $field || '=' == $field) {
+                                    echo '';
                                 } else {
+                                    echo '<div class="col-4">';
                                     generate_form_field($field, $config[$field], @$cpf[$field]);
+                                    echo '</div>';
                                 }
                             }
+                            echo '</div>';
                             echo '<div class="text-end"><button class="btn btn-primary btn-sm" id="btn-save-cpf"><i class="fa-solid fa-save"></i> Save</button></div>';
                         } else {
                             echo '<table class="table table-sm table-borderless">';
