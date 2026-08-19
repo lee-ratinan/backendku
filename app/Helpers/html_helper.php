@@ -600,6 +600,99 @@ function generate_line_chart_script(array $chart_data, string $div_id, string $c
 }
 
 /**
+ * Generate line chart script - AmCharts5
+ *
+ * @param array        $chart_data
+ * @param string       $div_id
+ * @param string       $category_field
+ * @param array|string $value_fields   e.g. ['total', 'tax'] or ['total' => 'Total Sales', 'tax' => 'Tax Amount']
+ * @return string
+ */
+function generate_lines_chart_script(array $chart_data, string $div_id, string $category_field, array|string $value_fields): string
+{
+    // Normalize string to array or keep key-value mappings
+    $fields = [];
+    if (is_string($value_fields)) {
+        $fields[$value_fields] = ucfirst($value_fields);
+    } else {
+        foreach ($value_fields as $key => $val) {
+            if (is_numeric($key)) {
+                $fields[$val] = ucfirst($val);
+            } else {
+                $fields[$key] = $val;
+            }
+        }
+    }
+
+    // Build JavaScript series generation dynamically
+    $series_js = '';
+    foreach ($fields as $field_key => $field_label) {
+        $series_js .= '
+        let series_' . $field_key . ' = chart.series.push(am5xy.LineSeries.new(root, {
+            name: ' . json_encode($field_label) . ',
+            xAxis: xAxis,
+            yAxis: yAxis,
+            valueYField: ' . json_encode($field_key) . ',
+            valueXField: ' . json_encode($category_field) . ',
+            tooltip: am5.Tooltip.new(root, { labelText: "{name}: SGD {valueY}" })
+        }));
+        series_' . $field_key . '.data.setAll(data);
+        series_' . $field_key . '.appear(1000);
+        legend.data.push(series_' . $field_key . ');
+        ';
+    }
+
+    return 'document.addEventListener("DOMContentLoaded", function () {
+    am5.forceUseCanvas = true;
+    am5.ready(function() {
+    let root = am5.Root.new(' . json_encode($div_id) . ');
+    root.setThemes([am5themes_Animated.new(root)]);
+    
+    // Automatic date format handling for DateAxis strings
+    root.dateFormatter.setAll({
+        dateFormat: "MMM yyyy",
+        dateFields: ["valueX"]
+    });
+
+    let chart = root.container.children.push(am5xy.XYChart.new(root, {
+        panX: true,
+        panY: true,
+        wheelX: "panX",
+        wheelY: "zoomX",
+        pinchZoomX: true,
+        paddingLeft: 0
+    }));
+
+    let cursor = chart.set("cursor", am5xy.XYCursor.new(root, { behavior: "none" }));
+    cursor.lineY.set("visible", false);
+
+    let xAxis = chart.xAxes.push(am5xy.DateAxis.new(root, {
+        maxDeviation: 0.2,
+        baseInterval: { timeUnit: "month", count: 1 },
+        renderer: am5xy.AxisRendererX.new(root, { minorGridEnabled: true }),
+        tooltip: am5.Tooltip.new(root, {})
+    }));
+
+    let yAxis = chart.yAxes.push(am5xy.ValueAxis.new(root, {
+        renderer: am5xy.AxisRendererY.new(root, { pan: "zoom" })
+    }));
+
+    let legend = chart.children.push(am5.Legend.new(root, {
+        centerX: am5.p50,
+        x: am5.p50
+    }));
+
+    let data = ' . json_encode($chart_data) . ';
+
+    ' . $series_js . '
+
+    chart.set("scrollbarX", am5.Scrollbar.new(root, { orientation: "horizontal" }));
+    chart.appear(1000, 100);
+    });
+    });';
+}
+
+/**
  * @param string $text
  * @return array
  */

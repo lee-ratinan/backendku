@@ -574,6 +574,7 @@ class Employment extends BaseController
         $base_amount    = 0;
         $base_amounts   = [];
         $by_year        = [];
+        $chart_data_3   = [];
         foreach ($salaries as $salary) {
             if ($salary['base_amount'] != $base_amount && $salary['base_amount'] > 0) {
                 $base_amounts[$salary['pay_date']] = $salary['base_amount'];
@@ -582,6 +583,11 @@ class Employment extends BaseController
             $year                       = substr($salary['pay_date'], 0, 4);
             $by_year[$year]['subtotal'] = (isset($by_year[$year]['subtotal']) ? $by_year[$year]['subtotal'] += $salary['subtotal_amount'] : $salary['subtotal_amount']);
             $by_year[$year]['total']    = (isset($by_year[$year]['total'])    ? $by_year[$year]['total']    += $salary['total_amount']    : $salary['total_amount']);
+            $chart_data_3[] = [
+                'month'    => strtotime($salary['pay_date'])*1000,
+                'subtotal' => round($salary['subtotal_amount']),
+                'total'    => round($salary['total_amount'])
+            ];
         }
         $chart_data     = [];
         foreach ($by_year as $year => $data) {
@@ -614,6 +620,7 @@ class Employment extends BaseController
             'company_list'   => $company_model->whereIn('id', $company_ids)->findAll(),
             'chart_data'     => $chart_data,
             'chart_data_2'   => $chart_data_2,
+            'chart_data_3'   => $chart_data_3,
         ];
         return view('employment_salary_statistics_company', $data);
     }

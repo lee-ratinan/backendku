@@ -58,6 +58,14 @@ $this->extend($layout);
                                 <?php endif; ?>
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="col">
+                                <script>
+                                    <?php echo generate_lines_chart_script($chart_data_3, 'chart_3', 'month', ['total', 'subtotal']); ?>
+                                </script>
+                                <div id="chart_3" style="height:400px;"></div>
+                            </div>
+                        </div>
                         <h4 class="mt-3">Summary</h4>
                         <div class="table-responsive">
                             <table id="summary" class="table table-striped table-hover table-borderless">
