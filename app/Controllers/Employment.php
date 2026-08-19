@@ -574,7 +574,7 @@ class Employment extends BaseController
         $base_amount    = 0;
         $base_amounts   = [];
         $by_year        = [];
-        $chart_data_3   = [];
+        $for_c3         = [];
         foreach ($salaries as $salary) {
             if ($salary['base_amount'] != $base_amount && $salary['base_amount'] > 0) {
                 $base_amounts[$salary['pay_date']] = $salary['base_amount'];
@@ -583,8 +583,8 @@ class Employment extends BaseController
             $year                       = substr($salary['pay_date'], 0, 4);
             $by_year[$year]['subtotal'] = (isset($by_year[$year]['subtotal']) ? $by_year[$year]['subtotal'] += $salary['subtotal_amount'] : $salary['subtotal_amount']);
             $by_year[$year]['total']    = (isset($by_year[$year]['total'])    ? $by_year[$year]['total']    += $salary['total_amount']    : $salary['total_amount']);
-            $chart_data_3[] = [
-                'month'    => strtotime($salary['pay_date'])*1000,
+            $month_year                 = substr($salary['pay_date'], 0, 7);
+            $for_c3[$month_year][]      = [
                 'subtotal' => round($salary['subtotal_amount']),
                 'total'    => round($salary['total_amount'])
             ];
@@ -602,6 +602,20 @@ class Employment extends BaseController
             $chart_data_2[] = [
                 'month' => date(MONTH_FORMAT_UI, strtotime($date)),
                 'base'  => round($amount)
+            ];
+        }
+        $chart_data_3   = [];
+        foreach ($for_c3 as $month_year => $data) {
+            $total    = 0;
+            $subtotal = 0;
+            foreach ($data as $row) {
+                $total    += $row['total'];
+                $subtotal += $row['subtotal'];
+            }
+            $chart_data_3[] = [
+                'month'    => strtotime($month_year . '-01') * 1000,
+                'total'    => round($total),
+                'subtotal' => round($subtotal)
             ];
         }
         $company_ids    = $salary_model->select('company_id')->distinct()->findAll();
