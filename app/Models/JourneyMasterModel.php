@@ -215,16 +215,25 @@ class JourneyMasterModel extends Model
         }
         $session    = session();
         $locale     = $session->locale;
+        if ('journey_master.date_entry' == $order_column) {
+            if ('asc' == $order_direction) {
+                $this->orderBy('journey_master.date_entry ASC, journey_master.date_exit ASC');
+            } else {
+                $this->orderBy('journey_master.date_exit DESC, journey_master.date_entry DESC');
+            }
+        } else {
+            $this->orderBy($order_column, $order_direction);
+        }
         $raw_result = $this->select('journey_master.*, entry_port.port_name AS entry_port_name, exit_port.port_name AS exit_port_name')
             ->join('journey_port AS entry_port', 'journey_master.entry_port_id = entry_port.id', 'left outer')
-            ->join('journey_port AS exit_port',  'journey_master.exit_port_id = exit_port.id', 'left outer')
-            ->orderBy($order_column, $order_direction)->limit($length, $start)->findAll();
+            ->join('journey_port AS exit_port', 'journey_master.exit_port_id = exit_port.id', 'left outer')
+            ->limit($length, $start)->findAll();
         $result     = [];
         $countries  = lang('ListCountries.countries');
         $today      = date('Y-m-d');
         foreach ($raw_result as $row) {
             $new_id       = $row['id'] * self::ID_NONCE;
-            if (empty($row['date_exit'])) {
+            if ('2099-12-31' == $row['date_exit']) {
                 if ($today < $row['date_entry']) {
                     $row['day_count'] = '∞';
                 } else {
@@ -251,7 +260,7 @@ class JourneyMasterModel extends Model
                 $row['id'],
                 '<span class="flag-icon flag-icon-' . strtolower($row['country_code']) . '"></span><h5 class="' . $class . '">' . $countries[$row['country_code']]['common_name'] . '</h5>',
                 (empty($row['date_entry']) ? '' : date(DATE_FORMAT_UI, strtotime($row['date_entry']))),
-                (empty($row['date_exit']) ? '' : date(DATE_FORMAT_UI, strtotime($row['date_exit']))),
+                (('2099-12-31' == $row['date_exit']) ? 'no plan~' : date(DATE_FORMAT_UI, strtotime($row['date_exit']))),
                 $row['day_count'],
                 $row['entry_port_name'],
                 $row['exit_port_name'],

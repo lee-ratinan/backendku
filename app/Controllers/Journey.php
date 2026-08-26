@@ -77,6 +77,7 @@ class Journey extends BaseController
         $order_column_index = $order[0]['column'] ?? 0;
         $order_column       = $columns[$order_column_index];
         $order_direction    = $order[0]['dir'] ?? 'desc';
+        $order_direction    = strtolower($order_direction);
         $search_value       = $search['value'];
         $country_code       = $this->request->getPost('country_code');
         $year               = $this->request->getPost('year');
@@ -167,6 +168,8 @@ class Journey extends BaseController
         }
         if (!empty($date_exit)) {
             $data['date_exit'] = $date_exit;
+        } else {
+            $data['date_exit'] = '2099-12-31';
         }
         if (!empty($entry_port_id)) {
             $data['entry_port_id'] = $entry_port_id;
