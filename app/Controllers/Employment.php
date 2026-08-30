@@ -9,6 +9,8 @@ use App\Models\CompanyFreelanceClientModel;
 use App\Models\CompanyFreelanceIncomeModel;
 use App\Models\CompanyFreelanceProjectModel;
 use App\Models\CompanyMasterModel;
+use App\Models\CompanyPartTimePeriodModel;
+use App\Models\CompanyPartTimeScheduleModel;
 use App\Models\CompanySalaryModel;
 use App\Models\LogActivityModel;
 use CodeIgniter\Exceptions\PageNotFoundException;
@@ -1926,6 +1928,107 @@ class Employment extends BaseController
             'income_records'    => $income_records
         ];
         return view('employment_total_income', $data);
+    }
+
+    /********************************************************************************************
+     * PART-TIME
+     ********************************************************************************************/
+
+    public function partTime(): string
+    {
+        $lang      = $this->request->getLocale();
+        $ptp_model = new CompanyPartTimePeriodModel();
+        $periods   = $ptp_model->findAll();
+        $results   = [];
+        foreach ($periods as $row) {
+            $results[$row['id']] = date(DATE_FORMAT_UI, strtotime($row['period_start'])) . ' - ' . date(DATE_FORMAT_UI, strtotime($row['period_end']));
+        }
+        $data = [
+            'lang'       => $lang,
+            'page_title' => 'Part Time Schedule',
+            'slug_group' => 'employment',
+            'slug'       => '/office/employment/part-time',
+            'periods'    => $results,
+        ];
+        return view('employment_part_time', $data);
+    }
+
+    public function partTimeList(): ResponseInterface
+    {
+        $model              = new CompanyPartTimeScheduleModel();
+        $columns            = [
+            'period_start',
+            'scheduled_start',
+            'scheduled_end',
+            'scheduled_hours',
+            'scheduled_break',
+            'work_location'
+        ];
+        $order              = $this->request->getPost('order');
+        $start              = $this->request->getPost('start');
+        $length             = $this->request->getPost('length');
+        $order_column_index = $order[0]['column'] ?? 0;
+        $order_column       = $columns[$order_column_index];
+        $order_direction    = $order[0]['dir'] ?? 'desc';
+        $start_date         = $this->request->getPost('start_date');
+        $end_date           = $this->request->getPost('end_date');
+        $period_id          = intval($this->request->getPost('period_id'));
+        $result             = $model->getDataTables($start, $length, $order_column, $order_direction, $start_date, $end_date, $period_id);
+        return $this->response->setJSON([
+            'draw'            => $this->request->getPost('draw'),
+            'recordsTotal'    => $result['recordsTotal'],
+            'recordsFiltered' => $result['recordsFiltered'],
+            'data'            => $result['data'],
+            'footer'          => $result['footer']
+        ]);
+    }
+
+
+
+
+    public function partTimePayPeriod(): string
+    {
+        $lang    = $this->request->getLocale();
+        $data                  = [
+            'lang'              => $lang,
+            'page_title'        => 'Part Time Pay Period',
+            'slug_group'        => 'employment',
+            'slug'              => '/office/employment/part-time/pay-period',
+        ];
+        return view('employment_part_time_period', $data);
+    }
+
+    public function partTimePayPeriodList(): ResponseInterface
+    {
+        $model              = new CompanyPartTimePeriodModel();
+        $columns            = [
+            'company_trade_name',
+            'period_start',
+            'period_end',
+            'scheduled_hours',
+            'actual_hours',
+            'subtotal_income',
+            'income_deduction',
+            'total_income',
+            'average_hourly_income',
+            'google_drive_link',
+        ];
+        $order              = $this->request->getPost('order');
+        $start              = $this->request->getPost('start');
+        $length             = $this->request->getPost('length');
+        $order_column_index = $order[0]['column'] ?? 0;
+        $order_column       = $columns[$order_column_index];
+        $order_direction    = $order[0]['dir'] ?? 'desc';
+        $start_date         = $this->request->getPost('start_date');
+        $end_date           = $this->request->getPost('end_date');
+        $result             = $model->getDataTables($start, $length, $order_column, $order_direction, $start_date, $end_date);
+        return $this->response->setJSON([
+            'draw'            => $this->request->getPost('draw'),
+            'recordsTotal'    => $result['recordsTotal'],
+            'recordsFiltered' => $result['recordsFiltered'],
+            'data'            => $result['data'],
+            'footer'          => $result['footer']
+        ]);
     }
 
 }

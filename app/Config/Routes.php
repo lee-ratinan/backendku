@@ -124,6 +124,16 @@ $routes->group('{locale}/office', ['filter' => 'auth'], static function ($routes
     $routes->get('employment/freelance-income/edit/(:any)', 'Employment::freelanceIncomeEdit/$1');
     $routes->post('employment/freelance-income/edit', 'Employment::freelanceIncomeSave');
     $routes->get('employment/freelance-income/stats', 'Employment::freelanceIncomeStats');
+    // company_pt_period +company_pt_schedule
+    $routes->get('employment/part-time', 'Employment::partTime'); // list schedule
+    $routes->post('employment/part-time', 'Employment::partTimeList'); // list API
+    $routes->get('employment/part-time/edit/(:any)', 'Employment::partTimeEdit/$1'); // add/edit schedule
+    $routes->post('employment/part-time/edit', 'Employment::partTimeSave'); // save schedule
+    $routes->get('employment/part-time/pay-period', 'Employment::partTimePayPeriod'); // list period
+    $routes->post('employment/part-time/pay-period', 'Employment::partTimePayPeriodList');
+    $routes->get('employment/part-time/pay-period/edit/(:any)', 'Employment::partTimePayPeriodEdit/$1'); // edit pay period
+    $routes->post('employment/part-time/pay-period/edit', 'Employment::partTimePayPeriodSave'); // save pay period
+    $routes->get('employment/part-time/stats', 'Employment::partTimeStatistics');
     // Total income
     $routes->get('employment/company/total-income', 'Employment::totalIncome');
     $routes->get('employment/company/total-income/(:num)', 'Employment::totalIncome/$1');

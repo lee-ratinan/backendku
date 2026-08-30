@@ -34,16 +34,14 @@
             <ul class="sidebar-nav pb-5 mb-5">
                 <li class="sidebar-header p-0">
                     <?php
-                    switch ($session->current_role) {
-                        case 'journey':
-                            echo '<img class="img-fluid" src="' . base_url('appstack/sidebar_journey.jpg') . '" class="rounded" alt="Journey">';
-                            break;
-                        case 'finance':
-                            echo '<img class="img-fluid" src="' . base_url('appstack/sidebar_finance.jpg') . '" class="rounded" alt="Finance">';
-                            break;
-                        default:
-                            echo '<img class="img-fluid" src="' . base_url('appstack/sidebar_main.jpg') . '" class="rounded" alt="Header">';
-                            break;
+                    if (!empty($slug_group)) {
+                        echo match ($slug_group) {
+                            'trip' => '<img class="img-fluid" src="' . base_url('appstack/sidebar_journey.jpg') . '" class="rounded" alt="Journey">',
+                            'employment', 'tax' => '<img class="img-fluid" src="' . base_url('appstack/sidebar_finance.jpg') . '" class="rounded" alt="Finance">',
+                            default => '<img class="img-fluid" src="' . base_url('appstack/sidebar_main.jpg') . '" class="rounded" alt="Header">',
+                        };
+                    } else {
+                        echo '<img class="img-fluid" src="' . base_url('appstack/sidebar_main.jpg') . '" class="rounded" alt="Header">';
                     }
                     ?>
                 </li>
@@ -81,6 +79,9 @@
                                     '/office/employment/freelance-client'       => 'Freelance Client',
                                     '/office/employment/freelance-income'       => 'Freelance Income',
                                     '/office/employment/freelance-income/stats' => '<i class="fa-solid fa-chart-line"></i> Statistics',
+                                    '/office/employment/part-time'              => 'Part-Time Job',
+                                    '/office/employment/part-time/pay-period'   => '<i class="fa-solid fa-calendar-check"></i> Part-Time Pay Period',
+                                    '/office/employment/part-time/stats'        => '<i class="fa-solid fa-chart-bar"></i> Statistics',
                                     '/office/employment/cpf'                    => 'CPF',
                                     '/office/employment/cpf/contribution'       => '<i class="fa-solid fa-chart-bar"></i> CPF Contribution',
                                     '/office/employment/cpf/investment'         => '<i class="fa-solid fa-chart-bar"></i> CPF Investment',
