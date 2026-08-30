@@ -2008,6 +2008,34 @@ class Employment extends BaseController
         ]);
     }
 
+    public function partTimeEdit(int|string $schedule_id)
+    {
+        $lang  = $this->request->getLocale();
+        $model = new CompanyPartTimeScheduleModel();
+        $mode  = 'edit';
+        $row   = [];
+        $page  = 'Edit Part Time Schedule';
+        if ('new' == $schedule_id) {
+            $mode        = 'new';
+            $schedule_id = 0;
+            $page        = 'New Part Time Schedule';
+        } else {
+            $schedule_id = $schedule_id/$model::ID_NONCE;
+            $row         = $model->find($schedule_id);
+        }
+        $data = [
+            'lang'       => $lang,
+            'page_title' => $page,
+            'slug_group' => 'employment',
+            'slug'       => '/office/employment/part-time/edit',
+            'config'     => $model->getConfigurations(),
+            'mode'       => $mode,
+            'id'         => $schedule_id,
+            'row'        => $row,
+        ];
+        return view('employment_part_time_edit', $data);
+    }
+
 
 
 

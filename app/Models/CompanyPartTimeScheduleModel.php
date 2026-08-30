@@ -25,6 +25,63 @@ class CompanyPartTimeScheduleModel extends Model
     protected $createdField = 'created_at';
     protected $updatedField = 'updated_at';
     const ID_NONCE = 593;
+    private array $configurations = [
+        'id'              => [
+            'type'  => 'hidden',
+            'label' => 'ID'
+        ],
+        'period_id'       => [
+            'type'     => 'select',
+            'label'    => 'Period',
+            'required' => true,
+            'options'  => []
+        ],
+        'scheduled_start' => [
+            'type'        => 'datetime-local',
+            'label'       => 'Start Time',
+            'required'    => true,
+            'placeholder' => 'Start Time'
+        ],
+        'scheduled_end'   => [
+            'type'        => 'datetime-local',
+            'label'       => 'End Time',
+            'required'    => true,
+            'placeholder' => 'End Time'
+        ],
+        'scheduled_hours' => [
+            'type'        => 'text',
+            'label'       => 'Hours',
+            'required'    => true,
+            'placeholder' => 'Hours',
+            'details'     => 'Let the JS calculates the field'
+        ],
+        'scheduled_break' => [
+            'type'        => 'text',
+            'label'       => 'Break',
+            'required'    => true,
+            'placeholder' => 'Break',
+            'details'     => 'Let the JS calculates the field'
+        ],
+        'work_location'   => [
+            'type'        => 'text',
+            'label'       => 'Work Location',
+            'required'    => true,
+            'placeholder' => 'Work Location',
+            'details'     => 'Location code of the work location'
+        ],
+    ];
+
+    public function getConfigurations(): array
+    {
+        $configurations  = $this->configurations;
+        // period_id
+        $period_model    = new CompanyPartTimePeriodModel();
+        $period_options  = $period_model->select('id, period_start, period_end')->findAll();
+        foreach ($period_options as $period) {
+            $configurations['period_id']['options'][$period['id']] = date(DATE_FORMAT_UI, strtotime($period['period_start'])) . ' - ' . date(DATE_FORMAT_UI, strtotime($period['period_end']));
+        }
+        return $configurations;
+    }
 
     public function applyFilter(string $start_date, string $end_date, int $period_id): void
     {
