@@ -59,30 +59,15 @@ class Journey extends BaseController
     public function tripList(): ResponseInterface
     {
         $model              = new JourneyMasterModel();
-        $columns            = [
-            '',
-            'journey_master.id',
-            'journey_master.country_code',
-            'journey_master.date_entry',
-            'journey_master.day_count',
-            'entry_port.port_name',
-            'exit_port.port_name',
-            'journey_master.journey_details',
-            'journey_master.journey_status'
-        ];
-        $order              = $this->request->getPost('order');
         $search             = $this->request->getPost('search');
         $start              = $this->request->getPost('start');
         $length             = $this->request->getPost('length');
-        $order_column_index = $order[0]['column'] ?? 0;
-        $order_column       = $columns[$order_column_index];
-        $order_direction    = $order[0]['dir'] ?? 'desc';
-        $order_direction    = strtolower($order_direction);
-        $search_value       = $search['value'];
+        $order_column       = 'journey_master.date_entry';
+        $order_direction    = 'desc';
         $country_code       = $this->request->getPost('country_code');
         $year               = $this->request->getPost('year');
         $journey_status     = $this->request->getPost('journey_status');
-        $result             = $model->getDataTables($start, $length, $order_column, $order_direction, $search_value, $country_code, $year, $journey_status);
+        $result             = $model->getDataTables($start, $length, $order_column, $order_direction, $search['value'], $country_code, $year, $journey_status);
         return $this->response->setJSON([
             'draw'            => $this->request->getPost('draw'),
             'recordsTotal'    => $result['recordsTotal'],
@@ -357,38 +342,17 @@ class Journey extends BaseController
     public function transportList(): ResponseInterface
     {
         $model              = new JourneyTransportModel();
-        $columns            = [
-            '',
-            'journey_transport.id',
-            'journey_transport.flight_number',
-            'journey_operator.operator_name',
-            'journey_transport.mode_of_transport',
-            'journey_transport.departure_date_time',
-            'journey_transport.arrival_date_time',
-            'port_departure.port_name',
-            'port_arrival.port_name',
-            'journey_transport.is_domestic',
-            'journey_transport.trip_duration',
-            'journey_transport.distance_traveled',
-            'journey_transport.price_amount',
-            'journey_transport.journey_details',
-            'journey_transport.google_drive_link',
-            'journey_transport.journey_status',
-        ];
-        $order              = $this->request->getPost('order');
         $search             = $this->request->getPost('search');
         $start              = $this->request->getPost('start');
         $length             = $this->request->getPost('length');
-        $order_column_index = $order[0]['column'] ?? 0;
-        $order_column       = $columns[$order_column_index];
-        $order_direction    = $order[0]['dir'] ?? 'desc';
-        $search_value       = $search['value'];
+        $order_column       = 'journey_transport.departure_date_time';
+        $order_direction    = 'desc';
         $country_code       = $this->request->getPost('country_code');
         $year               = $this->request->getPost('year');
         $journey_status     = $this->request->getPost('journey_status');
         $mode_of_transport  = $this->request->getPost('mode_of_transport');
         $is_domestic        = $this->request->getPost('is_domestic');
-        $result             = $model->getDataTables($start, $length, $order_column, $order_direction, $search_value, $country_code, $year, $journey_status, $mode_of_transport, $is_domestic);
+        $result             = $model->getDataTables($start, $length, $order_column, $order_direction, $search['value'], $country_code, $year, $journey_status, $mode_of_transport, $is_domestic);
         return $this->response->setJSON([
             'draw'            => $this->request->getPost('draw'),
             'recordsTotal'    => $result['recordsTotal'],
@@ -665,34 +629,15 @@ class Journey extends BaseController
     public function accommodationList(): ResponseInterface
     {
         $model              = new JourneyAccommodationModel();
-        $columns            = [
-            '',
-            'id',
-            'country_code',
-            'check_in_date',
-            'check_out_date',
-            'night_count',
-            'hotel_name',
-            'booking_channel',
-            'room_type',
-            'breakfast_included',
-            'price_amount',
-            'journey_details',
-            'google_drive_link',
-            'journey_status',
-        ];
-        $order              = $this->request->getPost('order');
         $search             = $this->request->getPost('search');
         $start              = $this->request->getPost('start');
         $length             = $this->request->getPost('length');
-        $order_column_index = $order[0]['column'] ?? 0;
-        $order_column       = $columns[$order_column_index];
-        $order_direction    = $order[0]['dir'] ?? 'desc';
-        $search_value       = $search['value'];
+        $order_column       = 'check_in_date';
+        $order_direction    = 'desc';
         $country_code       = $this->request->getPost('country_code');
         $year               = $this->request->getPost('year');
         $journey_status     = $this->request->getPost('journey_status');
-        $result             = $model->getDataTables($start, $length, $order_column, $order_direction, $search_value, $country_code, $year, $journey_status);
+        $result             = $model->getDataTables($start, $length, $order_column, $order_direction, $search['value'], $country_code, $year, $journey_status);
         return $this->response->setJSON([
             'draw'            => $this->request->getPost('draw'),
             'recordsTotal'    => $result['recordsTotal'],
@@ -950,30 +895,15 @@ class Journey extends BaseController
     public function attractionList(): ResponseInterface
     {
         $model              = new JourneyAttractionModel();
-        $columns            = [
-            '',
-            'id',
-            'country_code',
-            'attraction_date',
-            'attraction_title',
-            'attraction_type',
-            'price_amount',
-            'journey_details',
-            'google_drive_link',
-            'journey_status',
-        ];
-        $order              = $this->request->getPost('order');
         $search             = $this->request->getPost('search');
         $start              = $this->request->getPost('start');
         $length             = $this->request->getPost('length');
-        $order_column_index = $order[0]['column'] ?? 0;
-        $order_column       = $columns[$order_column_index];
-        $order_direction    = $order[0]['dir'] ?? 'desc';
-        $search_value       = $search['value'];
+        $order_column       = 'attraction_date';
+        $order_direction    = 'desc';
         $country_code       = $this->request->getPost('country_code');
         $year               = $this->request->getPost('year');
         $journey_status     = $this->request->getPost('journey_status');
-        $result             = $model->getDataTables($start, $length, $order_column, $order_direction, $search_value, $country_code, $year, $journey_status);
+        $result             = $model->getDataTables($start, $length, $order_column, $order_direction, $search['value'], $country_code, $year, $journey_status);
         return $this->response->setJSON([
             'draw'            => $this->request->getPost('draw'),
             'recordsTotal'    => $result['recordsTotal'],

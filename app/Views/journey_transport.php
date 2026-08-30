@@ -120,7 +120,7 @@ $this->extend($layout);
                         d.is_domestic = $('#is_domestic').val();
                     }
                 },
-                order: [[5, 'desc']],
+                ordering: false,
                 columnDefs: [{orderable: false, targets: 0}],
                 fixedColumns: {start:3},
                 scrollX: true,
