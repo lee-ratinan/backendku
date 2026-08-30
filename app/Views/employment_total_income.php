@@ -46,6 +46,7 @@ $this->extend($layout);
                                 <table class="table table-borderless table-striped table-hover">
                                     <thead>
                                     <tr>
+                                        <th style="min-width:80px;">Type</th>
                                         <th style="min-width:120px;">Company</th>
                                         <th class="text-start" style="min-width:120px;">Date</th>
                                         <th style="min-width:120px;">Country</th>
@@ -61,6 +62,7 @@ $this->extend($layout);
                                     <tbody>
                                     <?php foreach ($records as $record) : ?>
                                         <tr>
+                                            <td><?= $record['type'] ?></td>
                                             <td><?= $record['company_name'] ?></td>
                                             <td class="text-start" data-sort="<?= $record['pay_date'] ?>"><?= date(DATE_FORMAT_UI, strtotime($record['pay_date'])) ?></td>
                                             <td><?= lang('ListCountries.countries.' . $record['country_code'] . '.common_name') ?></td>
@@ -84,6 +86,7 @@ $this->extend($layout);
                                         <td></td>
                                         <td></td>
                                         <td></td>
+                                        <td></td>
                                         <?php foreach ($fields as $field) : ?>
                                             <td class="text-end"><?= currency_format($currency_code, $total[$field]) ?></td>
                                         <?php endforeach; ?>
@@ -99,7 +102,7 @@ $this->extend($layout);
     </section>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            const table = $('table').DataTable({
+            $('table').DataTable({
                 fixedHeader: true,
                 searching: true,
                 pageLength: 25,

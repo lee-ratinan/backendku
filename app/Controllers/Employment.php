@@ -1861,6 +1861,7 @@ class Employment extends BaseController
         $company_model          = new CompanyMasterModel();
         $salary_model           = new CompanySalaryModel();
         $freelance_income_model = new CompanyFreelanceIncomeModel();
+        $part_time_income_model = new CompanyPartTimePeriodModel();
         $company_list           = $company_model->where('employment_start_date <=', $year . '-12-31')
             ->groupStart()
             ->where('employment_end_date >=', $year . '-01-01')
@@ -1887,9 +1888,15 @@ class Employment extends BaseController
             ->where('pay_date <=', $year . '-12-31')
             ->orderBy('pay_date', 'ASC')
             ->findAll();
+        $part_time_records     = $part_time_income_model
+            ->where('period_end >=', $year . '-01-01')
+            ->where('period_end <=', $year . '-12-31')
+            ->orderBy('period_end', 'ASC')
+            ->findAll();
         $income_records        = [];
         foreach ($salary_records as $record) {
             $income_records[$record['payment_currency']][] = [
+                'type'            => 'SL',
                 'company_name'    => $company_info[$record['company_id']]['company_name'],
                 'pay_date'        => $record['pay_date'],
                 'country_code'    => $record['tax_country_code'],
@@ -1904,6 +1911,7 @@ class Employment extends BaseController
         }
         foreach ($freelance_records as $record) {
             $income_records[$record['payment_currency']][] = [
+                'type'            => 'FL',
                 'company_name'    => $company_info[$record['company_id']]['company_name'],
                 'pay_date'        => $record['pay_date'],
                 'country_code'    => $company_info[$record['company_id']]['country_code'],
@@ -1914,6 +1922,22 @@ class Employment extends BaseController
                 'social_security' => 0,
                 'provident_fund'  => 0,
                 'total'           => $record['total_amount'],
+            ];
+        }
+        foreach ($part_time_records as $record) {
+            $currency = $company_info[$record['company_id']]['currency_code'];
+            $income_records[$currency][] = [
+                'type'            => 'PT',
+                'company_name'    => $company_info[$record['company_id']]['company_name'],
+                'pay_date'        => $record['period_end'],
+                'country_code'    => $company_info[$record['company_id']]['country_code'],
+                'base_amount'     => $record['subtotal_income'],
+                'other_amount'    => 0,
+                'taxes'           => 0,
+                'claim_amount'    => 0,
+                'social_security' => 0,
+                'provident_fund'  => -$record['income_deduction'],
+                'total'           => $record['total_income'],
             ];
         }
         $data                  = [
