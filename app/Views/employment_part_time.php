@@ -31,6 +31,9 @@ $this->extend($layout);
                                 <label for="end_date">End Date</label><br/><input class="form-control" type="date" id="end_date" name="end_date" placeholder="End Date" min="2026-04-01" max="<?= date('Y-m-t', strtotime('+1 month')) ?>" />
                             </div>
                             <div class="col">
+                                <label for="week_filter">Week of:</label><br/><input class="form-control" type="week" id="week_filter" name="week_filter" placeholder="Week of" min="2026-W15">
+                            </div>
+                            <div class="col">
                                 <label for="period_id">Pay Period</label><br/>
                                 <select class="form-control" id="period_id" name="period_id">
                                     <option value="">All</option>
@@ -116,6 +119,27 @@ $this->extend($layout);
                 $('#end_date').val('');
                 $('#period_id').val('');
                 table.ajax.reload();
+            });
+            $('#week_filter').on('change', function() {
+                const weekValue = $(this).val(); // Example: "2026-W35"
+                if (!weekValue) return;
+                // 1. Split the string into Year and Week number
+                const [year, week] = weekValue.split('-W').map(Number);
+                // 2. Locate January 4th (always guaranteed to be in ISO Week 1)
+                const jan4 = new Date(Date.UTC(year, 0, 4));
+                const jan4Day = jan4.getUTCDay() === 0 ? 7 : jan4.getUTCDay();
+                // 3. Calculate Monday of Week 1, then skip ahead to the selected week
+                const monday = new Date(jan4.getTime());
+                monday.setUTCDate(jan4.getUTCDate() - jan4Day + 1 + (week - 1) * 7);
+                // 4. Calculate Sunday by adding 6 days to Monday
+                const sunday = new Date(monday.getTime());
+                sunday.setUTCDate(monday.getUTCDate() + 6);
+                // 5. Format to readable YYYY-MM-DD strings
+                const mondayFormatted = monday.toISOString().split('T')[0];
+                const sundayFormatted = sunday.toISOString().split('T')[0];
+                // 6. Use results
+                $('#start_date').val(mondayFormatted);
+                $('#end_date').val(sundayFormatted);
             });
         });
     </script>

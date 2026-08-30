@@ -100,6 +100,7 @@ class CompanyPartTimePeriodModel extends Model
         $footer = [
             '',
             '',
+            '',
             'Total',
             number_format($sum['scheduled_hrs'], 2),
             number_format($sum['actual_hrs'], 2),

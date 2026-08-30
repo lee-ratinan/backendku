@@ -80,6 +80,7 @@ class CompanyPartTimeScheduleModel extends Model
         $footer = [
             '',
             '',
+            '',
             'Total',
             number_format($hours, 2),
             number_format($breaks, 2),
