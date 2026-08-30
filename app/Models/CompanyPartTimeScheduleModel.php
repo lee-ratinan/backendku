@@ -34,18 +34,22 @@ class CompanyPartTimeScheduleModel extends Model
         if (!empty($end_date)) {
             $this->where('scheduled_end <=', $end_date);
         }
-        if (!empty($period_id)) {
+        if (0 < $period_id) {
             $this->where('period_id', $period_id);
         }
     }
 
-    public function getDataTables(int $start, int $length, string $order_column, string $order_direction, string $start_date, string $end_date, int $period_id): array
+    public function  getDataTables(int $start, int $length, string $order_column, string $order_direction, string $start_date, string $end_date, int $period_id): array
     {
         $record_total    = $this->countAllResults();
         $record_filtered = $record_total;
-        if (!empty($start_date) || !empty($end_date) || !empty($period_id)) {
-            $start_date .= ' 00:00:00';
-            $end_date   .= ' 23:59:59';
+        if (!empty($start_date) || !empty($end_date) || 0 < $period_id) {
+            if (!empty($start_date)) {
+                $start_date .= ' 00:00:00';
+            }
+            if (!empty($end_date)) {
+                $end_date .= ' 23:59:59';
+            }
             $this->applyFilter($start_date, $end_date, $period_id);
             $record_filtered = $this->countAllResults();
             $this->applyFilter($start_date, $end_date, $period_id);
@@ -60,10 +64,10 @@ class CompanyPartTimeScheduleModel extends Model
         foreach ($raw_result as $row) {
             $result[]     = [
                 date(DATE_FORMAT_UI, strtotime($row['period_start'])) . ' - ' . date(DATE_FORMAT_UI, strtotime($row['period_end'])),
-                $row['scheduled_start'],
-                $row['scheduled_end'],
-                $row['scheduled_hours'],
-                $row['scheduled_break'],
+                date(DATE_FORMAT_UI, strtotime($row['scheduled_start'])) . ': ' . date(TIME_FORMAT_UI, strtotime($row['scheduled_start'])),
+                'to ' . date(TIME_FORMAT_UI, strtotime($row['scheduled_end'])),
+                number_format($row['scheduled_hours'] ?? 0, 1),
+                number_format($row['scheduled_break'] ?? 0, 1),
                 $row['work_location'],
             ];
             $hours      += $row['scheduled_hours'];
@@ -73,8 +77,8 @@ class CompanyPartTimeScheduleModel extends Model
             '',
             '',
             'Total',
-            number_format($hours, 2),
-            number_format($breaks, 2),
+            number_format($hours, 1),
+            number_format($breaks, 1),
             ''
         ];
         return [
@@ -90,9 +94,12 @@ class CompanyPartTimeScheduleModel extends Model
         if (is_int($period_ids)) {
             $period_ids = [$period_ids];
         }
-        return $this->select('period_id, SUM(scheduled_hours) as scheduled_hours, SUM(scheduled_break) as scheduled_break')
+        $results = $this->select('period_id, SUM(scheduled_hours) as scheduled_hours, SUM(scheduled_break) as scheduled_break')
             ->whereIn('period_id', $period_ids)
             ->groupBy('period_id')
             ->findAll();
+        $query = $this->db->getLastQuery();
+        log_message('warning', $query->getQuery());
+        return $results;
     }
 }

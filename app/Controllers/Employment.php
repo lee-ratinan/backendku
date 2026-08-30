@@ -1972,7 +1972,8 @@ class Employment extends BaseController
         $order_direction    = $order[0]['dir'] ?? 'desc';
         $start_date         = $this->request->getPost('start_date');
         $end_date           = $this->request->getPost('end_date');
-        $period_id          = intval($this->request->getPost('period_id'));
+        $period_id          = $this->request->getPost('period_id');
+        $period_id          = intval($period_id);
         $result             = $model->getDataTables($start, $length, $order_column, $order_direction, $start_date, $end_date, $period_id);
         return $this->response->setJSON([
             'draw'            => $this->request->getPost('draw'),

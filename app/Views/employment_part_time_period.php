@@ -45,12 +45,12 @@ $this->extend($layout);
                                     <th>Company</th>
                                     <th>Start</th>
                                     <th>End</th>
-                                    <th>Scheduled (hrs)</th>
-                                    <th>Recorded (hrs)</th>
-                                    <th>Subtotal ($)</th>
-                                    <th>Deduction ($)</th>
-                                    <th>Total Income ($)</th>
-                                    <th>Average ($/hr)</th>
+                                    <th>Scheduled<br/>(hrs)</th>
+                                    <th>Recorded<br/>(hrs)</th>
+                                    <th>Subtotal<br/>($)</th>
+                                    <th>Deduction<br/>($)</th>
+                                    <th>Total<br/>($)</th>
+                                    <th>Average<br/>($/hr)</th>
                                     <th><i class="fa-solid fa-file-pdf"></i></th>
                                 </tr>
                                 </thead>

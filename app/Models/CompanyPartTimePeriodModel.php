@@ -58,7 +58,7 @@ class CompanyPartTimePeriodModel extends Model
             $period_ids[$row['id']] = 1;
         }
         $schedule_model  = new CompanyPartTimeScheduleModel();
-        $scheduled_hours = $schedule_model->getScheduledHoursByPeriodIds($period_ids);
+        $scheduled_hours = $schedule_model->getScheduledHoursByPeriodIds(array_keys($period_ids));
         $hours           = [];
         foreach ($scheduled_hours as $row) {
             $hours[$row['period_id']] = $row['scheduled_hours'];
@@ -85,11 +85,11 @@ class CompanyPartTimePeriodModel extends Model
                 date(DATE_FORMAT_UI, strtotime($row['period_start'])),
                 date(DATE_FORMAT_UI, strtotime($row['period_end'])),
                 number_format($scheduled_hrs, 2),
-                number_format($row['actual_hours'], 2),
-                number_format($row['subtotal_income'], 2),
-                number_format($row['income_deduction'], 2),
-                number_format($row['total_income'], 2),
-                number_format($row['average_hourly_income'], 2),
+                number_format($row['actual_hours'] ?? 0, 2),
+                number_format($row['subtotal_income'] ?? 0, 2),
+                number_format($row['income_deduction'] ?? 0, 2),
+                number_format($row['total_income'] ?? 0, 2),
+                number_format($row['average_hourly_income'] ?? 0, 2),
                 $link,
             ];
         }
