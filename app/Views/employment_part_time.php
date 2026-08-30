@@ -50,6 +50,7 @@ $this->extend($layout);
                             <table class="table table-borderless table-striped table-hover dttable">
                                 <thead>
                                 <tr>
+                                    <th></th>
                                     <th>Period</th>
                                     <th>Start</th>
                                     <th>End</th>

@@ -42,6 +42,7 @@ $this->extend($layout);
                             <table class="table table-borderless table-striped table-hover dttable">
                                 <thead>
                                 <tr>
+                                    <th></th>
                                     <th>Company</th>
                                     <th>Start</th>
                                     <th>End</th>
@@ -51,7 +52,6 @@ $this->extend($layout);
                                     <th>Deduction<br/>($)</th>
                                     <th>Total<br/>($)</th>
                                     <th>Average<br/>($/hr)</th>
-                                    <th><i class="fa-solid fa-file-pdf"></i></th>
                                 </tr>
                                 </thead>
                                 <tbody></tbody>

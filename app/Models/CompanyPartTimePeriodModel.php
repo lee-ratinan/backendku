@@ -72,15 +72,20 @@ class CompanyPartTimePeriodModel extends Model
             'income_deduction' => 0.0,
             'total_income'     => 0.0,
         ];
+        $session    = session();
+        $locale     = $session->locale;
         foreach ($raw_result as $row) {
+            $id                       = $row['id'] * self::ID_NONCE;
             $scheduled_hrs            = $hours[$row['id']] ?? 0;
             $sum['scheduled_hrs']    += $scheduled_hrs;
             $sum['actual_hrs']       += $row['actual_hours'];
             $sum['subtotal_income']  += $row['subtotal_income'];
             $sum['income_deduction'] += $row['income_deduction'];
             $sum['total_income']     += $row['total_income'];
-            $link                     = (!empty($row['google_drive_link']) ? '<a class="btn btn-outline-primary" href="' . $row['google_drive_link'] . '" target="_blank"><i class="fa-solid fa-file-pdf"></i></a>' : '');
+            $link                     = '<a class="btn btn-outline-primary" href="' . base_url($locale . '/office/employment/part-time/pay-period/edit/' . $id) . '"><i class="fa-solid fa-edit"></i></a>';
+            $link                    .= (!empty($row['google_drive_link']) ? ' <a class="btn btn-outline-primary" href="' . $row['google_drive_link'] . '" target="_blank"><i class="fa-solid fa-file-pdf"></i></a>' : '');
             $result[]                 = [
+                $link,
                 $row['company_trade_name'],
                 date(DATE_FORMAT_UI, strtotime($row['period_start'])),
                 date(DATE_FORMAT_UI, strtotime($row['period_end'])),
@@ -90,7 +95,6 @@ class CompanyPartTimePeriodModel extends Model
                 number_format($row['income_deduction'] ?? 0, 2),
                 number_format($row['total_income'] ?? 0, 2),
                 number_format($row['average_hourly_income'] ?? 0, 2),
-                $link,
             ];
         }
         $footer = [

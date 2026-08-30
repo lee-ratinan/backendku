@@ -142,7 +142,7 @@ class HealthActivityModel extends Model
         $configurations['currency_code']['options']    = $all_currencies;
         // Journeys
         $journey_model   = new JourneyMasterModel();
-        $journeys        = $journey_model->where('date_entry <= CURDATE()')->orderBy('date_entry', 'DESC')->limit(10)->findAll();
+        $journeys        = $journey_model->where('date_entry <= CURDATE()')->orderBy('date_entry DESC, date_exit DESC')->limit(10)->findAll();
         $journey_options = [];
         foreach ($journeys as $journey) {
             $journey_options[$journey['id']] = date(DATE_FORMAT_UI, strtotime($journey['date_entry'])) . ': ' . lang('ListCountries.countries.' . $journey['country_code'] . '.common_name');

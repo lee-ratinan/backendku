@@ -61,13 +61,17 @@ class CompanyPartTimeScheduleModel extends Model
         $result     = [];
         $hours      = 0.0;
         $breaks     = 0.0;
+        $session    = session();
+        $locale     = $session->locale;
         foreach ($raw_result as $row) {
-            $result[]     = [
+            $id       = $row['id'] * self::ID_NONCE;
+            $result[] = [
+                '<a class="btn btn-outline-primary" href="' . base_url($locale . '/office/employment/part-time/edit/' . $id) . '"><i class="fa-solid fa-edit"></i></a>',
                 date(DATE_FORMAT_UI, strtotime($row['period_start'])) . ' - ' . date(DATE_FORMAT_UI, strtotime($row['period_end'])),
                 date(DATE_FORMAT_UI, strtotime($row['scheduled_start'])) . ': ' . date(TIME_FORMAT_UI, strtotime($row['scheduled_start'])),
                 'to ' . date(TIME_FORMAT_UI, strtotime($row['scheduled_end'])),
-                number_format($row['scheduled_hours'] ?? 0, 1),
-                number_format($row['scheduled_break'] ?? 0, 1),
+                number_format($row['scheduled_hours'] ?? 0, 2),
+                number_format($row['scheduled_break'] ?? 0, 2),
                 $row['work_location'],
             ];
             $hours      += $row['scheduled_hours'];
@@ -77,8 +81,8 @@ class CompanyPartTimeScheduleModel extends Model
             '',
             '',
             'Total',
-            number_format($hours, 1),
-            number_format($breaks, 1),
+            number_format($hours, 2),
+            number_format($breaks, 2),
             ''
         ];
         return [
