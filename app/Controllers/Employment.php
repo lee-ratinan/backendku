@@ -2036,8 +2036,60 @@ class Employment extends BaseController
         return view('employment_part_time_edit', $data);
     }
 
-
-
+    public function partTimeSave(): ResponseInterface
+    {
+        $pt_model  = new CompanyPartTimeScheduleModel();
+        $log_model = new LogActivityModel();
+        $session   = session();
+        $id        = $this->request->getPost('id');
+        $data      = [];
+        $fields    = [
+            'period_id',
+            'scheduled_start',
+            'scheduled_end',
+            'scheduled_hours',
+            'scheduled_break',
+            'work_location',
+        ];
+        foreach ($fields as $field) {
+            $value        = $this->request->getPost($field);
+            $data[$field] = (!empty($value)) ? $value : null;
+        }
+        try {
+            if (0 < $id) {
+                if ($pt_model->update($id, $data)) {
+                    $log_model->insertTableUpdate('company_pt_schedule', $id, $data, $session->user_id);
+                    $new_id = $id * $pt_model::ID_NONCE;
+                    return $this->response->setJSON([
+                        'status'   => 'success',
+                        'toast'    => 'Successfully updated the part-time schedule.',
+                        'redirect' => base_url($session->locale . '/office/employment/part-time/edit/' . $new_id)
+                    ]);
+                }
+            } else {
+                $data['created_by'] = $session->user_id;
+                // INSERT
+                if ($id = $pt_model->insert($data)) {
+                    $log_model->insertTableUpdate('company_master', $id, $data, $session->user_id);
+                    $new_id = $id * $pt_model::ID_NONCE;
+                    return $this->response->setJSON([
+                        'status'   => 'success',
+                        'toast'    => 'Successfully created new part-time schedule..',
+                        'redirect' => base_url($session->locale . '/office/employment/part-time/edit/' . $new_id)
+                    ]);
+                }
+            }
+            return $this->response->setJSON([
+                'status'  => 'error',
+                'toast'   => lang('System.status_message.generic_error')
+            ])->setStatusCode(HTTP_STATUS_SOMETHING_WRONG);
+        } catch (\Exception $e) {
+            return $this->response->setJSON([
+                'status'  => 'error',
+                'toast'   => $e->getMessage()
+            ])->setStatusCode(HTTP_STATUS_SOMETHING_WRONG);
+        }
+    }
 
     public function partTimePayPeriod(): string
     {

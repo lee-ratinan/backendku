@@ -94,13 +94,13 @@ $this->extend($layout);
                    url: '<?= base_url('en/office/employment/part-time/edit') ?>',
                    type: 'post',
                    data: {
-                       'id',
-                       'period_id',
-                       'scheduled_start',
-                       'scheduled_end',
-                       'scheduled_hours',
-                       'scheduled_break',
-                       'work_location',
+                       'id': '<?= $id ?>',
+                       'period_id': $('#period_id').val(),
+                       'scheduled_start': $('#scheduled_start').val(),
+                       'scheduled_end': $('#scheduled_end').val(),
+                       'scheduled_hours': $('#scheduled_hours').val(),
+                       'scheduled_break': $('#scheduled_break').val(),
+                       'work_location': $('#work_location').val(),
                    },
                    success: function (response) {
                         if ('success' === response.status) {
@@ -109,13 +109,13 @@ $this->extend($layout);
                         } else {
                             let message = (response.toast ?? 'Sorry! Something went wrong. Please try again.');
                             toastr.error(message);
-                            $('#btn-save-project').prop('disabled', false);
+                            $('#btn-save').prop('disabled', false);
                         }
                     },
                     error: function (xhr, status, error) {
                         let response = JSON.parse(xhr.responseText);
                         let error_message = (response.toast ?? 'Sorry! Something went wrong. Please try again.');
-                        $('#btn-save-project').prop('disabled', false);
+                        $('#btn-save').prop('disabled', false);
                         toastr.error(error_message);
                     }
                });
